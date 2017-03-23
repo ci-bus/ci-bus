@@ -1,0 +1,156 @@
+<html>
+<head>
+	<script   src="https://code.jquery.com/jquery-2.2.4.min.js"   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="../libraries/fa-icons/css/font-awesome.min.css">
+
+	<script>
+	// LOGO CARGA /////
+			
+			var logoCarga = function()
+			{
+				this.d = new Date();
+				this.start_time = Math.round(this.d.getTime()/5);
+				this.last_time = 0;
+				this.desa1 = false;
+				this.desa2 = false;
+				this.finit = false;
+				this.finit2 = false;
+				this.giro = false;
+				this.waitfini = false;
+				this.logo_appended = false
+				
+				this.anim1 = function()
+				{
+					var dad = this;
+					$('#cubi-ico-1').animate({left: '+=152px'}, 1500);
+					$('#cubi-ico-2').animate({top: '+=152px'}, 1500);
+					$('#cubi-ico-3').animate({top: '-=152px'}, 1500);
+					$('#cubi-ico-4').animate({left: '-=152px'}, 1500, function(){if(!dad.finit2)dad.anim2()});
+				}
+				
+				this.anim2 = function()
+				{
+					var dad = this;
+					$('#cubi-ico-1').animate({left: '-=152px'}, 1500);
+					$('#cubi-ico-2').animate({top: '-=152px'}, 1500);
+					$('#cubi-ico-3').animate({top: '+=152px'}, 1500);
+					$('#cubi-ico-4').animate({left: '+=152px'}, 1500, function(){if(!dad.finit2)dad.anim1()});
+				}
+				
+				this.start = function()
+				{
+					if(!this.logo_appended)
+					{
+						this.innerLogo();
+					}
+					this.anim1();
+					var dad = this;
+					this.giro = setInterval(function()
+					{
+						dad.d = new Date();
+						if(!dad.desa1){
+							dad.n = Math.round(dad.d.getTime()/5) - dad.start_time;
+						}else{
+							dad.n = Math.round(dad.d.getTime()/2) - dad.start_time;
+						}
+						if(dad.last_time != dad.n){
+							if(!dad.finit){
+								$('#cubi-ico').css({transform: 'rotate('+dad.n+'deg)'});
+								if(!dad.finit2){
+									$('#cubi-ico-1').css({transform: 'rotate('+(dad.n*-3)%360+'deg)', fontSize: $('#cubi-ico-1').css('left')});
+									$('#cubi-ico-2').css({transform: 'rotate('+(dad.n*-3)%360+'deg)', fontSize: $('#cubi-ico-1').css('left')});
+									$('#cubi-ico-3').css({transform: 'rotate('+(dad.n*-3)%360+'deg)', fontSize: $('#cubi-ico-1').css('left')});
+									$('#cubi-ico-4').css({transform: 'rotate('+(dad.n*-3)%360+'deg)', fontSize: $('#cubi-ico-1').css('left')});
+								}else{
+									$('#cubi-ico-1').css({transform: 'rotate('+(dad.n*-3)%360+'deg)'});
+									$('#cubi-ico-2').css({transform: 'rotate('+(dad.n*-3)%360+'deg)'});
+									$('#cubi-ico-3').css({transform: 'rotate('+(dad.n*-3)%360+'deg)'});
+									$('#cubi-ico-4').css({transform: 'rotate('+(dad.n*-3)%360+'deg)'});
+								}
+							}else{
+								if(!dad.desa2){
+									$('#cubi-ico').css({transform: 'rotate('+dad.n%360+'deg)'});
+								}
+								if(!dad.desa1){
+									$('#cubi-ico-1').css({transform: 'rotate('+(dad.n*-3)%360+'deg)'});
+									$('#cubi-ico-2').css({transform: 'rotate('+(dad.n*-3)%360+'deg)'});
+									$('#cubi-ico-3').css({transform: 'rotate('+(dad.n*-3)%360+'deg)'});
+									$('#cubi-ico-4').css({transform: 'rotate('+(dad.n*-3)%360+'deg)'});
+								}
+								if((dad.n*-3)%360 <= 2 || (dad.n*-3)%360 >= 358){
+									dad.desa1 = true;
+									$('#cubi-ico-1').css({transform: 'rotate(0deg)'});
+									$('#cubi-ico-2').css({transform: 'rotate(0deg)'});
+									$('#cubi-ico-3').css({transform: 'rotate(0deg)'});
+									$('#cubi-ico-4').css({transform: 'rotate(0deg)'});
+									$('#cubi-ico').animate({top: '34px', left: '45px', opacity: 1}, 'slow');
+									
+									$('#cubi-ico').on('mouseout', function(){
+										$('#cubi-ico-1').stop().animate({left: '6px'}, 'fast');
+										$('#cubi-ico-2').stop().animate({top: '-11px'}, 'fast');
+										$('#cubi-ico-3').stop().animate({top: '7px'}, 'fast');
+										$('#cubi-ico-4').stop().animate({left: '24px'}, 'fast');
+									});
+									$('#cubi-ico').on('mousedown', function(){
+										$('#cubi-ico-1').stop().css({left: '12px'});
+										$('#cubi-ico-2').stop().css({top: '-21px'});
+										$('#cubi-ico-3').stop().css({top: '17px'});
+										$('#cubi-ico-4').stop().css({left: '18px'});
+										$('#cubi-ico').css({top: '37px', left: '48px'});
+										$('#cubi-ico').stop().animate({top: '34px', left: '45px'}, 'fast');
+									});
+								}
+								if(dad.n%360 >= 42 && dad.n%360 <= 48){
+									dad.desa2 = true;
+									$('header').fadeIn('slow', function(){
+										$('#cubi-ico').css({transform: 'rotate(45deg)'}).addClass('cubi-ico');
+									});
+								}
+								if(dad.desa1 && dad.desa2){
+									clearInterval(dad.giro);
+								}
+							}
+						}
+						dad.last_time = dad.n;
+					});
+				}
+				
+				this.finish = function()
+				{
+					var dad = this;
+					this.waitfini = setInterval(function(){
+						if($('#cubi-ico-1').css('left').replace('px','') >= 47 && $('#cubi-ico-1').css('left').replace('px','') <= 51){
+							dad.finit2 = true;
+							$('#cubi-ico-1').animate({left: '6px', fontSize: '49px'}, 'slow');
+							$('#cubi-ico-2').animate({top: '-11px', fontSize: '49px'}, 'slow');
+							$('#cubi-ico-3').animate({top: '7px', fontSize: '49px'}, 'slow');
+							$('#cubi-ico-4').animate({left: '24px', fontSize: '49px'}, 'slow');
+							$('#cubi-ico').animate({top: '100px', left: '100px', width: '49px', height: '50px', opacity: '0.1'}, 'slow', function(){dad.finit=true;});
+							clearInterval(dad.waitfini);
+						}
+					}, '5');
+				}
+				
+				this.innerLogo = function()
+				{
+					this.logo_appended = true;
+					$('body').append('<div id="cubi-ico" style="position:absolute;top:50%;left:50%;width:65px;height:79px;margin-top:-33px;margin-left:-40px;"><i id="cubi-ico-1" style="position:absolute;top:0px;left:5px;color:ORANGE;" class="fa fa-caret-right fa-5x" aria-hidden="true"></i><i id="cubi-ico-2" style="position:absolute;top:-17px;left:10px;color:RED;" class="fa fa-caret-down fa-5x" aria-hidden="true"></i><i id="cubi-ico-3" style="position:absolute;top:11px;left:10px;color:BLUE;" class="fa fa-caret-up fa-5x" aria-hidden="true"></i><i id="cubi-ico-4" style="position:absolute;top:0px;left:32px;color:GREEN;" class="fa fa-caret-left fa-5x" aria-hidden="true"></i></div>');
+				}
+			}
+			
+			$(document).ready(function(){
+				
+				var logo = new logoCarga();
+				logo.start();
+				
+				setTimeout(function(){
+					
+					logo.finish();
+				}, 2000);
+			});
+		</script>
+</head>
+<body>
+
+</body>
+</html>
