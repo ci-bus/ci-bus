@@ -113,11 +113,11 @@
 		}
 		
 		public function parseVar($name, $data){
-			echo "var ".$name."=".json_encode($data)."; ";
+			echo "var ".$name."=".json_encode($data, true)."; ";
 		}
 		
 		public function parseConfig($name, $data){
-			echo "cb.setConfig('".$name."', ".json_encode($data)."); ";
+			echo "cb.setConfig('".$name."', ".json_encode($data, true)."); ";
 		}
 		
 		public function utf8_converter($ar)

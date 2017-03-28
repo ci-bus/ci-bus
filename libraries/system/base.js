@@ -292,7 +292,9 @@ cb.storeRecursiveSet = function(elem, links, values)
 	}
 	if (elem.hasAttributes && elem.hasAttributes()) {
 		var attrs = elem.attributes;
-		var staff = $(elem).html();
+		if($(elem).children().length<1){
+			var staff = $(elem).html();
+		}
 		for(var c=0; c<attrs.length; c++)
 		{
 			for(var t=0; t<values.length; t++)
@@ -307,18 +309,26 @@ cb.storeRecursiveSet = function(elem, links, values)
 						nam = nam.replace(new RegExp(links[t][s],"g"), values[t]);
 						if(nam != attrs[c].name)
 						{
-							$(elem).removeAttr(nam).attr(nam, val);
+							$(elem).removeAttr(attrs[c].name).attr(nam, val);
 						}
 						else if(val != attrs[c].value)
 						{
-							$(elem).attr(nam, val);
+							$(elem).attr(attrs[c].name, val);
 						}
-						staff = staff.replace(new RegExp(links[t][s],"g"), values[t]);
+						if($(elem).children().length<1){
+							staff = staff.replace(new RegExp(links[t][s],"g"), values[t]);
+						}
 					}
 				}
 			}
 		}
-		if(staff != $(elem).html())$(elem).html(staff);
+		if($(elem).children().length<1)
+		{
+			if(staff != $(elem).html())
+			{
+				$(elem).html(staff);
+			}
+		}
 	}
 	return elem;
 }
@@ -460,6 +470,16 @@ cb.render = function(obj, callback)
 		callback();
 	}
 }
+
+cb.extend = function(opt1, opt2){
+	console.log('Extend', opt2);
+	if(opt2.forEach){
+		opt2.forEach(function(ele, idx){
+			opt1[idx] = ele;
+		});
+	}
+	return opt1;
+}
 			
 cb.create = function(opt){
 
@@ -467,7 +487,13 @@ cb.create = function(opt){
 	
 	if($.type(opt.xtype) == 'string')
 	{
-		if(opt.xtype == 'nav')
+		if(this.t_cmp = cb.module.component[opt.xtype])
+		{
+			var ele = this.create(this.t_cmp);
+			ele = this.common_prop(ele, opt);
+			delete this.t_cmp;
+		}
+		else if(opt.xtype == 'nav')
 		{
 			if(!opt.toggle)opt.toggle = this.autoname();
 			if(!opt.renderTo || opt.renderTo == 'main') opt.renderTo = 'header';
@@ -1231,22 +1257,6 @@ cb.create = function(opt){
 			var ele = document.createElement('span');
 			$(ele).addClass('glyphicon glyphicon-'+opt.type);
 			ele = this.common_prop(ele, opt);
-		}
-		else if(opt.xtype == 'component')
-		{
-			var cmp = false;
-			if(cmp = cb.module.component[opt.name])
-			{
-				cmp.name = false;
-				cmp = $.extend(cmp, opt);
-				cmp.xtype = 'span';
-				var ele = this.create(cmp);
-				ele = this.common_prop(ele, opt);
-			}
-			else
-			{
-				return false;
-			}
 		}
 		else
 		{

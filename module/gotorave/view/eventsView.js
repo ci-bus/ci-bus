@@ -25,11 +25,17 @@ cb.define({
 				items: [{
 					xtype: 'panel',
 					type: 'info',
+					attr: {'data-id': btoa('id')},
 					items: [{
 						xtype: 'head',
 						items: [{
+							xtype: 'review',
+							attr: {data: 'event'},
+							float: 'right',
+							css: {'margin-right': '-5px'}
+						},{
 							xtype: 'div',
-							cls: 'text-center',
+							cls: 'text-left',
 							css: {'font-size': '19px'},
 							field: 'name'
 						}]
@@ -45,10 +51,22 @@ cb.define({
 							field: 'description'
 						},{
 							xtype: 'blockquote',
-							text: '<b>Fecha</b> '+btoa('date')
+							items: [{
+								xtype: 'b',
+								text: 'Fecha '
+							},{
+								xtype: 'span',
+								text: btoa('date')
+							}]
 						},{
 							xtype: 'blockquote',
-							text: '<b>Lugar</b> '+btoa('postal')
+							items: [{
+								xtype: 'b',
+								text: 'Lugar '
+							},{
+								xtype: 'span',
+								text: btoa('postal')
+							}]
 						},{
 							xtype: 'div',
 							id: 'div1234',

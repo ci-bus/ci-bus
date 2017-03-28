@@ -16,6 +16,16 @@ a.disabled {
     pointer-events: none;
 }
 
+.red {
+	color: red;
+}
+.green {
+	color: green;
+}
+.gray {
+	color: #bbb;
+}
+
 #ci-bus-alert-msg {
 	display: block;
 	padding: 3px 20px;

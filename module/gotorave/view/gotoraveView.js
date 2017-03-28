@@ -180,6 +180,24 @@ cb.define({
 								cb.ctr('gotorave', 'logLink');
 							}
 						}
+					},{
+						xtype: 'button',
+						text: 'Off chat',
+						margin: '0 0 0 5px',
+						listener: {
+							click: function(){
+								cb.setConfig('no_refresh_chat', true)
+							}
+						}
+					},{
+						xtype: 'button',
+						text: 'On chat',
+						margin: '0 0 0 5px',
+						listener: {
+							click: function(){
+								cb.setConfig('no_refresh_chat', false)
+							}
+						}
 					}]
 				}]
 			}]

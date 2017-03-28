@@ -3,8 +3,8 @@
 	return array(
 	
 		"db" => array("db_host" => "localhost",
-			"db_user" => "root",
-			"db_pass" => "",
+			"db_user" => "gotorave",
+			"db_pass" => "gotorave",
 			"db_database" => "gotorave",
 			"db_prefix" => ""
 		),

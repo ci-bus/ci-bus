@@ -45,22 +45,15 @@
 			$this->sqlSegura->idUsuarioGrupo = $this->query($query);
 		}
 		
-		public function join($table, $where, $type = false){
+		public function join($table, $where, $type = ""){
 			
-			if($type){
-				
-				$this->add("join", " ");
-				$where = $this->setPrefix($where);
-				$this->add("join", strtoupper($type)." JOIN ".$this->getConfig("prefix").$table." ON ".$where, true);
-			}else{
-				
-				$this->add("join", " ");
-				$where = $this->setPrefix($where);
-				$this->add("join", "JOIN ".$this->getConfig("prefix").$table." ON ".$where, true);
-			}
+			$this->add("join", " ");
+			$where = $this->setPrefix($where);
+			$this->add("join", strtoupper($type)." JOIN ".$this->getConfig("prefix").$table." ON ".$where, true);
 		}
 		
 		public function get_array($table = false){
+			
 			$res = $this->get($table);
 			if(is_object($res)) return array($res);
 			return $res;

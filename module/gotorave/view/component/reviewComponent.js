@@ -12,20 +12,25 @@ cb.define({
 		items: [{
 			xtype: 'glyphicon',
 			type: 'thumbs-down',
-			color: 'red',
 			cursor: 'pointer',
+			cls : btoa('hand1_color'),
 			margin: 5,
-			attr: {'onClick':"cb.ctr('gotorave','musiclike',this)"},
+			attr: {'clicked': btoa('review_cos')},
+			listener: {
+				click: function(){
+					cb.ctr('gotorave','musiclike',this)
+				}
+			}
 		},{
 			xtype: 'glyphicon',
 			type: 'thumbs-up',
-			color: 'green',
+			cls : btoa('hand2_color'),
 			cursor: 'pointer',
-			attr: {'onClick':"cb.ctr('gotorave','musiclike',this)"},
+			attr: {'clicked': btoa('review_pos')},
 			margin: 5,
 			listener: {
 				click: function(){
-					alert('green');
+					cb.ctr('gotorave','musiclike',this)
 				}
 			}
 		},{

@@ -48,6 +48,48 @@
 						echo $CB->db->error();
 					}
 					$res2 = false;
+					
+					$CB->db->reset();
+					$CB->db->select("review, id_user");
+					$CB->db->from("review");
+					$CB->db->where("review.tabla", 'event');
+					$CB->db->where("review.id_row", $r0->id);
+						
+					$res[$k]->reviews = 0;
+					$res[$k]->user_review = 0;
+						
+					$res[$k]->review_pos = "false";
+					$res[$k]->review_con = "false";
+					$res[$k]->hand1_color = "red";
+					$res[$k]->hand2_color = "green";
+						
+					if($res3 = $CB->db->get_array())
+					{
+						foreach($res3 as $r3)
+						{
+							if($r3->review > 0){
+								$res[$k]->reviews++;
+								if($r3->id_user == $_SESSION['user_id']){
+									$res[$k]->user_review = 1;
+									$res[$k]->review_pos = "true";
+									$res[$k]->hand2_color = "gray";
+								}
+							}else{
+								$res[$k]->reviews--;
+								if($r3->id_user == $_SESSION['user_id']){
+									$res[$k]->user_review = -1;
+									$res[$k]->review_con = "true";
+									$res[$k]->hand1_color = "gray";
+								}
+							}
+						}
+					}
+					else
+					{
+						echo $CB->db->error();
+					}
+					
+					$res3 = false;
 				}
 				$this->parseStore('events', array('ev' => $res));
 			}

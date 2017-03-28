@@ -97,8 +97,13 @@ cb.define({
 					items: [{
 						xtype: 'head',
 						items: [{
+							xtype: 'review',
+							attr: {data: 'user'},
+							float: 'right',
+							css: {'margin-right': '-5px'}
+						},{
 							xtype: 'div',
-							cls: 'text-center',
+							cls: 'text-left',
 							css: {'font-size': '19px'},
 							field: 'name'
 						}]

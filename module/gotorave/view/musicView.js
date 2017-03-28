@@ -76,7 +76,7 @@ cb.define({
 										xtype: 'dropup',
 										glyphicon: 'music',
 										text: ' A&ntilde;adir tag ',
-										css: {'font-size': '17px', 'margin-bottom': '5px'},
+										size: 'small',
 										id: 'add-tag-music',
 										storelink: {
 											id: 'du-add-tag-music-strlk',
@@ -162,8 +162,8 @@ cb.define({
 					items: [{
 						xtype: 'head',
 						items: [{
-							xtype: 'component',
-							name: 'review',
+							xtype: 'review',
+							attr: {data: 'music'},
 							float: 'right',
 							css: {'margin-right': '-5px'}
 						},{

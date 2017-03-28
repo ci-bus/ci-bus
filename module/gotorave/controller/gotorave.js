@@ -44,7 +44,9 @@ cb.define({
 			['view', 'gotorave']
 		]);
 		this.chatInterval = setInterval(function(){
-			//cb.load('store', 'gotorave', 'chat')
+			if(!cb.getConfig('no_refresh_chat')){
+				cb.load('store', 'gotorave', 'chat')
+			}
 		}, 2000);
 	},
 	
@@ -79,31 +81,37 @@ cb.define({
 	},
 	
 	musiclike: function(bot){
-		if($(bot).attr('clicked')!='true'){
-			if($(bot).attr('class')=='glyphicon glyphicon-thumbs-down'){
-				var review = $(bot).parent().find('.review').text();
+		if($(bot).attr('clicked')!='true')
+		{
+			var type = $(bot).parent().parent().attr('data');
+			var id = $(bot).closest('.panel').attr('data-id');
+			var review = $(bot).parent().find('.review').text();
+			var val = 0;
+			
+			if($(bot).hasClass('glyphicon-thumbs-down'))
+			{
+				val = -1;
 				review--;
-				if($(bot).parent().find('.glyphicon-thumbs-up').attr('clicked')==''){
+				if($(bot).parent().find('.glyphicon-thumbs-up').attr('clicked')=='true'){
 					review--;
 				}
-				$(bot).parent().find('.review').text(review);
 				$(bot).parent().find('.glyphicon-thumbs-up').css('color', 'green').attr('clicked', 'false');
-				$(bot).attr('clicked', 'true').animate({'zoom': 2, 'scale': 2, 'margin-top': '-10px'}, 'fast', function(){
-					$(this).css('color','#bbb').animate({'zoom': 1, 'scale': 1, 'margin-top': '5px'}, 'fast');
-				});
 			}
-			if($(bot).attr('class')=='glyphicon glyphicon-thumbs-up'){
-				var review = $(bot).parent().find('.review').text();
+			else if($(bot).hasClass('glyphicon-thumbs-up'))
+			{
+				val = 1;
 				review++;
-				if($(bot).parent().find('.glyphicon-thumbs-down').attr('clicked')==''){
+				if($(bot).parent().find('.glyphicon-thumbs-down').attr('clicked')=='true'){
 					review++;
 				}
-				$(bot).parent().find('.review').text(review);
 				$(bot).parent().find('.glyphicon-thumbs-down').css('color', 'red').attr('clicked', 'false');
-				$(bot).attr('clicked', 'true').animate({'zoom': 2, 'scale': 2, 'margin-top': '-10px'}, 'fast', function(){
-					$(this).css('color','#bbb').animate({'zoom': 1, 'scale': 1, 'margin-top': '5px'}, 'fast');
-				});
 			}
+			$(bot).parent().find('.review').text(review);
+			$(bot).attr('clicked', 'true').animate({'zoom': 2, 'scale': 2, 'margin-top': '-10px'}, 'fast');
+			
+			cb.load('store', 'gotorave', 'review', {action: 'send', value: val, type: type, id: id}, function(res){
+				$(bot).css('color','#bbb').animate({'zoom': 1, 'scale': 1, 'margin-top': '5px'}, 'fast');
+			});
 		}
 	},
 	
@@ -195,6 +203,7 @@ cb.define({
 	
 	load_users: function(id_tag)
 	{	
+		$('#users-content').remove();
 		cb.load('view', 'gotorave', 'users', function(){
 			if(cb.getConfig('user_data').add_friends > 0){
 				$('#panel-add-friend').css('display', 'block');
