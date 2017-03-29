@@ -480,6 +480,794 @@ cb.extend = function(opt1, opt2){
 	}
 	return opt1;
 }
+
+cb.module.bootstrapComponent = {
+	'button': function(opt){
+		var ele = document.createElement(opt.xtype);
+		if(!opt.type) opt.type = 'default';
+		opt.cls? opt.cls = 'btn btn-'+opt.type+' '+opt.cls : opt.cls = 'btn btn-'+opt.type;
+		if(opt.size) opt.cls += ' btn-'+opt.size;
+		opt.type = 'button';
+		ele = cb.common_prop(ele, opt);
+		return ele;
+	},
+	'nav': function(opt){
+		if(!opt.toggle)opt.toggle = cb.autoname();
+		if(!opt.renderTo || opt.renderTo == 'main') opt.renderTo = 'header';
+		var ele = document.createElement('nav');
+		$(ele).addClass('navbar');
+		if(opt.type)
+		{
+			var tcls = opt.type.split(' ');
+			for(var i=0; i<tcls.length; i++)
+			{
+				if(tcls[i].trim() != '') $(ele).addClass('navbar-'+tcls[i]);
+			}
+			opt.notype = true;
+		}
+		else
+		{
+			$(ele).addClass('navbar-default');
+		}
+		var conta = document.createElement('div');
+		$(conta).addClass('container-fluid');
+		conta = cb.common_prop(conta, opt);
+		if($.isArray(opt.items))
+		{
+			for(var a=0;a<opt.items.length;a++)
+			{
+				if(opt.items[a].xtype == 'header')
+				{
+					opt.items[a].xtype = 'navbar-header';
+					opt.items[a].target = opt.toggle;
+				}
+				else if(opt.items[a].xtype == 'collapse' || opt.items[a].xtype == 'navbar-collapse')
+				{
+					opt.items[a].xtype = 'navbar-collapse';
+					opt.items[a].cls = opt.toggle;
+				}
+				$(conta).append(cb.create(opt.items[a]));
+			}
+		}
+		opt.noitems = true;
+		$(ele).append(conta);
+		return ele;
+	},
+	'navbar-collapse': function(opt){
+		var ele = document.createElement('div');
+		$(ele).addClass('collapse navbar-collapse');
+		ele = cb.common_prop(ele, opt);
+		return ele;
+	},
+	'navbar-header': function(opt){
+		var ele = document.createElement('div');
+		$(ele).addClass('navbar-header');
+		ele = cb.common_prop(ele, opt);
+		$(ele).append(cb.create({
+			xtype: 'button',
+			type: 'button',
+			cls: 'collapsed navbar-toggle',
+			attr: {
+				'data-toggle': 'collapse',
+				'data-target': '.'+opt.target
+			},
+			items: [{
+				xtype: 'span',
+				cls: 'sr-only',
+				text: 'Toggle navigation'
+			},{
+				xtype: 'span',
+				cls: 'icon-bar'
+			},{
+				xtype: 'span',
+				cls: 'icon-bar'
+			},{
+				xtype: 'span',
+				cls: 'icon-bar'
+			}]
+		}));
+		return ele;
+	},
+	'button-menu': function(opt){
+		opt.xtype = 'button';
+		conta = cb.create(opt);
+		$(conta).addClass('navbar-btn');
+		ele = document.createElement('li');
+		$(ele).append(conta);
+		return ele;
+	},
+	'text-menu': function(opt){
+		conta = document.createElement('p');
+		$(conta).addClass('navbar-text');
+		conta = cb.common_prop(conta, opt);
+		ele = document.createElement('li');
+		$(ele).append(conta);
+		return ele;
+	},
+	'navbar': function(opt){
+		opt.cls? opt.cls = 'nav navbar-nav '+opt.cls : opt.cls = 'nav navbar-nav';
+		if(opt.type)
+		{
+			var tcls = opt.type.split(' ');
+			for(var i=0; i<tcls.length; i++)
+			{
+				opt.cls = opt.cls + ' navbar-'+tcls[i];
+			}
+			opt.notype = true;
+		}
+		var ele = document.createElement('ul');
+		ele = cb.common_prop(ele, opt);
+		if($.isArray(opt.items))
+		{
+			for(var a=0;a<opt.items.length;a++)
+			{
+				if(opt.items[a].xtype == 'dropdown') opt.items[a].xtype = 'dropdown-menu';
+				if(opt.items[a].xtype == 'button') opt.items[a].xtype = 'button-menu';
+				if(opt.items[a].xtype == 'text') opt.items[a].xtype = 'text-menu';
+				$(ele).append(cb.create(opt.items[a]));
+			}
+		}
+		opt.noitems = true;
+		return ele;
+	},
+	'dropdown-menu': function(opt){
+		opt.cls? opt.cls = 'dropdown '+opt.cls : opt.cls = 'dropdown';
+		var ele = document.createElement('li');
+		if(!opt.type) opt.type = 'dropdown';
+		$(ele).addClass(opt.type);
+		if(opt.id)
+		{
+			$(ele).attr('id',opt.id);
+			opt.id = false;
+		}
+		var but = document.createElement('a');
+		but = cb.common_prop(but, {
+			cls:'dropdown-toggle',
+			attr: {
+				'data-toggle':'dropdown',
+				'role':'button',
+				'aria-haspopup':'true',
+				'aria-expanded':'true'}});
+		but = cb.common_prop(but, opt);
+		if(opt.caret!==false)
+		{
+			$(but).append(cb.create({
+				xtype: 'span',
+				cls: 'caret'
+			}));
+		}
+		$(ele).append(but);
+		var ul = document.createElement('ul');
+		$(ul).addClass('dropdown-menu');
+		if($.isArray(opt.items))
+		{
+			for(var a=0;a<opt.items.length;a++)
+			{
+				var li = document.createElement('li');
+				if(opt.items[a].xtype == 'separator' || opt.items[a].xtype == 'divider')
+				{
+					li = cb.common_prop(li, {
+						cls: 'divider',
+						attr: {'role':'separator'}});
+					li = cb.common_prop(li, opt.items[a]);
+				}
+				else if(opt.items[a].xtype == 'dropdown-header' || opt.items[a].xtype == 'header')
+				{
+					opt.items[a].cls? opt.items[a].cls = 'dropdown-header '+opt.items[a].cls : opt.items[a].cls = 'dropdown-header';
+					li = cb.common_prop(li, opt.items[a]);
+				}
+				else
+				{
+					$(li).append(cb.create(opt.items[a]));
+				}
+				$(ul).append(li);
+			}
+		}
+		$(ele).append(ul);
+		opt.noitems = true;
+		return ele;
+	},
+	'dropdown': function(opt){
+		if(!opt.type) opt.type2 = 'default';
+		else opt.type2 = opt.type;
+		opt.type = 'button';
+		if(opt.xtype == 'dropup') var t_xtype = 'btn-group ' + opt.xtype;
+		else var t_xtype = 'btn-group';
+		var ele = document.createElement('div');
+		$(ele).attr('role', 'group');
+		$(ele).addClass(t_xtype);
+		var but = document.createElement('button');
+		but = cb.common_prop(but, {
+			cls:'btn btn-'+opt.type2+' dropdown-toggle',
+			attr: {
+				'data-toggle':'dropdown',
+				'aria-haspopup':'true',
+				'aria-expanded':'false',
+				'type':'button'}
+		});
+		if(!opt.id) opt.id=cb.autoname();
+		if(opt.size) opt.cls += ' btn-'+opt.size;
+		if(opt.split)
+		{
+			var but2 = cb.create({
+				xtype:'button',
+				attr:{'type':'button'},
+				cls:'btn btn-'+opt.type2
+			});
+			but2 = cb.common_prop(but2, opt);
+			$(ele).append(but2);
+			$(but).append(cb.create({xtype:'span',text:'&nbsp;'}));
+			if(opt.caret!==false)
+			{
+				$(but).append(cb.create({xtype:'span', cls:'caret'}));
+			}
+			$(but).append(cb.create({xtype:'span',text:'&nbsp;'}));
+		}
+		else
+		{
+			but = cb.common_prop(but, opt);
+			if(opt.caret!==false)
+			{
+				$(but).append(cb.create({xtype:'span', cls:'caret'}));
+			}
+		}
+		$(ele).append(but);
+		var ul = document.createElement('ul');
+		$(ul).addClass('dropdown-menu').attr('aria-labelledby',opt.id);
+		if($.isArray(opt.items))
+		{
+			for(var a=0;a<opt.items.length;a++)
+			{
+				var li = document.createElement('li');
+				if(opt.items[a].xtype == 'separator' || opt.items[a].xtype == 'divider')
+				{
+					li = cb.common_prop(li, {
+						cls: 'divider',
+						attr: {'role':'separator'}});
+					li = cb.common_prop(li, opt.items[a]);
+				}
+				else if(opt.items[a].xtype == 'dropdown-header' || opt.items[a].xtype == 'header')
+				{
+					opt.items[a].cls? opt.items[a].cls = 'dropdown-header '+opt.items[a].cls : opt.items[a].cls = 'dropdown-header';
+					li = cb.common_prop(li, opt.items[a]);
+				}
+				else
+				{
+					$(li).append(cb.create(opt.items[a]));
+				}
+				$(ul).append(li);
+			}
+		}
+		$(ele).append(ul);
+		opt.noitems = true;
+		return ele;
+	},
+	'dropup': function(opt){
+		var ele = cb.module.bootstrapComponent['dropdown'](opt);
+		return ele;
+	},
+	'container': function(opt){
+		var ele = document.createElement('div');
+		if(opt.type == 'fluid'){
+			$(ele).addClass('container-fluid');
+			opt.notype = true;
+		}else{
+			$(ele).addClass('container');
+		}
+		ele = cb.common_prop(ele, opt);
+		return ele;
+	},
+	'progress': function(opt){
+		var ele = document.createElement('div');
+		$(ele).addClass('progress');
+		if($.isArray(opt.items))
+		{
+			for(var a=0; a<opt.items.length; a++)
+			{
+				if(!opt.items[a].xtype) opt.items[a].xtype = 'progress-bar';
+			}
+		}
+		else if($.isPlainObject(opt.items))
+		{
+			if(!opt.items.xtype) opt.items.xtype = 'progress-bar';
+		}
+		ele = cb.common_prop(ele, opt);
+		return ele;
+	},
+	'progress-bar': function(opt){
+		var ele = document.createElement('div');
+		$(ele).addClass('progress-bar');
+		if(opt.type) $(ele).addClass('progress-bar-'+opt.type);
+		if(opt.striped) $(ele).addClass('progress-bar-striped');
+		if(opt.animated || opt.active) $(ele).addClass('active');
+		if(!opt.min) opt.min = 0;
+		if(!opt.max) opt.max = 100;
+		if(opt.value) opt.width = opt.value+'%';
+		$(ele).attr({'aria-valuemin':opt.min, 'aria-valuemax':opt.max, 'aria-valuenow':opt.value});
+		ele = cb.common_prop(ele, opt);
+		return ele;
+	},
+	'table': function(opt){
+		var ele = document.createElement('table');
+		$(ele).addClass('table');
+		if($.isArray(opt.items))
+		{
+			for(var a=0; a<opt.items.length; a++)
+			{
+				if(opt.items[a].xtype == 'head')
+					opt.items[a].xtype = 'thead';
+		 		if(opt.items[a].xtype == 'body')
+					opt.items[a].xtype = 'tbody';
+		 	}
+		 }			 
+		 ele = cb.common_prop(ele, opt);
+		return ele;
+	},
+	'thead': function(opt){
+		var ele = document.createElement('thead');
+	 	opt.t_tr = document.createElement('tr');
+	 	for(var h=0;h<opt.items.length;h++)
+	 	{
+	 		if(!opt.items[h].xtype)
+	 		{
+	 			opt.items[h].xtype = 'th';
+	 			opt.t_th = cb.create(opt.items[h]);
+	 		}
+	 		else
+	 		{
+	 			opt.t_th = document.createElement('th');
+	 			$(opt.t_th).append(cb.create(opt.items[h]));
+	 		}
+	 		$(opt.t_tr).append(opt.t_th);
+	 	}
+	 	$(ele).append(opt.t_tr);
+		opt.noitems = true;
+		ele = cb.common_prop(ele, opt);
+		return ele;
+	},
+	'tbody': function(opt){
+		var ele = document.createElement('tbody');
+	 	opt.t_tr = document.createElement('tr');
+	 	if(opt.items)
+	 	{
+		 	for(var h=0;h<opt.items.length;h++)
+		 	{
+		 		opt.t_type = h==0? 'th': 'td';
+		 		if(!opt.items[h].xtype || opt.items[h].xtype == 'td' || opt.items[h].xtype == 'th')
+		 		{
+		 			if(!opt.items[h].xtype) opt.items[h].xtype = opt.t_type;
+		 			opt.t_th = cb.create(opt.items[h]);
+		 		}
+		 		else
+		 		{
+		 			opt.t_th = document.createElement(opt.t_type);
+		 			$(opt.t_th).append(cb.create(opt.items[h]));
+		 		}
+		 		if(opt.items[h].scope) $(opt.t_th).attr('scope', opt.items[h].scope);
+		 		if(opt.items[h].field)
+		 		{
+		 			$(opt.t_th).attr('strlk', btoa(opt.items[h].field));
+		 			$(opt.t_tr).css('display','none');
+		 		}
+		 		$(opt.t_tr).append(opt.t_th);
+		 	}
+		 	$(ele).append(opt.t_tr);
+			opt.noitems = true;
+	 	}
+		ele = cb.common_prop(ele, opt);
+		return ele;
+	},
+	'th': function(opt){
+		var ele = document.createElement('th');
+		if(opt.scope) $(ele).attr('scope', opt.scope);
+		ele = cb.common_prop(ele, opt);
+		return ele;
+	},
+	'button': function(opt){
+		var ele = document.createElement(opt.xtype);
+		if(!opt.type) opt.type = 'default';
+		opt.cls? opt.cls = 'btn btn-'+opt.type+' '+opt.cls : opt.cls = 'btn btn-'+opt.type;
+		if(opt.size) opt.cls += ' btn-'+opt.size;
+		opt.type = 'button';
+		ele = cb.common_prop(ele, opt);
+		return ele;
+	},
+	'ico': function(opt){
+		var ele = document.createElement('span');
+		$(ele).addClass(opt.type).attr({'aria-hidden':'true'});
+		ele = cb.common_prop(ele, opt);
+		return ele;
+	},
+	'thumbnail': function(opt){
+		if(!opt.type) opt.type = 'div';
+		var ele = document.createElement(opt.type);
+		opt.notype = true;
+		opt.cls? opt.cls = 'thumbnail '+opt.cls : opt.cls = 'thumbnail';
+		ele = cb.common_prop(ele, opt);
+		return ele;
+	},
+	'alert': function(opt){
+		if(!opt.type) opt.type = 'warning';
+		if(opt.dismissible || opt.closable)
+			opt.type += ' alert-dismissible';
+		var ele = document.createElement('div');
+		if(opt.dismissible || opt.closable)
+		{
+			var spa = document.createElement('span');
+			spa = cb.common_prop(spa, {
+				attr: {'aria-hidden':'true'},
+				text: '&times;'});
+			var but = document.createElement('button');
+			but = cb.common_prop(but, {
+				cls:'close',
+				attr:{'data-dismiss':'alert',
+					'aria-label':'Close'}});
+			$(but).append(spa);
+			$(ele).append(but);
+		}
+		ele = cb.common_prop(ele, {
+			cls: 'alert alert-'+opt.type,
+			attr: {'role':'alert'}});
+		opt.notype = true;
+		var spa2 = document.createElement('span');
+		spa2 = cb.common_prop(spa2, opt);
+		$(ele).append(spa2);
+		return ele;
+	},
+	'badge': function(opt){
+		var ele = document.createElement('span');
+		opt.cls = 'badge';
+		ele = cb.common_prop(ele, opt);
+		return ele;
+	},
+	'toolbar': function(opt){
+		var ele = document.createElement('div');
+		$(ele).addClass('btn-toolbar');
+		$(ele).attr('role','toolbar');
+		if(opt.label) $(ele).attr('aria-label', opt.label);
+		ele = cb.common_prop(ele, opt);
+		return ele;
+	},
+	'group': function(opt){
+		var ele = document.createElement('div');
+		if(opt.type == 'vertical') $(ele).addClass('btn-group-vertical');
+		else $(ele).addClass('btn-group');
+		if(opt.type == 'justified') $(ele).addClass('btn-group-justified');
+		$(ele).attr('role','group');
+		if(opt.label) $(ele).attr('aria-label', opt.label);
+		if(opt.size) $(ele).addClass('btn-group-'+opt.size);
+		ele = cb.common_prop(ele, opt);
+		return ele;
+	},
+	'callout': function(opt){
+		var ele = document.createElement('div');
+		$(ele).addClass('bs-callout');
+		if(opt.type) $(ele).addClass('bs-callout-'+opt.type);
+		if(opt.title) $(ele).append(cb.create({ xtype: 'h4', text: opt.title }));
+		opt.ele_p = document.createElement('p');
+		if(opt.text || opt.html)
+		{
+			opt.text? opt.ttext = opt.text : opt.ttext = opt.html;
+			$(opt.ele_p).html(opt.ttext);
+			opt.notext = true;
+			opt.nohtml = true;
+		}
+		if($.isArray(opt.items))
+		{
+			for(var a=0;a<opt.items.length;a++)
+				$(opt.ele_p).append(cb.create(opt.items[a]));
+				
+			opt.noitems = true;
+		}
+		$(ele).append(opt.ele_p);
+		ele = cb.common_prop(ele, opt);
+		return ele;
+	},
+	'panel': function(opt){
+		var ele = document.createElement('div');
+		$(ele).addClass('panel').css('margin-bottom', '0px');
+		if(opt.type)
+		{
+			$(ele).addClass('panel-'+opt.type);
+			opt.notype = true;
+		}
+		else
+		{
+			$(ele).addClass('panel-default');
+		}
+		if($.isArray(opt.items))
+		{
+			for(var a=0;a<opt.items.length;a++)
+			{
+				if(opt.items[a].xtype == 'head' || opt.items[a].xtype == 'heading'){
+					opt.items[a].xtype = 'panel-heading';
+				}
+				else if(opt.items[a].xtype == 'body' || opt.items[a].xtype == 'content'){
+					opt.items[a].xtype = 'panel-body';
+				}
+				else if(opt.items[a].xtype == 'footer'){
+					opt.items[a].xtype = 'panel-footer';
+				}
+				else if(opt.items[a].xtype == 'title'){
+					opt.items[a].xtype = 'panel-title';
+				}
+			}
+		}
+		ele = cb.common_prop(ele, opt);
+		return ele;
+	},
+	'panel-heading': function(opt){
+		var ele = document.createElement('div');
+		$(ele).addClass(opt.xtype);
+		if(opt.title) $(ele).append(cb.create({ xtype: 'panel-title', text: opt.title }))
+		if($.isArray(opt.items))
+		{
+			for(var a=0;a<opt.items.length;a++)
+			{
+				if(opt.items[a].xtype == 'title'){
+					opt.items[a].xtype = 'panel-title';
+				}
+			}
+		}
+		ele = cb.common_prop(ele, opt);
+		return ele;
+	},
+	'panel-body': function(opt){
+		var ele = cb.module.bootstrapComponent['panel-heading'](opt);
+		return ele;
+	},
+	'panel-footer': function(opt){
+		var ele = cb.module.bootstrapComponent['panel-heading'](opt);
+		return ele;
+	},
+	'panel-title': function(opt){
+		var ele = document.createElement('h3');
+		$(ele).addClass(opt.xtype);
+		ele = cb.common_prop(ele, opt);
+		return ele;
+	},
+	'tabpanel': function(opt){
+		opt.t_ul = document.createElement('ul');
+		$(opt.t_ul).addClass('nav nav-tabs');
+		$(opt.t_ul).attr('role','tablist');
+		
+		opt.t_div = document.createElement('div');
+		$(opt.t_div).addClass('tab-content');
+		
+		opt.t_content = document.createElement('div');
+		$(opt.t_content).addClass('tab-content');
+		
+		if($.isArray(opt.items))
+		{
+			opt.t_n = 1;
+			for(var a=0; a<opt.items.length; a++)
+			{
+				if(!opt.items[a].id) opt.items[a].id = cb.autoname();
+				
+				if($.isPlainObject(opt.items[a].tab))
+				{
+					opt.t_a = document.createElement('a');
+					opt.t_li = document.createElement('li');
+					
+					if(opt.items[a].tab.xtype == 'dropdown')
+					{
+						opt.t_a = cb.common_prop(opt.t_a, {
+							cls: 'dropdown-toggle',
+							attr: { 'role': 'dropdown',
+									'aria-controls': opt.items[a].id+'-contents',
+									'data-toggle': 'dropdown'},
+							id: opt.items[a].id
+						});
+						$(opt.t_a).attr('href', '#');
+						opt.t_a = cb.common_prop(opt.t_a, opt.items[a].tab);
+						$(opt.t_a).append('&nbsp;');
+						if(opt.caret!==false)
+						{
+							$(opt.t_a).append(cb.create({xtype: 'span', cls: 'caret'}));
+						}
+						$(opt.t_li).addClass('dropdown');
+						opt.t_ul2 = document.createElement('ul');
+						$(opt.t_ul2).addClass('dropdown-menu');
+						$(opt.t_ul2).attr({ 'aria-labelledby': opt.items[a].id,
+										id: opt.items[a].id+'-contents'
+						});
+						if($.isArray(opt.items[a].tab.items))
+						{
+							for(var k=0;k<opt.items[a].tab.items.length;k++)
+							{
+								opt.t_li2 = document.createElement('li');
+								if(!opt.items[a].tab.items[k].xtype) opt.items[a].tab.items[k].xtype = "a";
+								if(opt.items[a].tab.items[k].xtype == 'separator' || opt.items[a].tab.items[k].xtype == 'divider')
+								{
+									opt.t_li2 = cb.common_prop(opt.t_li2, {
+										cls: 'divider',
+										attr: {'role':'separator'}});
+									opt.t_li2 = cb.common_prop(opt.t_li2, opt.items[a].tab.items[k]);
+								}
+								else if(opt.items[a].tab.items[k].xtype == 'dropdown-header' || opt.items[a].tab.items[k].xtype == 'header')
+								{
+									opt.items[a].tab.items[k].cls? opt.items[a].tab.items[k].cls = 'dropdown-header '+opt.items[a].tab.items[k].cls : opt.items[a].tab.items[k].cls = 'dropdown-header';
+									opt.t_li2 = cb.common_prop(opt.t_li2, opt.items[a].tab.items[k]);
+								}
+								else
+								{
+									if(opt.items[a].tab.items[k].xtype == "a")
+									{
+										if(opt.items[a].tab.items[k].ref)
+										{
+											opt.items[a].tab.items[k].attr = {
+												role: 'tab',
+												'data-toggle': 'tab',
+												'aria-controls': opt.items[a].tab.items[k].ref,
+												'aria-expanded': opt.items[a].tab.items[k].active
+											};
+											opt.items[a].tab.items[k].id = opt.items[a].tab.items[k].ref+'-tab';
+											opt.items[a].tab.items[k].href = '#'+opt.items[a].tab.items[k].ref;
+										}
+									}
+									$(opt.t_li2).append(cb.create(opt.items[a].tab.items[k]));
+								}
+								$(opt.t_ul2).append(opt.t_li2);
+							}
+						}
+						opt.items[a].tab.noitems = true;
+					}
+					else
+					{
+						opt.t_a = cb.common_prop(opt.t_a, {
+						id: opt.items[a].id+'-tab',
+							attr: {
+								'aria-controls': opt.items[a].id,
+								'role': 'tab',
+								'data-toggle': 'tab'
+							}
+						});
+						$(opt.t_a).attr('href', '#'+opt.items[a].id);
+						$(opt.t_a).append(cb.create(opt.items[a].tab));
+					}
+					
+					if(opt.items[a].active) $(opt.t_a).attr('aria-expanded', 'true');
+					else $(opt.t_a).attr('aria-expanded', 'false');
+					
+					$(opt.t_li).append(opt.t_a);
+					if(opt.t_ul2)
+					{
+						$(opt.t_li).append(opt.t_ul2);
+						opt.t_ul2 = false;
+					}
+					$(opt.t_li).attr('role', 'presentation');
+					if(opt.items[a].active) $(opt.t_li).addClass('active');
+					$(opt.t_ul).append(opt.t_li);
+					opt.t_li = false;
+				}
+				
+				if($.isPlainObject(opt.items[a].panel))
+				{
+					opt.items[a].panel = [opt.items[a].panel];
+				}
+				
+				if($.isArray(opt.items[a].panel))
+				{
+					for(var k=0;k<opt.items[a].panel.length;k++)
+					{
+						if($.isPlainObject(opt.items[a].panel[k]))
+						{
+							if(!opt.items[a].panel[k].id) opt.items[a].panel[k].id = opt.items[a].id;
+							if(!opt.items[a].panel[k].active && opt.items[a].panel.length == 1) opt.items[a].panel[k].active = opt.items[a].active;
+							opt.t_div = document.createElement('div');
+							opt.t_div = cb.common_prop(opt.t_div, {
+								cls: 'tab-pane fade',
+								id: opt.items[a].panel[k].id,
+								attr: { 'role': 'tabpanel',
+										'aria-labelledby': opt.items[a].panel[k].id + '-tab' },
+								css: { 'border-left': '1px solid #DDD',
+										'border-right': '1px solid #DDD',
+										'border-bottom': '1px solid #DDD'}
+							});
+							if(opt.items[a].panel[k].active) $(opt.t_div).addClass('active in');
+							$(opt.t_div).append(cb.create(opt.items[a].panel[k]));
+							$(opt.t_content).append(opt.t_div);
+							opt.t_div = false;
+						}
+					}
+				}
+			}
+		}
+		opt.noitems = true;
+		
+		var ele = document.createElement('div');
+		ele = cb.common_prop(ele, opt);
+		$(ele).attr('data-example-id', 'togglable-tabs');
+		$(ele).append(opt.t_ul);
+		$(ele).append(opt.t_content);
+		return ele;
+	},
+	'row': function(opt){
+		var ele = document.createElement('div');
+		$(ele).addClass('row');
+		if(!opt.margin) opt.margin = '3px';
+		ele = cb.common_prop(ele, opt);
+		return ele;
+	},
+	'col': function(opt){
+		var ele = document.createElement('div');
+		if(!opt.size) opt.size = 12;
+		if($.isPlainObject(opt.size))
+		{
+			for (var key in opt.size) {
+				$(ele).addClass('col-'+key+'-'+opt.size[key]);
+			}
+		}
+		else if(!$.isArray(opt.size))
+		{
+			$(ele).addClass('col-xs-'+opt.size);
+		}
+		if($.isPlainObject(opt.offset))
+		{
+			for (var key in opt.offset) {
+				$(ele).addClass('col-'+key+'-offset-'+opt.offset[key]);
+			}
+		}
+		else if(!$.isArray(opt.offset))
+		{
+			$(ele).addClass('col-xs-offset-'+opt.offset);
+		}
+		if(!opt.padding)opt.padding = '5px';
+		ele = cb.common_prop(ele, opt);
+		return ele;
+	},
+	'input': function(opt){
+		var ele = document.createElement(opt.xtype);
+		$(ele).addClass('form-control');
+		if(!opt.type)opt.type = "text";
+		ele = cb.common_prop(ele, opt);
+		return ele;
+	},
+	'select': function(opt){
+		var ele = document.createElement(opt.xtype);
+		$(ele).addClass('form-control');
+		if($.isArray(opt.items))
+		{
+			for(var s=0; s<opt.items.length; s++)
+			{
+				if(!opt.items[s].xtype) opt.items[s].xtype = 'option';
+			}
+		}
+		ele = cb.common_prop(ele, opt);
+		return ele;
+	},
+	'form': function(opt){
+		if(!opt.name) opt.name = cb.autoname();
+		var ele = document.createElement('form');
+		if($.isArray(opt.items))
+		{
+			for(var s=0; s<opt.items.length; s++)
+			{
+				if(opt.items[s].xtype == 'group') opt.items[s].xtype = 'form-group';
+			}
+		}
+		ele = cb.common_prop(ele, opt);
+		return ele;
+	},
+	'form-group': function(opt){
+		var ele = document.createElement('div');
+		$(ele).addClass('form-group');
+		ele = cb.common_prop(ele, opt);
+		return ele;
+	},
+	'label': function(opt){
+		var ele = document.createElement(opt.xtype);
+		if(!opt.for)$(ele).attr('for', opt.for);
+		ele = cb.common_prop(ele, opt);
+		return ele;
+	},
+	'glyphicon': function(opt){
+		var ele = document.createElement('span');
+		$(ele).addClass('glyphicon glyphicon-'+opt.type);
+		ele = cb.common_prop(ele, opt);
+		return ele;
+	}
+};
 			
 cb.create = function(opt){
 
@@ -487,775 +1275,12 @@ cb.create = function(opt){
 	
 	if($.type(opt.xtype) == 'string')
 	{
-		if(this.t_cmp = cb.module.component[opt.xtype])
-		{
-			var ele = this.create(this.t_cmp);
-			ele = this.common_prop(ele, opt);
-			delete this.t_cmp;
+		if($.isFunction(cb.module.bootstrapComponent[opt.xtype])){
+			var ele = cb.module.bootstrapComponent[opt.xtype](opt);
 		}
-		else if(opt.xtype == 'nav')
+		else if($.isPlainObject(cb.module.component[opt.xtype]))
 		{
-			if(!opt.toggle)opt.toggle = this.autoname();
-			if(!opt.renderTo || opt.renderTo == 'main') opt.renderTo = 'header';
-			var ele = document.createElement('nav');
-			$(ele).addClass('navbar');
-			if(opt.type)
-			{
-				var tcls = opt.type.split(' ');
-				for(var i=0; i<tcls.length; i++)
-				{
-					if(tcls[i].trim() != '') $(ele).addClass('navbar-'+tcls[i]);
-				}
-				opt.notype = true;
-			}
-			else
-			{
-				$(ele).addClass('navbar-default');
-			}
-			var conta = document.createElement('div');
-			$(conta).addClass('container-fluid');
-			conta = this.common_prop(conta, opt);
-			if($.isArray(opt.items))
-			{
-				for(var a=0;a<opt.items.length;a++)
-				{
-					if(opt.items[a].xtype == 'header')
-					{
-						opt.items[a].xtype = 'navbar-header';
-						opt.items[a].target = opt.toggle;
-					}
-					else if(opt.items[a].xtype == 'collapse' || opt.items[a].xtype == 'navbar-collapse')
-					{
-						opt.items[a].xtype = 'navbar-collapse';
-						opt.items[a].cls = opt.toggle;
-					}
-					$(conta).append(this.create(opt.items[a]));
-				}
-			}
-			opt.noitems = true;
-			$(ele).append(conta);
-		}
-		else if(opt.xtype == 'navbar-collapse')
-		{
-			var ele = document.createElement('div');
-			$(ele).addClass('collapse navbar-collapse');
-			ele = this.common_prop(ele, opt);
-		}
-		else if(opt.xtype == 'navbar-header')
-		{
-			var ele = document.createElement('div');
-			$(ele).addClass('navbar-header');
-			ele = this.common_prop(ele, opt);
-			$(ele).append(this.create({
-				xtype: 'button',
-				type: 'button',
-				cls: 'collapsed navbar-toggle',
-				attr: {
-					'data-toggle': 'collapse',
-					'data-target': '.'+opt.target
-				},
-				items: [{
-					xtype: 'span',
-					cls: 'sr-only',
-					text: 'Toggle navigation'
-				},{
-					xtype: 'span',
-					cls: 'icon-bar'
-				},{
-					xtype: 'span',
-					cls: 'icon-bar'
-				},{
-					xtype: 'span',
-					cls: 'icon-bar'
-				}]
-			}));
-		}
-		else if(opt.xtype == 'button-menu')
-		{
-			opt.xtype = 'button';
-			conta = this.create(opt);
-			$(conta).addClass('navbar-btn');
-			ele = document.createElement('li');
-			$(ele).append(conta);
-		}
-		else if(opt.xtype == 'text-menu')
-		{
-			conta = document.createElement('p');
-			$(conta).addClass('navbar-text');
-			conta = this.common_prop(conta, opt);
-			ele = document.createElement('li');
-			$(ele).append(conta);
-		}
-		else if(opt.xtype == 'navbar')
-		{
-			opt.cls? opt.cls = 'nav navbar-nav '+opt.cls : opt.cls = 'nav navbar-nav';
-			if(opt.type)
-			{
-				var tcls = opt.type.split(' ');
-				for(var i=0; i<tcls.length; i++)
-				{
-					opt.cls = opt.cls + ' navbar-'+tcls[i];
-				}
-				opt.notype = true;
-			}
-			var ele = document.createElement('ul');
-			ele = this.common_prop(ele, opt);
-			if($.isArray(opt.items))
-			{
-				for(var a=0;a<opt.items.length;a++)
-				{
-					if(opt.items[a].xtype == 'dropdown') opt.items[a].xtype = 'dropdown-menu';
-					if(opt.items[a].xtype == 'button') opt.items[a].xtype = 'button-menu';
-					if(opt.items[a].xtype == 'text') opt.items[a].xtype = 'text-menu';
-					$(ele).append(this.create(opt.items[a]));
-				}
-			}
-			opt.noitems = true;
-		}
-		else if(opt.xtype == 'dropdown-menu')
-		{
-			opt.cls? opt.cls = 'dropdown '+opt.cls : opt.cls = 'dropdown';
-			var ele = document.createElement('li');
-			if(!opt.type) opt.type = 'dropdown';
-			$(ele).addClass(opt.type);
-			if(opt.id)
-			{
-				$(ele).attr('id',opt.id);
-				opt.id = false;
-			}
-			var but = document.createElement('a');
-			but = this.common_prop(but, {
-				cls:'dropdown-toggle',
-				attr: {
-					'data-toggle':'dropdown',
-					'role':'button',
-					'aria-haspopup':'true',
-					'aria-expanded':'true'}});
-			but = this.common_prop(but, opt);
-			if(opt.caret!==false)
-			{
-				$(but).append(this.create({
-					xtype: 'span',
-					cls: 'caret'
-				}));
-			}
-			$(ele).append(but);
-			var ul = document.createElement('ul');
-			$(ul).addClass('dropdown-menu');
-			if($.isArray(opt.items))
-			{
-				for(var a=0;a<opt.items.length;a++)
-				{
-					var li = document.createElement('li');
-					if(opt.items[a].xtype == 'separator' || opt.items[a].xtype == 'divider')
-					{
-						li = this.common_prop(li, {
-							cls: 'divider',
-							attr: {'role':'separator'}});
-						li = this.common_prop(li, opt.items[a]);
-					}
-					else if(opt.items[a].xtype == 'dropdown-header' || opt.items[a].xtype == 'header')
-					{
-						opt.items[a].cls? opt.items[a].cls = 'dropdown-header '+opt.items[a].cls : opt.items[a].cls = 'dropdown-header';
-						li = this.common_prop(li, opt.items[a]);
-					}
-					else
-					{
-						$(li).append(this.create(opt.items[a]));
-					}
-					$(ul).append(li);
-				}
-			}
-			$(ele).append(ul);
-			opt.noitems = true;
-		}
-		else if(opt.xtype == 'dropdown' || opt.xtype == 'dropup')
-		{
-			if(!opt.type) opt.type2 = 'default';
-			else opt.type2 = opt.type;
-			opt.type = 'button';
-			if(opt.xtype == 'dropup') var t_xtype = 'btn-group ' + opt.xtype;
-			else var t_xtype = 'btn-group';
-			var ele = document.createElement('div');
-			$(ele).attr('role', 'group');
-			$(ele).addClass(t_xtype);
-			var but = document.createElement('button');
-			but = this.common_prop(but, {
-				cls:'btn btn-'+opt.type2+' dropdown-toggle',
-				attr: {
-					'data-toggle':'dropdown',
-					'aria-haspopup':'true',
-					'aria-expanded':'false',
-					'type':'button'}
-			});
-			if(!opt.id) opt.id=this.autoname();
-			if(opt.size) opt.cls += ' btn-'+opt.size;
-			if(opt.split)
-			{
-				var but2 = this.create({
-					xtype:'button',
-					attr:{'type':'button'},
-					cls:'btn btn-'+opt.type2
-				});
-				but2 = this.common_prop(but2, opt);
-				$(ele).append(but2);
-				$(but).append(this.create({xtype:'span',text:'&nbsp;'}));
-				if(opt.caret!==false)
-				{
-					$(but).append(this.create({xtype:'span', cls:'caret'}));
-				}
-				$(but).append(this.create({xtype:'span',text:'&nbsp;'}));
-			}
-			else
-			{
-				but = this.common_prop(but, opt);
-				if(opt.caret!==false)
-				{
-					$(but).append(this.create({xtype:'span', cls:'caret'}));
-				}
-			}
-			$(ele).append(but);
-			var ul = document.createElement('ul');
-			$(ul).addClass('dropdown-menu').attr('aria-labelledby',opt.id);
-			if($.isArray(opt.items))
-			{
-				for(var a=0;a<opt.items.length;a++)
-				{
-					var li = document.createElement('li');
-					if(opt.items[a].xtype == 'separator' || opt.items[a].xtype == 'divider')
-					{
-						li = this.common_prop(li, {
-							cls: 'divider',
-							attr: {'role':'separator'}});
-						li = this.common_prop(li, opt.items[a]);
-					}
-					else if(opt.items[a].xtype == 'dropdown-header' || opt.items[a].xtype == 'header')
-					{
-						opt.items[a].cls? opt.items[a].cls = 'dropdown-header '+opt.items[a].cls : opt.items[a].cls = 'dropdown-header';
-						li = this.common_prop(li, opt.items[a]);
-					}
-					else
-					{
-						$(li).append(this.create(opt.items[a]));
-					}
-					$(ul).append(li);
-				}
-			}
-			$(ele).append(ul);
-			opt.noitems = true;
-		}
-		else if(opt.xtype == 'container')
-		{
-			var ele = document.createElement('div');
-			if(opt.type == 'fluid'){
-				$(ele).addClass('container-fluid');
-				opt.notype = true;
-			}else{
-				$(ele).addClass('container');
-			}
-			ele = this.common_prop(ele, opt);
-		}
-		else if(opt.xtype == 'progress')
-		{
-			var ele = document.createElement('div');
-			$(ele).addClass('progress');
-			if($.isArray(opt.items))
-			{
-				for(var a=0; a<opt.items.length; a++)
-				{
-					if(!opt.items[a].xtype) opt.items[a].xtype = 'progress-bar';
-				}
-			}
-			else if($.isPlainObject(opt.items))
-			{
-				if(!opt.items.xtype) opt.items.xtype = 'progress-bar';
-			}
-			ele = this.common_prop(ele, opt);
-		}
-		else if(opt.xtype == 'progress-bar')
-		{
-			var ele = document.createElement('div');
-			$(ele).addClass('progress-bar');
-			if(opt.type) $(ele).addClass('progress-bar-'+opt.type);
-			if(opt.striped) $(ele).addClass('progress-bar-striped');
-			if(opt.animated || opt.active) $(ele).addClass('active');
-			if(!opt.min) opt.min = 0;
-			if(!opt.max) opt.max = 100;
-			if(opt.value) opt.width = opt.value+'%';
-			$(ele).attr({'aria-valuemin':opt.min, 'aria-valuemax':opt.max, 'aria-valuenow':opt.value});
-			ele = this.common_prop(ele, opt);
-		}	
-		else if(opt.xtype == 'table')
-		{
-			var ele = document.createElement('table');
-			$(ele).addClass('table');
-			if($.isArray(opt.items))
-			{
-				for(var a=0; a<opt.items.length; a++)
-				{
-					if(opt.items[a].xtype == 'head')
-						opt.items[a].xtype = 'thead';
-			 		if(opt.items[a].xtype == 'body')
-						opt.items[a].xtype = 'tbody';
-			 	}
-			 }			 
-			 ele = this.common_prop(ele, opt);
-		}
-		else if(opt.xtype == 'thead')
-		{
-		 	var ele = document.createElement('thead');
-		 	opt.t_tr = document.createElement('tr');
-		 	for(var h=0;h<opt.items.length;h++)
-		 	{
-		 		if(!opt.items[h].xtype)
-		 		{
-		 			opt.items[h].xtype = 'th';
-		 			opt.t_th = this.create(opt.items[h]);
-		 		}
-		 		else
-		 		{
-		 			opt.t_th = document.createElement('th');
-		 			$(opt.t_th).append(this.create(opt.items[h]));
-		 		}
-		 		$(opt.t_tr).append(opt.t_th);
-		 	}
-		 	$(ele).append(opt.t_tr);
-			opt.noitems = true;
-			ele = this.common_prop(ele, opt);
-		}
-		else if(opt.xtype == 'tbody')
-		{
-		 	var ele = document.createElement('tbody');
-		 	opt.t_tr = document.createElement('tr');
-		 	if(opt.items)
-		 	{
-			 	for(var h=0;h<opt.items.length;h++)
-			 	{
-			 		opt.t_type = h==0? 'th': 'td';
-			 		if(!opt.items[h].xtype || opt.items[h].xtype == 'td' || opt.items[h].xtype == 'th')
-			 		{
-			 			if(!opt.items[h].xtype) opt.items[h].xtype = opt.t_type;
-			 			opt.t_th = this.create(opt.items[h]);
-			 		}
-			 		else
-			 		{
-			 			opt.t_th = document.createElement(opt.t_type);
-			 			$(opt.t_th).append(this.create(opt.items[h]));
-			 		}
-			 		if(opt.items[h].scope) $(opt.t_th).attr('scope', opt.items[h].scope);
-			 		if(opt.items[h].field)
-			 		{
-			 			$(opt.t_th).attr('strlk', btoa(opt.items[h].field));
-			 			$(opt.t_tr).css('display','none');
-			 		}
-			 		$(opt.t_tr).append(opt.t_th);
-			 	}
-			 	$(ele).append(opt.t_tr);
-				opt.noitems = true;
-		 	}
-			ele = this.common_prop(ele, opt);
-		}
-		else if(opt.xtype == 'th')
-		{
-			var ele = document.createElement('th');
-			if(opt.scope) $(ele).attr('scope', opt.scope);
-			ele = this.common_prop(ele, opt);
-		}
-		else if(opt.xtype == 'button')
-		{
-			var ele = document.createElement(opt.xtype);
-			if(!opt.type) opt.type = 'default';
-			opt.cls? opt.cls = 'btn btn-'+opt.type+' '+opt.cls : opt.cls = 'btn btn-'+opt.type;
-			if(opt.size) opt.cls += ' btn-'+opt.size;
-			opt.type = 'button';
-			ele = this.common_prop(ele, opt);
-		}
-		else if(opt.xtype == 'ico')
-		{
-			var ele = document.createElement('span');
-			$(ele).addClass(opt.type);
-			ele = this.common_prop(ele, {attr:{'aria-hidden':'true'}});
-			ele = this.common_prop(ele, opt);
-		}
-		else if(opt.xtype == 'thumbnail')
-		{
-			if(!opt.type) opt.type = 'div';
-			var ele = document.createElement(opt.type);
-			opt.notype = true;
-			opt.cls? opt.cls = 'thumbnail '+opt.cls : opt.cls = 'thumbnail';
-			ele = this.common_prop(ele, opt);
-		}
-		else if(opt.xtype == 'alert')
-		{
-			if(!opt.type) opt.type = 'warning';
-			if(opt.dismissible || opt.closable)
-				opt.type += ' alert-dismissible';
-			var ele = document.createElement('div');
-			if(opt.dismissible || opt.closable)
-			{
-				var spa = document.createElement('span');
-				spa = this.common_prop(spa, {
-					attr: {'aria-hidden':'true'},
-					text: '&times;'});
-				var but = document.createElement('button');
-				but = this.common_prop(but, {
-					cls:'close',
-					attr:{'data-dismiss':'alert',
-						'aria-label':'Close'}});
-				$(but).append(spa);
-				$(ele).append(but);
-			}
-			ele = this.common_prop(ele, {
-				cls: 'alert alert-'+opt.type,
-				attr: {'role':'alert'}});
-			opt.notype = true;
-			var spa2 = document.createElement('span');
-			spa2 = this.common_prop(spa2, opt);
-			$(ele).append(spa2);
-		}
-		else if(opt.xtype == 'badge')
-		{
-			var ele = document.createElement('span');
-			opt.cls = 'badge';
-			ele = this.common_prop(ele, opt);
-		}
-		else if(opt.xtype == 'toolbar')
-		{
-			var ele = document.createElement('div');
-			$(ele).addClass('btn-toolbar');
-			$(ele).attr('role','toolbar');
-			if(opt.label) $(ele).attr('aria-label', opt.label);
-			ele = this.common_prop(ele, opt);
-		}
-		else if(opt.xtype == 'group')
-		{
-			var ele = document.createElement('div');
-			if(opt.type == 'vertical') $(ele).addClass('btn-group-vertical');
-			else $(ele).addClass('btn-group');
-			if(opt.type == 'justified') $(ele).addClass('btn-group-justified');
-			$(ele).attr('role','group');
-			if(opt.label) $(ele).attr('aria-label', opt.label);
-			if(opt.size) $(ele).addClass('btn-group-'+opt.size);
-			ele = this.common_prop(ele, opt);
-		}
-		else if(opt.xtype == 'callout')
-		{
-			var ele = document.createElement('div');
-			$(ele).addClass('bs-callout');
-			if(opt.type) $(ele).addClass('bs-callout-'+opt.type);
-			if(opt.title) $(ele).append(this.create({ xtype: 'h4', text: opt.title }));
-			opt.ele_p = document.createElement('p');
-			if(opt.text || opt.html)
-			{
-				opt.text? opt.ttext = opt.text : opt.ttext = opt.html;
-				$(opt.ele_p).html(opt.ttext);
-				opt.notext = true;
-				opt.nohtml = true;
-			}
-			if($.isArray(opt.items))
-			{
-				for(var a=0;a<opt.items.length;a++)
-					$(opt.ele_p).append(this.create(opt.items[a]));
-					
-				opt.noitems = true;
-			}
-			$(ele).append(opt.ele_p);
-			ele = this.common_prop(ele, opt);
-		}
-		else if(opt.xtype == 'panel')
-		{
-			var ele = document.createElement('div');
-			$(ele).addClass('panel').css('margin-bottom', '0px');
-			if(opt.type)
-			{
-				$(ele).addClass('panel-'+opt.type);
-				opt.notype = true;
-			}
-			else
-			{
-				$(ele).addClass('panel-default');
-			}
-			if($.isArray(opt.items))
-			{
-				for(var a=0;a<opt.items.length;a++)
-				{
-					if(opt.items[a].xtype == 'head' || opt.items[a].xtype == 'heading'){
-						opt.items[a].xtype = 'panel-heading';
-					}
-					else if(opt.items[a].xtype == 'body' || opt.items[a].xtype == 'content'){
-						opt.items[a].xtype = 'panel-body';
-					}
-					else if(opt.items[a].xtype == 'footer'){
-						opt.items[a].xtype = 'panel-footer';
-					}
-					else if(opt.items[a].xtype == 'title'){
-						opt.items[a].xtype = 'panel-title';
-					}
-				}
-			}
-			ele = this.common_prop(ele, opt);
-		}
-		else if(opt.xtype == 'panel-heading' || opt.xtype == 'panel-body' || opt.xtype == 'panel-footer')
-		{
-			var ele = document.createElement('div');
-			$(ele).addClass(opt.xtype);
-			if(opt.title) $(ele).append(this.create({ xtype: 'panel-title', text: opt.title }))
-			if($.isArray(opt.items))
-			{
-				for(var a=0;a<opt.items.length;a++)
-				{
-					if(opt.items[a].xtype == 'title'){
-						opt.items[a].xtype = 'panel-title';
-					}
-				}
-			}
-			ele = this.common_prop(ele, opt);
-		}
-		else if(opt.xtype == 'panel-title')
-		{
-			var ele = document.createElement('h3');
-			$(ele).addClass(opt.xtype);
-			ele = this.common_prop(ele, opt);
-		}
-		else if(opt.xtype == 'tabpanel')
-		{
-			opt.t_ul = document.createElement('ul');
-			$(opt.t_ul).addClass('nav nav-tabs');
-			$(opt.t_ul).attr('role','tablist');
-			
-			opt.t_div = document.createElement('div');
-			$(opt.t_div).addClass('tab-content');
-			
-			opt.t_content = document.createElement('div');
-			$(opt.t_content).addClass('tab-content');
-			
-			if($.isArray(opt.items))
-			{
-				opt.t_n = 1;
-				for(var a=0; a<opt.items.length; a++)
-				{
-					if(!opt.items[a].id) opt.items[a].id = this.autoname();
-					
-					if($.isPlainObject(opt.items[a].tab))
-					{
-						opt.t_a = document.createElement('a');
-						opt.t_li = document.createElement('li');
-						
-						if(opt.items[a].tab.xtype == 'dropdown')
-						{
-							opt.t_a = this.common_prop(opt.t_a, {
-								cls: 'dropdown-toggle',
-								attr: { 'role': 'dropdown',
-										'aria-controls': opt.items[a].id+'-contents',
-										'data-toggle': 'dropdown'},
-								id: opt.items[a].id
-							});
-							$(opt.t_a).attr('href', '#');
-							opt.t_a = this.common_prop(opt.t_a, opt.items[a].tab);
-							$(opt.t_a).append('&nbsp;');
-							if(opt.caret!==false)
-							{
-								$(opt.t_a).append(this.create({xtype: 'span', cls: 'caret'}));
-							}
-							$(opt.t_li).addClass('dropdown');
-							opt.t_ul2 = document.createElement('ul');
-							$(opt.t_ul2).addClass('dropdown-menu');
-							$(opt.t_ul2).attr({ 'aria-labelledby': opt.items[a].id,
-											id: opt.items[a].id+'-contents'
-							});
-							if($.isArray(opt.items[a].tab.items))
-							{
-								for(var k=0;k<opt.items[a].tab.items.length;k++)
-								{
-									opt.t_li2 = document.createElement('li');
-									if(!opt.items[a].tab.items[k].xtype) opt.items[a].tab.items[k].xtype = "a";
-									if(opt.items[a].tab.items[k].xtype == 'separator' || opt.items[a].tab.items[k].xtype == 'divider')
-									{
-										opt.t_li2 = this.common_prop(opt.t_li2, {
-											cls: 'divider',
-											attr: {'role':'separator'}});
-										opt.t_li2 = this.common_prop(opt.t_li2, opt.items[a].tab.items[k]);
-									}
-									else if(opt.items[a].tab.items[k].xtype == 'dropdown-header' || opt.items[a].tab.items[k].xtype == 'header')
-									{
-										opt.items[a].tab.items[k].cls? opt.items[a].tab.items[k].cls = 'dropdown-header '+opt.items[a].tab.items[k].cls : opt.items[a].tab.items[k].cls = 'dropdown-header';
-										opt.t_li2 = this.common_prop(opt.t_li2, opt.items[a].tab.items[k]);
-									}
-									else
-									{
-										if(opt.items[a].tab.items[k].xtype == "a")
-										{
-											if(opt.items[a].tab.items[k].ref)
-											{
-												opt.items[a].tab.items[k].attr = {
-													role: 'tab',
-													'data-toggle': 'tab',
-													'aria-controls': opt.items[a].tab.items[k].ref,
-													'aria-expanded': opt.items[a].tab.items[k].active
-												};
-												opt.items[a].tab.items[k].id = opt.items[a].tab.items[k].ref+'-tab';
-												opt.items[a].tab.items[k].href = '#'+opt.items[a].tab.items[k].ref;
-											}
-										}
-										$(opt.t_li2).append(this.create(opt.items[a].tab.items[k]));
-									}
-									$(opt.t_ul2).append(opt.t_li2);
-								}
-							}
-							opt.items[a].tab.noitems = true;
-						}
-						else
-						{
-							opt.t_a = this.common_prop(opt.t_a, {
-							id: opt.items[a].id+'-tab',
-								attr: {
-									'aria-controls': opt.items[a].id,
-									'role': 'tab',
-									'data-toggle': 'tab'
-								}
-							});
-							$(opt.t_a).attr('href', '#'+opt.items[a].id);
-							$(opt.t_a).append(this.create(opt.items[a].tab));
-						}
-						
-						if(opt.items[a].active) $(opt.t_a).attr('aria-expanded', 'true');
-						else $(opt.t_a).attr('aria-expanded', 'false');
-						
-						$(opt.t_li).append(opt.t_a);
-						if(opt.t_ul2)
-						{
-							$(opt.t_li).append(opt.t_ul2);
-							opt.t_ul2 = false;
-						}
-						$(opt.t_li).attr('role', 'presentation');
-						if(opt.items[a].active) $(opt.t_li).addClass('active');
-						$(opt.t_ul).append(opt.t_li);
-						opt.t_li = false;
-					}
-					
-					if($.isPlainObject(opt.items[a].panel))
-					{
-						opt.items[a].panel = [opt.items[a].panel];
-					}
-					
-					if($.isArray(opt.items[a].panel))
-					{
-						for(var k=0;k<opt.items[a].panel.length;k++)
-						{
-							if($.isPlainObject(opt.items[a].panel[k]))
-							{
-								if(!opt.items[a].panel[k].id) opt.items[a].panel[k].id = opt.items[a].id;
-								if(!opt.items[a].panel[k].active && opt.items[a].panel.length == 1) opt.items[a].panel[k].active = opt.items[a].active;
-								opt.t_div = document.createElement('div');
-								opt.t_div = this.common_prop(opt.t_div, {
-									cls: 'tab-pane fade',
-									id: opt.items[a].panel[k].id,
-									attr: { 'role': 'tabpanel',
-											'aria-labelledby': opt.items[a].panel[k].id + '-tab' },
-									css: { 'border-left': '1px solid #DDD',
-											'border-right': '1px solid #DDD',
-											'border-bottom': '1px solid #DDD'}
-								});
-								if(opt.items[a].panel[k].active) $(opt.t_div).addClass('active in');
-								$(opt.t_div).append(this.create(opt.items[a].panel[k]));
-								$(opt.t_content).append(opt.t_div);
-								opt.t_div = false;
-							}
-						}
-					}
-				}
-			}
-			opt.noitems = true;
-			
-			var ele = document.createElement('div');
-			ele = this.common_prop(ele, opt);
-			$(ele).attr('data-example-id', 'togglable-tabs');
-			$(ele).append(opt.t_ul);
-			$(ele).append(opt.t_content);
-		}
-		else if(opt.xtype == 'row')
-		{
-			var ele = document.createElement('div');
-			$(ele).addClass('row');
-			if(!opt.margin) opt.margin = '3px';
-			ele = this.common_prop(ele, opt);
-		}
-		else if(opt.xtype == 'col')
-		{
-			var ele = document.createElement('div');
-			if(!opt.size) opt.size = 12;
-			if($.isPlainObject(opt.size))
-			{
-				for (var key in opt.size) {
-					$(ele).addClass('col-'+key+'-'+opt.size[key]);
-				}
-			}
-			else if(!$.isArray(opt.size))
-			{
-				$(ele).addClass('col-xs-'+opt.size);
-			}
-			if($.isPlainObject(opt.offset))
-			{
-				for (var key in opt.offset) {
-					$(ele).addClass('col-'+key+'-offset-'+opt.offset[key]);
-				}
-			}
-			else if(!$.isArray(opt.offset))
-			{
-				$(ele).addClass('col-xs-offset-'+opt.offset);
-			}
-			if(!opt.padding)opt.padding = '5px';
-			ele = this.common_prop(ele, opt);
-		}
-		else if(opt.xtype == 'input')
-		{
-			var ele = document.createElement(opt.xtype);
-			$(ele).addClass('form-control');
-			if(!opt.type)opt.type = "text";
-			ele = this.common_prop(ele, opt);
-		}
-		else if(opt.xtype == 'select')
-		{
-			var ele = document.createElement(opt.xtype);
-			$(ele).addClass('form-control');
-			if($.isArray(opt.items))
-			{
-				for(var s=0; s<opt.items.length; s++)
-				{
-					if(!opt.items[s].xtype) opt.items[s].xtype = 'option';
-				}
-			}
-			ele = this.common_prop(ele, opt);
-		}
-		else if(opt.xtype == 'form')
-		{
-			if(!opt.name) opt.name = this.autoname();
-			var ele = document.createElement('form');
-			if($.isArray(opt.items))
-			{
-				for(var s=0; s<opt.items.length; s++)
-				{
-					if(opt.items[s].xtype == 'group') opt.items[s].xtype = 'form-group';
-				}
-			}
-			ele = this.common_prop(ele, opt);
-		}
-		else if(opt.xtype == 'form-group')
-		{
-			var ele = document.createElement('div');
-			$(ele).addClass('form-group');
-			ele = this.common_prop(ele, opt);
-		}
-		else if(opt.xtype == 'label')
-		{
-			var ele = document.createElement(opt.xtype);
-			if(!opt.for)$(ele).attr('for', opt.for);
-			ele = this.common_prop(ele, opt);
-		}
-		else if(opt.xtype == 'glyphicon')
-		{
-			var ele = document.createElement('span');
-			$(ele).addClass('glyphicon glyphicon-'+opt.type);
+			var ele = this.create(cb.module.component[opt.xtype]);
 			ele = this.common_prop(ele, opt);
 		}
 		else

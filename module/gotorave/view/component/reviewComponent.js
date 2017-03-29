@@ -8,7 +8,6 @@ cb.define({
 			'border-radius': 5,
 			'padding': 5,
 			'margin-left': 10},
-		
 		items: [{
 			xtype: 'glyphicon',
 			type: 'thumbs-down',

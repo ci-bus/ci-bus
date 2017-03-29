@@ -81,36 +81,37 @@ cb.define({
 	},
 	
 	musiclike: function(bot){
-		if($(bot).attr('clicked')!='true')
+		if(!$(bot).hasClass('gray'))
 		{
 			var type = $(bot).parent().parent().attr('data');
 			var id = $(bot).closest('.panel').attr('data-id');
 			var review = $(bot).parent().find('.review').text();
+			var currentreview = $(bot).parent().attr('currentreview');
 			var val = 0;
 			
 			if($(bot).hasClass('glyphicon-thumbs-down'))
 			{
 				val = -1;
 				review--;
-				if($(bot).parent().find('.glyphicon-thumbs-up').attr('clicked')=='true'){
+				if($(bot).parent().find('.glyphicon-thumbs-up').hasClass('gray')){
 					review--;
 				}
-				$(bot).parent().find('.glyphicon-thumbs-up').css('color', 'green').attr('clicked', 'false');
+				$(bot).parent().find('.glyphicon-thumbs-up').addClass('green').removeClass('gray');
 			}
 			else if($(bot).hasClass('glyphicon-thumbs-up'))
 			{
 				val = 1;
 				review++;
-				if($(bot).parent().find('.glyphicon-thumbs-down').attr('clicked')=='true'){
+				if($(bot).parent().find('.glyphicon-thumbs-down').hasClass('gray')){
 					review++;
 				}
-				$(bot).parent().find('.glyphicon-thumbs-down').css('color', 'red').attr('clicked', 'false');
+				$(bot).parent().find('.glyphicon-thumbs-down').addClass('red').removeClass('gray');
 			}
 			$(bot).parent().find('.review').text(review);
-			$(bot).attr('clicked', 'true').animate({'zoom': 2, 'scale': 2, 'margin-top': '-10px'}, 'fast');
+			$(bot).animate({'zoom': 2, 'scale': 2, 'margin-top': '-10px'}, 'fast');
 			
 			cb.load('store', 'gotorave', 'review', {action: 'send', value: val, type: type, id: id}, function(res){
-				$(bot).css('color','#bbb').animate({'zoom': 1, 'scale': 1, 'margin-top': '5px'}, 'fast');
+				$(bot).removeClass('green').removeClass('red').addClass('gray').animate({'zoom': 1, 'scale': 1, 'margin-top': '5px'}, 'fast');
 			});
 		}
 	},
