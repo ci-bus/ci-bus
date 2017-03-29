@@ -1,0 +1,97 @@
+body {
+	
+}
+
+a {
+	-webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+}
+
+a.disabled {
+    pointer-events: none;
+}
+
+.red {
+	color: red;
+}
+.green {
+	color: green;
+}
+.gray {
+	color: #bbb;
+}
+
+#ci-bus-alert-msg {
+	display: block;
+	padding: 3px 20px;
+	padding-bottom: 0px;
+	clear: both;
+	font-weight: 400;
+	line-height: 1.42857143;
+	color: #333;
+	white-space: nowrap
+}
+
+.navbar-brand {
+	min-width: 150px;
+	padding-left: 60px;
+	cursor: default;
+}
+
+.cubi-ico-text {
+  background: -webkit-linear-gradient(yellow,red);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: tomato;
+  font-size: 23px;
+}
+
+.cubi-ico {
+	border-radius: 50px 50px 50px 50px;
+	-moz-border-radius: 50px 50px 50px 50px;
+	-webkit-border-radius: 50px 50px 50px 50px;
+	border: 0px;
+	cursor: pointer;
+}
+
+.cubi-ico:hover {
+	border-color: #86aecc;
+	box-shadow: 0px 0px 5px #AAA;
+	background: rgba(212,228,239,1);
+	background: -moz-linear-gradient(top, rgba(212,228,239,1) 0%, rgba(134,174,204,1) 100%);
+	background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(212,228,239,1)), color-stop(100%, rgba(134,174,204,1)));
+	background: -webkit-linear-gradient(top, rgba(212,228,239,1) 0%, rgba(134,174,204,1) 100%);
+	background: -o-linear-gradient(top, rgba(212,228,239,1) 0%, rgba(134,174,204,1) 100%);
+	background: -ms-linear-gradient(top, rgba(212,228,239,1) 0%, rgba(134,174,204,1) 100%);
+	background: linear-gradient(to bottom, rgba(212,228,239,1) 0%, rgba(134,174,204,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d4e4ef', endColorstr='#86aecc', GradientType=0 );
+	overflow: hidden;
+}
+
+@media only screen and (min-width : 0px) {
+	.cubi-name {
+		max-height: 36px;
+		padding-left: 20px;
+		padding-top: 0px;
+	}
+	.navbar-nav {
+		padding-left: 10px;
+	}
+}
+@media only screen and (min-width : 480px) {
+	
+}
+@media only screen and (min-width : 768px) {
+	
+}
+@media only screen and (min-width : 992px) {
+	
+}
+@media only screen and (min-width : 1200px) {
+	
+}
