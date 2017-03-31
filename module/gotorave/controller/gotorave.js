@@ -10,10 +10,11 @@ cb.define({
 		if(getCookie('user_id') == 0)
 		{
 			$('body').css({
-				'background-size': 'cover',
-				'object-fit': 'cover',
-				'background-repeat': 'no-repeat',
-				'background-image': 'url(assets/img/background.jpg)'
+				'background': 'url(assets/img/background.jpg) no-repeat center center fixed',
+				'-webkit-background-size': 'cover',
+				'-moz-background-size': 'cover',
+				'-o-background-size': 'cover',
+				'background-size': 'cover'
 			});
 			cb.loadLineal([
 				['view', 'common', 'base'],
@@ -189,7 +190,17 @@ cb.define({
 		}
 	},
 	
+	edit_info_user: function(){
+		
+		console.log(cb.getConfig('user_data'));
+		
+		cb.load('view', 'gotorave', 'userpanel', function(){
+			
+		});
+	},
+	
 	load_events: function(id_tag){
+		
 		cb.load('view', 'gotorave', 'events');
 		cb.load('store', 'gotorave', 'events', {'action': 'load', 'id_tag': id_tag}, function(){
 			var t_top = $('#body-col2').position().top;

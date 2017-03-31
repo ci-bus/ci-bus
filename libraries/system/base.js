@@ -147,8 +147,86 @@ cb.define = function(obj)
 		this.module[obj.xtype][obj.name] = obj;
 		if($.isArray(obj['require'])) this.require(obj['require']);
 		if($.isFunction(obj['onload'])) obj['onload']();
-		if(obj.xtype == 'view') this.render(obj);
+		if(obj.xtype == 'view')
+		{
+			if(obj.renderTo)
+			{
+				$(obj.renderTo).empty();
+				obj.appendTo = obj.renderTo;
+				delete obj.renderTo;
+			}
+			
+			if(obj.items)
+			{
+				if(obj.appendTo)
+				{
+					obj.items = this.setMissingDinamicValue(obj.items, 'appendTo', obj.appendTo);
+				}
+				else if(obj.prependTo)
+				{
+					obj.items = this.setMissingDinamicValue(obj.items, 'prependTo', obj.prependTo);
+				}
+			}
+			
+			this.render(obj);
+		}
 	}
+}
+
+cb.setMissingDinamicValue = function(obj, attr, value, nivels){
+	if(!nivels){
+		nivels=0;
+	}
+	
+	if($.isPlainObject(obj) && !obj[attr])
+	{
+		obj[attr] = value;
+	}
+	else if($.isArray(obj))
+	{
+		for(n=0; n<obj.length; n++)
+		{
+			if($.isPlainObject(obj[n]) && !obj[n][attr])
+			{
+				obj[n][attr] = value;
+			}
+		}
+	}
+	if(nivels > 0 && obj.items)
+	{
+		nivels--;
+		obj.items = this.setMissingDinamicValue(obj.items, attr, value, nivels);
+	}
+	
+	return obj;
+}
+
+cb.setDinamicValue = function(obj, attr, value, nivels){
+	if(!nivels){
+		nivels=0;
+	}
+	
+	if($.isPlainObject(obj))
+	{
+		obj[attr] = value;
+	}
+	else if($.isArray(obj))
+	{
+		for(n=0; n<obj.length; n++)
+		{
+			if($.isPlainObject(obj[n]))
+			{
+				obj[n][attr] = value;
+			}
+		}
+	}
+	if(nivels > 0 && obj.items)
+	{
+		nivels--;
+		obj.items = this.setDinamicValue(obj.items, attr, value, nivels);
+	}
+	
+	return obj;
 }
 
 cb.storeAppendValues = function(elep, storelink, data)
@@ -488,6 +566,7 @@ cb.module.bootstrapComponent = {
 		opt.cls? opt.cls = 'btn btn-'+opt.type+' '+opt.cls : opt.cls = 'btn btn-'+opt.type;
 		if(opt.size) opt.cls += ' btn-'+opt.size;
 		opt.type = 'button';
+		if(!opt.margin) opt.margin = '0 5px 0 0';
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
@@ -637,10 +716,11 @@ cb.module.bootstrapComponent = {
 			}));
 		}
 		$(ele).append(but);
-		var ul = document.createElement('ul');
-		$(ul).addClass('dropdown-menu');
 		if($.isArray(opt.items))
 		{
+			var ul = document.createElement('ul');
+			$(ul).addClass('dropdown-menu');
+			
 			for(var a=0;a<opt.items.length;a++)
 			{
 				var li = document.createElement('li');
@@ -662,8 +742,8 @@ cb.module.bootstrapComponent = {
 				}
 				$(ul).append(li);
 			}
+			$(ele).append(ul);
 		}
-		$(ele).append(ul);
 		opt.noitems = true;
 		return ele;
 	},
@@ -860,15 +940,6 @@ cb.module.bootstrapComponent = {
 	'th': function(opt){
 		var ele = document.createElement('th');
 		if(opt.scope) $(ele).attr('scope', opt.scope);
-		ele = cb.common_prop(ele, opt);
-		return ele;
-	},
-	'button': function(opt){
-		var ele = document.createElement(opt.xtype);
-		if(!opt.type) opt.type = 'default';
-		opt.cls? opt.cls = 'btn btn-'+opt.type+' '+opt.cls : opt.cls = 'btn btn-'+opt.type;
-		if(opt.size) opt.cls += ' btn-'+opt.size;
-		opt.type = 'button';
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
@@ -1217,10 +1288,55 @@ cb.module.bootstrapComponent = {
 		return ele;
 	},
 	'input': function(opt){
-		var ele = document.createElement(opt.xtype);
-		$(ele).addClass('form-control');
-		if(!opt.type)opt.type = "text";
-		ele = cb.common_prop(ele, opt);
+		
+		if(opt.type == 'file')
+		{
+			var ele = document.createElement('label');
+			$(ele).addClass('btn btn-default btn-file');
+			if(opt.items){
+				if($.isPlainObject(opt.items))
+				{
+					$(ele).append(cb.create(opt.items));
+				}
+				else if($.isArray(opt.items))
+				{
+					for(var r=0; r<opt.items.length; r++)
+					{
+						$(ele).append(cb.create(opt.items[r]));
+					}
+				}
+			}
+			var input = document.createElement('input');
+			$(input).attr({type: 'file', hidden: 'hidden'});
+			if(opt.id){
+				$(input).attr('id', opt.id);
+				delete opt.type;
+			}
+			if(opt.name){
+				$(input).attr('name', opt.name);
+				delete opt.name;
+			}
+			if(opt.listener){
+				$(input).on(opt.listener);
+				delete opt.listener;
+			}
+			delete opt.type;
+			if(!opt.text && !opt.html && !opt.items && opt.name){
+				opt.text = opt.name;
+			}
+			ele = cb.common_prop(ele, opt);
+			$(ele).append(input);
+		}
+		else
+		{
+			var ele = document.createElement(opt.xtype);
+			$(ele).addClass('form-control');
+			
+			if(!opt.type)opt.type = "text";
+			
+			ele = cb.common_prop(ele, opt);
+		}
+		
 		return ele;
 	},
 	'select': function(opt){
@@ -1393,6 +1509,12 @@ cb.common_prop = function(ele, opt)
 		
 	if($.type(opt.color) == 'string')
 		$(ele).css('color', opt.color);
+	
+	if($.type(opt.border) == 'string')
+		$(ele).css('border', opt.border);
+	
+	if($.type(opt.src) == 'string')
+		$(ele).attr('src', opt.src);
 		
 	if($.type(opt.float) == 'string')
 		$(ele).css('float', opt.float);
@@ -1426,6 +1548,9 @@ cb.common_prop = function(ele, opt)
 	
 	if($.type(opt.cursor) == 'string')
 		$(ele).css('cursor', opt.cursor);
+	
+	if($.type(opt.background) == 'string')
+		$(ele).css('background', opt.background);
 		
 	if($.isPlainObject(opt.attr))
 		$(ele).attr(opt.attr);

@@ -177,6 +177,17 @@ cb.define({
 					}
 				},{
 					xtype: 'dropdown-menu',
+					glyphicon: 'user',
+					css: { 'font-size': 17 },
+					caret: false,
+					listener: {
+						click: function(){
+							cb.ctr('gotorave', 'edit_info_user');
+						}
+					}
+					
+				},{
+					xtype: 'dropdown-menu',
 					glyphicon: 'off',
 					css: { 'font-size': 17 },
 					color: 'RED',
