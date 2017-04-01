@@ -182,7 +182,7 @@ cb.define({
 					caret: false,
 					listener: {
 						click: function(){
-							cb.ctr('gotorave', 'edit_info_user');
+							cb.ctr('gotorave', 'load_user_panel');
 						}
 					}
 					

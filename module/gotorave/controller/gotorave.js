@@ -190,12 +190,16 @@ cb.define({
 		}
 	},
 	
-	edit_info_user: function(){
-		
-		console.log(cb.getConfig('user_data'));
-		
+	load_user_panel: function(){
+				
 		cb.load('view', 'gotorave', 'userpanel', function(){
-			
+			var t_top = $('#body-col2').position().top;
+			if(t_top > 100)
+			{
+				cb.sto(function(){
+					$("html, body").animate({scrollTop: t_top}, 'fast', 'swing');
+				}, 250);
+			}
 		});
 	},
 	
@@ -282,7 +286,7 @@ cb.define({
 			appendTo: '#add-music-tag',
 			css: {
 				'margin-right': '5px',
-				'margin-top': '10px',
+				'margin-top': '5px',
 				'padding': '5px'
 			},
 			text: val,
@@ -312,21 +316,12 @@ cb.define({
 								text: val,
 								listener: {
 									click: function(){
-										if($("#add-music-tag .label").length === 0){
-											$("#add-music-tag").animate({height: '31px'}, 'fast');
-										}
 										cb.ctr('gotorave', 'add_tag_music', this);
-										if($("ul[aria-labelledby='add-tag-music'] li").length === 0){
-											$('#add-tag-music').css('display', 'none');
-										}
 									}
 								}
 							}]
 						});
 						$(this).parent().remove();
-						if($("#add-music-tag .label").length === 0){
-							$("#add-music-tag").animate({height: '1px'}, 'fast');
-						}
 					}
 				}
 			},{

@@ -62,18 +62,47 @@ cb.define({
 								cls: 'form-control',
 								height: '140px'
 							},{
-									xtype: 'div',
-									css: {width: '100%'},
-									cls: 'pull-left',
-									id: 'add-music-tag'
-							},{
-								xtype: 'div',
+								xtype: 'row',
 								items: [{
-									xtype: 'div',
-									cls: 'pull-left',
-									css: {'margin-top': '15px'},
+									xtype: 'col',
+									size: {
+										xs: 12
+									},
+									id: 'add-music-tag',
+									css: {'padding-top': 0}
+								},{
+									xtype: 'col',
+									size: {
+										xs: 6,
+										sm: 4
+									},
+									items: [{
+										xtype: 'button',
+										cls: 'pull-left',
+										text: 'Cancelar',
+										size: 'small',
+										listener: {
+											click: function(){
+												$("textarea[name='enlace']").val('');
+												$("input[name='titulo']").val('');
+												$("#add-music-tag").find('.glyphicon-remove').click();
+												$('#form-music-box').css({overflow: 'hidden', height: '0px'});
+												$('#panel-add-music').find('.panel-heading').css('padding-bottom', '10px');
+												$('#share-music-button').css({'border-bottom': 'none'}).animate({top: '0px'},'fast');
+											}
+										}
+									}]
+								},{
+									xtype: 'col',
+									size: {
+										xs: 6,
+										sm: 4
+									},
 									items: [{
 										xtype: 'dropup',
+										group: {
+											cls: 'pull-right'
+										},
 										glyphicon: 'music',
 										text: ' A&ntilde;adir tag ',
 										size: 'small',
@@ -93,13 +122,7 @@ cb.define({
 													field: 'name',
 													listener: {
 														click: function(){
-															if($("#add-music-tag .label").length === 0){
-																$("#add-music-tag").animate({height: '31px'}, 'fast');
-															}
 															cb.ctr('gotorave', 'add_tag_music', this);
-															if($("ul[aria-labelledby='add-tag-music'] li").length === 0){
-																$('#add-tag-music').css('display', 'none');
-															}
 														}
 													}
 												}]
@@ -107,31 +130,23 @@ cb.define({
 										}
 									}]
 								},{
-									xtype: 'button',
-									type: 'primary',
-									cls: 'pull-right',
-									margin: '15px 0 0 0',
-									text: 'Compartir',
-									listener: {
-										click: function(){
-											cb.ctr('gotorave', 'sharemusic');
+									xtype: 'col',
+									size: {
+										xs: 12,
+										sm: 4
+									},
+									items: [{
+										xtype: 'button',
+										type: 'primary',
+										cls: 'pull-center',
+										text: 'Compartir',
+										width: '100%',
+										listener: {
+											click: function(){
+												cb.ctr('gotorave', 'sharemusic');
+											}
 										}
-									}
-								},{
-									xtype: 'button',
-									cls: 'pull-right',
-									margin: '15px 10px 0 0',
-									text: 'Cancelar',
-									listener: {
-										click: function(){
-											$("textarea[name='enlace']").val('');
-											$("input[name='titulo']").val('');
-											$("#add-music-tag").find('.glyphicon-remove').click();
-											$('#form-music-box').css({overflow: 'hidden', height: '0px'});
-											$('#panel-add-music').find('.panel-heading').css('padding-bottom', '10px');
-											$('#share-music-button').css({'border-bottom': 'none'}).animate({top: '0px'},'fast');
-										}
-									}
+									}]
 								}]
 							}]
 						}]

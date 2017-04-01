@@ -626,6 +626,7 @@ cb.module.bootstrapComponent = {
 			xtype: 'button',
 			type: 'button',
 			cls: 'collapsed navbar-toggle',
+			margin: '8px 5px 0 0',
 			attr: {
 				'data-toggle': 'collapse',
 				'data-target': '.'+opt.target
@@ -758,6 +759,9 @@ cb.module.bootstrapComponent = {
 		var ele = document.createElement('div');
 		$(ele).attr('role', 'group');
 		$(ele).addClass(t_xtype);
+		if(opt.group){
+			ele = cb.common_prop(ele, opt.group);
+		}
 		var but = document.createElement('button');
 		but = cb.common_prop(but, {
 			cls:'btn btn-'+opt.type2+' dropdown-toggle',
@@ -1529,7 +1533,15 @@ cb.create = function(opt){
 	
 	if($.type(opt.xtype) == 'string')
 	{
-		if($.isFunction(cb.module.bootstrapComponent[opt.xtype])){
+		if(opt.defaults && opt.items)
+		{
+			for (var def in opt.defaults) {
+				opt.items = this.setMissingDinamicValue(opt.items, def, opt.defaults[def]);
+			}
+		}
+		
+		if($.isFunction(cb.module.bootstrapComponent[opt.xtype]))
+		{
 			var ele = cb.module.bootstrapComponent[opt.xtype](opt);
 		}
 		else if($.isPlainObject(cb.module.component[opt.xtype]))

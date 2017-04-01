@@ -3,6 +3,47 @@ cb.define({
 	name: 'userpanel',
 	renderTo: '#body-col2',
 	items: [{
+		xtype: 'div',
+		defaults: {
+			css: {'margin-bottom': '5px'}
+		},
+		items: [{
+			xtype: 'button',
+			color: 'green',
+			text: 'Eventos ',
+			items: [{
+				xtype: 'glyphicon',
+				type: 'thumbs-up',
+			}]
+		},{
+			xtype: 'button',
+			color: 'green',
+			text: 'Usuarios ',
+			items: [{
+				xtype: 'glyphicon',
+				type: 'thumbs-up',
+			}]
+		},{
+			xtype: 'button',
+			color: 'green',
+			text: 'Musica ',
+			items: [{
+				xtype: 'glyphicon',
+				type: 'thumbs-up',
+			}],
+			listener: {
+				click: function(){
+					cb.ctr('gotorave', 'load_music', 'like');
+				}
+			}
+		},{
+			xtype: 'button',
+			text: 'Tus eventos',
+		},{
+			xtype: 'button',
+			text: 'Tu música',
+		}]
+	},{
 		xtype: 'panel',
 		type: 'info',
 		items: [{
@@ -54,16 +95,7 @@ cb.define({
 			}]
 		},{
 			xtype: 'footer',
-			items: [{
-				xtype: 'button',
-				text: 'Eventos que te gustan'
-			},{
-				xtype: 'button',
-				text: 'Musica que te gusta'
-			},{
-				xtype: 'button',
-				text: 'Tu música'
-			}]
+			padding: 0
 		}]
 	}]
 });
