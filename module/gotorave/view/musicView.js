@@ -110,7 +110,7 @@ cb.define({
 									xtype: 'button',
 									type: 'primary',
 									cls: 'pull-right',
-									css: {'margin-top': '15px'},
+									margin: '15px 0 0 0',
 									text: 'Compartir',
 									listener: {
 										click: function(){
@@ -120,7 +120,7 @@ cb.define({
 								},{
 									xtype: 'button',
 									cls: 'pull-right',
-									css: {'margin-top': '15px', 'margin-right': '10px'},
+									margin: '15px 10px 0 0',
 									text: 'Cancelar',
 									listener: {
 										click: function(){

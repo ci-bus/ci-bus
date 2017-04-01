@@ -716,31 +716,33 @@ cb.module.bootstrapComponent = {
 			}));
 		}
 		$(ele).append(but);
-		if($.isArray(opt.items))
+		if($.isArray(opt.items) || opt.storelink)
 		{
 			var ul = document.createElement('ul');
 			$(ul).addClass('dropdown-menu');
-			
-			for(var a=0;a<opt.items.length;a++)
+			if(opt.items)
 			{
-				var li = document.createElement('li');
-				if(opt.items[a].xtype == 'separator' || opt.items[a].xtype == 'divider')
+				for(var a=0;a<opt.items.length;a++)
 				{
-					li = cb.common_prop(li, {
-						cls: 'divider',
-						attr: {'role':'separator'}});
-					li = cb.common_prop(li, opt.items[a]);
+					var li = document.createElement('li');
+					if(opt.items[a].xtype == 'separator' || opt.items[a].xtype == 'divider')
+					{
+						li = cb.common_prop(li, {
+							cls: 'divider',
+							attr: {'role':'separator'}});
+						li = cb.common_prop(li, opt.items[a]);
+					}
+					else if(opt.items[a].xtype == 'dropdown-header' || opt.items[a].xtype == 'header')
+					{
+						opt.items[a].cls? opt.items[a].cls = 'dropdown-header '+opt.items[a].cls : opt.items[a].cls = 'dropdown-header';
+						li = cb.common_prop(li, opt.items[a]);
+					}
+					else
+					{
+						$(li).append(cb.create(opt.items[a]));
+					}
+					$(ul).append(li);
 				}
-				else if(opt.items[a].xtype == 'dropdown-header' || opt.items[a].xtype == 'header')
-				{
-					opt.items[a].cls? opt.items[a].cls = 'dropdown-header '+opt.items[a].cls : opt.items[a].cls = 'dropdown-header';
-					li = cb.common_prop(li, opt.items[a]);
-				}
-				else
-				{
-					$(li).append(cb.create(opt.items[a]));
-				}
-				$(ul).append(li);
 			}
 			$(ele).append(ul);
 		}
@@ -1384,6 +1386,142 @@ cb.module.bootstrapComponent = {
 		return ele;
 	}
 };
+
+cb.props = {
+	'require': function(ele, opt){
+		cb.require(opt.require);
+	},
+	'cls': function(ele, opt){
+		if(!opt.nocls){
+			$(ele).addClass(opt.cls);
+		}
+		return ele;
+	},
+	'html': function(ele, opt){
+		if(!opt.nohtml){
+			$(ele).html(opt.html);
+		}
+		return ele;
+	},
+	'text': function(ele, opt){
+		if(!opt.notext){
+			$(ele).html(opt.text);
+		}
+		return ele;
+	},
+	'glyphicon': function(ele, opt){
+		$(ele).prepend(cb.create({xtype:'glyphicon',type:opt.glyphicon}));
+		return ele;
+	},
+	'id': function(ele, opt){
+		$(ele).attr('id', opt.id);
+		return ele;
+	},
+	'disable': function(ele, opt){
+		$(ele).attr('disable', 'disable');
+		return ele;
+	},
+	'disabled': function(ele, opt){
+		$(ele).attr('disabled', 'disabled');
+		return ele;
+	},
+	'name': function(ele, opt){
+		if(!opt.noname){
+			$(ele).attr('name', opt.name);
+		}
+		return ele;
+	},
+	'type': function(ele, opt){
+		if(!opt.notype){
+			$(ele).attr('type', opt.type);
+		}
+		return ele;
+	},
+	'href': function(ele, opt){
+		$(ele).attr('href', opt.href);
+		return ele;
+	},
+	'value': function(ele, opt){
+		if(!opt.novalue){
+			$(ele).attr('value', opt.value);
+		}
+		return ele;
+	},
+	'margin': function(ele, opt){
+		$(ele).css('margin', opt.margin);
+		return ele;
+	},
+	'padding': function(ele, opt){
+		$(ele).css('padding', opt.padding);
+		return ele;
+	},
+	'color': function(ele, opt){
+		$(ele).css('color', opt.color);
+		return ele;
+	},
+	'border': function(ele, opt){
+		$(ele).css('border', opt.border);
+		return ele;
+	},
+	'src': function(ele, opt){
+		$(ele).attr('src', opt.src);
+		return ele;
+	},
+	'float': function(ele, opt){
+		$(ele).css('float', opt.float);
+		return ele;
+	},
+	'shadow': function(ele, opt){
+		$(ele).css('box-shadow', opt.shadow);
+		return ele;
+	},
+	'size': function(ele, opt){
+		$(ele).css('font-size', opt.size);
+		return ele;
+	},
+	'weight': function(ele, opt){
+		$(ele).css('font-weight', opt.weight);
+		return ele;
+	},
+	'align': function(ele, opt){
+		$(ele).css('text-align', opt.align);
+		return ele;
+	},
+	'pull': function(ele, opt){
+		$(ele).addClass('pull-'+opt.pull);
+		return ele;
+	},
+	'height': function(ele, opt){
+		$(ele).css('height', opt.height);
+		return ele;
+	},
+	'width': function(ele, opt){
+		$(ele).css('width', opt.width);
+		return ele;
+	},
+	'placeholder': function(ele, opt){
+		$(ele).attr('placeholder', opt.placeholder);
+		return ele;
+	},
+	'display': function(ele, opt){
+		$(ele).css('display', opt.display);
+		return ele;
+	},
+	'cursor': function(ele, opt){
+		$(ele).css('cursor', opt.cursor);
+		return ele;
+	},
+	'background': function(ele, opt){
+		$(ele).css('background', opt.background);
+		return ele;
+	},
+	'badge': function(ele, opt){
+		$(ele).append('&nbsp;').append(cb.create({
+			xtype: 'badge',
+			text: opt.badge }));
+		return ele;
+	}
+};
 			
 cb.create = function(opt){
 
@@ -1464,96 +1602,21 @@ cb.create = function(opt){
 }
 			
 cb.common_prop = function(ele, opt)
-{
-	if($.isArray(opt.require))
-		this.require(opt.require);
+{	
 	
-	if($.type(opt.cls) == 'string' && !opt.nocls)
-		$(ele).addClass(opt.cls);
-		
-	if($.type(opt.html) == 'string' && !opt.nohtml)
-		$(ele).html(opt.html);
-		
-	if($.type(opt.text) == 'string' && !opt.notext)
-		$(ele).html(opt.text);
+	for (var prop in opt) {
+		if(this.props[prop]){
+			ele = this.props[prop](ele, opt);
+		}
+	}
 	
-	if($.type(opt.glyphicon) == 'string')
-		$(ele).prepend(this.create({xtype:'glyphicon',type:opt.glyphicon}));
+	if($.isPlainObject(opt.css)){
+		$(ele).css(opt.css)
+	}
 	
-	if($.type(opt.id) == 'string')
-		$(ele).attr('id', opt.id);
-	
-	if(opt.disabled || opt.disable)
-		$(ele).attr('disabled', 'disabled');
-			
-	if($.type(opt.name) == 'string'  && !opt.noname)
-		$(ele).attr('name', opt.name);
-		
-	if($.type(opt.type) == 'string' && !opt.notype)
-		$(ele).attr('type', opt.type);
-		
-	if($.type(opt.href) == 'string')
-		$(ele).attr('href', opt.href);
-		
-	if($.type(opt.value) == 'string' && !opt.novalue)
-		$(ele).attr('value', opt.value);
-							
-	if($.isPlainObject(opt.css))
-		$(ele).css(opt.css);
-		
-	if($.type(opt.padding) == 'string' || $.isNumeric(opt.padding))
-		$(ele).css('padding', opt.padding);
-		
-	if($.type(opt.margin) == 'string' || $.isNumeric(opt.margin))
-		$(ele).css('margin', opt.margin);
-		
-	if($.type(opt.color) == 'string')
-		$(ele).css('color', opt.color);
-	
-	if($.type(opt.border) == 'string')
-		$(ele).css('border', opt.border);
-	
-	if($.type(opt.src) == 'string')
-		$(ele).attr('src', opt.src);
-		
-	if($.type(opt.float) == 'string')
-		$(ele).css('float', opt.float);
-		
-	if($.type(opt.shadow) == 'string')
-		$(ele).css('box-shadow', opt.shadow);
-		
-	if($.type(opt.size) == 'string' || $.isNumeric(opt.size))
-		$(ele).css('font-size', opt.size);
-		
-	if($.type(opt.weight) == 'string')
-		$(ele).css('font-weight', opt.weight);
-		
-	if($.type(opt.align) == 'string')
-		$(ele).css('text-align', opt.align);
-	
-	if($.type(opt.pull) == 'string')
-		$(ele).addClass('pull-'+opt.pull);
-		
-	if($.type(opt.height) == 'string')
-		$(ele).css('height', opt.height);
-		
-	if($.type(opt.width) == 'string')
-		$(ele).css('width', opt.width);
-	
-	if($.type(opt.placeholder) == 'string')
-		$(ele).attr('placeholder', opt.placeholder);
-	
-	if($.type(opt.display) == 'string')
-		$(ele).css('display', opt.display);
-	
-	if($.type(opt.cursor) == 'string')
-		$(ele).css('cursor', opt.cursor);
-	
-	if($.type(opt.background) == 'string')
-		$(ele).css('background', opt.background);
-		
-	if($.isPlainObject(opt.attr))
-		$(ele).attr(opt.attr);
+	if($.isPlainObject(opt.attr)){
+		$(ele).attr(opt.attr)
+	}
 		
 	if(opt.data && $.isArray(opt.items))
 	{
@@ -1561,13 +1624,6 @@ cb.common_prop = function(ele, opt)
 		{
 			opt.items[i].data = opt.data;
 		}
-	}
-		
-	if(opt.badge)
-	{
-		$(ele).append('&nbsp;').append(this.create({
-			xtype: 'badge',
-			text: opt.badge }));
 	}
 	
 	if(opt.storelink && opt.storelink.store)
