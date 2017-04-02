@@ -116,6 +116,7 @@ cb.define({
 						}]
 					},{
 						xtype: 'footer',
+						css: {overflow: 'auto'},
 						storelink: {
 							id: 'users-tags-strlk',
 							store: 'current',

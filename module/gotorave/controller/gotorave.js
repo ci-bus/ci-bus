@@ -44,6 +44,7 @@ cb.define({
 			['view', 'gotorave', 'mainmenu'],
 			['view', 'gotorave']
 		]);
+		cb.setConfig('no_refresh_chat', true);
 		this.chatInterval = setInterval(function(){
 			if(!cb.getConfig('no_refresh_chat')){
 				cb.load('store', 'gotorave', 'chat')
@@ -118,7 +119,7 @@ cb.define({
 	},
 	
 	inviteuser: function(){
-		var me = this;
+		var ctr = this;
 		$('#user-progress').css('display', 'block').find('.progress-bar').animate({width: '50%'}, 'fast');
 		cb.load('store', 'gotorave', 'users', {'action': 'invite', 'email': $('input[name=invitemailuser]').val()}, function(res){
 			if(res == 'true'){
@@ -148,7 +149,7 @@ cb.define({
 			}else{
 				$('#user-progress').find('.progress-bar').stop().animate({width: '0%'}, 'fast', function(){
 					$(this).parent().parent().css('display','none');
-					me.showError('No se ha podido crear el usuario, inténtelo mas tarde');
+					ctr.showError('No se ha podido crear el usuario, inténtelo mas tarde');
 				});
 			}
 		});
@@ -157,9 +158,9 @@ cb.define({
 	sharemusic: function(){
 		ctr = this;
 		if($("input[name='titulo']").val()==''){
-			alert('Introduce un título o nombre de la canción');
+			ctr.showError('Introduce un título o nombre de la canción');
 		}else if($("textarea[name='enlace']").val().search('http://')<0 && $("textarea[name='enlace']").val().search('https://')<0){
-			alert('Introduce algún enlace en la descripción');
+			ctr.showError('Introduce algún enlace en la descripción');
 		}else{
 			$('#music-progress').css('display', 'block');
 			cb.create({
@@ -190,9 +191,80 @@ cb.define({
 		}
 	},
 	
+	saveuserinfo: function(butsave){
+		var ctr = this;
+		var img = cb.getConfig('user_image_file');
+		if(!ctr.saving_userpanel){
+			ctr.saving_userpanel = true;
+			$('#prog_save_userpanel').css('display', 'block');
+			$(butsave).html('Guardando...');
+			var formdata = $('#formuserpanel').serializeArray();
+			console.log(formdata);
+			var tags = '';
+			for(s=0; s<formdata.length; s++){
+				if(formdata[s]['name']=='tags[]'){
+					tags += formdata[s]['value']+',';
+				}
+			}
+			if(img){
+				cb.fileUpload(img, 'gotorave', 'userpanel', '#prog_save_userpanel', {action: 'imageupload', name: $('#usernameinput').val(), tags: tags}, function(r){
+					if(r == 'true'){
+						cb.load('store', 'gotorave', 'users', {'action': 'get_data'});
+						$('#prog_save_userpanel').find('.progress-bar').css('width', '100%');
+						cb.sto(function(){
+							$('#prog_save_userpanel').css('display', 'none').find('.progress-bar').css('width', '0%');
+							$(butsave).html('Guardado').addClass('btn-success').removeClass('btn-primary');
+							cb.sto(function(){
+								$(butsave).html('Guardar cambios').addClass('btn-primary').removeClass('btn-success');
+							}, 3000);
+						}, 600);
+					}else{
+						$('#prog_save_userpanel').css('display', 'none').find('.progress-bar').css('width', '0%');
+						$(butsave).html('Guardar cambios');
+						ctr.showError('No se ha podido cargar la imagen');
+					}
+					ctr.saving_userpanel = false;
+				});
+				cb.delConfig('user_image_file');
+			}else{
+				$('#prog_save_userpanel').find('.progress-bar').css('width', '50%');
+				cb.send({action: 'changename', name: $('#usernameinput').val(), tags: tags}, 'gotorave', 'userpanel', function(r){
+					if(r == 'true'){
+						cb.load('store', 'gotorave', 'users', {'action': 'get_data'});
+						$('#prog_save_userpanel').find('.progress-bar').css('width', '100%');
+						cb.sto(function(){
+							$('#prog_save_userpanel').css('display', 'none').find('.progress-bar').css('width', '0%');
+							$(butsave).html('Guardado').addClass('btn-success').removeClass('btn-primary');
+							cb.sto(function(){
+								$(butsave).html('Guardar cambios').addClass('btn-primary').removeClass('btn-success');
+							}, 2000);
+						}, 600);
+					}else{
+						$('#prog_save_userpanel').css('display', 'none').find('.progress-bar').css('width', '0%');
+						$(butsave).html('Guardar cambios');
+						ctr.showError('No se ha podido guardar');
+					}
+					ctr.saving_userpanel = false;
+				});
+			}
+		}else{
+			ctr.showError('Los cambios se estan enviando');
+		}
+	},
+	
 	load_user_panel: function(){
 				
 		cb.load('view', 'gotorave', 'userpanel', function(){
+			var user_data = cb.getConfig('user_data');
+			for(var v=0; v<user_data['tags'].length; v++){
+				var temp_name = user_data['tags'][v]['name'];
+				$('#userpanel').find('ul.dropdown-menu').find('li').each(function(){
+					if($(this).find('a').text() == temp_name){
+						$(this).find('a').click();
+					}
+				});
+			}
+			
 			var t_top = $('#body-col2').position().top;
 			if(t_top > 100)
 			{
@@ -277,7 +349,7 @@ cb.define({
 		});
 	},
 	
-	add_tag_music: function(li){
+	add_tag: function(li){
 		var val = $(li).html();
 		var val2 = $(li).attr('data-id');
 		cb.create({
@@ -301,12 +373,12 @@ cb.define({
 				},
 				listener: {
 					click: function(){
-						if($('#add-tag-music').css('display') == 'none'){
-							$('#add-tag-music').css('display', 'block');
+						if($('#add-tag').css('display') == 'none'){
+							$('#add-tag').css('display', 'block');
 						}
 						cb.create({
 							xtype: 'li',
-							appendTo: "ul[aria-labelledby='add-tag-music']",
+							appendTo: "ul[aria-labelledby='add-tag']",
 							items: [{
 								xtype: 'a',
 								attr: {
@@ -316,7 +388,7 @@ cb.define({
 								text: val,
 								listener: {
 									click: function(){
-										cb.ctr('gotorave', 'add_tag_music', this);
+										cb.ctr('gotorave', 'add_tag', this);
 									}
 								}
 							}]

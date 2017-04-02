@@ -33,7 +33,7 @@ cb.send = function(formn,module,store,callback)
 	  url: module+'/store/'+store,
 	  method: 'post',
 	  contentType: "application/x-www-form-urlencoded;charset=UTF-8",
-	  data: $("form[name='"+formn+"']").serializeArray(),
+	  data: $.type(formn) == 'string'? $("form[name='"+formn+"']").serializeArray(): formn,
 	  success: callback
 	});
 }
@@ -305,7 +305,7 @@ cb.storeSetObject = function(strlk, field, data)
 					links = "[strlk='"+btoa(field2)+"']";
 					Alinks.push(btoa(field2));
 				}
-				if(links != "")
+				if(links != "" && data[field2])
 				{
 					cb.storeSet($(ele).find(links), data[field2]);
 					Avalues.push(data[field2]);
@@ -515,6 +515,23 @@ cb.getConfig = function(va, var2){
 			if(this.config[va][var2])
 			{
 				return this.config[va][var2];
+			}
+		}
+	}
+}
+
+cb.delConfig = function(va, var2){
+	if(!var2){
+		if(this.config[va])
+		{
+			delete this.config[va];
+		}
+	}else{
+		if(this.config[va])
+		{
+			if(this.config[va][var2])
+			{
+				delete this.config[va][var2];
 			}
 		}
 	}
@@ -796,6 +813,9 @@ cb.module.bootstrapComponent = {
 			{
 				$(but).append(cb.create({xtype:'span', cls:'caret'}));
 			}
+		}
+		if(opt.glyphicon){
+			$(but).prepend(cb.create({xtype:'glyphicon', type:opt.glyphicon}));
 		}
 		$(ele).append(but);
 		var ul = document.createElement('ul');
@@ -1282,12 +1302,16 @@ cb.module.bootstrapComponent = {
 		if($.isPlainObject(opt.offset))
 		{
 			for (var key in opt.offset) {
-				$(ele).addClass('col-'+key+'-offset-'+opt.offset[key]);
+				if(opt.offset[key]){
+					$(ele).addClass('col-'+key+'-offset-'+opt.offset[key]);
+				}
 			}
 		}
 		else if(!$.isArray(opt.offset))
 		{
-			$(ele).addClass('col-xs-offset-'+opt.offset);
+			if(opt.offset){
+				$(ele).addClass('col-xs-offset-'+opt.offset);
+			}
 		}
 		if(!opt.padding)opt.padding = '5px';
 		ele = cb.common_prop(ele, opt);
@@ -1900,3 +1924,71 @@ cb.effect = function(obj, eff){
 		}
 	}
 }
+
+cb.fileUpload = function(file, module, store, progessbar, vals, callback){
+	if($.isFunction(vals)){
+		callback = vals;
+		delete vals;
+	}
+	if($.isFunction(progessbar)){
+		callback = progessbar;
+		delete progessbar;
+	}
+	
+	if(window.XMLHttpRequest){
+		var xhr = new XMLHttpRequest();
+	}else{
+		var xhr = new ActiveXObject("Microsoft.XMLHTTP")
+	}
+	
+	var fd = new FormData();
+	if($.isPlainObject(vals)){
+		for(var ke in vals){
+			fd.append(ke, vals[ke]);
+		}
+	}
+	fd.append('file', file);
+	
+	if(progessbar){
+		if(!$(progessbar).hasClass('progress-bar')){
+			var progessbarFinded = $(progessbar).find('.progress-bar');
+		}
+		if(progessbarFinded){
+			progessbar = progessbarFinded;
+		}
+		xhr.progessbar = progessbar;
+	}
+	
+	if($.isFunction(callback)){
+		xhr.callback = callback;
+	}
+	
+	xhr.addEventListener('progress', function(e){
+		var done = e.position || e.loaded;
+		var total = e.totalSize || e.total;
+		$(this.progessbar).css('width', (Math.floor(done/total*1000)/10)+'%');
+	});
+	
+	if(xhr.upload){
+		xhr.upload.progessbar = progessbar;
+		xhr.upload.addEventListener('progress', function(e){
+			var done = e.position || e.loaded;
+			var total = e.totalSize || e.total;
+			$(this.progessbar).css('width', (Math.floor(done/total*1000)/10)+'%');
+		});
+	}
+	
+	xhr.onreadystatechange = function(e){
+		if(this.readyState == 4){
+			if(this.callback){
+				this.callback(this.response, e);
+			}
+		}
+	}
+	
+	xhr.open('post', module+'/store/'+store, true);
+	xhr.send(fd);
+}
+
+
+

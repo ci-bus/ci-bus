@@ -191,6 +191,65 @@
 			}
 			return $arr1;
 		}
+		
+		public function imageResize($imagen, $width, $height = 0)
+		  {
+		      $new_width = $width ;
+		      $new_height = $height ;
+		
+		      $info_imagen = getimagesize($imagen);
+		      $img_height = $info_imagen[1];
+		      $img_width = $info_imagen[0];
+		      $tipo_imagen = $info_imagen[2];
+		
+		      if(!$height || $height=='auto' || $height==0){
+		        if($img_height>=$img_width){
+		          $new_height = $width;
+		          $new_width = 0;
+		        }else{
+		          $new_width = $width;
+		          $new_height = 0;
+		        }
+		      }
+		
+		      if($new_width==0){
+		          $new_width = round($img_width*$new_height/$img_height,0);
+		      }
+		      if($new_height==0){
+		          $new_height = round($img_height*$new_width/$img_width,0);
+		      }
+		
+		      switch ($tipo_imagen) {
+		          case 1:
+		              $imagen_nueva = imagecreate($new_width, $new_height);
+		              $imagen_vieja = imagecreatefromgif($imagen);
+		              imagecopyresampled($imagen_nueva, $imagen_vieja, 0, 0, 0, 0, $new_width, $new_height, $img_width, $img_height);
+		              if (!imagegif($imagen_nueva, $imagen)) return false;
+		          break;
+		
+		          case 2:
+		              $imagen_nueva = imagecreatetruecolor($new_width, $new_height);
+		              $imagen_vieja = imagecreatefromjpeg($imagen);
+		              imagecopyresampled($imagen_nueva, $imagen_vieja, 0, 0, 0, 0, $new_width, $new_height, $img_width, $img_height);
+		              if (!imagejpeg($imagen_nueva, $imagen)) return false;
+		          break;
+		
+		          case 3:
+		              $imagen_nueva = imagecreatetruecolor($new_width, $new_height);
+		              $white = imagecolorallocate($imagen_nueva, 255, 255, 255);
+		              imagefill($imagen_nueva, 0, 0, $white);
+		              $imagen_vieja = imagecreatefrompng($imagen);
+		              imagecolortransparent($imagen_vieja, $black);
+		              imagecopyresampled($imagen_nueva, $imagen_vieja, 0, 0, 0, 0, $new_width, $new_height, $img_width, $img_height);
+		             if (!imagepng($imagen_nueva, $imagen)) return false;
+		          break;
+		          
+		          default:
+		          	return false;
+		          break;
+		      }
+		      return true;
+		  }
 	}
 	
 	$CB = new Store();

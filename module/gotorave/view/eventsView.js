@@ -16,7 +16,10 @@ cb.define({
 			alterdata: {
 				'date': function(dt){
 					var pdt = dt.split('-');
-					return pdt[2]+" "+cb.getConfig('meses', pdt[1])+" "+pdt[0];
+					if(pdt[2]){
+						var res = pdt[2]+" "+cb.getConfig('meses', pdt[1])+" "+pdt[0];
+						return res;
+					}
 				}
 			},
 			structure: {

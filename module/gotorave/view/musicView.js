@@ -104,14 +104,15 @@ cb.define({
 											cls: 'pull-right'
 										},
 										glyphicon: 'music',
+										caret: false,
 										text: ' A&ntilde;adir tag ',
 										size: 'small',
-										id: 'add-tag-music',
+										id: 'add-tag',
 										storelink: {
-											id: 'du-add-tag-music-strlk',
+											id: 'du-add-tag-strlk',
 											store: 'tags',
 											field: 'music',
-											appendTo: "ul[aria-labelledby='add-tag-music']",
+											appendTo: "ul[aria-labelledby='add-tag']",
 											structure: {
 												xtype: 'li',
 												items: [{
@@ -122,7 +123,7 @@ cb.define({
 													field: 'name',
 													listener: {
 														click: function(){
-															cb.ctr('gotorave', 'add_tag_music', this);
+															cb.ctr('gotorave', 'add_tag', this);
 														}
 													}
 												}]

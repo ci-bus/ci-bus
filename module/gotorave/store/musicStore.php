@@ -83,6 +83,12 @@
 			{
 				$CB->db->where("music.id IN (".$wherein.")");
 			}
+			
+			if($data['id_tag'] == 'me')
+			{
+				$CB->db->where('user_id', $_SESSION['user_id']);
+			}
+			
 			$CB->db->from("music");
 			$CB->db->orderBy("id", "desc");
 			

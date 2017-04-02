@@ -45,10 +45,19 @@
 				$CB->db->join("event_tag", "event_tag.event_id=event.id");
 				$CB->db->where("event_tag.tag_id", $data['id_tag']);
 			}
+			
 			if($wherein)
 			{
 				$CB->db->where("event.id IN (".$wherein.")");
 			}
+			
+			if($data['id_tag'] == 'me')
+			{
+				$CB->db->where('user_id', $_SESSION['user_id']);
+			}
+			
+			$CB->db->orderBy("event.date", "DESC");
+			
 			if($res = $CB->db->get("event"))
 			{
 				if(is_object($res))$res = array($res);
