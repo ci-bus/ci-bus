@@ -19,11 +19,33 @@
 		
 		public function load($CB, $data)
 		{
+			if($data['id_tag'] == 'like')
+			{
+				$CB->db->select("review.id_row");
+				$CB->db->where(array(
+						"tabla" => "user",
+						"review" => "1",
+						"id_user" => $_SESSION['user_id']
+				));
+				if($res4 = $CB->db->get_array('review')){
+					foreach($res4 as $tid){
+						$wherein .= $tid->id_row.", ";
+					}
+					$wherein = substr($wherein, 0, count($wherein)-3);
+					$CB->db->reset();
+				}else{
+					$this->parseStore('users', array('usr' => array()));
+				}
+			}
 			$CB->db->select("user.id, name, image");
 			if(is_numeric($data['id_tag']))
 			{
 				$CB->db->join("user_tag", "user_tag.user_id=user.id");
 				$CB->db->where("user_tag.tag_id", $data['id_tag']);
+			}
+			if($wherein)
+			{
+				$CB->db->where("user.id IN (".$wherein.")");
 			}
 			$CB->db->from("user");
 			

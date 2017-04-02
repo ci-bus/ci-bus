@@ -185,7 +185,6 @@ cb.define({
 							cb.ctr('gotorave', 'load_user_panel');
 						}
 					}
-					
 				},{
 					xtype: 'dropdown-menu',
 					glyphicon: 'off',
@@ -197,7 +196,6 @@ cb.define({
 							cb.ctr('gotorave', 'logout');
 						}
 					}
-					
 				}]
 			}]
 		}]

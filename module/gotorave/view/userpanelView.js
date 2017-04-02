@@ -14,7 +14,12 @@ cb.define({
 			items: [{
 				xtype: 'glyphicon',
 				type: 'thumbs-up',
-			}]
+			}],
+			listener: {
+				click: function(){
+					cb.ctr('gotorave', 'load_events', 'like');
+				}
+			}
 		},{
 			xtype: 'button',
 			color: 'green',
@@ -22,7 +27,12 @@ cb.define({
 			items: [{
 				xtype: 'glyphicon',
 				type: 'thumbs-up',
-			}]
+			}],
+			listener: {
+				click: function(){
+					cb.ctr('gotorave', 'load_users', 'like');
+				}
+			}
 		},{
 			xtype: 'button',
 			color: 'green',
