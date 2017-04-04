@@ -35,7 +35,7 @@ cb.define({
 	
 	acceder: function(){
 		$('body').css({'background': 'none'});
-		cb.loadLineal([
+		cb.loadAll([
 		    ['component', 'gotorave', 'review'],
 			['store', 'gotorave', 'tags'],
 			['store', 'gotorave', 'chat', {action: 'salas'}],
@@ -44,12 +44,18 @@ cb.define({
 			['view', 'gotorave', 'mainmenu'],
 			['view', 'gotorave']
 		]);
-		cb.setConfig('no_refresh_chat', true);
+		cb.setConfig('no_refresh_chat', false);
 		this.chatInterval = setInterval(function(){
 			if(!cb.getConfig('no_refresh_chat')){
 				cb.load('store', 'gotorave', 'chat')
 			}
 		}, 2000);
+	},
+	
+	home: function(){
+		if(confirm('¿Recargar toda la pagina?')){
+			cb.load('view', 'gotorave');
+		}
 	},
 	
 	login : function(){

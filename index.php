@@ -1,8 +1,8 @@
 <?php session_start();
 
 	error_reporting(E_ERROR);
-	ini_set('display_errors', 'on');
-	ini_set('display_startup_errors', 'on');
+	ini_set('display_errors', 1);
+	ini_set('display_startup_errors', 1);
 	
 	include "core/Store.php";
 	
@@ -37,10 +37,9 @@
 		if($urlparts[0] == 'require')
 		{
 			$data = $_POST;
-			$value = $data['value'];
+			$value = $data['data'];
 			if($data)
 			{
-				
 				for($i=0;$i<count($data);$i++)
 				{
 					if($data[$i]['xtype'] == 'store')
@@ -78,6 +77,59 @@
 				}
 			}
 		}
+		else if($urlparts[0] == 'loadAll')
+		{
+
+			$data = json_decode($_POST['data'], true);
+			if(is_array($data))
+			{
+				$store = array();
+				foreach($data as $dt)
+				{
+					if(is_array($dt))
+					{
+						$urlparts = $dt;
+						
+						if(!$urlparts[2]){
+							$urlparts[2] = $urlparts[1];
+						}
+												
+						if($urlparts[0] == 'view'){
+							$urlparts[2] .= 'View';
+						}
+						if($urlparts[0] == 'component'){
+							$urlparts[2] .= 'Component';
+							$urlparts[0] = 'view/'.$urlparts[0];
+						}
+						if(file_exists('module/'.$urlparts[1].'/'.$urlparts[0].'/'.$urlparts[2].'.js'))
+						{
+							echo file_get_contents('module/'.$urlparts[1].'/'.$urlparts[0].'/'.$urlparts[2].'.js').' ';
+						}
+						
+						if($urlparts[0] == 'store')
+						{
+							if(file_exists('module/'.$urlparts[1].'/'.$urlparts[0].'/'.$urlparts[2].'Store.php'))
+							{
+								$temp_class = ucwords($urlparts[2]);
+								if(!$urlparts[3]) $urlparts[3] = array();
+								if(!class_exists($temp_class))
+								{
+									include 'module/'.$urlparts[1].'/'.$urlparts[0].'/'.$urlparts[2].'Store.php';
+									$store[$urlparts[2]] = new $temp_class($CB, $urlparts[3]);
+								}else{
+									$store[$urlparts[2]]->__construct($CB, $urlparts[3]);
+								}
+							}
+							else
+							{
+								echo ' alert(\'No existe el fichero: module/'.$urlparts[1].'/'.$urlparts[0].'/'.$urlparts[2].'Store.php\') ';
+							}
+						}
+					}
+				}
+			}
+			die();
+		}
 		else
 		{
 			if($urlparts[1] == 'view'){
@@ -91,10 +143,9 @@
 			if(file_exists('module/'.$urlparts[0].'/'.$urlparts[1].'/'.$urlparts[2].'.js')){
 				include 'module/'.$urlparts[0].'/'.$urlparts[1].'/'.$urlparts[2].'.js';
 			
-			}else if($urlparts[1] == 'store'){
+			}
+			if($urlparts[1] == 'store'){
 								
-				
-				
 				if(file_exists('module/'.$urlparts[0].'/'.$urlparts[1].'/'.$urlparts[2].'Store.php'))
 				{
 					include 'module/'.$urlparts[0].'/'.$urlparts[1].'/'.$urlparts[2].'Store.php';

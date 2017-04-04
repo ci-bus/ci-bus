@@ -5,7 +5,7 @@ cb.define({
 	name: 'gotorave',
 
 	items: [{
-		appendTo: '#content',
+		renderTo: '#content',
 		xtype: 'row',
 		items: [{
 			xtype: 'col',
@@ -93,6 +93,7 @@ cb.define({
 					}
 				},{
 					xtype: 'panel',
+					reload: false,
 					type: 'primary',
 					id: 'player-panel',
 					css: { position: 'fixed', 

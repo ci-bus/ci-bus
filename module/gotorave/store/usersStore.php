@@ -173,7 +173,7 @@
 				$res2 = $CB->db->get('user');
 				if(!$res2){
 					$CB->db->reset();
-					$pass = base64_encode(rand(1000, 9999));
+					$pass = base64_encode(rand(100000, 999999));
 					$name = explode('@', $email)[0];
 					$res = $CB->db->insert('user', array(
 						'id' => NULL,

@@ -50,6 +50,18 @@ cb.require = function(dt, callback)
 	});
 }
 
+cb.loadAll = function(dt, callback)
+{
+	$.ajax({
+		dataType: "script",
+		cache: true,
+		method: 'post',
+		data: {data:JSON.stringify(dt)},
+		url: 'loadAll',
+		success: callback
+});
+}
+
 cb.loadLineal = function (arr)
 {
 	if($.isArray(arr[0]))
@@ -1282,7 +1294,7 @@ cb.module.bootstrapComponent = {
 	'row': function(opt){
 		var ele = document.createElement('div');
 		$(ele).addClass('row');
-		if(!opt.margin) opt.margin = '3px';
+		if(opt.margin==null || opt.margin==undefined) opt.margin = '3px';
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
@@ -1313,7 +1325,7 @@ cb.module.bootstrapComponent = {
 				$(ele).addClass('col-xs-offset-'+opt.offset);
 			}
 		}
-		if(!opt.padding)opt.padding = '5px';
+		if(opt.padding==null || opt.padding==undefined)opt.padding = '5px';
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
