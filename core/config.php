@@ -11,7 +11,8 @@
 		
 		"default_controller" => "gotorave",
 		"charset" => "UTF-8",
-		"title" => "Go to rave"
+		"title" => "Go to rave",
+		"localips" => array('127.0.0.1', '::1')
 	);
 	
 ?>

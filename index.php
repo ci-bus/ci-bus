@@ -1,27 +1,35 @@
 <?php session_start();
 
-	error_reporting(E_ERROR | E_WARNING | E_PARSE);
-	ini_set('display_errors', 1);
-	ini_set('display_startup_errors', 1);
+	error_reporting(E_ERROR);
+	ini_set('display_errors', 'on');
+	ini_set('display_startup_errors', 'on');
 	
 	include "core/Store.php";
 	
 	header('Content-Type: text/html; charset='.$CB->getConfig('charset'));
 
-	$turi = $_SERVER['REQUEST_URI'];
-	$tpath = substr(getcwd(), strlen($turi)*-1);
-	
 	$urlparts = false;
 		
-	for($i=0;$i<strlen($tpath);$i++)
+	if(in_array($_SERVER['REMOTE_ADDR'], $CB->getConfig('localips')))
 	{
-		if(substr($tpath, $i) == substr($turi, 0, strlen($tpath) - $i))
+		$turi = $_SERVER['REQUEST_URI'];
+		$tpath = substr(getcwd(), strlen($turi)*-1);
+	
+		for($i=0;$i<strlen($tpath);$i++)
 		{
-			if(substr($turi, strlen(substr($tpath, $i))+1))
+			if(substr($tpath, $i) == substr($turi, 0, strlen($tpath) - $i))
 			{
-				$urlparts = explode("/", substr($turi, strlen(substr($tpath, $i))+1));
+				if(substr($turi, strlen(substr($tpath, $i))+1))
+				{
+					$urlparts = explode("/", substr($turi, strlen(substr($tpath, $i))+1));
+				}
 			}
 		}
+	}
+	else
+	{
+		$turi = trim($_SERVER['REQUEST_URI'], "/");
+		$urlparts = explode('/', $turi);
 	}
 			
 	if ((!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') || $_FILES['file']) {
