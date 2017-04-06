@@ -16,7 +16,7 @@ cb.define({
 				'-o-background-size': 'cover',
 				'background-size': 'cover'
 			});
-			cb.loadLineal([
+			cb.loadAll([
 				['view', 'common', 'base'],
 				['view', 'gotorave', 'home']
 			]);
@@ -53,9 +53,43 @@ cb.define({
 	},
 	
 	home: function(){
-		if(confirm('¿Recargar toda la pagina?')){
-			cb.load('view', 'gotorave');
-		}
+		var ctr = this;
+		
+		ctr.showPopup([{
+			xtype: 'div',
+			text: '¿Quieres recargar toda la pagina?'
+		},{
+			xtype: 'button',
+			text: 'Si',
+			margin: '20px 0 0 0',
+			listener: {
+				click: function(){
+					cb.load('view', 'gotorave');
+					cb.effect($(this).parent().parent(), {
+						type: 'flipout',
+						dire: 'up',
+						fun: function(){
+							$(this).parent().remove();
+						}
+					});
+				}
+			}
+		},{
+			xtype: 'button',
+			text: 'No',
+			margin: '20px 0 0 10px',
+			listener: {
+				click: function(){
+					cb.effect($(this).parent().parent(), {
+						type: 'flipout',
+						dire: 'up',
+						fun: function(){
+							$(this).parent().remove();
+						}
+					});
+				}
+			}
+		}],'Alerta')
 	},
 	
 	login : function(){
@@ -155,7 +189,7 @@ cb.define({
 			}else{
 				$('#user-progress').find('.progress-bar').stop().animate({width: '0%'}, 'fast', function(){
 					$(this).parent().parent().css('display','none');
-					ctr.showError('No se ha podido crear el usuario, inténtelo mas tarde');
+					ctr.showPopup('No se ha podido crear el usuario, inténtelo mas tarde');
 				});
 			}
 		});
@@ -164,9 +198,9 @@ cb.define({
 	sharemusic: function(){
 		ctr = this;
 		if($("input[name='titulo']").val()==''){
-			ctr.showError('Introduce un título o nombre de la canción');
+			ctr.showPopup('Introduce un título o nombre de la canción');
 		}else if($("textarea[name='enlace']").val().search('http://')<0 && $("textarea[name='enlace']").val().search('https://')<0){
-			ctr.showError('Introduce algún enlace en la descripción');
+			ctr.showPopup('Introduce algún enlace en la descripción');
 		}else{
 			$('#music-progress').css('display', 'block');
 			cb.create({
@@ -227,7 +261,7 @@ cb.define({
 					}else{
 						$('#prog_save_userpanel').css('display', 'none').find('.progress-bar').css('width', '0%');
 						$(butsave).html('Guardar cambios');
-						ctr.showError('No se ha podido cargar la imagen');
+						ctr.showPopup('No se ha podido cargar la imagen');
 					}
 					ctr.saving_userpanel = false;
 				});
@@ -248,13 +282,13 @@ cb.define({
 					}else{
 						$('#prog_save_userpanel').css('display', 'none').find('.progress-bar').css('width', '0%');
 						$(butsave).html('Guardar cambios');
-						ctr.showError('No se ha podido guardar');
+						ctr.showPopup('No se ha podido guardar');
 					}
 					ctr.saving_userpanel = false;
 				});
 			}
 		}else{
-			ctr.showError('Los cambios se estan enviando');
+			ctr.showPopup('Los cambios se estan enviando');
 		}
 	},
 	
@@ -412,6 +446,66 @@ cb.define({
 		$(li).parent().remove();
 	},
 	
+	change_pass: function(){
+		var ctr = this;
+		ctr.showPopup({
+			xtype: 'form',
+			id: 'changepass',
+			items: [{
+				xtype: 'label',
+				text: 'Contraseña actual'
+			},{
+				xtype: 'input',
+				type: 'text',
+				name: 'last_pass'
+			},{
+				xtype: 'label',
+				text: 'Nueva contraseña',
+				margin: '10px 0 0 0'
+			},{
+				xtype: 'input',
+				type: 'text',
+				name: 'new_pass'
+			},{
+				xtype: 'button',
+				type: 'primary',
+				text: 'Cambiar contraseña',
+				margin: '20px 0 0 0',
+				listener: {
+					click: function(){
+						cb.ctr('gotorave', 'do_change_pass');
+					}
+				}
+			}]
+		}, 'Cambiar contraseña');
+	},
+	
+	do_change_pass: function(){
+		var last_pass = $('#changepass').find('input[name="last_pass"]').val(),
+		new_pass = $('#changepass').find('input[name="new_pass"]').val();
+		
+		if(last_pass && new_pass){
+			cb.create({
+				xtype: 'div',
+				padding: 10,
+				text: 'Cambiando contraseña...',
+				renderTo: '#changepass'
+			});
+			
+			cb.load('store', 'gotorave', 'userpanel', {'action': 'change_pass', 'last_pass': last_pass, 'new_pass': new_pass}, function(res){
+				if(res == 'true'){
+					cb.create({
+						xtype: 'div',
+						padding: 10,
+						size: '17px',
+						text: 'Contraseña cambiada con éxito!',
+						renderTo: '#changepass'
+					});
+				}
+			});
+		}
+	},
+	
 	inforeg: function(){
 		cb.popup({
 			id: 'popupinforeg',
@@ -460,7 +554,14 @@ cb.define({
 		});
 	},
 	
-	showError: function(msg){
+	showPopup: function(msg, title){
+		if(!$.isPlainObject(msg) && !$.isArray(msg)){
+			msg = {
+				xtype: 'span',
+				text: msg
+			};
+		}
+		if(!title) title = 'Información';
 		cb.popup({
 			type: 'warning',
 			effect: {
@@ -497,12 +598,12 @@ cb.define({
 				},{
 					xtype: 'div',
 					size: 19,
-					text: 'Información',
+					text: title,
 					cls: 'text-center'
 				}]
 			},{
 				xtype: 'body',
-				text: msg
+				items: msg
 			}]
 		});
 	},

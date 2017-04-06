@@ -8,7 +8,7 @@ cb.define({
 		id: 'userpanel',
 		items: [{
 			xtype: 'head',
-			title: 'Panel de usuario'
+			title: 'Perfil de usuario'
 		},{
 			xtype: 'body',
 			css: {'padding-bottom':'5px'},
@@ -73,6 +73,16 @@ cb.define({
 							cb.ctr('gotorave', 'load_music', 'me');
 						}
 					}
+				},{
+					xtype: 'button',
+					pull: 'right',
+					glyphicon: 'key',
+					text: 'Tu contraseña',
+					listener: {
+						click: function(){
+							cb.ctr('gotorave', 'change_pass');
+						}
+					}
 				}]
 			},{
 				xtype: 'form',
@@ -98,7 +108,7 @@ cb.define({
 					width: '100%'
 				},{
 					xtype: 'row',
-					margin: 0,
+					margin: '0px -5px',
 					items: [{
 						xtype: 'col',
 						padding: '0px 0px 5px 5px',
@@ -109,7 +119,7 @@ cb.define({
 						css: {'padding-top': 0}
 					},{
 						xtype: 'col',
-						padding: '5px 0px 5px 0px',
+						css: {'margin-top':'10px'},
 						size: {
 							xs: 6,
 							sm: 4
@@ -118,7 +128,6 @@ cb.define({
 							xtype: 'input',
 							type: 'file',
 							pull: 'left',
-							css: {'margin-top':'10px'},
 							id: 'userimageinput',
 							name: 'userimageinput',
 							text: 'Cambiar imagen',
@@ -147,7 +156,7 @@ cb.define({
 						}]
 					},{
 						xtype: 'col',
-						padding: '5px 0px 5px 0px',
+						css: {'margin-top':'10px'},
 						size: {
 							xs: 6,
 							sm: 4
@@ -157,11 +166,10 @@ cb.define({
 							group: {
 								cls: 'pull-right'
 							},
-							glyphicon: 'user',
+							glyphicon: 'music',
 							caret: false,
 							text: ' A&ntilde;adir tag ',
 							size: 'small',
-							css: {'margin-top':'10px'},
 							id: 'add-tag',
 							storelink: {
 								id: 'du-add-tag-strlk',
@@ -187,7 +195,7 @@ cb.define({
 						}]
 					},{
 						xtype: 'col',
-						padding: '5px 0px 5px 0px',
+						css: {'margin-top':'10px'},
 						size: {
 							xs: 12,
 							sm: 4
@@ -195,7 +203,6 @@ cb.define({
 						items: [{
 							xtype: 'button',
 							type: 'primary',
-							css: {'margin-top':'10px'},
 							cls: 'pull-center',
 							text: 'Guardar cambios',
 							width: '100%',

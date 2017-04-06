@@ -148,7 +148,7 @@ cb.define({
 				items: [{
 					
 					xtype: 'dropdown-menu',
-					text: ' Chat ',
+					text: ' Chat',
 					glyphicon: 'comment',
 					css: {'font-size':'17px'},
 					id: 'chat-menu-button',
@@ -177,6 +177,7 @@ cb.define({
 					}
 				},{
 					xtype: 'dropdown-menu',
+					text: ' Perfil',
 					glyphicon: 'user',
 					css: { 'font-size': 17 },
 					caret: false,

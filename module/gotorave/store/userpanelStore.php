@@ -51,6 +51,15 @@
 					echo $CB->db->error();
 					die();
 				}
+			}else if($data['action'] == 'change_pass'){
+				$CB->db->where('id', $_SESSION['user_id']);
+				$CB->db->where('pass', $data['last_pass']);
+				if(!$CB->db->update('user', array("pass" => $data['new_pass']))){
+					echo $CB->db->error();
+					die();
+				}else{
+					die('true');
+				}
 			}else{
 				die('false');
 			}

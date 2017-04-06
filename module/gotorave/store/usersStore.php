@@ -185,7 +185,14 @@
 						'add_friends' => 1
 					));
 					if($res){
-						if(mail($email, 'Go to Rave - Usuario registrado', 'Enhorabuena, has sido invitado para unirte a Go to Rave, esta plataforma es privada, haz buen uso de ella.<br><br>Usuario: '.$email.'<br><br>Pass: '.$pass)){
+						$cabeceras = 'From: info@gotorave.com' . "\r\n" .
+							'Reply-To: miguelelinventor@gmail.com' . "\r\n" .
+							'X-Mailer: PHP/' . phpversion();
+						if(mail($email, 'Go to Rave - Usuario registrado', "Enhorabuena, has sido invitado para unirte a Go to Rave, esta plataforma es privada, haz buen uso de ella. 
+						
+						 Usuario: ".$email." 
+						
+						 Contrase&ntilde;a: ".$pass, $cabeceras)){
 							$CB->db->reset();
 							$CB->db->where('id', $_SESSION['user_id']);
 							$CB->db->update('user', array(

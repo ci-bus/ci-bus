@@ -92,7 +92,7 @@
 			$CB->db->from("music");
 			$CB->db->orderBy("id", "desc");
 			
-			if($res = $CB->db->get())
+			if($res = $CB->db->get_array())
 			{
 				foreach($res as $k => $r0)
 				{

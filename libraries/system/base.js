@@ -826,9 +826,6 @@ cb.module.bootstrapComponent = {
 				$(but).append(cb.create({xtype:'span', cls:'caret'}));
 			}
 		}
-		if(opt.glyphicon){
-			$(but).prepend(cb.create({xtype:'glyphicon', type:opt.glyphicon}));
-		}
 		$(ele).append(but);
 		var ul = document.createElement('ul');
 		$(ul).addClass('dropdown-menu').attr('aria-labelledby',opt.id);
@@ -1445,7 +1442,7 @@ cb.props = {
 	},
 	'text': function(ele, opt){
 		if(!opt.notext){
-			$(ele).html(opt.text);
+			$(ele).append(opt.text);
 		}
 		return ele;
 	},
@@ -1651,7 +1648,6 @@ cb.create = function(opt){
 			
 cb.common_prop = function(ele, opt)
 {	
-	
 	for (var prop in opt) {
 		if(this.props[prop]){
 			ele = this.props[prop](ele, opt);

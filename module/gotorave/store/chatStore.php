@@ -1,6 +1,6 @@
 <?php
 	
-	class Chat extends Store {
+	class Chat {
 		
 		public function __construct($CB, $data = array())
 		{
@@ -21,11 +21,14 @@
 		
 		public function salas($CB, $data)
 		{
-			$CB->db->select("id, name");
+			$CB->db->reset();
+			$CB->db->select("chat.id, chat.name");
 			$CB->db->from("chat");
-			if($res = $CB->db->get())
+			if($res = $CB->db->get_array())
 			{
-				$this->parseStore( 'chat', array( 'salas' => $res ));
+				$CB->parseStore( 'chat', array( 'salas' => $res ));
+			}else{
+				echo $CB->db->error();
 			}
 		}
 		
@@ -116,7 +119,7 @@
 						
 						$res[$r]->msg = $CB->embed_multimedia($res[$r]->msg);
 					}
-					$this->parseStore(
+					$CB->parseStore(
 						'chat', array(
 							'name' => $_SESSION['chat_name'],
 							'chat' => $res
@@ -125,7 +128,7 @@
 				}
 				else
 				{
-					$this->parseStore(
+					$CB->parseStore(
 						'chat', array(
 							'name' => $_SESSION['chat_name'],
 							'chat' => array()

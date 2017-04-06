@@ -5,13 +5,17 @@
 	ini_set('display_startup_errors', 1);
 	
 	include "core/Store.php";
+	include "libraries/jsmin-php-master/jsmin.php";
 	
 	header('Content-Type: text/html; charset='.$CB->getConfig('charset'));
 
 	$urlparts = false;
 		
-	if(in_array($_SERVER['REMOTE_ADDR'], $CB->getConfig('localips')))
+	if(in_array($_SERVER['REMOTE_ADDR'], $CB->getConfig('local_ips')))
 	{
+		if($CB->getConfig('auto_min_js') == 'local'){
+			$CB->setConfig('auto_min_js', true);
+		}
 		$turi = $_SERVER['REQUEST_URI'];
 		$tpath = substr(getcwd(), strlen($turi)*-1);
 	
@@ -28,6 +32,9 @@
 	}
 	else
 	{
+		if($CB->getConfig('auto_min_js') == 'local'){
+			$CB->setConfig('auto_min_js', false);
+		}
 		$turi = trim($_SERVER['REQUEST_URI'], "/");
 		$urlparts = explode('/', $turi);
 	}
@@ -36,99 +43,101 @@
 		
 		if($urlparts[0] == 'require')
 		{
-			$data = $_POST;
-			$value = $data['data'];
-			if($data)
+			$value = json_decode($_POST['data'], true);
+			if($value['xtype']){
+				$value = array($value);
+			}
+			if(is_array($value))
 			{
-				for($i=0;$i<count($data);$i++)
+				$data = array();
+				for($i=0;$i<count($value);$i++)
 				{
-					if($data[$i]['xtype'] == 'store')
-					{
-						if($data[$i]['module'])
-						{
-							if(!$data[$i]['name']) $data[$i]['name'] = $data[$i]['module'];
-							$temp_file = 'module/'.$data[$i]['module'].'/'.strtolower($data[$i]['xtype']).'/'.$data[$i]['name'].'Store.php';
-							if(file_exists($temp_file))
-							{
-								include $temp_file;
-								$temp_class = ucwords($data[$i]['name']);
-								$store = new $temp_class($data[$i]['data']);
-							}
-						}
+					if(!$value[$i]['data']){
+						$value[$i]['data'] = array();
 					}
-					else
-					{
-						if(!$data[$i]['name']){
-							$data[$i]['name'] = $data[$i]['module'];
-						}
-						if($data[$i]['xtype'] == 'view'){
-							$data[$i]['name'] .= 'View';
-						}
-						if($data[$i]['xtype'] == 'component'){
-							$data[$i]['name'] .= 'Component';
-							$data[$i]['xtype'] = 'view/'.$data[$i]['xtype'];
-						}
-						$temp_file = 'module/'.$data[$i]['module'].'/'.strtolower($data[$i]['xtype']).'/'.$data[$i]['name'].'.js';
-						if(file_exists($temp_file))
-						{
-							include $temp_file;
-						}
-					}
+					array_push($data, array($value[$i]['xtype'], $value[$i]['module'], $value[$i]['name'], $value[$i]['data']));
 				}
 			}
 		}
 		else if($urlparts[0] == 'loadAll')
 		{
-
 			$data = json_decode($_POST['data'], true);
-			if(is_array($data))
+		}
+		else if(is_array($urlparts))
+		{
+			$data= array(array($urlparts[1], $urlparts[0], $urlparts[2], $_POST));
+		}
+		
+		if(is_array($data))
+		{
+			$store = array();
+			foreach($data as $dt)
 			{
-				$store = array();
-				foreach($data as $dt)
+				if(is_array($dt))
 				{
-					if(is_array($dt))
+					if(!$dt[2]){
+						$dt[2] = $dt[1];
+					}
+											
+					if($dt[0] == 'view'){
+						$dt[2] .= 'View';
+					}
+					if($dt[0] == 'component'){
+						$dt[2] .= 'Component';
+						$dt[0] = 'view/'.$dt[0];
+					}
+					if(file_exists('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.min.js'))
 					{
-						$urlparts = $dt;
-						
-						if(!$urlparts[2]){
-							$urlparts[2] = $urlparts[1];
+						if($CB->getConfig('auto_min_js') && file_exists('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.js') && filemtime('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.min.js') != filemtime('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.js')){
+							$codemin = JSMin::minify(file_get_contents('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.js'));
+							$min = fopen('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.min.js', "w+");
+							fwrite($min, $codemin);
+							fclose($min);
+							$time_ctr = time();
+							touch('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.min.js', $time_ctr);
+							touch('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.js', $time_ctr);
+							echo $codemin;
+						}else{
+							echo file_get_contents('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.min.js');
 						}
-												
-						if($urlparts[0] == 'view'){
-							$urlparts[2] .= 'View';
+					}
+					else if(file_exists('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.js'))
+					{
+						if($CB->getConfig('auto_min_js')){
+							$codemin = JSMin::minify(file_get_contents('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.js'));
+							$min = fopen('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.min.js', "w+");
+							fwrite($min, $codemin);
+							fclose($min);
+							$time_ctr = time();
+							touch('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.min.js', $time_ctr);
+							touch('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.js', $time_ctr);
+							echo $codemin;
+						}else{
+							echo file_get_contents('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.js');
 						}
-						if($urlparts[0] == 'component'){
-							$urlparts[2] .= 'Component';
-							$urlparts[0] = 'view/'.$urlparts[0];
-						}
-						if(file_exists('module/'.$urlparts[1].'/'.$urlparts[0].'/'.$urlparts[2].'.js'))
+					}
+					
+					if($dt[0] == 'store')
+					{
+						if(file_exists('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'Store.php'))
 						{
-							echo file_get_contents('module/'.$urlparts[1].'/'.$urlparts[0].'/'.$urlparts[2].'.js').' ';
+							$temp_class = ucwords($dt[2]);
+							if(!class_exists($temp_class))
+							{
+								include 'module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'Store.php';
+							}
+							$store[$dt[2]] = new $temp_class($CB, $dt[3]);
 						}
-						
-						if($urlparts[0] == 'store')
+						else
 						{
-							if(file_exists('module/'.$urlparts[1].'/'.$urlparts[0].'/'.$urlparts[2].'Store.php'))
-							{
-								$temp_class = ucwords($urlparts[2]);
-								if(!$urlparts[3]) $urlparts[3] = array();
-								if(!class_exists($temp_class))
-								{
-									include 'module/'.$urlparts[1].'/'.$urlparts[0].'/'.$urlparts[2].'Store.php';
-									$store[$urlparts[2]] = new $temp_class($CB, $urlparts[3]);
-								}else{
-									$store[$urlparts[2]]->__construct($CB, $urlparts[3]);
-								}
-							}
-							else
-							{
-								echo ' alert(\'No existe el fichero: module/'.$urlparts[1].'/'.$urlparts[0].'/'.$urlparts[2].'Store.php\') ';
-							}
+							echo 'alert(\'No existe el fichero: module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'Store.php\');';
 						}
 					}
 				}
 			}
-			die();
+		}
+		die();
+			/*
 		}
 		else
 		{
@@ -159,6 +168,7 @@
 				}
 			}
 		}
+		*/
 		
 	} else {
 		
