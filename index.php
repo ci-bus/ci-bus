@@ -65,7 +65,7 @@
 		}
 		else if(is_array($urlparts))
 		{
-			$data= array(array($urlparts[1], $urlparts[0], $urlparts[2], $_POST));
+			$data = array(array($urlparts[1], $urlparts[0], $urlparts[2], $_POST));
 		}
 		
 		if(is_array($data))
@@ -88,7 +88,7 @@
 					}
 					if(file_exists('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.min.js'))
 					{
-						if($CB->getConfig('auto_min_js') && file_exists('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.js') && filemtime('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.min.js') != filemtime('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.js')){
+						if($CB->getConfig('auto_min_js') === true && file_exists('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.js') && filemtime('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.min.js') != filemtime('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.js')){
 							$codemin = JSMin::minify(file_get_contents('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.js'));
 							$min = fopen('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.min.js', "w+");
 							fwrite($min, $codemin);
@@ -103,7 +103,7 @@
 					}
 					else if(file_exists('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.js'))
 					{
-						if($CB->getConfig('auto_min_js')){
+						if($CB->getConfig('auto_min_js') === true){
 							$codemin = JSMin::minify(file_get_contents('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.js'));
 							$min = fopen('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.min.js', "w+");
 							fwrite($min, $codemin);
@@ -119,14 +119,15 @@
 					
 					if($dt[0] == 'store')
 					{
+						$temp_class = ucwords($dt[2]);
+						
 						if(file_exists('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'Store.php'))
 						{
-							$temp_class = ucwords($dt[2]);
-							if(!class_exists($temp_class))
+							if(!$store[$temp_class])
 							{
 								include 'module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'Store.php';
 							}
-							$store[$dt[2]] = new $temp_class($CB, $dt[3]);
+							$store[$temp_class] = new $temp_class($CB, $dt[3]);
 						}
 						else
 						{
@@ -136,39 +137,6 @@
 				}
 			}
 		}
-		die();
-			/*
-		}
-		else
-		{
-			if($urlparts[1] == 'view'){
-				$urlparts[2] .= 'View';
-			}
-			if($urlparts[1] == 'component'){
-				$urlparts[2] .= 'Component';
-				$urlparts[1] = 'view/'.$urlparts[1];
-			}
-			
-			if(file_exists('module/'.$urlparts[0].'/'.$urlparts[1].'/'.$urlparts[2].'.js')){
-				include 'module/'.$urlparts[0].'/'.$urlparts[1].'/'.$urlparts[2].'.js';
-			
-			}
-			if($urlparts[1] == 'store'){
-								
-				if(file_exists('module/'.$urlparts[0].'/'.$urlparts[1].'/'.$urlparts[2].'Store.php'))
-				{
-					include 'module/'.$urlparts[0].'/'.$urlparts[1].'/'.$urlparts[2].'Store.php';
-										
-					$temp_class = ucwords($urlparts[2]);
-					$store = new $temp_class($CB, $_POST);
-				}
-				else
-				{
-					echo 'alert(\'No existe el fichero: module/'.$urlparts[0].'/'.$urlparts[1].'/'.$urlparts[2].'Store.php\')';
-				}
-			}
-		}
-		*/
 		
 	} else {
 		
@@ -180,19 +148,16 @@
 		<title><?php echo $CB->getConfig('title'); ?></title>
 		<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $CB->getConfig('charset'); ?>" />
 		
+		<link rel="stylesheet" type="text/css" href="main.css" />
+
 		<script src="libraries/jQuery/jQuery.min.js"></script>
-		<link rel="stylesheet" href="libraries/bootstrap/css/bootstrap.min.css">
-		<link rel="stylesheet" href="libraries/bootstrap/css/extra.css">
-		<link rel="stylesheet" href="libraries/fa-icons/css/font-awesome.min.css">
-		<link rel="stylesheet" href="assets/css/style.css">
-		
 		<script type="text/javascript" src="libraries/system/cookie.js"></script>
 		<script type="text/javascript" src="libraries/system/cacheJs.js"></script>
-		<script type="text/javascript" src="libraries/system/base.js"></script>
+		<script type="text/javascript" src="libraries/system/base.min.js"></script>
 		
 		<style>@viewport {width:device-width;}</style>
-		<link name="apple-touch-icon" href="src/folder_program/bandeja/img/icono.png" />
-		<link name="apple-touch-startup-image" href="src/folder_program/bandeja/img/icono.png" />
+		<link name="apple-touch-icon" href="" />
+		<link name="apple-touch-startup-image" href="" />
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-status-bar-style" content="default" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">

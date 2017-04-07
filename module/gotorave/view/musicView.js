@@ -76,6 +76,7 @@ cb.define({
 										xs: 6,
 										sm: 4
 									},
+									padding: '5px 5px 0 0',
 									items: [{
 										xtype: 'button',
 										cls: 'pull-left',
@@ -136,6 +137,7 @@ cb.define({
 										xs: 12,
 										sm: 4
 									},
+									padding: '5px 0 0 0',
 									items: [{
 										xtype: 'button',
 										type: 'primary',

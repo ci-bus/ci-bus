@@ -13,12 +13,14 @@ $.cachedScript = function(url,type,options) {
 		options = $.extend( options || {}, {
 			dataType: "script",
 			cache: true,
+			async:true, 
 			url: url
 		});
 	}else if(ext=='css'){
 		$("<link/>", {
 		   rel: "stylesheet",
 		   cache: true,
+		   async:true, 
 		   type: "text/css",
 		   href: url
 		}).appendTo("head");

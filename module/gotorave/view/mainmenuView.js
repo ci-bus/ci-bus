@@ -13,12 +13,11 @@ cb.define({
 				cls: 'navbar-brand',
 				text: 'Go to Rave',
 				listener: {
-					click: function(){
+					dblclick: function(){
 						cb.ctr('gotorave', 'home');
 					}
 				}
 			}]
-			
 		},{
 			xtype: 'collapse',
 			items: [{

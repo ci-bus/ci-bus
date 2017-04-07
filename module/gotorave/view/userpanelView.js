@@ -15,9 +15,6 @@ cb.define({
 			items: [{
 				xtype: 'div',
 				css: {'margin-bottom': '5px'},
-				defaults: {
-					css: {'margin-bottom': '5px'}
-				},
 				items: [{
 					xtype: 'button',
 					color: 'green',
@@ -58,7 +55,12 @@ cb.define({
 						}
 					}
 				},{
+					xtype: 'hr',
+					margin: 10,
+					border: 0
+				},{
 					xtype: 'button',
+					css: {'margin-bottom': 10},
 					text: 'Tus eventos',
 					listener: {
 						click: function(){
@@ -67,6 +69,7 @@ cb.define({
 					}
 				},{
 					xtype: 'button',
+					css: {'margin-bottom': 10},
 					text: 'Tu música',
 					listener: {
 						click: function(){
@@ -75,7 +78,7 @@ cb.define({
 					}
 				},{
 					xtype: 'button',
-					pull: 'right',
+					css: {'margin-bottom': 10},
 					glyphicon: 'key',
 					text: 'Tu contraseña',
 					listener: {

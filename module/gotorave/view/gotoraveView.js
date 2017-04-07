@@ -82,12 +82,26 @@ cb.define({
 						store: 'chat',
 						field: 'chat',
 						fastset: true, //To set value fastly, not support listener
+						alterdata: {
+							'online': function(onl){
+								if(onl==1){
+									return cb.create({
+										xtype: 'badge',
+										text: 'online',
+										pull: 'right',
+										color: '#555',
+										css: {'background-color': '#ccfbcc'}
+									}).outerHTML;
+								}
+								else return ' ';
+							}
+						},
 						structure: {
 							xtype: 'callout',
 							margin: '3px',
 							padding: '5px',
 							type: btoa('chat.type'),
-							title: btoa('chat.user'),
+							title: btoa('chat.user')+btoa('online'),
 							text: btoa('chat.msg')
 						}
 					}

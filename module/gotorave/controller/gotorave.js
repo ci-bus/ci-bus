@@ -57,38 +57,43 @@ cb.define({
 		
 		ctr.showPopup([{
 			xtype: 'div',
-			text: '¿Quieres recargar toda la pagina?'
-		},{
-			xtype: 'button',
-			text: 'Si',
-			margin: '20px 0 0 0',
-			listener: {
-				click: function(){
-					cb.load('view', 'gotorave');
-					cb.effect($(this).parent().parent(), {
-						type: 'flipout',
-						dire: 'up',
-						fun: function(){
-							$(this).parent().remove();
-						}
-					});
+			cls: 'text-center',
+			size: '17px',
+			text: '¿Quieres recargar toda la pagina?',
+			items: [{
+				xtype: 'br'
+			},{
+				xtype: 'button',
+				text: 'Si',
+				margin: '15px 0 0 0',
+				listener: {
+					click: function(){
+						cb.load('view', 'gotorave');
+						cb.effect($(this).parent().parent().parent(), {
+							type: 'flipout',
+							dire: 'down',
+							fun: function(){
+								$(this).trigger('destroy');
+							}
+						});
+					}
 				}
-			}
-		},{
-			xtype: 'button',
-			text: 'No',
-			margin: '20px 0 0 10px',
-			listener: {
-				click: function(){
-					cb.effect($(this).parent().parent(), {
-						type: 'flipout',
-						dire: 'up',
-						fun: function(){
-							$(this).parent().remove();
-						}
-					});
+			},{
+				xtype: 'button',
+				text: 'No',
+				margin: '15px 0 0 10px',
+				listener: {
+					click: function(){
+						cb.effect($(this).parent().parent().parent(), {
+							type: 'flipout',
+							dire: 'up',
+							fun: function(){
+								$(this).trigger('destroy');
+							}
+						});
+					}
 				}
-			}
+			}]
 		}],'Alerta')
 	},
 	
@@ -456,21 +461,34 @@ cb.define({
 				text: 'Contraseña actual'
 			},{
 				xtype: 'input',
-				type: 'text',
+				type: 'password',
 				name: 'last_pass'
 			},{
 				xtype: 'label',
-				text: 'Nueva contraseña',
+				text: 'Contraseña nueva',
 				margin: '10px 0 0 0'
 			},{
 				xtype: 'input',
-				type: 'text',
+				type: 'password',
 				name: 'new_pass'
+			},{
+				xtype: 'button',
+				text: 'Ver',
+				margin: '20px 0 0 0',
+				listener: {
+					mouseover: function(){
+						$(this).parent().find('input').attr('type', 'text');
+					},
+					mouseout: function(){
+						$(this).parent().find('input').attr('type', 'password');
+					}
+				}
 			},{
 				xtype: 'button',
 				type: 'primary',
 				text: 'Cambiar contraseña',
-				margin: '20px 0 0 0',
+				pull: 'right',
+				margin: '20px 0 0 10px',
 				listener: {
 					click: function(){
 						cb.ctr('gotorave', 'do_change_pass');

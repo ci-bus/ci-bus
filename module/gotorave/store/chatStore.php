@@ -88,17 +88,27 @@
 			return $res;
 		}
 		
+		private function reg_online($CB){
+			$CB->db->where( 'user.id', $_SESSION['user_id'] );
+			$CB->db->update('user', array(
+				'online'=> time()
+			));
+			$CB->db->reset();
+		}
+		
 		public function read($CB, $data)
 		{
 			if(empty($data))
 			{
-				$CB->db->select( "user.id as user_id, user.name as user, chat_msg.msg as msg" );
+				$this->reg_online($CB);
+				$CB->db->select( "user.online as online, user.id as user_id, user.name as user, chat_msg.id as id, chat_msg.msg as msg" );
 				$CB->db->from( "chat_msg" );
 				$CB->db->join( 'user', 'chat_msg.user_id = user.id' );
 				$CB->db->where( 'chat_msg.chat_id', $_SESSION['chat_sala'] );
-				$CB->db->orderby( 'chat_msg.id', 'DESC' );
+				$CB->db->groupBy( 'chat_msg.id' );
+				$CB->db->orderBy( 'chat_msg.id', 'DESC' );
 				$CB->db->limit(20);
-				if($res = $CB->db->get())
+				if($res = $CB->db->get_array())
 				{
 					$friends = $this->getfriend($CB, $_SESSION['user_id']);
 					if(is_object($res)) $res = array($res);
@@ -115,6 +125,12 @@
 						else
 						{
 							$res[$r]->type = "warning";
+						}
+						
+						if(time()-$res[$r]->online > 5){
+							$res[$r]->online = 0;
+						}else{
+							$res[$r]->online = 1;
 						}
 						
 						$res[$r]->msg = $CB->embed_multimedia($res[$r]->msg);

@@ -37,7 +37,7 @@
 					$this->parseStore('users', array('usr' => array()));
 				}
 			}
-			$CB->db->select("user.id, name, image");
+			$CB->db->select("user.id, name, image, online");
 			if(is_numeric($data['id_tag']))
 			{
 				$CB->db->join("user_tag", "user_tag.user_id=user.id");

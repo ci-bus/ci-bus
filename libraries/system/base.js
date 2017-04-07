@@ -1795,7 +1795,11 @@ cb.popup = function(pp){
 			}
 		});
 		var tid = pp.id;
-		$(popup).append(this.create(pp));
+		var pp_item = this.create(pp);
+		$(pp_item).bind('destroy', function(){
+			$(this).parent().remove();
+		});
+		$(popup).append(pp_item);
 		$(document.body).append(popup);
 		this.verticalCenter('#'+tid, pp.offsetTop);
 		if(pp.effect){
