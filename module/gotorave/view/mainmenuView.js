@@ -176,7 +176,7 @@ cb.define({
 					}
 				},{
 					xtype: 'dropdown-menu',
-					text: ' Perfil',
+					text: ' '+cb.getConfig('user_data')['name'],
 					glyphicon: 'user',
 					css: { 'font-size': 17 },
 					caret: false,

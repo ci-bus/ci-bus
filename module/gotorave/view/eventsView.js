@@ -17,7 +17,7 @@ cb.define({
 				'date': function(dt){
 					var pdt = dt.split('-');
 					if(pdt[2]){
-						var res = pdt[2]+" "+cb.getConfig('meses', pdt[1])+" "+pdt[0];
+						var res = pdt[2]+" "+cb.getConfig('meses', pdt[1]*1)+" "+pdt[0];
 						return res;
 					}
 				}
@@ -70,10 +70,6 @@ cb.define({
 								xtype: 'span',
 								text: btoa('postal')
 							}]
-						},{
-							xtype: 'div',
-							id: 'div1234',
-							text: 'test'
 						}]
 					},{
 						xtype: 'footer',

@@ -5,7 +5,7 @@ cb.define({
 	name: 'gotorave',
 	
 	onload: function(){
-		cb.setConfig('meses', ['ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC'])
+		cb.setConfig('meses', [' ', 'ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC'])
 		
 		if(getCookie('user_id') == 0)
 		{

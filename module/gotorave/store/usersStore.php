@@ -177,7 +177,7 @@
 					$name = explode('@', $email)[0];
 					$res = $CB->db->insert('user', array(
 						'id' => NULL,
-						'email' => $email,
+						'email' => strtolower($email),
 						'pass' => $pass,
 						'name' => $name,
 						'type' => 'user',

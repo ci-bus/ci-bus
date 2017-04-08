@@ -14,6 +14,7 @@
 		{
 			$CB->db->select("id, name, type");
 			$CB->db->from("tags");
+			$CB->db->orderBy("id", "ASC");
 			if($res = $CB->db->get())
 			{
 				if(is_array($res))
