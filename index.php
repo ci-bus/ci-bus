@@ -150,12 +150,11 @@
 		
 		<link rel="stylesheet" type="text/css" href="main.css" />
 
-		<script src="libraries/jQuery/jQuery.min.js"></script>
+		<script type="text/javascript" src="libraries/jQuery/jQuery.min.js"></script>
 		<script type="text/javascript" src="libraries/system/cookie.js"></script>
 		<script type="text/javascript" src="libraries/system/cacheJs.js"></script>
-		<script type="text/javascript" src="libraries/system/base.min.js"></script>
+		<script type="text/javascript" src="libraries/system/base.js"></script>
 		
-		<style>@viewport {width:device-width;}</style>
 		<link name="apple-touch-icon" href="" />
 		<link name="apple-touch-startup-image" href="" />
 		<meta name="apple-mobile-web-app-capable" content="yes" />

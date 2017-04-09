@@ -147,7 +147,7 @@ cb.define({
 				items: [{
 					
 					xtype: 'dropdown-menu',
-					text: ' Chat',
+					text: ' Chat ',
 					glyphicon: 'comment',
 					css: {'font-size':'17px'},
 					id: 'chat-menu-button',

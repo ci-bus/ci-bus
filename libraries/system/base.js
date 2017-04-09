@@ -269,7 +269,7 @@ cb.storeSetObject = function(strlk, field, data)
 	if($.isPlainObject(data) && strlk['field'] == field && strlk.structure)
 	{
 		strlk.structure.data = data;
-		var ele = this.create(strlk.structure);
+		var ele = this.create(strlk.structure, data);
 		var Avalues = [];
 		var AAlinks = [];
 		for(var field2 in data)
@@ -325,7 +325,7 @@ cb.storeSetObject = function(strlk, field, data)
 				}
 			}
 		}
-		
+				
 		if(strlk.fastset)
 		{
 			var htmlString = $(ele).prop('outerHTML');
@@ -579,7 +579,6 @@ cb.render = function(obj, callback)
 }
 
 cb.extend = function(opt1, opt2){
-	console.log('Extend', opt2);
 	if(opt2.forEach){
 		opt2.forEach(function(ele, idx){
 			opt1[idx] = ele;
@@ -589,7 +588,7 @@ cb.extend = function(opt1, opt2){
 }
 
 cb.module.bootstrapComponent = {
-	'button': function(opt){
+	'button': function(opt, record){
 		var ele = document.createElement(opt.xtype);
 		if(!opt.type) opt.type = 'default';
 		opt.cls? opt.cls = 'btn btn-'+opt.type+' '+opt.cls : opt.cls = 'btn btn-'+opt.type;
@@ -599,7 +598,7 @@ cb.module.bootstrapComponent = {
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'nav': function(opt){
+	'nav': function(opt, record){
 		if(!opt.toggle)opt.toggle = cb.autoname();
 		if(!opt.renderTo || opt.renderTo == 'main') opt.renderTo = 'header';
 		var ele = document.createElement('nav');
@@ -634,20 +633,20 @@ cb.module.bootstrapComponent = {
 					opt.items[a].xtype = 'navbar-collapse';
 					opt.items[a].cls = opt.toggle;
 				}
-				$(conta).append(cb.create(opt.items[a]));
+				$(conta).append(cb.create(opt.items[a], record));
 			}
 		}
 		opt.noitems = true;
 		$(ele).append(conta);
 		return ele;
 	},
-	'navbar-collapse': function(opt){
+	'navbar-collapse': function(opt, record){
 		var ele = document.createElement('div');
 		$(ele).addClass('collapse navbar-collapse');
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'navbar-header': function(opt){
+	'navbar-header': function(opt, record){
 		var ele = document.createElement('div');
 		$(ele).addClass('navbar-header');
 		ele = cb.common_prop(ele, opt);
@@ -667,25 +666,19 @@ cb.module.bootstrapComponent = {
 			},{
 				xtype: 'span',
 				cls: 'icon-bar'
-			},{
-				xtype: 'span',
-				cls: 'icon-bar'
-			},{
-				xtype: 'span',
-				cls: 'icon-bar'
 			}]
 		}));
 		return ele;
 	},
-	'button-menu': function(opt){
+	'button-menu': function(opt, record){
 		opt.xtype = 'button';
-		conta = cb.create(opt);
+		conta = cb.create(opt, record);
 		$(conta).addClass('navbar-btn');
 		ele = document.createElement('li');
 		$(ele).append(conta);
 		return ele;
 	},
-	'text-menu': function(opt){
+	'text-menu': function(opt, record){
 		conta = document.createElement('p');
 		$(conta).addClass('navbar-text');
 		conta = cb.common_prop(conta, opt);
@@ -693,7 +686,7 @@ cb.module.bootstrapComponent = {
 		$(ele).append(conta);
 		return ele;
 	},
-	'navbar': function(opt){
+	'navbar': function(opt, record){
 		opt.cls? opt.cls = 'nav navbar-nav '+opt.cls : opt.cls = 'nav navbar-nav';
 		if(opt.type)
 		{
@@ -713,13 +706,13 @@ cb.module.bootstrapComponent = {
 				if(opt.items[a].xtype == 'dropdown') opt.items[a].xtype = 'dropdown-menu';
 				if(opt.items[a].xtype == 'button') opt.items[a].xtype = 'button-menu';
 				if(opt.items[a].xtype == 'text') opt.items[a].xtype = 'text-menu';
-				$(ele).append(cb.create(opt.items[a]));
+				$(ele).append(cb.create(opt.items[a], record));
 			}
 		}
 		opt.noitems = true;
 		return ele;
 	},
-	'dropdown-menu': function(opt){
+	'dropdown-menu': function(opt, record){
 		opt.cls? opt.cls = 'dropdown '+opt.cls : opt.cls = 'dropdown';
 		var ele = document.createElement('li');
 		if(!opt.type) opt.type = 'dropdown';
@@ -769,7 +762,7 @@ cb.module.bootstrapComponent = {
 					}
 					else
 					{
-						$(li).append(cb.create(opt.items[a]));
+						$(li).append(cb.create(opt.items[a], record));
 					}
 					$(ul).append(li);
 				}
@@ -779,7 +772,7 @@ cb.module.bootstrapComponent = {
 		opt.noitems = true;
 		return ele;
 	},
-	'dropdown': function(opt){
+	'dropdown': function(opt, record){
 		if(!opt.type) opt.type2 = 'default';
 		else opt.type2 = opt.type;
 		opt.type = 'button';
@@ -848,7 +841,7 @@ cb.module.bootstrapComponent = {
 				}
 				else
 				{
-					$(li).append(cb.create(opt.items[a]));
+					$(li).append(cb.create(opt.items[a], record));
 				}
 				$(ul).append(li);
 			}
@@ -857,11 +850,11 @@ cb.module.bootstrapComponent = {
 		opt.noitems = true;
 		return ele;
 	},
-	'dropup': function(opt){
+	'dropup': function(opt, record){
 		var ele = cb.module.bootstrapComponent['dropdown'](opt);
 		return ele;
 	},
-	'container': function(opt){
+	'container': function(opt, record){
 		var ele = document.createElement('div');
 		if(opt.type == 'fluid'){
 			$(ele).addClass('container-fluid');
@@ -872,7 +865,7 @@ cb.module.bootstrapComponent = {
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'progress': function(opt){
+	'progress': function(opt, record){
 		var ele = document.createElement('div');
 		$(ele).addClass('progress');
 		if($.isArray(opt.items))
@@ -889,7 +882,7 @@ cb.module.bootstrapComponent = {
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'progress-bar': function(opt){
+	'progress-bar': function(opt, record){
 		var ele = document.createElement('div');
 		$(ele).addClass('progress-bar');
 		if(opt.type) $(ele).addClass('progress-bar-'+opt.type);
@@ -902,7 +895,7 @@ cb.module.bootstrapComponent = {
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'table': function(opt){
+	'table': function(opt, record){
 		var ele = document.createElement('table');
 		$(ele).addClass('table');
 		if($.isArray(opt.items))
@@ -918,7 +911,7 @@ cb.module.bootstrapComponent = {
 		 ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'thead': function(opt){
+	'thead': function(opt, record){
 		var ele = document.createElement('thead');
 	 	opt.t_tr = document.createElement('tr');
 	 	for(var h=0;h<opt.items.length;h++)
@@ -926,12 +919,12 @@ cb.module.bootstrapComponent = {
 	 		if(!opt.items[h].xtype)
 	 		{
 	 			opt.items[h].xtype = 'th';
-	 			opt.t_th = cb.create(opt.items[h]);
+	 			opt.t_th = cb.create(opt.items[h], record);
 	 		}
 	 		else
 	 		{
 	 			opt.t_th = document.createElement('th');
-	 			$(opt.t_th).append(cb.create(opt.items[h]));
+	 			$(opt.t_th).append(cb.create(opt.items[h], record));
 	 		}
 	 		$(opt.t_tr).append(opt.t_th);
 	 	}
@@ -940,7 +933,7 @@ cb.module.bootstrapComponent = {
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'tbody': function(opt){
+	'tbody': function(opt, record){
 		var ele = document.createElement('tbody');
 	 	opt.t_tr = document.createElement('tr');
 	 	if(opt.items)
@@ -951,12 +944,12 @@ cb.module.bootstrapComponent = {
 		 		if(!opt.items[h].xtype || opt.items[h].xtype == 'td' || opt.items[h].xtype == 'th')
 		 		{
 		 			if(!opt.items[h].xtype) opt.items[h].xtype = opt.t_type;
-		 			opt.t_th = cb.create(opt.items[h]);
+		 			opt.t_th = cb.create(opt.items[h], record);
 		 		}
 		 		else
 		 		{
 		 			opt.t_th = document.createElement(opt.t_type);
-		 			$(opt.t_th).append(cb.create(opt.items[h]));
+		 			$(opt.t_th).append(cb.create(opt.items[h], record));
 		 		}
 		 		if(opt.items[h].scope) $(opt.t_th).attr('scope', opt.items[h].scope);
 		 		if(opt.items[h].field)
@@ -972,19 +965,19 @@ cb.module.bootstrapComponent = {
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'th': function(opt){
+	'th': function(opt, record){
 		var ele = document.createElement('th');
 		if(opt.scope) $(ele).attr('scope', opt.scope);
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'ico': function(opt){
+	'ico': function(opt, record){
 		var ele = document.createElement('span');
 		$(ele).addClass(opt.type).attr({'aria-hidden':'true'});
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'thumbnail': function(opt){
+	'thumbnail': function(opt, record){
 		if(!opt.type) opt.type = 'div';
 		var ele = document.createElement(opt.type);
 		opt.notype = true;
@@ -992,7 +985,7 @@ cb.module.bootstrapComponent = {
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'alert': function(opt){
+	'alert': function(opt, record){
 		if(!opt.type) opt.type = 'warning';
 		if(opt.dismissible || opt.closable)
 			opt.type += ' alert-dismissible';
@@ -1020,13 +1013,13 @@ cb.module.bootstrapComponent = {
 		$(ele).append(spa2);
 		return ele;
 	},
-	'badge': function(opt){
+	'badge': function(opt, record){
 		var ele = document.createElement('span');
 		opt.cls = 'badge';
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'toolbar': function(opt){
+	'toolbar': function(opt, record){
 		var ele = document.createElement('div');
 		$(ele).addClass('btn-toolbar');
 		$(ele).attr('role','toolbar');
@@ -1034,7 +1027,7 @@ cb.module.bootstrapComponent = {
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'group': function(opt){
+	'group': function(opt, record){
 		var ele = document.createElement('div');
 		if(opt.type == 'vertical') $(ele).addClass('btn-group-vertical');
 		else $(ele).addClass('btn-group');
@@ -1045,7 +1038,7 @@ cb.module.bootstrapComponent = {
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'callout': function(opt){
+	'callout': function(opt, record){
 		var ele = document.createElement('div');
 		$(ele).addClass('bs-callout');
 		if(opt.type) $(ele).addClass('bs-callout-'+opt.type);
@@ -1061,7 +1054,7 @@ cb.module.bootstrapComponent = {
 		if($.isArray(opt.items))
 		{
 			for(var a=0;a<opt.items.length;a++)
-				$(opt.ele_p).append(cb.create(opt.items[a]));
+				$(opt.ele_p).append(cb.create(opt.items[a], record));
 				
 			opt.noitems = true;
 		}
@@ -1069,7 +1062,7 @@ cb.module.bootstrapComponent = {
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'panel': function(opt){
+	'panel': function(opt, record){
 		var ele = document.createElement('div');
 		$(ele).addClass('panel').css('margin-bottom', '0px');
 		if(opt.type)
@@ -1102,7 +1095,7 @@ cb.module.bootstrapComponent = {
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'panel-heading': function(opt){
+	'panel-heading': function(opt, record){
 		var ele = document.createElement('div');
 		$(ele).addClass(opt.xtype);
 		if(opt.title) $(ele).append(cb.create({ xtype: 'panel-title', text: opt.title }))
@@ -1118,21 +1111,21 @@ cb.module.bootstrapComponent = {
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'panel-body': function(opt){
+	'panel-body': function(opt, record){
 		var ele = cb.module.bootstrapComponent['panel-heading'](opt);
 		return ele;
 	},
-	'panel-footer': function(opt){
+	'panel-footer': function(opt, record){
 		var ele = cb.module.bootstrapComponent['panel-heading'](opt);
 		return ele;
 	},
-	'panel-title': function(opt){
+	'panel-title': function(opt, record){
 		var ele = document.createElement('h3');
 		$(ele).addClass(opt.xtype);
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'tabpanel': function(opt){
+	'tabpanel': function(opt, record){
 		opt.t_ul = document.createElement('ul');
 		$(opt.t_ul).addClass('nav nav-tabs');
 		$(opt.t_ul).attr('role','tablist');
@@ -1211,7 +1204,7 @@ cb.module.bootstrapComponent = {
 											opt.items[a].tab.items[k].href = '#'+opt.items[a].tab.items[k].ref;
 										}
 									}
-									$(opt.t_li2).append(cb.create(opt.items[a].tab.items[k]));
+									$(opt.t_li2).append(cb.create(opt.items[a].tab.items[k], record));
 								}
 								$(opt.t_ul2).append(opt.t_li2);
 							}
@@ -1229,7 +1222,7 @@ cb.module.bootstrapComponent = {
 							}
 						});
 						$(opt.t_a).attr('href', '#'+opt.items[a].id);
-						$(opt.t_a).append(cb.create(opt.items[a].tab));
+						$(opt.t_a).append(cb.create(opt.items[a].tab, record));
 					}
 					
 					if(opt.items[a].active) $(opt.t_a).attr('aria-expanded', 'true');
@@ -1271,7 +1264,7 @@ cb.module.bootstrapComponent = {
 										'border-bottom': '1px solid #DDD'}
 							});
 							if(opt.items[a].panel[k].active) $(opt.t_div).addClass('active in');
-							$(opt.t_div).append(cb.create(opt.items[a].panel[k]));
+							$(opt.t_div).append(cb.create(opt.items[a].panel[k], record));
 							$(opt.t_content).append(opt.t_div);
 							opt.t_div = false;
 						}
@@ -1288,14 +1281,14 @@ cb.module.bootstrapComponent = {
 		$(ele).append(opt.t_content);
 		return ele;
 	},
-	'row': function(opt){
+	'row': function(opt, record){
 		var ele = document.createElement('div');
 		$(ele).addClass('row');
 		if(opt.margin==null || opt.margin==undefined) opt.margin = '3px';
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'col': function(opt){
+	'col': function(opt, record){
 		var ele = document.createElement('div');
 		if(!opt.size) opt.size = 12;
 		if($.isPlainObject(opt.size))
@@ -1326,7 +1319,7 @@ cb.module.bootstrapComponent = {
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'input': function(opt){
+	'input': function(opt, record){
 		
 		if(opt.type == 'file')
 		{
@@ -1335,13 +1328,13 @@ cb.module.bootstrapComponent = {
 			if(opt.items){
 				if($.isPlainObject(opt.items))
 				{
-					$(ele).append(cb.create(opt.items));
+					$(ele).append(cb.create(opt.items, record));
 				}
 				else if($.isArray(opt.items))
 				{
 					for(var r=0; r<opt.items.length; r++)
 					{
-						$(ele).append(cb.create(opt.items[r]));
+						$(ele).append(cb.create(opt.items[r], record));
 					}
 				}
 			}
@@ -1378,7 +1371,7 @@ cb.module.bootstrapComponent = {
 		
 		return ele;
 	},
-	'select': function(opt){
+	'select': function(opt, record){
 		var ele = document.createElement(opt.xtype);
 		$(ele).addClass('form-control');
 		if($.isArray(opt.items))
@@ -1391,7 +1384,7 @@ cb.module.bootstrapComponent = {
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'form': function(opt){
+	'form': function(opt, record){
 		if(!opt.name) opt.name = cb.autoname();
 		var ele = document.createElement('form');
 		if($.isArray(opt.items))
@@ -1404,19 +1397,19 @@ cb.module.bootstrapComponent = {
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'form-group': function(opt){
+	'form-group': function(opt, record){
 		var ele = document.createElement('div');
 		$(ele).addClass('form-group');
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'label': function(opt){
+	'label': function(opt, record){
 		var ele = document.createElement(opt.xtype);
 		if(!opt.for)$(ele).attr('for', opt.for);
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'glyphicon': function(opt){
+	'glyphicon': function(opt, record){
 		var ele = document.createElement('span');
 		$(ele).addClass('glyphicon glyphicon-'+opt.type);
 		ele = cb.common_prop(ele, opt);
@@ -1560,89 +1553,173 @@ cb.props = {
 	}
 };
 			
-cb.create = function(opt){
+cb.create = function(opt, record){
 
 	if(!opt.xtype) opt.xtype='span';
 	
 	if($.type(opt.xtype) == 'string')
 	{
-		if(opt.defaults && opt.items)
-		{
-			for (var def in opt.defaults) {
-				opt.items = this.setMissingDinamicValue(opt.items, def, opt.defaults[def]);
-			}
+		//Coge store
+		if(opt.store && this.module.store[opt.store]){
+			record = this.module.store[opt.store]['data'];
+		}
+		//Coge field del store
+		if(opt.field && record && record[opt.field]){
+			record = record[opt.field];
 		}
 		
-		if($.isFunction(cb.module.bootstrapComponent[opt.xtype]))
+		//Alterdata
+		if(opt.alterdata && ($.type(record) === 'string' || $.type(record) === 'number'))
 		{
-			var ele = cb.module.bootstrapComponent[opt.xtype](opt);
+			if($.isFunction(opt.alterdata)){
+				record = opt.alterdata(record);
+			}else if($.isPlainObject(opt.alterdata) && opt.field && opt.alterdata[opt.field]){
+				record = opt.alterdata[opt.field](record);
+			}
+			
 		}
-		else if($.isPlainObject(cb.module.component[opt.xtype]))
+		else if($.isPlainObject(opt.alterdata) && $.isPlainObject(record))
 		{
-			var ele = this.create(cb.module.component[opt.xtype]);
-			ele = this.common_prop(ele, opt);
+			$.each(record, function(i){
+				if($.isFunction(opt.alterdata[i])){
+					record[i] = opt.alterdata[i](record[i]);
+				}
+			});
+		}
+		
+		//Si el record contiene un array creamos varios elementos
+		if($.isArray(record)){
+			ele = [];
+			for(var c=0; c<record.length; c++){
+				ele.push(cb.create($.extend({}, opt), record[c]));
+				if(record){
+					ele[c].record = record;
+				}
+			}
+			return ele;
 		}
 		else
 		{
-			var ele = document.createElement(opt.xtype);
-			ele = this.common_prop(ele, opt);
-		}
+			//Si el record es un objeto
+			if($.isPlainObject(record)){
+				//Reemplaza {field} por el valor del record
+				$.each(opt, function(ix, el){
+					if($.type(el) === 'string'){						
+						$.each(record, function(ix2, el2){
+							opt[ix] = opt[ix].replace(new RegExp('{'+ix2+'}',"g"), el2);
+						});
+					}
+					else if($.isPlainObject(el) && ix !== 'items'){
+						$.each(el, function(ix3, el3){
+							if($.type(el3) === 'string'){
+								$.each(record, function(ix2, el2){
+									opt[ix][ix3] = opt[ix][ix3].replace(new RegExp('{'+ix2+'}',"g"), el2);
+								});
+							}
+						});
+					}
+				});
+			}
 		
-		if($.isPlainObject(opt.items))
-		{
-			$(ele).append(this.create(opt.items));
-		}
-								
-		if($.isArray(opt.items) && !opt.noitems)
-		{
-			for(var a=0;a<opt.items.length;a++)
-				$(ele).append(this.create(opt.items[a]));
-		}
-		
-		if(opt.renderTo)
-			$(opt.renderTo).empty().append(ele);
-			
-		if(opt.appendTo)
-			$(opt.appendTo).append(ele);
-			
-		if(opt.prependTo)
-			$(opt.prependTo).prepend(ele);
-					
-		if(opt.storelink && !opt.nostorelink)
-		{
-			if(opt.data && opt.data[opt.storelink.field] && opt.storelink.store == 'current')
+			//Aplica defaults a sus items
+			if(opt.defaults && opt.items)
 			{
-				if($('body').find(opt.storelink.appendTo).length)
-				{
-					this.storeAppendValues(opt.storelink.appendTo, opt.storelink, opt.data[opt.storelink.field]);
-				}
-				else if($('body').find(opt.storelink.renderTo).length)
-				{
-					this.storeAppendValues(opt.storelink.renderTo, opt.storelink, opt.data[opt.storelink.field]);
+				for (var def in opt.defaults) {
+					opt.items = this.setMissingDinamicValue(opt.items, def, opt.defaults[def]);
 				}
 			}
-			else if(this.module.store[opt.storelink.store] && this.module.store[opt.storelink.store].data[opt.storelink.field])
+			
+			//Si es un componente de bootstrap
+			if($.isFunction(cb.module.bootstrapComponent[opt.xtype]))
 			{
-				if($('body').find(opt.storelink.appendTo).length)
-				{
-					this.storeAppendValues($(opt.storelink.appendTo), opt.storelink, this.module.store[opt.storelink.store].data[opt.storelink.field]);
+				var ele = cb.module.bootstrapComponent[opt.xtype](opt);
+			}
+			//Si es un componente personalizado
+			else if($.isPlainObject(cb.module.component[opt.xtype]))
+			{
+				var ele = this.create(cb.module.component[opt.xtype], record);
+				ele = this.common_prop(ele, opt);
+			}
+			//Por defecto crea un elemento con el xtype
+			else
+			{
+				var ele = document.createElement(opt.xtype, record);
+				ele = this.common_prop(ele, opt);
+			}
+			
+			//Si hay record
+			if(record){
+				ele.record = record;
+				//Si el record es un string
+				if($.type(record) === 'string' || $.type(record) === 'number'){
+					ele = this.storeSet(ele, record);
 				}
-				else
+				//Si el record es un dom element
+				else if(this.isNode(record) || this.isElement(record)){
+					$(ele).append(record);
+				}
+			}
+						
+			//Añade sus items
+			if($.isPlainObject(opt.items)){
+				opt.items = [opt.items];
+			}
+			if($.isArray(opt.items) && !opt.noitems)
+			{
+				for(var a=0; a<opt.items.length; a++)
 				{
-					var t_contn = document.createElement('div');
-					$(t_contn).append(ele);
-					if($(t_contn).find(opt.storelink.appendTo).length)
+					$(ele).append(this.create($.extend({},opt.items[a]), record));
+				}
+			}
+			
+			if(opt.storelink && !opt.nostorelink)
+			{
+				if(opt.data && opt.data[opt.storelink.field] && opt.storelink.store == 'current')
+				{
+					if($('body').find(opt.storelink.appendTo).length)
 					{
-						t_strlk_ele = $(t_contn).find(opt.storelink.appendTo);
-						this.storeAppendValues(t_strlk_ele, opt.storelink, this.module.store[opt.storelink.store].data[opt.storelink.field]);
-						$(t_contn).find(opt.storelink.appendTo).append($(t_strlk_ele).contents());
-						ele = $(t_contn).contents();
+						this.storeAppendValues(opt.storelink.appendTo, opt.storelink, opt.data[opt.storelink.field]);
+					}
+					else if($('body').find(opt.storelink.renderTo).length)
+					{
+						this.storeAppendValues(opt.storelink.renderTo, opt.storelink, opt.data[opt.storelink.field]);
+					}
+				}
+				else if(this.module.store[opt.storelink.store] && this.module.store[opt.storelink.store].data[opt.storelink.field])
+				{
+					if($('body').find(opt.storelink.appendTo).length)
+					{
+						this.storeAppendValues($(opt.storelink.appendTo), opt.storelink, this.module.store[opt.storelink.store].data[opt.storelink.field]);
+					}
+					else
+					{
+						var t_contn = document.createElement('div');
+						$(t_contn).append(ele);
+						if($(t_contn).find(opt.storelink.appendTo).length)
+						{
+							t_strlk_ele = $(t_contn).find(opt.storelink.appendTo);
+							this.storeAppendValues(t_strlk_ele, opt.storelink, this.module.store[opt.storelink.store].data[opt.storelink.field]);
+							$(t_contn).find(opt.storelink.appendTo).append($(t_strlk_ele).contents());
+							ele = $(t_contn).contents();
+						}
 					}
 				}
 			}
+			
+			if(opt.renderTo){
+				$(opt.renderTo).empty().append(ele);
+			}
+			else if(opt.appendTo){
+				$(opt.appendTo).append(ele);
+			}
+			else if(opt.prependTo){
+				$(opt.prependTo).prepend(ele);
+			}else{
+				//Seteamos las opciones opt
+				ele.opt = opt;
+				return ele;
+			}
 		}
-					
-		return ele;
 	}
 }
 			
@@ -2000,7 +2077,18 @@ cb.fileUpload = function(file, module, store, progessbar, vals, callback){
 	
 	xhr.open('post', module+'/store/'+store, true);
 	xhr.send(fd);
+},
+
+cb.isNode = function(o){
+  return (
+    typeof Node === "object" ? o instanceof Node : 
+    o && typeof o === "object" && typeof o.nodeType === "number" && typeof o.nodeName==="string"
+  );
+},
+
+cb.isElement = function(o){
+  return (
+    typeof HTMLElement === "object" ? o instanceof HTMLElement :
+    o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName==="string"
+  );
 }
-
-
-
