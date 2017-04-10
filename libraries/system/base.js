@@ -5,6 +5,7 @@ cb.module.view = {};
 cb.module.store = {};
 cb.module.storelink = {};
 cb.module.component = {};
+cb.module.model = {};
 cb.config = [];
 cb.elenamed = 0;
 
@@ -183,6 +184,10 @@ cb.define = function(obj)
 			this.render(obj);
 		}
 	}
+}
+
+cb.renderViewModel = function(storeName){
+	
 }
 
 cb.setMissingDinamicValue = function(obj, attr, value, nivels){
@@ -1559,6 +1564,8 @@ cb.create = function(opt, record){
 	
 	if($.type(opt.xtype) == 'string')
 	{
+		//Opt copy
+		var opt_origin = $.extend({}, opt);
 		//Coge store
 		if(opt.store && this.module.store[opt.store]){
 			record = this.module.store[opt.store]['data'];
@@ -1716,7 +1723,9 @@ cb.create = function(opt, record){
 				$(opt.prependTo).prepend(ele);
 			}else{
 				//Seteamos las opciones opt
-				ele.opt = opt;
+				ele.opt = opt_origin;
+				//Seteamos value
+				ele.recordValue = record;
 				return ele;
 			}
 		}

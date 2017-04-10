@@ -76,7 +76,7 @@ cb.define({
 						click: function(){
 							console.log($(this).getCmp());
 							console.log($(this).getRecord());
-							//console.log($(this).getValue());
+							console.log($(this).getValue());
 						}
 					}
 				}]
@@ -101,6 +101,26 @@ cb.define({
 						field: 'name'
 					}]
 				}]
+			},{
+				xtype: 'button',
+				text: 'Test load store with new data',
+				margin: 10,
+				listener: {
+					click: function(){
+						cb.define({
+							xtype: 'store',
+							name: 'test',
+							data: {
+								text1:'jjj', 
+								text2:'kkk', 
+								text3:'lll', 
+								tags1: ['mmm', 'nnn', 'ooo'], 
+								tags2: [{name:'ppp'}, {name:'qqq'}, {name:'rrr'}]
+							}
+						});
+						alert('Store cargado');
+					}
+				}
 			}]
 			
 		});
