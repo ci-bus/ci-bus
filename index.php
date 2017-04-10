@@ -18,7 +18,8 @@
 		}
 		$turi = $_SERVER['REQUEST_URI'];
 		$tpath = substr(getcwd(), strlen($turi)*-1);
-	
+		$tpath = str_replace("\\", "/", $tpath);
+			
 		for($i=0;$i<strlen($tpath);$i++)
 		{
 			if(substr($tpath, $i) == substr($turi, 0, strlen($tpath) - $i))
