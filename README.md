@@ -1,6 +1,6 @@
 # Ci-bus
 
-JavaScript Framework<br>
+### JavaScript Framework<br>
 <br>
 Ci-bus es un framework creado en JavaScript aunque también contiene una parte en PHP para usarla de backend<br>
 <br>
@@ -21,4 +21,4 @@ Menos el controlador, los demás archivos llevaran el tipo en el nombre, ejemplo
 /module/test/controller/test.js <- Only name file without type<br>
 /module/test/store/homeStore.php<br>
 <br>
-En este framework se utiliza software de terceros: Bootstrap y jQuery<br>
+En este framework se utiliza software de terceros: http://getbootstrap.com/ y https://jquery.com/<br>
