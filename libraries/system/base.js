@@ -1557,7 +1557,7 @@ cb.props = {
 		return ele;
 	}
 };
-			
+
 cb.create = function(opt, record){
 
 	if(!opt.xtype) opt.xtype='span';
