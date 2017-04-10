@@ -51,12 +51,18 @@
 				$CB->db->where("event.id IN (".$wherein.")");
 			}
 			
+			if($data['id_tag'] == 'recent')
+			{
+				$CB->db->where('date', date('Y-m-d'), '>=');
+				$CB->db->orderBy('id', 'ASC');
+			}
+			
 			if($data['id_tag'] == 'me')
 			{
 				$CB->db->where('user_id', $_SESSION['user_id']);
 			}
 			
-			$CB->db->orderBy("event.date", "DESC");
+			$CB->db->orderBy("event.date", "ASC");
 			
 			if($res = $CB->db->get("event"))
 			{

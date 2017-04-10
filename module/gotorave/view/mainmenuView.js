@@ -11,7 +11,8 @@ cb.define({
 				xtype: 'a',
 				css: {cursor: 'pointer'},
 				cls: 'navbar-brand',
-				text: 'Go to Rave',
+				glyphicon: 'home',
+				text: ' Inicio',
 				listener: {
 					dblclick: function(){
 						cb.ctr('gotorave', 'home');

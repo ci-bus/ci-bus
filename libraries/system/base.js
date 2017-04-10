@@ -605,7 +605,9 @@ cb.module.bootstrapComponent = {
 	},
 	'nav': function(opt, record){
 		if(!opt.toggle)opt.toggle = cb.autoname();
-		if(!opt.renderTo || opt.renderTo == 'main') opt.renderTo = 'header';
+		if((!opt.renderTo || opt.renderTo == 'main') && !opt.appendTo && !opt.prependTo){
+			opt.appendTo = 'header';
+		}
 		var ele = document.createElement('nav');
 		$(ele).addClass('navbar');
 		if(opt.type)
@@ -1731,9 +1733,9 @@ cb.create = function(opt, record){
 		}
 	}
 }
-			
+
 cb.common_prop = function(ele, opt)
-{	
+{
 	for (var prop in opt) {
 		if(this.props[prop]){
 			ele = this.props[prop](ele, opt);

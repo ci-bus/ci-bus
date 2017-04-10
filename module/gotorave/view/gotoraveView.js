@@ -170,51 +170,6 @@ cb.define({
 						}
 					}]
 				}]
-			},{
-				xtype: 'row',
-				items: [{
-					xtype: 'col',
-					size: {
-						xs: 12
-					},
-					items: [{
-						xtype: 'button',
-						text: 'Log stores',
-						margin: '0 0 0 -8px',
-						listener: {
-							click: function(){
-								cb.ctr('gotorave', 'logStore');
-							}
-						}
-					},{
-						xtype: 'button',
-						text: 'Log storelinks',
-						margin: '0 0 0 5px',
-						listener: {
-							click: function(){
-								cb.ctr('gotorave', 'logLink');
-							}
-						}
-					},{
-						xtype: 'button',
-						text: 'Off chat',
-						margin: '0 0 0 5px',
-						listener: {
-							click: function(){
-								cb.setConfig('no_refresh_chat', true)
-							}
-						}
-					},{
-						xtype: 'button',
-						text: 'On chat',
-						margin: '0 0 0 5px',
-						listener: {
-							click: function(){
-								cb.setConfig('no_refresh_chat', false)
-							}
-						}
-					}]
-				}]
 			}]
 		},{
 			xtype: 'col',

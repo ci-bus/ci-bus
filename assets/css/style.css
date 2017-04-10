@@ -37,12 +37,6 @@ a.disabled {
 	white-space: nowrap
 }
 
-.navbar-brand {
-	min-width: 150px;
-	padding-left: 60px;
-	cursor: default;
-}
-
 .cubi-ico-text {
   background: -webkit-linear-gradient(yellow,red);
   -webkit-background-clip: text;
@@ -91,6 +85,15 @@ a.disabled {
     background: white;
     cursor: inherit;
     display: block;
+}
+
+.panel-info {
+	border-color: #BBB;
+}
+
+.panel-info>.panel-heading {
+	background-color: #777;
+	color: white;
 }
 
 @media only screen and (min-width : 0px) {
