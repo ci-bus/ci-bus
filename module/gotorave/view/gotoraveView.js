@@ -13,8 +13,7 @@ cb.define({
 				xs: 12,
 				sm: 6
 			},
-			items: [
-			        /* {
+			items: [{
 				xtype: 'panel',
 				type: 'info',
 				id: 'panel-chat',
@@ -79,10 +78,9 @@ cb.define({
 						'max-height': '300px',
 						'overflow': 'auto'
 					},
-					storelink: {
+					items: {
 						store: 'chat',
 						field: 'chat',
-						fastset: true, //To set value fastly, not support listener
 						alterdata: {
 							'online': function(onl){
 								if(onl==1){
@@ -97,14 +95,12 @@ cb.define({
 								else return ' ';
 							}
 						},
-						structure: {
-							xtype: 'callout',
-							margin: '3px',
-							padding: '5px',
-							type: btoa('chat.type'),
-							title: btoa('chat.user')+btoa('online'),
-							text: btoa('chat.msg')
-						}
+						xtype: 'callout',
+						margin: '3px',
+						padding: '5px',
+						type: '{type}',
+						title: '{user} {online}',
+						text: '{msg}'
 					}
 				},{
 					xtype: 'panel',
@@ -171,16 +167,15 @@ cb.define({
 						}
 					}]
 				}]
-			},
-			*/{
-				xtype: 'h3',
-				text: 'El evento más próximo'
 			},{
 				xtype: 'div',
 				store: 'events',
 				field: 'recent',
 				css: {'padding-bottom': '10px'},
 				items: [{
+					xtype: 'h3',
+					text: 'El evento más próximo'
+				},{
 					xtype: 'panel',
 					type: 'info',
 					attr: {'data-id': '{id}'},

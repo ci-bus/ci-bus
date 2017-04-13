@@ -12,9 +12,9 @@ cb.define({
 			xtype: 'glyphicon',
 			type: 'thumbs-down',
 			cursor: 'pointer',
-			cls : btoa('hand1_color'),
+			cls : '{hand1_color}',
 			margin: 5,
-			attr: {'clicked': btoa('review_cos')},
+			attr: {'clicked': '{review_cos}'},
 			listener: {
 				click: function(){
 					cb.ctr('gotorave','musiclike',this)
@@ -23,9 +23,9 @@ cb.define({
 		},{
 			xtype: 'glyphicon',
 			type: 'thumbs-up',
-			cls : btoa('hand2_color'),
+			cls : '{hand2_color}',
 			cursor: 'pointer',
-			attr: {'clicked': btoa('review_pos')},
+			attr: {'clicked': '{review_pos}'},
 			margin: 5,
 			listener: {
 				click: function(){

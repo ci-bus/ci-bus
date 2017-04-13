@@ -77,67 +77,57 @@ cb.define({
 					}]
 				}]
 			}]
-		}]
-	},{
-		appendTo: '#body-col2',
-		xtype: 'div',
-		id: 'users-content',
-		storelink: {
-			id: 'users-strlk',
-			store: 'users',
-			field: 'usr',
-			renderTo: '#users-content',
-			structure: {
-				xtype: 'div',
-				css: {'padding-bottom': '10px'},
+		},{
+			xtype: 'div',
+			id: 'users-content',
+			items: {
+				store: 'users',
+				field: 'usr',
+				xtype: 'panel',
+				id: 'testpanel',
+				type: 'info',
+				css: {'margin-bottom': '10px'},
+				attr: {'data-id': '{id}'},
 				items: [{
-					xtype: 'panel',
-					type: 'info',
-					attr: {'data-id': btoa('id')},
+					xtype: 'head',
 					items: [{
-						xtype: 'head',
-						items: [{
-							xtype: 'review',
-							attr: {data: 'user'},
-							float: 'right',
-							css: {'margin-right': '-5px'}
-						},{
-							xtype: 'button',
-							float: 'right',
-							text: 'AAA'+btoa('following')
-						},{
-							xtype: 'div',
-							cls: 'text-left',
-							css: {'font-size': '19px'},
-							field: 'name'
-						}]
+						xtype: 'review',
+						attr: {data: 'user'},
+						float: 'right',
+						css: {'margin-right': '-5px'}
 					},{
-						xtype: 'body',
-						items: [{
-							xtype: 'img',
-							css: {'width': '100%'},
-							attr: {'src': btoa('image')}
-						}]
+						xtype: 'button',
+						float: 'right',
+						text: 'AAA {following}'
 					},{
-						xtype: 'footer',
-						css: {overflow: 'auto'},
-						storelink: {
-							id: 'users-tags-strlk',
-							store: 'current',
-							field: 'tags',
-							structure: {
-								xtype: 'div',
-								cls: 'label label-default',
-								css: {
-									'margin-right': '10px',
-									'font-size': '17px'
-								},
-								text: btoa('name')
-							}
-						}
+						xtype: 'div',
+						cls: 'text-left',
+						css: {'font-size': '19px'},
+						field: 'name'
 					}]
+				},{
+					xtype: 'body',
+					items: [{
+						xtype: 'img',
+						id: '{id}',
+						css: {'width': '100%'},
+						attr: {'src': '{image}'}
+					}]
+				},{
+					xtype: 'footer',
+					css: {overflow: 'auto'},
+					items: {
+						field: 'tags',
+						xtype: 'div',
+						cls: 'label label-default',
+						css: {
+							'margin-right': '10px',
+							'font-size': '17px'
+						},
+						text: '{name}'
+					}
 				}]
 			}
-		}
+		}]
 	}]
 });

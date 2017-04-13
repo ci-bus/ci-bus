@@ -593,7 +593,7 @@ cb.extend = function(opt1, opt2){
 }
 
 cb.cloneObject = function(obj){
-	return JSON.parse(JSON.stringify(obj));
+	return $.extend({}, obj);
 }
 
 cb.module.bootstrapComponent = {
@@ -885,10 +885,6 @@ cb.module.bootstrapComponent = {
 			{
 				if(!opt.items[a].xtype) opt.items[a].xtype = 'progress-bar';
 			}
-		}
-		else if($.isPlainObject(opt.items))
-		{
-			if(!opt.items.xtype) opt.items.xtype = 'progress-bar';
 		}
 		ele = cb.common_prop(ele, opt);
 		return ele;
@@ -1337,11 +1333,7 @@ cb.module.bootstrapComponent = {
 			var ele = document.createElement('label');
 			$(ele).addClass('btn btn-default btn-file');
 			if(opt.items){
-				if($.isPlainObject(opt.items))
-				{
-					$(ele).append(cb.create(opt.items, record));
-				}
-				else if($.isArray(opt.items))
+				if($.isArray(opt.items))
 				{
 					for(var r=0; r<opt.items.length; r++)
 					{
@@ -1570,15 +1562,30 @@ cb.create = function(opt, record){
 	
 	if($.type(opt.xtype) == 'string')
 	{
+		
+		
+		
 		//Opt copy
 		var opt_origin = cb.cloneObject(opt);
 		//Coge store
-		if(opt.store && this.module.store[opt.store]){
-			record = this.module.store[opt.store]['data'];
+		if(opt.store){
+			if(this.module.store[opt.store]){
+				record = this.module.store[opt.store]['data'];
+			}else{
+				return;
+			}
 		}
 		//Coge field del store
-		if(opt.field && record && record[opt.field]){
-			record = record[opt.field];
+		if(opt.field){
+			if(record){
+				if(record[opt.field]){
+					record = record[opt.field];
+				}else{
+					return;
+				}
+			}else{
+				return;
+			}
 		}
 		
 		//Alterdata
@@ -1600,22 +1607,31 @@ cb.create = function(opt, record){
 			});
 		}
 		
+		//Arreglo para cuando se define items como objeto
+		if($.isPlainObject(opt.items)){
+			opt.items = [opt.items];
+		}
+		
 		//Si el record contiene un array creamos varios elementos
 		if($.isArray(record)){
 			ele = [];
 			for(var c=0; c<record.length; c++){
-				var tele = cb.cloneObject(opt);
-				delete tele.store;
-				delete tele.field;
-				ele.push(cb.create(tele, record[c]));
-				if(record){
-					ele[c].record = record;
+				//Se borra store y field para que no entre en un bucle infinito
+				delete opt.store;
+				delete opt.field;
+				if(record[c]){
+					ele.push(cb.create(cb.cloneObject(opt), record[c]));
 				}
 			}
 			return ele;
 		}
 		else
 		{
+			
+			if(opt.xtype == 'img' && opt.attr){
+				console.log('img', record, opt);
+			}
+			
 			//Si el record es un objeto
 			if($.isPlainObject(record)){
 				//Reemplaza {field} por el valor del record
@@ -1635,6 +1651,7 @@ cb.create = function(opt, record){
 						});
 					}
 				});
+				
 			}
 		
 			//Aplica defaults a sus items
@@ -1677,14 +1694,11 @@ cb.create = function(opt, record){
 			}
 						
 			//Añade sus items
-			if($.isPlainObject(opt.items)){
-				opt.items = [opt.items];
-			}
 			if($.isArray(opt.items) && !opt.noitems)
 			{
 				for(var a=0; a<opt.items.length; a++)
 				{
-					$(ele).append(this.create($.extend({},opt.items[a]), record));
+					$(ele).append(this.create(cb.cloneObject(opt.items[a]), record));
 				}
 			}
 			

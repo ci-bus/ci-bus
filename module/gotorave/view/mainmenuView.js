@@ -51,28 +51,17 @@ cb.define({
 						}
 					},{
 						xtype: 'divider'
-					}],
-					storelink: {
-						id: 'main-event-strlk',
+					},{
 						store: 'tags',
 						field: 'event',
-						appendTo: '#main-event ul',
-						structure: {
-							xtype: 'li',
-							items: [{
-								xtype: 'a',
-								attr: {
-									'data-id': btoa('id')
-								},
-								field: 'name',
-								listener: {
-									click: function(){
-										cb.ctr('gotorave', 'load_events', $(this).attr('data-id'));
-									}
-								}
-							}]
+						xtype: 'a',
+						text: '{name}',
+						listener: {
+							click: function(){
+								cb.ctr('gotorave', 'load_events', $(this).getRecord()['id']);
+							}
 						}
-					}
+					}]
 				},{
 					xtype: 'dropdown-menu',
 					glyphicon: 'user',
@@ -90,28 +79,17 @@ cb.define({
 						}
 					},{
 						xtype: 'divider'
-					}],
-					storelink: {
-						id: 'main-users-strlk',
+					},{
 						store: 'tags',
 						field: 'user',
-						appendTo: '#main-users ul',
-						structure: {
-							xtype: 'li',
-							items: [{
-								xtype: 'a',
-								attr: {
-									'data-id': btoa('id')
-								},
-								field: 'name',
-								listener: {
-									click: function(){
-										cb.ctr('gotorave', 'load_users', $(this).attr('data-id'));
-									}
-								}
-							}]
+						xtype: 'a',
+						text: '{name}',
+						listener: {
+							click: function(){
+								cb.ctr('gotorave', 'load_users', $(this).getRecord()['id']);
+							}
 						}
-					}
+					}]
 				},{
 					xtype: 'dropdown-menu',
 					glyphicon: 'music',
@@ -129,62 +107,40 @@ cb.define({
 						}
 					},{
 						xtype: 'divider'
-					}],
-					storelink: {
-						id: 'main-music-strlk',
+					},{
 						store: 'tags',
 						field: 'music',
-						appendTo: '#main-music ul',
-						structure: {
-							xtype: 'li',
-							items: [{
-								xtype: 'a',
-								attr: {
-									'data-id': btoa('id')
-								},
-								field: 'name',
-								listener: {
-									click: function(){
-										cb.ctr('gotorave', 'load_music', $(this).attr('data-id'));
-									}
-								}
-							}]
+						xtype: 'a',
+						text: '{name}',
+						listener: {
+							click: function(){
+								cb.ctr('gotorave', 'load_music', $(this).getRecord()['id']);
+							}
 						}
-					}
+					}]
 				}]
 			},{
 				xtype: 'navbar',
 				type: 'right',
 				items: [{
-					
 					xtype: 'dropdown-menu',
 					text: ' Chat ',
 					glyphicon: 'comment',
 					css: {'font-size':'17px'},
-					id: 'chat-menu-button',
-					
-					storelink: {
-						id: 'chat-links-sala',
+					items: [{
 						store: 'chat',
 						field: 'salas',
-						appendTo: '#chat-menu-button ul',
-						structure: {
-							xtype: 'li',
-							items: [{
-								xtype: 'a',
-								attr: {
-									'data-id': btoa('salas.id')
-								},
-								field: 'salas.name',
-								listener: {
-									click: function(){
-										$('#chat-sala-name').html($(this).html());
-										cb.ctr('gotorave', 'changesala', $(this).attr('data-id'));
-									}
-								}
-							}]
+						xtype: 'a',
+						attr: {
+							'data-id': '{id}'
+						},
+						text: '{name}',
+						listener: {
+							click: function(){
+								cb.ctr('gotorave', 'changesala', $(this).getRecord());
+							}
 						}
-					}
+					}]
 				},{
 					xtype: 'dropdown-menu',
 					text: ' '+cb.getConfig('user_data')['name'],

@@ -75,8 +75,9 @@ cb.define({
 		});
 	},
 	
-	changesala: function(idsala){
-		cb.load('store', 'gotorave', 'chat', {'action': 'change', 'sala_id': idsala});
+	changesala: function(record){
+		$('#chat-sala-name').html(record['name']);
+		cb.load('store', 'gotorave', 'chat', {'action': 'change', 'sala_id': record['id']});
 	},
 	
 	sendchat: function(){
@@ -297,21 +298,15 @@ cb.define({
 	load_users: function(id_tag)
 	{	
 		$('#users-content').remove();
-		cb.load('view', 'gotorave', 'users', function(){
-			if(cb.getConfig('user_data').add_friends > 0){
-				$('#panel-add-friend').css('display', 'block');
-			}else{
-				$('#panel-add-friend').remove;
-			}
-		});
+		
 		cb.load('store', 'gotorave', 'users', {'action': 'load', 'id_tag': id_tag}, function(){
-			var t_top = $('#body-col2').position().top;
-			if(t_top > 100)
-			{
-				cb.sto(function(){
-					$("html, body").animate({scrollTop: t_top}, 'fast', 'swing');
-				}, 250);
-			}
+			cb.load('view', 'gotorave', 'users', function(){
+				if(cb.getConfig('user_data').add_friends > 0){
+					$('#panel-add-friend').css('display', 'block');
+				}else{
+					$('#panel-add-friend').remove;
+				}
+			});
 		});
 	},
 	
