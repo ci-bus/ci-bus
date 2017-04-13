@@ -3,8 +3,18 @@ cb.define({
 	xtype: 'view',
 	name: 'mainmenu',
 	items: [{
+		xtype: 'div',
+		appendTo: 'header',
+		css: {'text-align': 'center', 'background-color': 'black'},
+		items: [{
+			xtype: 'img',
+			src: 'uploads/cabecera.jpg',
+			css: {width: '100%', 'max-width': '1200px', margin: 'auto'}
+		}]
+	},{
 		xtype: 'nav',
 		type: 'default static-top',
+		color: '#454b49',
 		items: [{
 			xtype: 'header',
 			items: [{
@@ -14,7 +24,7 @@ cb.define({
 				glyphicon: 'home',
 				text: ' Inicio',
 				listener: {
-					dblclick: function(){
+					click: function(){
 						cb.ctr('gotorave', 'home');
 					}
 				}

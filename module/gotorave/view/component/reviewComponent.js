@@ -35,6 +35,7 @@ cb.define({
 		},{
 			xtype: 'span',
 			css: {'margin-right': 5},
+			color: 'black',
 			cls: 'review',
 			field: 'reviews'
 		}]

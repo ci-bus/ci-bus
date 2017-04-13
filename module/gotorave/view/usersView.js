@@ -102,6 +102,10 @@ cb.define({
 							float: 'right',
 							css: {'margin-right': '-5px'}
 						},{
+							xtype: 'button',
+							float: 'right',
+							text: 'AAA'+btoa('following')
+						},{
 							xtype: 'div',
 							cls: 'text-left',
 							css: {'font-size': '19px'},

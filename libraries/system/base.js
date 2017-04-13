@@ -592,6 +592,10 @@ cb.extend = function(opt1, opt2){
 	return opt1;
 }
 
+cb.cloneObject = function(obj){
+	return JSON.parse(JSON.stringify(obj));
+}
+
 cb.module.bootstrapComponent = {
 	'button': function(opt, record){
 		var ele = document.createElement(opt.xtype);
@@ -1567,7 +1571,7 @@ cb.create = function(opt, record){
 	if($.type(opt.xtype) == 'string')
 	{
 		//Opt copy
-		var opt_origin = $.extend({}, opt);
+		var opt_origin = cb.cloneObject(opt);
 		//Coge store
 		if(opt.store && this.module.store[opt.store]){
 			record = this.module.store[opt.store]['data'];
@@ -1600,7 +1604,10 @@ cb.create = function(opt, record){
 		if($.isArray(record)){
 			ele = [];
 			for(var c=0; c<record.length; c++){
-				ele.push(cb.create($.extend({}, opt), record[c]));
+				var tele = cb.cloneObject(opt);
+				delete tele.store;
+				delete tele.field;
+				ele.push(cb.create(tele, record[c]));
 				if(record){
 					ele[c].record = record;
 				}

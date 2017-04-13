@@ -54,7 +54,7 @@
 			if($data['id_tag'] == 'recent')
 			{
 				$CB->db->where('date', date('Y-m-d'), '>=');
-				$CB->db->orderBy('id', 'ASC');
+				$CB->db->limit(1);
 			}
 			
 			if($data['id_tag'] == 'me')
@@ -129,7 +129,11 @@
 					
 					$res3 = false;
 				}
-				$this->parseStore('events', array('ev' => $res));
+				if($data['id_tag'] == 'recent'){
+					$this->parseStore('events', array('recent' => $res));
+				}else{
+					$this->parseStore('events', array('ev' => $res));
+				}
 			}
 			else
 			{

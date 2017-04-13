@@ -128,6 +128,7 @@
 							{
 								include 'module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'Store.php';
 							}
+							$CB->db->reset();
 							$store[$temp_class] = new $temp_class($CB, $dt[3]);
 						}
 						else

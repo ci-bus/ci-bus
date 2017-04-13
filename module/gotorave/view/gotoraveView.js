@@ -13,7 +13,8 @@ cb.define({
 				xs: 12,
 				sm: 6
 			},
-			items: [{
+			items: [
+			        /* {
 				xtype: 'panel',
 				type: 'info',
 				id: 'panel-chat',
@@ -168,6 +169,82 @@ cb.define({
 							xtype: 'div',
 							id: 'media-player'
 						}
+					}]
+				}]
+			},
+			*/{
+				xtype: 'h3',
+				text: 'El evento más próximo'
+			},{
+				xtype: 'div',
+				store: 'events',
+				field: 'recent',
+				css: {'padding-bottom': '10px'},
+				items: [{
+					xtype: 'panel',
+					type: 'info',
+					attr: {'data-id': '{id}'},
+					items: [{
+						xtype: 'head',
+						items: [{
+							xtype: 'review',
+							attr: {data: 'event'},
+							float: 'right',
+							css: {'margin-right': '-5px'}
+						},{
+							xtype: 'div',
+							cls: 'text-left',
+							css: {'font-size': '19px'},
+							field: 'name'
+						}]
+					},{
+						xtype: 'body',
+						cls: 'text-center',
+						alterdata: {
+							'date': function(dt){
+								var pdt = dt.split('-');
+								var res = pdt[2]+" "+cb.getConfig('meses', pdt[1]*1)+" "+pdt[0];
+								return res;
+							}
+						},
+						items: [{
+							xtype: 'img',
+							css: {'width': '100%', 'margin-bottom': '10px'},
+							attr: {'src': '{image}'}
+						},{
+							xtype: 'blockquote',
+							field: 'description'
+						},{
+							xtype: 'blockquote',
+							items: [{
+								xtype: 'b',
+								text: 'Fecha '
+							},{
+								xtype: 'span',
+								text: '{date}'
+							}]
+						},{
+							xtype: 'blockquote',
+							items: [{
+								xtype: 'b',
+								text: 'Lugar '
+							},{
+								xtype: 'span',
+								text: '{postal}'
+							}]
+						}]
+					},{
+						xtype: 'footer',
+						items: [{
+							field: 'tags',
+							xtype: 'div',
+							cls: 'label label-default',
+							css: {
+								'margin-right': '10px',
+								'font-size': '17px'
+							},
+							text: '{name}'
+						}]
 					}]
 				}]
 			}]

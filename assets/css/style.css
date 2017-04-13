@@ -87,13 +87,22 @@ a.disabled {
     display: block;
 }
 
-.panel-info {
-	border-color: #BBB;
+.panel-heading {
+	border-radius: 0;
 }
 
-.panel-info>.panel-heading {
-	background-color: #777;
+.panel-info {
+	border-color: #454b49;
+}
+
+.navbar-default .navbar-brand, .navbar-default .navbar-nav>li>a {
+	color: #454b49;
+}
+
+.panel-info>.panel-heading, .dropdown-menu>li>a:focus, .dropdown-menu>li>a:hover {
+	background-color: #454b49;
 	color: white;
+	border-color: #454b49;
 }
 
 @media only screen and (min-width : 0px) {

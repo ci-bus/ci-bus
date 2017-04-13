@@ -40,6 +40,7 @@ cb.define({
 			['store', 'gotorave', 'tags'],
 			['store', 'gotorave', 'chat', {action: 'salas'}],
 			['store', 'gotorave', 'chat'],
+			['store', 'gotorave', 'events', {'action': 'load', 'id_tag': 'recent'}],
 			['view', 'common', 'base'],
 			['view', 'gotorave', 'mainmenu'],
 			['view', 'gotorave']
@@ -53,48 +54,7 @@ cb.define({
 	},
 	
 	home: function(){
-		var ctr = this;
-		
-		ctr.showPopup([{
-			xtype: 'div',
-			cls: 'text-center',
-			size: '17px',
-			text: '¿Quieres recargar toda la pagina?',
-			items: [{
-				xtype: 'br'
-			},{
-				xtype: 'button',
-				text: 'Si',
-				margin: '15px 0 0 0',
-				listener: {
-					click: function(){
-						cb.load('view', 'gotorave');
-						cb.effect($(this).parent().parent().parent(), {
-							type: 'flipout',
-							dire: 'down',
-							fun: function(){
-								$(this).trigger('destroy');
-							}
-						});
-					}
-				}
-			},{
-				xtype: 'button',
-				text: 'No',
-				margin: '15px 0 0 10px',
-				listener: {
-					click: function(){
-						cb.effect($(this).parent().parent().parent(), {
-							type: 'flipout',
-							dire: 'up',
-							fun: function(){
-								$(this).trigger('destroy');
-							}
-						});
-					}
-				}
-			}]
-		}],'Alerta')
+		cb.load('store', 'gotorave', 'home');
 	},
 	
 	login : function(){

@@ -114,7 +114,34 @@
 					}
 					
 					$res3 = false;
+					
+					$CB->db->reset();
+					$CB->db->select("user_id");
+					$CB->db->from("user_follow");
+					$CB->db->where("user_id_followed", $r0->id);
+					$following = 0;
+					$user_follow = 0;
+					
+					if($res4 = $CB->db->get_array())
+					{
+						foreach($res4 as $r4)
+						{
+							if($r4->user_id == $_SESSION['user_id']){
+								$user_follow = 1;
+							}
+							$following++;
+						}
+					}
+					else
+					{
+						echo $CB->db->error();
+					}
+					$res4 = false;
 				}
+				
+				$res[$k]->following = $following;
+				$res[$k]->user_follow = $user_follow;
+				
 				$this->parseStore('users', array('usr' => $res));
 			}
 			else
