@@ -141,8 +141,7 @@
 		}
 		
 	} else {
-		
-				
+
 ?>
 
 <!DOCTYPE html>

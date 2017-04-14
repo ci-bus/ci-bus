@@ -9,9 +9,9 @@ cb.define({
 		xtype: 'div',
 		id: 'panel-add-friend',
 		display: 'none',
-		reload: false,
 		items: [{
 			xtype: 'panel',
+			reload: false,
 			type: 'info',
 			margin: '0 0 10px 0',
 			items: [{

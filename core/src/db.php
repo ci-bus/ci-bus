@@ -10,7 +10,10 @@
 		
 		function __construct($id_usuario){
 			
-			$this->config = array( 'charset'=>'utf8');
+			$this->config = array( 
+				'charset'  => 'utf8',
+				'anticode' => true
+			);
 			$this->sql = (object) array();
 			$this->sqlSegura = (object) array();
 			$this->sqlSegura->permiso = array();
@@ -210,6 +213,10 @@
 					$v = str_replace("\\'", "'", $v);
 				}
 				$v = str_replace("'", "\\'", $v);
+				if($this->getConfig('anticode')){
+					$v = str_replace("<", "&lt;", $v);
+					$v = str_replace(">", "&gt;", $v);
+				}
 			}
 			return is_numeric($v)? $v: "'".$v."'";
 		}

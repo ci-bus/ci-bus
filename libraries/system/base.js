@@ -596,6 +596,10 @@ cb.cloneObject = function(obj){
 	return $.extend({}, obj);
 }
 
+cb.cloneArray = function(arr){
+	return $.extend([], arr);
+}
+
 cb.module.bootstrapComponent = {
 	'button': function(opt, record){
 		var ele = document.createElement(opt.xtype);
@@ -644,7 +648,7 @@ cb.module.bootstrapComponent = {
 					opt.items[a].xtype = 'navbar-collapse';
 					opt.items[a].cls = opt.toggle;
 				}
-				$(conta).append(cb.create(opt.items[a], record));
+				$(conta).append(cb.create(cb.cloneObject(opt.items[a]), record));
 			}
 		}
 		opt.noitems = true;
@@ -683,7 +687,7 @@ cb.module.bootstrapComponent = {
 	},
 	'button-menu': function(opt, record){
 		opt.xtype = 'button';
-		conta = cb.create(opt, record);
+		conta = cb.create(cb.cloneObject(opt), record);
 		$(conta).addClass('navbar-btn');
 		ele = document.createElement('li');
 		$(ele).append(conta);
@@ -717,7 +721,7 @@ cb.module.bootstrapComponent = {
 				if(opt.items[a].xtype == 'dropdown') opt.items[a].xtype = 'dropdown-menu';
 				if(opt.items[a].xtype == 'button') opt.items[a].xtype = 'button-menu';
 				if(opt.items[a].xtype == 'text') opt.items[a].xtype = 'text-menu';
-				$(ele).append(cb.create(opt.items[a], record));
+				$(ele).append(cb.create(cb.cloneObject(opt.items[a]), record));
 			}
 		}
 		opt.noitems = true;
@@ -773,7 +777,7 @@ cb.module.bootstrapComponent = {
 					}
 					else
 					{
-						$(li).append(cb.create(opt.items[a], record));
+						$(li).append(cb.create(cb.cloneObject(opt.items[a]), record));
 					}
 					$(ul).append(li);
 				}
@@ -852,7 +856,7 @@ cb.module.bootstrapComponent = {
 				}
 				else
 				{
-					$(li).append(cb.create(opt.items[a], record));
+					$(li).append(cb.create(cb.cloneObject(opt.items[a]), record));
 				}
 				$(ul).append(li);
 			}
@@ -926,12 +930,12 @@ cb.module.bootstrapComponent = {
 	 		if(!opt.items[h].xtype)
 	 		{
 	 			opt.items[h].xtype = 'th';
-	 			opt.t_th = cb.create(opt.items[h], record);
+	 			opt.t_th = cb.create(cb.cloneObject(opt.items[h]), record);
 	 		}
 	 		else
 	 		{
 	 			opt.t_th = document.createElement('th');
-	 			$(opt.t_th).append(cb.create(opt.items[h], record));
+	 			$(opt.t_th).append(cb.create(cb.cloneObject(opt.items[h]), record));
 	 		}
 	 		$(opt.t_tr).append(opt.t_th);
 	 	}
@@ -951,12 +955,12 @@ cb.module.bootstrapComponent = {
 		 		if(!opt.items[h].xtype || opt.items[h].xtype == 'td' || opt.items[h].xtype == 'th')
 		 		{
 		 			if(!opt.items[h].xtype) opt.items[h].xtype = opt.t_type;
-		 			opt.t_th = cb.create(opt.items[h], record);
+		 			opt.t_th = cb.create(cb.cloneObject(opt.items[h]), record);
 		 		}
 		 		else
 		 		{
 		 			opt.t_th = document.createElement(opt.t_type);
-		 			$(opt.t_th).append(cb.create(opt.items[h], record));
+		 			$(opt.t_th).append(cb.create(cb.cloneObject(opt.items[h]), record));
 		 		}
 		 		if(opt.items[h].scope) $(opt.t_th).attr('scope', opt.items[h].scope);
 		 		if(opt.items[h].field)
@@ -1061,7 +1065,7 @@ cb.module.bootstrapComponent = {
 		if($.isArray(opt.items))
 		{
 			for(var a=0;a<opt.items.length;a++)
-				$(opt.ele_p).append(cb.create(opt.items[a], record));
+				$(opt.ele_p).append(cb.create(cb.cloneObject(opt.items[a]), record));
 				
 			opt.noitems = true;
 		}
@@ -1211,7 +1215,7 @@ cb.module.bootstrapComponent = {
 											opt.items[a].tab.items[k].href = '#'+opt.items[a].tab.items[k].ref;
 										}
 									}
-									$(opt.t_li2).append(cb.create(opt.items[a].tab.items[k], record));
+									$(opt.t_li2).append(cb.create(cb.cloneObject(opt.items[a].tab.items[k]), record));
 								}
 								$(opt.t_ul2).append(opt.t_li2);
 							}
@@ -1229,7 +1233,7 @@ cb.module.bootstrapComponent = {
 							}
 						});
 						$(opt.t_a).attr('href', '#'+opt.items[a].id);
-						$(opt.t_a).append(cb.create(opt.items[a].tab, record));
+						$(opt.t_a).append(cb.create(cb.cloneObject(opt.items[a].tab), record));
 					}
 					
 					if(opt.items[a].active) $(opt.t_a).attr('aria-expanded', 'true');
@@ -1271,7 +1275,7 @@ cb.module.bootstrapComponent = {
 										'border-bottom': '1px solid #DDD'}
 							});
 							if(opt.items[a].panel[k].active) $(opt.t_div).addClass('active in');
-							$(opt.t_div).append(cb.create(opt.items[a].panel[k], record));
+							$(opt.t_div).append(cb.create(cb.cloneObject(opt.items[a].panel[k]), record));
 							$(opt.t_content).append(opt.t_div);
 							opt.t_div = false;
 						}
@@ -1337,7 +1341,7 @@ cb.module.bootstrapComponent = {
 				{
 					for(var r=0; r<opt.items.length; r++)
 					{
-						$(ele).append(cb.create(opt.items[r], record));
+						$(ele).append(cb.create(cb.cloneObject(opt.items[r]), record));
 					}
 				}
 			}
@@ -1627,7 +1631,6 @@ cb.create = function(opt, record){
 		}
 		else
 		{
-			
 			if(opt.xtype == 'img' && opt.attr){
 				console.log('img', record, opt);
 			}
@@ -1642,6 +1645,7 @@ cb.create = function(opt, record){
 						});
 					}
 					else if($.isPlainObject(el) && ix !== 'items'){
+						opt[ix] = cb.cloneObject(opt[ix]);
 						$.each(el, function(ix3, el3){
 							if($.type(el3) === 'string'){
 								$.each(record, function(ix2, el2){
