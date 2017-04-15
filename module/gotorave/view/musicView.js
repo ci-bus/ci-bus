@@ -3,14 +3,13 @@ cb.define({
 
 	xtype: 'view',
 	name: 'music',
+	renderTo: '#body-col2',
 
 	items: [{
-		renderTo: '#body-col2',
 		xtype: 'panel',
 		type: 'info',
 		id: 'panel-add-music',
 		reload: false,
-		margin: '0 0 10px 0',
 		items: [{
 			xtype: 'head',
 			items: [{
@@ -109,25 +108,18 @@ cb.define({
 										text: ' A&ntilde;adir tag ',
 										size: 'small',
 										id: 'add-tag',
-										storelink: {
-											id: 'du-add-tag-strlk',
+										items: {
 											store: 'tags',
 											field: 'music',
-											appendTo: "ul[aria-labelledby='add-tag']",
-											structure: {
-												xtype: 'li',
-												items: [{
-													xtype: 'a',
-													attr: {
-														'data-id': btoa('id')
-													},
-													field: 'name',
-													listener: {
-														click: function(){
-															cb.ctr('gotorave', 'add_tag', this);
-														}
-													}
-												}]
+											xtype: 'a',
+											attr: {
+												'data-id': '{id}'
+											},
+											text: '{name}',
+											listener: {
+												click: function(){
+													cb.ctr('gotorave', 'add_tag', this);
+												}
 											}
 										}
 									}]
@@ -162,59 +154,48 @@ cb.define({
 			css: { display: 'none', padding: '0px' }
 		}]
 	},{
-		appendTo: '#body-col2',
 		xtype: 'div',
 		id: 'music-content',
-		storelink: {
-			id: 'music-strlk',
+		items: {
 			store: 'music',
 			field: 'msc',
-			renderTo: '#music-content',
-			structure: {
-				xtype: 'div',
-				css: {'padding-bottom': '10px'},
+			css: { 'margin-top': '10px'},
+			xtype: 'panel',
+			type: 'info',
+			attr: {'data-id': '{id}'},
+			items: [{
+				xtype: 'head',
 				items: [{
-					xtype: 'panel',
-					type: 'info',
-					attr: {'data-id': btoa('id')},
-					items: [{
-						xtype: 'head',
-						items: [{
-							xtype: 'review',
-							attr: {data: 'music'},
-							float: 'right',
-							css: {'margin-right': '-5px'}
-						},{
-							xtype: 'div',
-							cls: 'text-left',
-							css: {'font-size': '17px'},
-							field: 'titulo'
-						}]
-					},{
-						xtype: 'body',
-						items: [{
-							xtype: 'div',
-							html: btoa('enlace')
-						}]
-					},{
-						xtype: 'footer',
-						storelink: {
-							id: 'music-tags-strlk',
-							store: 'current',
-							field: 'tags',
-							structure: {
-								xtype: 'div',
-								cls: 'label label-default',
-								css: {
-									'margin-right': '10px',
-									'font-size': '17px'
-								},
-								text: btoa('name')
-							}
-						}
-					}]
+					xtype: 'review',
+					attr: {data: 'music'},
+					float: 'right',
+					css: {'margin-right': '-5px'}
+				},{
+					xtype: 'div',
+					cls: 'text-left',
+					css: {'font-size': '17px'},
+					field: 'titulo'
 				}]
-			}
+			},{
+				xtype: 'body',
+				items: [{
+					xtype: 'div',
+					html: '{enlace}'
+				}]
+			},{
+				xtype: 'footer',
+				css: {'overflow': 'auto'},
+				items: {
+					field: 'tags',
+					xtype: 'div',
+					cls: 'label label-default',
+					css: {
+						'margin-right': '10px',
+						'font-size': '17px'
+					},
+					text: '{name}'
+				}
+			}]
 		}
 	}]
 });

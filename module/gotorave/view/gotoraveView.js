@@ -230,6 +230,7 @@ cb.define({
 						}]
 					},{
 						xtype: 'footer',
+						css: {'overflow': 'auto'},
 						items: [{
 							field: 'tags',
 							xtype: 'div',

@@ -3,7 +3,6 @@ cb.module = {};
 cb.module.controller = {};
 cb.module.view = {};
 cb.module.store = {};
-cb.module.storelink = {};
 cb.module.component = {};
 cb.module.model = {};
 cb.config = [];
@@ -42,12 +41,12 @@ cb.send = function(formn,module,store,callback)
 cb.require = function(dt, callback)
 {
 	$.ajax({
-			dataType: "script",
-			cache: true,
-			method: 'post',
-			data: {data:JSON.stringify(dt)},
-			url: 'require',
-			success: callback
+		dataType: "script",
+		cache: true,
+		method: 'post',
+		data: {data:JSON.stringify(dt)},
+		url: 'require',
+		success: callback
 	});
 }
 
@@ -60,7 +59,7 @@ cb.loadAll = function(dt, callback)
 		data: {data:JSON.stringify(dt)},
 		url: 'loadAll',
 		success: callback
-});
+	});
 }
 
 cb.loadLineal = function (arr)
@@ -106,10 +105,6 @@ cb.load = function(type, module, name, data, callback)
 	}
 	if(type == 'store')
 	{
-		if(!this.module.storelink[name])
-		{
-			this.module.storelink[name] = {};
-		}
 		$.ajax({
 		  dataType: "script",
 		  cache: true,
@@ -147,8 +142,7 @@ cb.define = function(obj)
 	{
 		if(obj.xtype == 'store')
 		{
-			if(!this.module.storelink[obj.name]) this.module.storelink[obj.name] = new Object;
-			this.storeSetValues(obj.name, obj.data);
+			//TODO Refrescar elementos que carguen datos de este store
 		}
 		if(obj.data && this.module[obj.xtype][obj.name])
 		{
@@ -157,7 +151,7 @@ cb.define = function(obj)
 				if(!obj.data[fie]) obj.data[fie] = this.module[obj.xtype][obj.name].data[fie];
 			}
 		}
-		this.module[obj.xtype][obj.name] = obj;
+		this.module[obj.xtype][obj.name] = this.cloneObject(obj);
 		if($.isArray(obj['require'])) this.require(obj['require']);
 		if($.isFunction(obj['onload'])) obj['onload']();
 		if(obj.xtype == 'view')
@@ -184,10 +178,6 @@ cb.define = function(obj)
 			this.render(obj);
 		}
 	}
-}
-
-cb.renderViewModel = function(storeName){
-	
 }
 
 cb.setMissingDinamicValue = function(obj, attr, value, nivels){
@@ -244,254 +234,6 @@ cb.setDinamicValue = function(obj, attr, value, nivels){
 	}
 	
 	return obj;
-}
-
-cb.storeAppendValues = function(elep, storelink, data)
-{
-	if(storelink.renderTo)
-	{
-		$(storelink.renderTo).empty();
-	}
-	
-	if(elep)
-	{
-		storelink.appendTo = elep;
-	}
-	
-	if($.isArray(data))
-	{
-		this.storeSetArray(storelink, storelink.field, data);
-	}
-	else if($.isPlainObject(data))
-	{
-		this.storeSetObject(storelink, storelink.field, data);
-	}
-	
-	return elep;
-}
-cb.storeSetObject = function(strlk, field, data)
-{
-	if($.isPlainObject(data) && strlk['field'] == field && strlk.structure)
-	{
-		strlk.structure.data = data;
-		var ele = this.create(strlk.structure, data);
-		var Avalues = [];
-		var AAlinks = [];
-		for(var field2 in data)
-		{
-			if($.isArray(data[field2]))
-			{
-				var parse_field = field? field+'.'+field2 : field2;
-				this.storeSetArray(strlk, parse_field, data[field2]);
-			}
-			else if($.isPlainObject(data[field2]))
-			{
-				var parse_field = field? field+'.'+field2 : field2;
-				this.storeSetObject(strlk, parse_field, data[field2]);
-			}
-			else
-			{
-				var links = "";
-				var Alinks = [];
-				if(field)
-				{
-					var t_field = field+'.'+field2;
-					var p_field = t_field.split('.');
-					for(var r=0; r<p_field.length; r++)
-					{
-						var t2_field = "";
-						for(var r2=r; r2<p_field.length; r2++)
-						{
-							t2_field += p_field[r2];
-							if(r2<p_field.length - r && r2<p_field.length-1) t2_field += ".";
-						}
-						links += "[strlk='"+btoa(t2_field)+"']";
-						Alinks.push(btoa(t2_field));
-						if($.isPlainObject(strlk.alterdata))
-						{
-							if(strlk.alterdata[t2_field])
-							{
-								data[field2] = strlk.alterdata[t2_field](data[field2]);
-							}
-						}
-						if(r<p_field.length-1) links += ", ";
-					}
-				}
-				else 
-				{
-					links = "[strlk='"+btoa(field2)+"']";
-					Alinks.push(btoa(field2));
-				}
-				if(links != "" && data[field2])
-				{
-					cb.storeSet($(ele).find(links), data[field2]);
-					Avalues.push(data[field2]);
-					AAlinks.push(Alinks);
-				}
-			}
-		}
-				
-		if(strlk.fastset)
-		{
-			var htmlString = $(ele).prop('outerHTML');
-			
-			for(var t=0; t<Avalues.length; t++)
-			{
-				for(var r=0; r<AAlinks[t].length; r++)
-				{
-					htmlString = htmlString.replace(new RegExp(AAlinks[t][r],"g"), Avalues[t]);
-				}
-			}
-			
-			$(strlk.appendTo).append(htmlString);
-		}
-		else
-		{	
-			cb.storeRecursiveSet(ele, AAlinks, Avalues);
-			$(strlk.appendTo).append(ele);
-		}
-	}
-	else if($.isArray(data))
-	{
-		this.storeSetArray(strlk, field, data);
-	}
-}
-cb.storeRecursiveSet = function(elem, links, values)
-{
-	if($(elem).children().length)
-	{
-		$(elem).children().each(function(idx){
-			cb.storeRecursiveSet(this, links, values);
-		});
-	}
-	else
-	{
-		if($(elem).is('input')) var t_cn = $(elem).val();
-		else var t_cn = $(elem).html();
-		if(t_cn)
-		{
-			var t_cn2 = t_cn;
-			for(var t=0; t<values.length; t++)
-			{
-				for(var s=0; s<links[t].length; s++)
-				{
-					t_cn2 = t_cn2.replace(new RegExp(links[t][s],"g"), values[t]);
-				}
-			}
-			if(t_cn2 != t_cn)
-			{
-				if($(elem).is('input')) $(elem).val(t_cn2);
-				else $(elem).html(t_cn2);
-			}
-		}
-	}
-	if (elem.hasAttributes && elem.hasAttributes()) {
-		var attrs = elem.attributes;
-		if($(elem).children().length<1){
-			var staff = $(elem).html();
-		}
-		for(var c=0; c<attrs.length; c++)
-		{
-			for(var t=0; t<values.length; t++)
-			{
-				for(var s=0; s<links[t].length; s++)
-				{
-					var nam = attrs[c].name;
-					if(nam != "strlk")
-					{
-						var val = attrs[c].value;
-						val = val.replace(new RegExp(links[t][s],"g"), values[t]);
-						nam = nam.replace(new RegExp(links[t][s],"g"), values[t]);
-						if(nam != attrs[c].name)
-						{
-							$(elem).removeAttr(attrs[c].name).attr(nam, val);
-						}
-						else if(val != attrs[c].value)
-						{
-							$(elem).attr(attrs[c].name, val);
-						}
-						if($(elem).children().length<1){
-							staff = staff.replace(new RegExp(links[t][s],"g"), values[t]);
-						}
-					}
-				}
-			}
-		}
-		if($(elem).children().length<1)
-		{
-			if(staff != $(elem).html())
-			{
-				$(elem).html(staff);
-			}
-		}
-	}
-	return elem;
-}
-cb.storeSetArray = function(strlk, field, data)
-{
-	if($.isArray(data))
-	{
-		for(var t=0; t<data.length; t++)
-		{
-			if($.isArray(data[t]))
-			{
-				this.storeSetArray(strlk, field, data[t]);
-			}
-			else if($.isPlainObject(data[t]))
-			{
-				if($.isArray(strlk.structure))
-				{
-					for(var i=0; i<strlk.structure.length; i++)
-					{
-						var t_strlk = strlk;
-						t_strlk.structure = t_strlk.structure[i];
-						this.storeSetObject(t_strlk, field, data[t]);
-					}
-				}
-				else
-				{
-					this.storeSetObject(strlk, field, data[t]);
-				}
-			}
-		}
-	}
-}
-cb.storeSetValues = function(store, data)
-{
-	if($.isPlainObject(this.module.storelink[store]))
-	{
-		strlk = this.module.storelink[store];
-		for(var str in strlk)
-		{
-			if(data[ strlk[str].field ])
-			{
-				if(strlk[str].renderTo)
-				{
-					$(strlk[str].renderTo).empty();
-					strlk[str].appendTo = strlk[str].renderTo;
-				}
-				for(var field in data)
-				{
-					if($.isArray(data[field]))
-					{
-						this.storeSetArray(strlk[str], field, data[field]);
-					}
-					else if($.isPlainObject(data[field]))
-					{
-						this.storeSetObject(strlk[str], field, data[field]);
-					}
-				}
-			}
-		}
-	}
-
-	for(var field in data)
-	{
-		if($("[strlk='"+btoa(store+'.'+field)+"']"))
-		{
-			$("[strlk='"+btoa(store+'.'+field)+"']").trigger('storelink', {'data': data[field], 'field': field});
-		}
-	}
 }
 
 cb.storeSet = function(ele, value)
@@ -754,7 +496,7 @@ cb.module.bootstrapComponent = {
 			}));
 		}
 		$(ele).append(but);
-		if($.isArray(opt.items) || opt.storelink)
+		if($.isArray(opt.items))
 		{
 			var ul = document.createElement('ul');
 			$(ul).addClass('dropdown-menu');
@@ -777,7 +519,21 @@ cb.module.bootstrapComponent = {
 					}
 					else
 					{
-						$(li).append(cb.create(cb.cloneObject(opt.items[a]), record));
+						if(opt.items[a].xtype == 'li'){
+							li = cb.create(opt.items[a], record);
+						}else{
+							oli = {xtype: 'li'};
+							if(opt.items[a].store){
+								oli.store = opt.items[a].store;
+								delete opt.items[a].store;
+							}
+							if(opt.items[a].field){
+								oli.field = opt.items[a].field;
+								delete opt.items[a].field;
+							}
+							oli.items = opt.items[a];
+							li = cb.create(oli, record);
+						}
 					}
 					$(ul).append(li);
 				}
@@ -856,7 +612,21 @@ cb.module.bootstrapComponent = {
 				}
 				else
 				{
-					$(li).append(cb.create(cb.cloneObject(opt.items[a]), record));
+					if(opt.items[a].xtype == 'li'){
+						li = cb.create(opt.items[a], record);
+					}else{
+						oli = {xtype: 'li'};
+						if(opt.items[a].store){
+							oli.store = opt.items[a].store;
+							delete opt.items[a].store;
+						}
+						if(opt.items[a].field){
+							oli.field = opt.items[a].field;
+							delete opt.items[a].field;
+						}
+						oli.items = opt.items[a];
+						li = cb.create(oli, record);
+					}
 				}
 				$(ul).append(li);
 			}
@@ -1566,9 +1336,6 @@ cb.create = function(opt, record){
 	
 	if($.type(opt.xtype) == 'string')
 	{
-		
-		
-		
 		//Opt copy
 		var opt_origin = cb.cloneObject(opt);
 		//Coge store
@@ -1620,10 +1387,10 @@ cb.create = function(opt, record){
 		if($.isArray(record)){
 			ele = [];
 			for(var c=0; c<record.length; c++){
-				//Se borra store y field para que no entre en un bucle infinito
-				delete opt.store;
-				delete opt.field;
 				if(record[c]){
+					//Se borra store y field para que no entre en un bucle infinito
+					delete opt.store;
+					delete opt.field;
 					ele.push(cb.create(cb.cloneObject(opt), record[c]));
 				}
 			}
@@ -1631,10 +1398,6 @@ cb.create = function(opt, record){
 		}
 		else
 		{
-			if(opt.xtype == 'img' && opt.attr){
-				console.log('img', record, opt);
-			}
-			
 			//Si el record es un objeto
 			if($.isPlainObject(record)){
 				//Reemplaza {field} por el valor del record
@@ -1706,53 +1469,27 @@ cb.create = function(opt, record){
 				}
 			}
 			
-			if(opt.storelink && !opt.nostorelink)
-			{
-				if(opt.data && opt.data[opt.storelink.field] && opt.storelink.store == 'current')
-				{
-					if($('body').find(opt.storelink.appendTo).length)
-					{
-						this.storeAppendValues(opt.storelink.appendTo, opt.storelink, opt.data[opt.storelink.field]);
-					}
-					else if($('body').find(opt.storelink.renderTo).length)
-					{
-						this.storeAppendValues(opt.storelink.renderTo, opt.storelink, opt.data[opt.storelink.field]);
-					}
-				}
-				else if(this.module.store[opt.storelink.store] && this.module.store[opt.storelink.store].data[opt.storelink.field])
-				{
-					if($('body').find(opt.storelink.appendTo).length)
-					{
-						this.storeAppendValues($(opt.storelink.appendTo), opt.storelink, this.module.store[opt.storelink.store].data[opt.storelink.field]);
-					}
-					else
-					{
-						var t_contn = document.createElement('div');
-						$(t_contn).append(ele);
-						if($(t_contn).find(opt.storelink.appendTo).length)
-						{
-							t_strlk_ele = $(t_contn).find(opt.storelink.appendTo);
-							this.storeAppendValues(t_strlk_ele, opt.storelink, this.module.store[opt.storelink.store].data[opt.storelink.field]);
-							$(t_contn).find(opt.storelink.appendTo).append($(t_strlk_ele).contents());
-							ele = $(t_contn).contents();
-						}
-					}
-				}
+			//Seteamos las opciones opt
+			ele.opt = opt_origin;
+			//Seteamos value
+			if(record){
+				ele.recordValue = record;
 			}
 			
-			if(opt.renderTo){
+			if(opt.renderTo)
+			{
 				$(opt.renderTo).empty().append(ele);
 			}
-			else if(opt.appendTo){
+			else if(opt.appendTo)
+			{
 				$(opt.appendTo).append(ele);
 			}
-			else if(opt.prependTo){
+			else if(opt.prependTo)
+			{
 				$(opt.prependTo).prepend(ele);
-			}else{
-				//Seteamos las opciones opt
-				ele.opt = opt_origin;
-				//Seteamos value
-				ele.recordValue = record;
+			}
+			else
+			{
 				return ele;
 			}
 		}
@@ -1768,86 +1505,14 @@ cb.common_prop = function(ele, opt)
 	}
 	
 	if($.isPlainObject(opt.css)){
-		$(ele).css(opt.css)
+		$(ele).css(opt.css);
 	}
 	
 	if($.isPlainObject(opt.attr)){
-		$(ele).attr(opt.attr)
-	}
-		
-	if(opt.data && $.isArray(opt.items))
-	{
-		for(var i=0; i<opt.items.length; i++)
-		{
-			opt.items[i].data = opt.data;
-		}
+		$(ele).attr(opt.attr);
 	}
 	
-	if(opt.storelink && opt.storelink.store)
-	{
-		if(!this.module.storelink[opt.storelink.store])
-			this.module.storelink[opt.storelink.store] = {};
-		if(!opt.storelink.id)
-		{
-			if(opt.id)
-			{
-				opt.storelink.id=opt.id;
-			}
-			else
-			{
-				opt.id = this.autoname();
-				opt.storelink.id = opt.id;
-				$(ele).attr('id', opt.storelink.id);
-			}
-		}
-		
-		if(!opt.storelink.field)
-		{
-			opt.storelink.field = opt.storelink.store;
-		}
-		this.module.storelink[opt.storelink.store][opt.storelink.id] = opt.storelink;
-				
-		if(opt.data && opt.data[opt.storelink.field] && opt.storelink.store == 'current')
-		{
-			if(((!opt.storelink.appendTo || opt.storelink.appendTo == '#'+opt.id) && (!opt.storelink.renderTo || opt.storelink.renderTo == '#'+opt.id)) || (opt.storelink.appendTo && !opt.id) || (opt.storelink.renderTo && !opt.id))
-			{
-				opt.nostorelink = true;
-				ele = this.storeAppendValues(ele, opt.storelink, opt.data[opt.storelink.field]);
-			}
-		}			
-		else if(this.module.store[opt.storelink.store] && this.module.store[opt.storelink.store].data[opt.storelink.field])
-		{
-			if(!opt.storelink.renderTo && !opt.storelink.appendTo)
-			{
-				opt.storelink.renderTo = '#'+opt.id;
-			}
-			
-			if(opt.storelink.renderTo == '#'+opt.id || opt.storelink.appendTo == '#'+opt.id)
-			{
-				opt.nostorelink = true;
-				ele = this.storeAppendValues(ele, opt.storelink, this.module.store[opt.storelink.store].data[opt.storelink.field]);
-			}
-		}
-	}
-	
-	if(opt.store && opt.field)
-	{
-		if(cb.module.store[opt.store] && cb.module.store[opt.store].data[opt.field])
-		{
-			cb.storeSet(ele, cb.module.store[opt.store].data[opt.field]);
-		}
-		$(ele).attr('strlk',btoa(opt.store+'.'+opt.field)).on('storelink', function(ev, val){
-			val = val.data;
-			cb.storeSet(this, val);
-		});
-	}
-	else if(opt.field)
-	{
-		$(ele).attr('strlk',btoa(opt.field));
-	}
-	
-	if(opt.listener)
-	{
+	if(opt.listener){
 		$(ele).on(opt.listener);
 	}
 	

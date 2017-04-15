@@ -3,16 +3,15 @@ cb.define({
 
 	xtype: 'view',
 	name: 'events',
+	
+	renderTo: '#body-col2',
 
 	items: [{
-		renderTo: '#body-col2',
 		xtype: 'div',
 		id: 'events-content',
-		storelink: {
-			id: 'events-strlk',
+		items: {
 			store: 'events',
 			field: 'ev',
-			renderTo: '#events-content',
 			alterdata: {
 				'date': function(dt){
 					var pdt = dt.split('-');
@@ -22,75 +21,69 @@ cb.define({
 					}
 				}
 			},
-			structure: {
-				xtype: 'div',
-				css: {'padding-bottom': '10px'},
+			xtype: 'div',
+			css: {'padding-bottom': '10px'},
+			items: [{
+				xtype: 'panel',
+				type: 'info',
+				attr: {'data-id': '{id}'},
 				items: [{
-					xtype: 'panel',
-					type: 'info',
-					attr: {'data-id': btoa('id')},
+					xtype: 'head',
 					items: [{
-						xtype: 'head',
-						items: [{
-							xtype: 'review',
-							attr: {data: 'event'},
-							float: 'right',
-							css: {'margin-right': '-5px'}
-						},{
-							xtype: 'div',
-							cls: 'text-left',
-							css: {'font-size': '19px'},
-							field: 'name'
-						}]
+						xtype: 'review',
+						attr: {data: 'event'},
+						float: 'right',
+						css: {'margin-right': '-5px'}
 					},{
-						xtype: 'body',
-						cls: 'text-center',
-						items: [{
-							xtype: 'img',
-							css: {'width': '100%', 'margin-bottom': '10px'},
-							attr: {'src': btoa('image')}
-						},{
-							xtype: 'blockquote',
-							field: 'description'
-						},{
-							xtype: 'blockquote',
-							items: [{
-								xtype: 'b',
-								text: 'Fecha '
-							},{
-								xtype: 'span',
-								text: btoa('date')
-							}]
-						},{
-							xtype: 'blockquote',
-							items: [{
-								xtype: 'b',
-								text: 'Lugar '
-							},{
-								xtype: 'span',
-								text: btoa('postal')
-							}]
-						}]
-					},{
-						xtype: 'footer',
-						storelink: {
-							id: 'event-tags-strlk',
-							store: 'current',
-							field: 'tags',
-							structure: {
-								xtype: 'div',
-								cls: 'label label-default',
-								css: {
-									'margin-right': '10px',
-									'font-size': '17px'
-								},
-								text: btoa('name')
-							}
-						}
+						xtype: 'div',
+						cls: 'text-left',
+						css: {'font-size': '19px'},
+						field: 'name'
 					}]
+				},{
+					xtype: 'body',
+					cls: 'text-center',
+					items: [{
+						xtype: 'img',
+						css: {'width': '100%', 'margin-bottom': '10px'},
+						attr: {'src': '{image}'}
+					},{
+						xtype: 'blockquote',
+						field: 'description'
+					},{
+						xtype: 'blockquote',
+						items: [{
+							xtype: 'b',
+							text: 'Fecha '
+						},{
+							xtype: 'span',
+							text: '{date}'
+						}]
+					},{
+						xtype: 'blockquote',
+						items: [{
+							xtype: 'b',
+							text: 'Lugar '
+						},{
+							xtype: 'span',
+							text: '{postal}'
+						}]
+					}]
+				},{
+					xtype: 'footer',
+					css: {'overflow': 'auto'},
+					items: {
+						field: 'tags',
+						xtype: 'div',
+						cls: 'label label-default',
+						css: {
+							'margin-right': '10px',
+							'font-size': '17px'
+						},
+						text: '{name}'
+					}
 				}]
-			}
+			}]
 		}
 	}]
-
 });

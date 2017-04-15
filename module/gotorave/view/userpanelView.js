@@ -174,25 +174,18 @@ cb.define({
 							text: ' A&ntilde;adir tag ',
 							size: 'small',
 							id: 'add-tag',
-							storelink: {
-								id: 'du-add-tag-strlk',
+							items: {
 								store: 'tags',
 								field: 'user',
-								appendTo: "ul[aria-labelledby='add-tag']",
-								structure: {
-									xtype: 'li',
-									items: [{
-										xtype: 'a',
-										attr: {
-											'data-id': btoa('id')
-										},
-										field: 'name',
-										listener: {
-											click: function(){
-												cb.ctr('gotorave', 'add_tag', this);
-											}
-										}
-									}]
+								xtype: 'a',
+								attr: {
+									'data-id': btoa('id')
+								},
+								text: '{name}',
+								listener: {
+									click: function(){
+										cb.ctr('gotorave', 'add_tag', this);
+									}
 								}
 							}
 						}]
