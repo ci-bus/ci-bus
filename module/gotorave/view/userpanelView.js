@@ -179,7 +179,7 @@ cb.define({
 								field: 'user',
 								xtype: 'a',
 								attr: {
-									'data-id': btoa('id')
+									'data-id': '{id}'
 								},
 								text: '{name}',
 								listener: {

@@ -75,6 +75,10 @@ cb.define({
 			['store', 'gotorave', 'home'],
 			['view', 'gotorave', 'home']
 		], function(){
+			$('#home-music-content').animate({opacity: 1}, 'fast', function(){
+				cb.ctr('gotorave', 'link_music');
+				$('#home-users-content').animate({opacity: 1}, 'fast');
+			});
 			cb.ctr('gotorave', 'auto_scroll');
 		});
 	},

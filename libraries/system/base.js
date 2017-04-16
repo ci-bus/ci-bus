@@ -738,7 +738,6 @@ cb.module.bootstrapComponent = {
 		 		if(opt.items[h].scope) $(opt.t_th).attr('scope', opt.items[h].scope);
 		 		if(opt.items[h].field)
 		 		{
-		 			$(opt.t_th).attr('strlk', btoa(opt.items[h].field));
 		 			$(opt.t_tr).css('display','none');
 		 		}
 		 		$(opt.t_tr).append(opt.t_th);
