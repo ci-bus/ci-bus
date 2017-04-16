@@ -411,7 +411,9 @@ cb.module.bootstrapComponent = {
 			xtype: 'button',
 			type: 'button',
 			cls: 'collapsed navbar-toggle',
+			height: 35,
 			margin: '8px 5px 0 0',
+			padding: '5px 10px',
 			attr: {
 				'data-toggle': 'collapse',
 				'data-target': '.'+opt.target
@@ -421,8 +423,9 @@ cb.module.bootstrapComponent = {
 				cls: 'sr-only',
 				text: 'Toggle navigation'
 			},{
-				xtype: 'span',
-				cls: 'icon-bar'
+				xtype: 'glyphicon',
+				type: 'option-horizontal',
+				size: 22
 			}]
 		}));
 		return ele;

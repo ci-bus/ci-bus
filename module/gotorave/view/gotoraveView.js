@@ -17,6 +17,7 @@ cb.define({
 				xtype: 'panel',
 				type: 'info',
 				id: 'panel-chat',
+				css: {opacity: 0},
 				items: [{
 					xtype: 'head',
 					items: [{
@@ -169,9 +170,10 @@ cb.define({
 				}]
 			},{
 				xtype: 'div',
+				id: 'proxevent',
 				store: 'events',
 				field: 'recent',
-				css: {'padding-bottom': '10px'},
+				css: {'padding-bottom': '10px', opacity: 0},
 				items: [{
 					xtype: 'h3',
 					text: 'El evento más próximo'
@@ -250,24 +252,7 @@ cb.define({
 			size: {
 				xs: 12,
 				sm: 6
-			},
-			items: [{
-				xtype: 'panel',
-				type: 'info',
-				items: [{
-					xtype: 'head',
-					title: 'Head panel'
-				},{
-					xtype: 'body',
-					items: [{
-						xtype: 'div',
-						text: 'test'
-					}]
-				},{
-					xtype: 'footer',
-					text: 'Footer panel'
-				}]
-			}]
+			}
 		}]
 	}]
 

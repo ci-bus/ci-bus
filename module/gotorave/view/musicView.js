@@ -180,6 +180,7 @@ cb.define({
 				xtype: 'body',
 				items: [{
 					xtype: 'div',
+					css: {'text-align': 'center'},
 					html: '{enlace}'
 				}]
 			},{

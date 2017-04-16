@@ -124,5 +124,15 @@ cb.define({
 			}]
 			
 		});
+		
+		cb.create({
+			xtype: 'div',
+			appendTo: 'body',
+			html: '<svg viewBox="0 0 500 100" class="chart"><polyline fill="none" stroke="#0074d9" stroke-width="3" points="0,120 20,60 40,80 60,20"/></svg>'
+		});
+		
+		
+			
+			
 	}
 });

@@ -8,13 +8,16 @@ cb.define({
 		css: {'text-align': 'center', 'background-color': 'black'},
 		items: [{
 			xtype: 'img',
+			id: 'mainimg',
 			src: 'uploads/cabecera.jpg',
-			css: {width: '100%', 'max-width': '1200px', margin: 'auto'}
+			css: {width: '0px', 'max-width': '900px', margin: 'auto'}
 		}]
 	},{
 		xtype: 'nav',
 		type: 'default static-top',
 		color: '#454b49',
+		id: 'homenav',
+		css: {opacity: 0},
 		items: [{
 			xtype: 'header',
 			items: [{

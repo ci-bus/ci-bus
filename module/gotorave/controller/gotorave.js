@@ -44,7 +44,15 @@ cb.define({
 			['view', 'common', 'base'],
 			['view', 'gotorave', 'mainmenu'],
 			['view', 'gotorave']
-		]);
+		], function(){
+			$('#mainimg').animate({width: '100%'}, 'swing', function(){
+				$('#homenav').animate({opacity: 1}, 'fast', function(){
+					$('#panel-chat').animate({opacity: 1}, 'fast', function(){
+						$('#proxevent').animate({opacity: 1}, 'fast');
+					})
+				})
+			});
+		});
 		cb.setConfig('no_refresh_chat', false);
 		this.chatInterval = setInterval(function(){
 			if(!cb.getConfig('no_refresh_chat')){
@@ -79,13 +87,20 @@ cb.define({
 	
 	changesala: function(record){
 		$('#chat-sala-name').html(record['name']);
-		cb.load('store', 'gotorave', 'chat', {'action': 'change', 'sala_id': record['id']});
+		
+		cb.loadAll([['store', 'gotorave', 'chat', {'action': 'change', 'sala_id': record['id']}],
+					['store', 'gotorave', 'chat'],
+					['view',  'gotorave', 'chat']]);
+		
 	},
 	
 	sendchat: function(){
 		ctr = this;
 		if($("textarea[name='msg']").val().trim()!=''){
-			cb.send('chat-send','gotorave','chat');
+			cb.send('chat-send','gotorave','chat',function(){
+				cb.loadAll([['store', 'gotorave', 'chat'],
+				            ['view',  'gotorave', 'chat']]);
+			});
 			$("textarea[name='msg']").val('');
 		}
 	},
@@ -272,28 +287,25 @@ cb.define({
 					}
 				});
 			}
-			
-			var t_top = $('#body-col2').position().top;
-			if(t_top > 100)
-			{
-				cb.sto(function(){
-					$("html, body").animate({scrollTop: t_top}, 'fast', 'swing');
-				}, 250);
-			}
+			this.auto_scroll();
 		});
+	},
+	
+	auto_scroll: function(){
+		var t_top = $('#body-col2').position().top;
+		if(t_top > 100)
+		{
+			cb.sto(function(){
+				$("html, body").animate({scrollTop: t_top}, 'fast', 'swing');
+			}, 200);
+		}
 	},
 	
 	load_events: function(id_tag){
 		
 		cb.load('store', 'gotorave', 'events', {'action': 'load', 'id_tag': id_tag}, function(){
 			cb.load('view', 'gotorave', 'events', function(){
-				var t_top = $('#body-col2').position().top;
-				if(t_top > 100)
-				{
-					cb.sto(function(){
-						$("html, body").animate({scrollTop: t_top}, 'fast', 'swing');
-					}, 250);
-				}
+				cb.ctr('gotorave', 'auto_scroll');
 			});
 		});
 	},
@@ -309,13 +321,7 @@ cb.define({
 				}else{
 					$('#panel-add-friend').remove;
 				}
-				var t_top = $('#body-col2').position().top;
-				if(t_top > 100)
-				{
-					cb.sto(function(){
-						$("html, body").animate({scrollTop: t_top}, 'fast', 'swing');
-					}, 250);
-				}
+				cb.ctr('gotorave', 'auto_scroll');
 			});
 		});
 	},
@@ -348,13 +354,7 @@ cb.define({
 						return false;
 					}
 				});
-				var t_top = $('#body-col2').position().top;
-				if(t_top > 100)
-				{
-					cb.sto(function(){
-						$("html, body").animate({scrollTop: t_top}, 'fast', 'swing');
-					}, 250);
-				}
+				cb.ctr('gotorave', 'auto_scroll');
 			});
 		});
 	},
