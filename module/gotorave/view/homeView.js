@@ -1,112 +1,112 @@
 
 cb.define({
+
 	xtype: 'view',
 	name: 'home',
+	renderTo: '#body-col2',
+
 	items: [{
-		xtype: 'container',
-		renderTo: '#content',
-		cls: 'text-center',
-		type: 'fluid',
-		css: {'padding-top': '50px'},
+		xtype: 'div',
+		id: 'home-music-content',
+		css: {opacity: 0},
 		items: [{
-			xtype: 'row',
+			xtype: 'h3',
+			margin: 0,
+			text: 'Música reciente',
+		},{
+			store: 'new',
+			field: 'music',
+			css: { 'margin-top': '10px'},
+			xtype: 'panel',
+			type: 'info',
+			attr: {'data-id': '{id}'},
 			items: [{
-				xtype: 'col',
-				size: {
-					xs: 0,
-					sm: 3,
-					lg: 4
-				}
-			},{
-				xtype: 'col',
-				size: {
-					xs: 12,
-					sm: 6,
-					lg: 4,
-				},
+				xtype: 'head',
 				items: [{
-					xtype: 'panel',
-					type: 'info',
-					css: {'box-shadow': '0px 0px 20px -4px rgba(0,0,0,0.5)'},
-					items: [{
-						xtype: 'head',
-						title: 'Conectar usuario'
-					},{
-						xtype: 'body',
-						items: [{
-							xtype: 'form',
-							name: 'chat-login',
-							items: [{
-								xtype: 'group',
-								items: [{
-									xtype: 'input',
-									type: 'hidden',
-									name: 'action',
-									value: 'login'
-								},{
-									xtype: 'label',
-									text: 'Correo electrónico'
-								},{
-									xtype: 'input',
-									type: 'text',
-									name: 'user'
-								}]
-							},{
-								xtype: 'group',
-								items: [{
-									xtype: 'label',
-									text: 'Contraseña'
-								},{
-									xtype: 'input',
-									type: 'password',
-									name: 'pass',
-									listener: {
-										keyup: function(e){
-											if(e.keyCode == 13){
-												cb.ctr('gotorave', 'login');
-											}
-										}
-									}
-								}]
-							},{
-								xtype: 'group',
-								items: [{
-									xtype: 'button',
-									type: 'primary',
-									glyphicon: 'link',
-									text: ' Conectar, vamos de fiesta ',
-									css: {'padding-right':'20px'},
-									listener: {
-										click: function(){
-											cb.ctr('gotorave', 'login');
-										}
-									}
-								}]
-							},{
-								xtype: 'a',
-								text: 'Soy nuevo, quiero registrarme',
-								listener: {
-									click: function(){
-										cb.ctr('gotorave', 'inforeg');
-									}
-								}
-							}]
-						}]
-					},{
-						xtype: 'footer',
-						text: '¿No recuerdas tu contraseña? ',
-						items: [{
-							xtype: 'a',
-							text: ' Haz click aquí'
-						}]
-					}]
+					xtype: 'review',
+					attr: {data: 'music'},
+					float: 'right',
+					css: {'margin-right': '-5px'}
+				},{
+					xtype: 'div',
+					cls: 'text-left',
+					css: {'font-size': '17px'},
+					field: 'titulo'
 				}]
 			},{
-				xtype: 'col',
-				size: {
-					xs: 0,
-					sm: 3,
-					lg: 4
+				xtype: 'body',
+				items: [{
+					xtype: 'div',
+					css: {'text-align': 'center'},
+					html: '{enlace}'
+				}]
+			},{
+				xtype: 'footer',
+				css: {'overflow': 'auto'},
+				items: {
+					field: 'tags',
+					xtype: 'div',
+					cls: 'label label-default',
+					css: {
+						'margin-right': '10px',
+						'font-size': '17px'
+					},
+					text: '{name}'
+				}
+			}]
+		}]
+	},{
+		xtype: 'div',
+		id: 'home-users-content',
+		css: {opacity: 0},
+		items: [{
+			xtype: 'h3',
+			text: 'Últimos usuarios'
+		},{
+			store: 'new',
+			field: 'user',
+			xtype: 'panel',
+			id: 'testpanel',
+			type: 'info',
+			css: {'margin-bottom': '10px'},
+			attr: {'data-id': '{id}'},
+			items: [{
+				xtype: 'head',
+				items: [{
+					xtype: 'review',
+					attr: {data: 'user'},
+					float: 'right',
+					css: {'margin-right': '-5px'}
+				},/* {
+					xtype: 'button',
+					float: 'right',
+					text: 'AAA {following}'
+				},*/ {
+					xtype: 'div',
+					cls: 'text-left',
+					css: {'font-size': '19px'},
+					field: 'name'
+				}]
+			},{
+				xtype: 'body',
+				items: [{
+					xtype: 'img',
+					id: '{id}',
+					css: {'width': '100%'},
+					attr: {'src': '{image}'}
+				}]
+			},{
+				xtype: 'footer',
+				css: {overflow: 'auto'},
+				items: {
+					field: 'tags',
+					xtype: 'div',
+					cls: 'label label-default',
+					css: {
+						'margin-right': '10px',
+						'font-size': '17px'
+					},
+					text: '{name}'
 				}
 			}]
 		}]

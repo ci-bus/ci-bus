@@ -18,7 +18,7 @@ cb.define({
 			});
 			cb.loadAll([
 				['view', 'common', 'base'],
-				['view', 'gotorave', 'home']
+				['view', 'gotorave', 'login']
 			]);
 		}
 		else
@@ -40,15 +40,21 @@ cb.define({
 			['store', 'gotorave', 'tags'],
 			['store', 'gotorave', 'chat', {action: 'salas'}],
 			['store', 'gotorave', 'chat'],
+			['store', 'gotorave', 'home'],
 			['store', 'gotorave', 'events', {'action': 'load', 'id_tag': 'recent'}],
 			['view', 'common', 'base'],
 			['view', 'gotorave', 'mainmenu'],
-			['view', 'gotorave']
+			['view', 'gotorave'],
+			['view', 'gotorave', 'home']
 		], function(){
 			$('#mainimg').animate({width: '100%'}, 'swing', function(){
 				$('#homenav').animate({opacity: 1}, 'fast', function(){
 					$('#panel-chat').animate({opacity: 1}, 'fast', function(){
-						$('#proxevent').animate({opacity: 1}, 'fast');
+						$('#proxevent').animate({opacity: 1}, 'fast', function(){
+							$('#home-music-content').animate({opacity: 1}, 'fast', function(){
+								$('#home-users-content').animate({opacity: 1}, 'fast');
+							});
+						});
 					})
 				})
 			});
@@ -64,7 +70,12 @@ cb.define({
 	},
 	
 	home: function(){
-		//cb.load('store', 'gotorave', 'home');
+		cb.loadAll([
+			['store', 'gotorave', 'home'],
+			['view', 'gotorave', 'home']
+		], function(){
+			cb.ctr('gotorave', 'auto_scroll');
+		});
 	},
 	
 	login : function(){
@@ -293,6 +304,10 @@ cb.define({
 	
 	auto_scroll: function(){
 		var t_top = $('#body-col2').position().top;
+		var w_wid = $(window).height();
+		if(w_wid > 600){
+			t_top-= 52;
+		}
 		if(t_top > 100)
 		{
 			cb.sto(function(){

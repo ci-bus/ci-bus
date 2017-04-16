@@ -167,9 +167,13 @@
 				$parse = parse_url($url);
 				if(stripos($parse['host'], 'youtube.com') !== false){
 					$code = explode('&', explode('v=', $parse['query'])[1])[0];
-					$txt = str_replace($url, '<a style="position:relative;vertical-align:top;font-size:17px;" target="_blank" href="'.$url.'"><img style="max-width:270px;" class="img-thumbnail" src="https://img.youtube.com/vi/'.$code.'/0.jpg"><div class="glyphicon glyphicon-play" style="position:absolute;top:7px;left:7px;">Reproducir</div></a>', $txt);
+					$txt = str_replace($url, '<br><a style="position:relative;vertical-align:top;font-size:17px;color:white;" target="_blank" href="'.$url.'"><img style="width:100%;max-width:400px;" class="img-thumbnail" src="https://img.youtube.com/vi/'.$code.'/0.jpg"><div class="glyphicon glyphicon-play" style="position:absolute;top:7px;left:7px;"></div></a><br>', $txt);
 				}else{
-			    	$txt = str_replace($url, '<a target="_blank" href="'.$url.'">[ '.str_replace('www.', '', $parse['host']).' ]</a>', $txt);
+			    	$txt = str_replace($url, '<br><a target="_blank" href="'.$url.'">[ '.str_replace('www.', '', $parse['host']).' ]</a><br>', $txt);
+				}
+				$txt = trim($txt);
+				if(substr($txt, 0, 4) == "<br>"){
+					$txt = substr($txt, 4);
 				}
 			}
 			
