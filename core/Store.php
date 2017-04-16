@@ -167,7 +167,7 @@
 				$parse = parse_url($url);
 				if(stripos($parse['host'], 'youtube.com') !== false){
 					$code = explode('&', explode('v=', $parse['query'])[1])[0];
-					$txt = str_replace($url, '<a style="position:relative;vertical-align:top;font-size:17px;" target="_blank" href="'.$url.'"><img style="max-width:300px;" class="img-thumbnail" src="https://img.youtube.com/vi/'.$code.'/0.jpg"><div class="glyphicon glyphicon-play" style="position:absolute;top:7px;left:7px;">Reproducir</div></a>', $txt);
+					$txt = str_replace($url, '<a style="position:relative;vertical-align:top;font-size:17px;" target="_blank" href="'.$url.'"><img style="max-width:270px;" class="img-thumbnail" src="https://img.youtube.com/vi/'.$code.'/0.jpg"><div class="glyphicon glyphicon-play" style="position:absolute;top:7px;left:7px;">Reproducir</div></a>', $txt);
 				}else{
 			    	$txt = str_replace($url, '<a target="_blank" href="'.$url.'">[ '.str_replace('www.', '', $parse['host']).' ]</a>', $txt);
 				}
