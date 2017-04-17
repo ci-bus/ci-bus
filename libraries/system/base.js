@@ -139,11 +139,7 @@ cb.load = function(type, module, name, data, callback)
 cb.define = function(obj)
 {
 	if(obj.name && obj.xtype)
-	{
-		if(obj.xtype == 'store')
-		{
-			//TODO Refrescar elementos que carguen datos de este store
-		}
+	{	
 		if(obj.data && this.module[obj.xtype][obj.name])
 		{
 			for(var fie in this.module[obj.xtype][obj.name].data)
@@ -151,13 +147,23 @@ cb.define = function(obj)
 				if(!obj.data[fie]) obj.data[fie] = this.module[obj.xtype][obj.name].data[fie];
 			}
 		}
+		
 		this.module[obj.xtype][obj.name] = this.cloneObject(obj);
-		if($.isArray(obj['require'])) this.require(obj['require']);
-		if($.isFunction(obj['onload'])) obj['onload']();
-		if(obj.xtype == 'view')
+		
+		if(obj.xtype == 'store')
 		{
+			//TODO Refrescar elementos que carguen datos de este store
+		}
+		
+		if($.isArray(obj['require'])){
+			this.require(obj['require']);
+		}
+		
+		if(obj.xtype == 'view')
+		{			
 			if(obj.renderTo)
 			{
+				//TODO No borrar los elementos con reload: false
 				$(obj.renderTo).empty();
 				obj.appendTo = obj.renderTo;
 				delete obj.renderTo;
@@ -176,6 +182,10 @@ cb.define = function(obj)
 			}
 			
 			this.render(obj);
+		}
+		
+		if($.isFunction(obj['onload'])){
+			obj['onload']();
 		}
 	}
 }
@@ -1204,131 +1214,105 @@ cb.props = {
 		if(!opt.nocls){
 			$(ele).addClass(opt.cls);
 		}
-		return ele;
 	},
 	'html': function(ele, opt){
 		if(!opt.nohtml){
 			$(ele).html(opt.html);
 		}
-		return ele;
 	},
 	'text': function(ele, opt){
 		if(!opt.notext){
 			$(ele).append(opt.text);
 		}
-		return ele;
 	},
 	'glyphicon': function(ele, opt){
 		$(ele).prepend(cb.create({xtype:'glyphicon',type:opt.glyphicon}));
-		return ele;
 	},
 	'id': function(ele, opt){
 		$(ele).attr('id', opt.id);
-		return ele;
 	},
 	'disable': function(ele, opt){
 		$(ele).attr('disable', 'disable');
-		return ele;
 	},
 	'disabled': function(ele, opt){
 		$(ele).attr('disabled', 'disabled');
-		return ele;
 	},
 	'name': function(ele, opt){
 		if(!opt.noname){
 			$(ele).attr('name', opt.name);
 		}
-		return ele;
 	},
 	'type': function(ele, opt){
 		if(!opt.notype){
 			$(ele).attr('type', opt.type);
 		}
-		return ele;
 	},
 	'href': function(ele, opt){
 		$(ele).attr('href', opt.href);
-		return ele;
 	},
 	'value': function(ele, opt){
 		if(!opt.novalue){
 			$(ele).attr('value', opt.value);
 		}
-		return ele;
 	},
 	'margin': function(ele, opt){
 		$(ele).css('margin', opt.margin);
-		return ele;
 	},
 	'padding': function(ele, opt){
 		$(ele).css('padding', opt.padding);
-		return ele;
 	},
 	'color': function(ele, opt){
 		$(ele).css('color', opt.color);
-		return ele;
 	},
 	'border': function(ele, opt){
 		$(ele).css('border', opt.border);
-		return ele;
 	},
 	'src': function(ele, opt){
 		$(ele).attr('src', opt.src);
-		return ele;
 	},
 	'float': function(ele, opt){
 		$(ele).css('float', opt.float);
-		return ele;
 	},
 	'shadow': function(ele, opt){
 		$(ele).css('box-shadow', opt.shadow);
-		return ele;
 	},
 	'size': function(ele, opt){
 		$(ele).css('font-size', opt.size);
-		return ele;
 	},
 	'weight': function(ele, opt){
 		$(ele).css('font-weight', opt.weight);
-		return ele;
 	},
 	'align': function(ele, opt){
 		$(ele).css('text-align', opt.align);
-		return ele;
 	},
 	'pull': function(ele, opt){
 		$(ele).addClass('pull-'+opt.pull);
-		return ele;
 	},
 	'height': function(ele, opt){
 		$(ele).css('height', opt.height);
-		return ele;
 	},
 	'width': function(ele, opt){
 		$(ele).css('width', opt.width);
-		return ele;
 	},
 	'placeholder': function(ele, opt){
 		$(ele).attr('placeholder', opt.placeholder);
-		return ele;
 	},
 	'display': function(ele, opt){
 		$(ele).css('display', opt.display);
-		return ele;
 	},
 	'cursor': function(ele, opt){
 		$(ele).css('cursor', opt.cursor);
-		return ele;
 	},
 	'background': function(ele, opt){
 		$(ele).css('background', opt.background);
-		return ele;
 	},
 	'badge': function(ele, opt){
 		$(ele).append('&nbsp;').append(cb.create({
 			xtype: 'badge',
 			text: opt.badge }));
-		return ele;
+	},
+	'reload': function(ele, opt){
+		$(ele).attr('reload', opt.reload);
 	}
 };
 
@@ -1502,7 +1486,7 @@ cb.common_prop = function(ele, opt)
 {
 	for (var prop in opt) {
 		if(this.props[prop]){
-			ele = this.props[prop](ele, opt);
+			this.props[prop](ele, opt);
 		}
 	}
 	

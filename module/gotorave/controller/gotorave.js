@@ -44,7 +44,7 @@ cb.define({
 			['store', 'gotorave', 'events', {'action': 'load', 'id_tag': 'recent'}],
 			['view', 'common', 'base'],
 			['view', 'gotorave', 'mainmenu'],
-			['view', 'gotorave'],
+			['view', 'gotorave', 'gotorave'],
 			['view', 'gotorave', 'home']
 		], function(){
 			$('#mainimg').animate({width: '100%'}, 'swing', function(){
@@ -63,9 +63,10 @@ cb.define({
 		cb.setConfig('no_refresh_chat', false);
 		this.chatInterval = setInterval(function(){
 			if(!cb.getConfig('no_refresh_chat')){
-				cb.load('store', 'gotorave', 'chat', function(){
-					cb.load('view', 'gotorave', 'chat');
-				});
+				cb.loadAll([
+				    ['store', 'gotorave', 'chat'],
+					['view', 'gotorave', 'chat']
+				]);
 			}
 		}, 2000);
 	},
