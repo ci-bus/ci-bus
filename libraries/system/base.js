@@ -1313,6 +1313,9 @@ cb.props = {
 	},
 	'reload': function(ele, opt){
 		$(ele).attr('reload', opt.reload);
+	},
+	'click': function(ele, opt){
+		$(ele).on('click', opt.click);
 	}
 };
 
