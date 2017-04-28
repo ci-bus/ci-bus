@@ -359,7 +359,7 @@ cb.module.bootstrapComponent = {
 		opt.cls? opt.cls = 'btn btn-'+opt.type+' '+opt.cls : opt.cls = 'btn btn-'+opt.type;
 		if(opt.size) opt.cls += ' btn-'+opt.size;
 		opt.type = 'button';
-		if(!opt.margin) opt.margin = '0 5px 0 0';
+		if(!opt.margin && opt.margin !== 0) opt.margin = '0 5px 0 0';
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
@@ -1416,6 +1416,7 @@ cb.create = function(opt, record){
 				for (var def in opt.defaults) {
 					opt.items = this.setMissingDinamicValue(opt.items, def, opt.defaults[def]);
 				}
+				if(opt.xtype=='group') console.log(opt.items);
 			}
 			
 			//Si es un componente de bootstrap

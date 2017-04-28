@@ -4,12 +4,18 @@ cb.define({
 	
 	items: [{
 		xtype: 'container',
+		//Las propiedades del objeto defaults se setean a todos sis hijos
 		defaults: {
+			// appenTo es donde quiere que el elemento se 'cargue'
+			// tambien puedes definir renderTo, este sustitulle lo que haya por el elemento
+			// y prependTo, este funciona como appendTo
+			// pero en vez de añadir el elemento al final lo añade al principio
 			appendTo: 'body'
 		},
+		//Los items son los elementos hijos (se crea dentro)
 		items: [{
 			xtype: 'h3',
-			text: '...Callout',
+			text: '...Callout'
 		},{
 			xtype: 'callout',
 			type: 'warning',
@@ -24,6 +30,9 @@ cb.define({
 			size: 'md',
 			margin: 10,
 			//type: 'vertical',
+			defaults: {
+				margin: 0
+			},
 			items: [{
 				xtype: 'button',
 				text: 'boton 1'
@@ -64,7 +73,7 @@ cb.define({
 			}]
 		},{
 			xtype: 'h3',
-			text: '...Tabpanel',
+			text: '...Tabpanel'
 		},{
 			xtype: 'tabpanel',
 			margin: 10,
