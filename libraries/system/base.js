@@ -1108,7 +1108,8 @@ cb.module.bootstrapComponent = {
 				$(ele).addClass('col-xs-offset-'+opt.offset);
 			}
 		}
-		if(opt.padding==null || opt.padding==undefined)opt.padding = '5px';
+		if(opt.padding && opt.padding!==0)opt.padding = '5px';
+		delete opt.size;
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
