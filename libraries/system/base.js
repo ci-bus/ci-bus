@@ -365,9 +365,6 @@ cb.module.bootstrapComponent = {
 	},
 	'nav': function(opt, record){
 		if(!opt.toggle)opt.toggle = cb.autoname();
-		if((!opt.renderTo || opt.renderTo == 'main') && !opt.appendTo && !opt.prependTo){
-			opt.appendTo = 'header';
-		}
 		var ele = document.createElement('nav');
 		$(ele).addClass('navbar');
 		if(opt.type)
@@ -1417,7 +1414,6 @@ cb.create = function(opt, record){
 				for (var def in opt.defaults) {
 					opt.items = this.setMissingDinamicValue(opt.items, def, opt.defaults[def]);
 				}
-				if(opt.xtype=='group') console.log(opt.items);
 			}
 			
 			//Si es un componente de bootstrap

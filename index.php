@@ -66,6 +66,9 @@
 		}
 		else if(is_array($urlparts))
 		{
+			if($urlparts[3]){
+				$urlparts[2] .= '/'.$urlparts[3];
+			}
 			$data = array(array($urlparts[1], $urlparts[0], $urlparts[2], $_POST));
 		}
 		
