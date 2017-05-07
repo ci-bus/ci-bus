@@ -26,6 +26,19 @@ cb.define({
 						xtype: 'glyphicon',
 						type: 'info-sign'
 					}
+				},{
+					xtype: 'div',
+					color: '#fff',
+					pull: 'right',
+					margin: '5px 0 0 5px',
+					css: {'font-size': '16px'},
+					items: {
+						xtype: 'glyphicon',
+						type: 'plus'
+					},
+					click: function(){
+						cb.ctr('maderap', 'insert', $(this).getRecord()['palabra']);
+					}
 				}]
 			}] 
 		}

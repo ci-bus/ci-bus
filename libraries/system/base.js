@@ -17,7 +17,7 @@ cb.autoname = function(){
 cb.ctr = function(ctr, fun, vals)
 {
 	if(cb.module.controller[ctr] && $.type(cb.module.controller[ctr][fun]) == 'function'){
-		cb.module.controller[ctr][fun](vals);
+		return cb.module.controller[ctr][fun](vals);
 	}
 }
 
@@ -1105,7 +1105,7 @@ cb.module.bootstrapComponent = {
 				$(ele).addClass('col-xs-offset-'+opt.offset);
 			}
 		}
-		if(opt.padding && opt.padding!==0)opt.padding = '5px';
+		if(!opt.padding && opt.padding!==0)opt.padding = '0px 5px';
 		delete opt.size;
 		ele = cb.common_prop(ele, opt);
 		return ele;
@@ -1486,6 +1486,14 @@ cb.create = function(opt, record){
 			else if(opt.prependTo)
 			{
 				$(opt.prependTo).prepend(ele);
+			}
+			else if(opt.beforeTo)
+			{
+				$(opt.beforeTo).before(ele);
+			}
+			else if(opt.afterTo)
+			{
+				$(opt.afterTo).after(ele);
 			}
 			else
 			{

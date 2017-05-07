@@ -17,7 +17,10 @@ cb.define({
 			css: { 'padding-bottom': 10 },
 			items: [{
 				xtype: 'col',
-				size: 6,
+				size: {
+					xs: 12,
+					sm: 6
+				},
 				items: [{
 					xtype: 'h3',
 					text: 'Pizarra'
@@ -26,7 +29,7 @@ cb.define({
 					items: [{
 						xtype: 'col',
 						size: 12,
-						text: 'Insertar palabra'
+						text: 'Insertar palabra o frase'
 					}]
 				},{
 					xtype: 'form',
@@ -42,23 +45,57 @@ cb.define({
 						xtype: 'row',
 						items: [{
 							xtype: 'col',
-							size: 8,
+							size: 6,
 							items: [{
-								xtype: 'input',
-								type: 'text',
-								name: 'insert'
+								xtype: 'select',
+								name: 'letra',
+								listener: {
+									change: function(){
+										var record = $(this).find('option:selected').getRecord();
+										cb.ctr('maderap', 'reset');
+										cb.ctr('maderap', 'insert', record.text);
+									}
+								},
+								items: [{
+									store: 'letras',
+									xtype: 'option',
+									text: '{title}'
+									
+								}]
 							}]
 						},{
 							xtype: 'col',
-							size: 4,
+							size: 2,
 							items: {
 								xtype: 'button',
-								type: 'primary',
-								text: 'Buscar',
+								glyphicon: 'plus',
 								width: '100%',
 								click: function(){
-									cb.ctr('maderap', 'insert', $('input[name="insert"]').val());
-									$('input[name="insert"]').val('');
+									
+								}
+							}
+						},{
+							xtype: 'col',
+							size: 2,
+							items: {
+								xtype: 'button',
+								glyphicon: 'floppy-disk',
+								width: '100%',
+								color: 'blue',
+								click: function(){
+									
+								}
+							}
+						},{
+							xtype: 'col',
+							size: 2,
+							items: {
+								xtype: 'button',
+								glyphicon: 'remove',
+								width: '100%',
+								color: 'red',
+								click: function(){
+									
 								}
 							}
 						}]
@@ -68,11 +105,31 @@ cb.define({
 					id: 'pizarra',
 					height: 600,
 					background: '#f2f5f7',
-					css: { overflow: 'auto', 'margin-top': '15px' }
+					css: { overflow: 'auto', 'margin-top': '15px' },
+					padding: '5px 10px',
+					listener: {
+						click: function(){
+							if(!cb.getConfig('editing')){
+								cb.setConfig('editing', setInterval(function(){
+									cb.ctr('maderap', 'animCursor');
+								}, 500));
+							}
+						}
+					},
+					items: [{
+						xtype: 'div',
+						id: 'cursor',
+						css: {'margin-top': 2},
+						float: 'left',
+						text: '&#9617;'
+					}]
 				}]
 			},{
 				xtype: 'col',
-				size: 6,
+				size: {
+					xs: 12,
+					sm: 6
+				},
 				items: [{
 					xtype: 'h3',
 					text: 'Busqueda'
@@ -81,7 +138,7 @@ cb.define({
 					items: [{
 						xtype: 'col',
 						size: 12,
-						text: 'Buscar palabra nuevo escribir <span style="color:RED;">%</span> para cualquier cosa, <span style="color:RED;">_</span> para una letra'
+						text: 'Buscar palabra que contenga <span style="color:RED;">%</span> para cualquier cosa, <span style="color:RED;">_</span> para cualquier letra'
 					}]
 				},{
 					xtype: 'form',
@@ -100,7 +157,12 @@ cb.define({
 							items: [{
 								xtype: 'input',
 								type: 'text',
-								name: 'search'
+								name: 'search',
+								listener: {
+									focus: function(){
+										cb.ctr('maderap', 'cursorOut');
+									}
+								}
 							}]
 						},{
 							xtype: 'col',
