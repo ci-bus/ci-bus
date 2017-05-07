@@ -1312,8 +1312,20 @@ cb.props = {
 	'reload': function(ele, opt){
 		$(ele).attr('reload', opt.reload);
 	},
+	'target': function(ele, opt){
+		$(ele).attr('target', opt.target);
+	},
 	'click': function(ele, opt){
-		$(ele).on('click', opt.click);
+		$(ele).click(opt.click);
+	},
+	'dblclick': function(ele, opt){
+		$(ele).dblclick(opt.dblclick);
+	},
+	'mouseover': function(ele, opt){
+		$(ele).mouseover(opt.mouseover);
+	},
+	'mouseout': function(ele, opt){
+		$(ele).mouseout(opt.mouseout);
 	}
 };
 
