@@ -47,21 +47,8 @@ cb.define({
 							xtype: 'col',
 							size: 6,
 							items: [{
-								xtype: 'select',
-								name: 'letra',
-								listener: {
-									change: function(){
-										var record = $(this).find('option:selected').getRecord();
-										cb.ctr('maderap', 'reset');
-										cb.ctr('maderap', 'insert', record.text);
-									}
-								},
-								items: [{
-									store: 'letras',
-									xtype: 'option',
-									text: '{title}'
-									
-								}]
+								xtype: 'div',
+								id: 'csel'
 							}]
 						},{
 							xtype: 'col',
@@ -71,7 +58,7 @@ cb.define({
 								glyphicon: 'plus',
 								width: '100%',
 								click: function(){
-									
+									cb.ctr('maderap', 'new_letter');
 								}
 							}
 						},{
@@ -79,11 +66,12 @@ cb.define({
 							size: 2,
 							items: {
 								xtype: 'button',
+								id: 'bsave',
 								glyphicon: 'floppy-disk',
 								width: '100%',
 								color: 'blue',
 								click: function(){
-									
+									cb.ctr('maderap', 'save');
 								}
 							}
 						},{
@@ -91,11 +79,15 @@ cb.define({
 							size: 2,
 							items: {
 								xtype: 'button',
+								id: 'bremove',
 								glyphicon: 'remove',
 								width: '100%',
 								color: 'red',
 								click: function(){
-									
+									var r = $('select[name="letra"]').find('option:selected').getRecord();
+									if(confirm('¿Eliminar letra de canción?')){
+										cb.ctr('maderap', 'remove', r.id);
+									}
 								}
 							}
 						}]
@@ -111,6 +103,7 @@ cb.define({
 						click: function(){
 							if(!cb.getConfig('editing')){
 								cb.setConfig('editing', setInterval(function(){
+									$('#cursor').css('display', 'block');
 									cb.ctr('maderap', 'animCursor');
 								}, 500));
 							}

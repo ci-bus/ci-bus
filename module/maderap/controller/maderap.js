@@ -5,13 +5,16 @@ cb.define({
 	
 	onload: function(){
 		cb.loadAll([
-		    ['store', 'maderap', 'letra'],
 			['view', 'common', 'base'],
-			['view', 'maderap', 'search']
-			
-		]);
+			['view', 'maderap', 'search'],
+			['store', 'maderap', 'letra'],
+			['view', 'maderap', 'csel']
+		], function(){
+			var record = $('select[name="letra"] option:first').getRecord();
+			cb.ctr('maderap', 'insert', record.text);
+		});
 		
-		cb.setConfig('letters', 'qwertyuiopasdfghjklñzxcvbnmáéíóú,._');
+		cb.setConfig('letters', '1234567890qwertyuiopasdfghjklñzxcvbnmáéíóú,._');
 		
 		$('body').on('keydown', function(e){
 			if(cb.getConfig('editing')){
@@ -55,6 +58,9 @@ cb.define({
 						$('#cursor').before(word);
 					}
 				}else{
+					if(cb.getConfig('writing')){
+						e.preventDefault();
+					}
 					cb.setConfig('writing', false);
 				}
 			}
@@ -74,7 +80,8 @@ cb.define({
 			clearInterval(cb.getConfig('editing'));
 			cb.setConfig('editing', false);
 		}
-		$('#cursor').css('visibility', 'visible');
+		$('#cursor').css('visibility', 'hidden');
+		$('#cursor').css('display', 'none');
 	},
 	
 	search: function(){
@@ -186,8 +193,15 @@ cb.define({
 				var words = [word];
 			}
 			for(var i=0; i<words.length; i++){
-				word = this.createWord(words[i]);
-				$('#cursor').before(word);
+				if(typeof words[i] === 'string'){
+					words[i].trim();
+					if(words[i] == '|'){
+						this.insertBr();
+					}else{
+						word = this.createWord(words[i]);
+						$('#cursor').before(word);
+					}
+				}
 			}
 		}
 		this.cursorOut();
@@ -201,5 +215,141 @@ cb.define({
 			float: 'left',
 			text: '&#9617;'
 		}));
+	},
+	
+	load_letters: function(){
+		current_seled = $('select[name="letra"]').val();
+		cb.loadAll([
+		    ['store', 'maderap', 'letra'],
+			['view', 'maderap', 'csel']
+		], function(){
+			if(current_seled){
+				$('select[name="letra"]').val(current_seled);
+			}
+		});
+	},
+	
+	save: function(){
+		var id = $('select[name="letra"]').find('option:selected').getRecord().id;
+		var letra = '';
+		$('#pizarra').find('*').each(function(k, e){
+			var temp_word = $(e).text();
+			if(temp_word != '░'){
+				if(temp_word.trim() != ''){
+					letra += temp_word+' ';
+				}else{
+					letra += '| ';
+				}
+			}
+		});
+		cb.send({id: id, letra: letra}, 'maderap', 'letra', function(res){
+			if(res){
+				$('#bsave').addClass('btn-success');
+				cb.sto(function(){
+					$('#bsave').removeClass('btn-success');
+				}, 500);
+			}
+			cb.ctr('maderap', 'load_letters');
+		});
+	},
+	
+	new_letter: function(){
+		cb.popup({
+			type: 'primary',
+			effect: {
+				type: 'flipin',
+				vel: 'fast',
+				dire: 'down'
+			},
+			offsetTop: 100,
+			css: {
+				'max-width': 400
+			},
+			items: [{
+				xtype: 'head',
+				css: {'min-height': 40},
+				items: [{
+					xtype: 'span',
+					glyphicon: 'remove',
+					cls: 'pull-right',
+					css: {
+						cursor: 'pointer',
+						'padding-top': 4
+					},
+					listener: {
+						click: function(){
+							cb.effect($(this).parent().parent(), {
+								type: 'flipout',
+								dire: 'up',
+								fun: function(){
+									$(this).parent().remove();
+								}
+							});
+						}
+					}
+				},{
+					xtype: 'div',
+					size: 19,
+					text: 'Crear letra nueva',
+					cls: 'text-center'
+				}]
+			},{
+				xtype: 'body',
+				id: 'cnlbody',
+				defaults:{
+					margin: 5
+				},
+				items: [{
+					xtype: 'div',
+					text: 'Nombre para la canción'
+				},{
+					xtype: 'input',
+					type: 'text',
+					name: 'new_letter'
+				},{
+					xtype: 'button',
+					text: 'Crear',
+					click: function(){
+						cb.ctr('maderap', 'add_letter', $('input[name="new_letter"]').val());
+					}
+				}]
+			}]
+		});
+	},
+	
+	add_letter: function(le){
+		cb.load('store', 'maderap', 'letra', {'new': le}, function(id){
+			cb.ctr('maderap', 'save');
+			if($.isNumeric(id)){
+				$('#cnlbody').html(cb.create({
+					xtype: 'div',
+					margin: 10,
+					text: 'Letra para la cación creada con éxito!'
+				}));
+				cb.ctr('maderap', 'reset');
+				cb.loadAll([
+				    ['store', 'maderap', 'letra'],
+					['view', 'maderap', 'csel']
+				]);
+				$('select[name="letra"]').val(id).attr('value', id);
+			}
+		});
+	},
+	
+	write: function(){
+		cb.setConfig('writing', '#'+cb.autoname());
+	},
+	
+	remove: function(id){
+		cb.load('store', 'maderap', 'letra', {'remove': id}, function(res){
+			cb.ctr('maderap', 'reset');
+			cb.loadAll([
+			    ['store', 'maderap', 'letra'],
+				['view', 'maderap', 'csel']
+			], function(){
+				var record = $('select[name="letra"] option:first').getRecord();
+				cb.ctr('maderap', 'insert', record.text);
+			});
+		});
 	}
 });

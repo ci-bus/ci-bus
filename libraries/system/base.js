@@ -140,14 +140,15 @@ cb.define = function(obj)
 {
 	if(obj.name && obj.xtype)
 	{	
-		if(obj.data && this.module[obj.xtype][obj.name])
-		{
-			for(var fie in this.module[obj.xtype][obj.name].data)
+		if(obj.extend){
+			if(obj.data && this.module[obj.xtype][obj.name])
 			{
-				if(!obj.data[fie]) obj.data[fie] = this.module[obj.xtype][obj.name].data[fie];
+				for(var fie in this.module[obj.xtype][obj.name].data)
+				{
+					if(!obj.data[fie]) obj.data[fie] = this.module[obj.xtype][obj.name].data[fie];
+				}
 			}
 		}
-		
 		this.module[obj.xtype][obj.name] = this.cloneObject(obj);
 		
 		if(obj.xtype == 'store')
