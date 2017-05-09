@@ -2,9 +2,9 @@
 cb.define({
 	xtype: 'view',
 	name: 'mainmenu',
+	appendTo: 'header',
 	items: [{
 		xtype: 'div',
-		appendTo: 'header',
 		css: {'text-align': 'center', 'background-color': 'black'},
 		items: [{
 			xtype: 'img',
@@ -131,9 +131,9 @@ cb.define({
 					glyphicon: 'comment',
 					css: {'font-size':'17px'},
 					items: [{
+						xtype: 'a',
 						store: 'chat',
 						field: 'salas',
-						xtype: 'a',
 						attr: {
 							'data-id': '{id}'
 						},

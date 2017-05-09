@@ -103,6 +103,16 @@
 			echo "</pre>";
 		}
 		
+		public function extendStore($name, $data)
+		{
+			echo "cb.define({".
+					"xtype: 'store',".
+					"name: '".$name."',".
+					"extend: true,".
+					"data: ".json_encode($data, true).
+					"}); ";
+		}
+		
 		public function parseStore($name, $data)
 		{
 			echo "cb.define({".

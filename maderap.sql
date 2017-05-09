@@ -1,3 +1,14 @@
+CREATE TABLE `maderap_letra` (
+  `id` int(11) NOT NULL,
+  `title` varchar(100) COLLATE utf8_bin NOT NULL,
+  `text` text COLLATE utf8_bin NOT NULL
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+ALTER TABLE `maderap_letra`
+  ADD PRIMARY KEY (`id`);
+  
+ALTER TABLE `maderap_letra`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
 
 CREATE TABLE `maderap` (
   `id` int(11) NOT NULL,

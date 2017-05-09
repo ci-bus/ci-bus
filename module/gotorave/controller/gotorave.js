@@ -50,11 +50,10 @@ cb.define({
 			$('#mainimg').animate({width: '100%'}, 'swing', function(){
 				$('#homenav').animate({opacity: 1}, 'fast', function(){
 					$('#panel-chat').animate({opacity: 1}, 'fast', function(){
-						$('#proxevent').animate({opacity: 1}, 'fast', function(){
-							$('#home-music-content').animate({opacity: 1}, 'fast', function(){
-								cb.ctr('gotorave', 'link_music');
-								$('#home-users-content').animate({opacity: 1}, 'fast');
-							});
+						$('#proxevent').animate({opacity: 1}, 'fast');
+						$('#home-music-content').animate({opacity: 1}, 'fast', function(){
+							cb.ctr('gotorave', 'link_music');
+							$('#home-users-content').animate({opacity: 1}, 'fast');
 						});
 					})
 				})
@@ -304,7 +303,7 @@ cb.define({
 					}
 				});
 			}
-			this.auto_scroll();
+			cb.ctr('gotorave', 'auto_scroll');
 		});
 	},
 	
