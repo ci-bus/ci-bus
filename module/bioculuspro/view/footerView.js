@@ -2,7 +2,7 @@ cb.define({
 
 	xtype: 'view',
 	name: 'footer',
-	appendTo: '#content',
+	appendTo: 'footer',
 
 	items: [{
 		

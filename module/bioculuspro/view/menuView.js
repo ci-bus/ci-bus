@@ -18,7 +18,10 @@ cb.define({
 			items: [{
 				xtype: 'col',
 				size: 3,
-				text: 'Columna 1'
+				items: [{
+					xtype: 'img',
+					src: 'assets/img/bioico.png'
+				}]
 			},{
 				xtype: 'col',
 				size: 3,
