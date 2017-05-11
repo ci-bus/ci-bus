@@ -4,6 +4,8 @@
 		
 		public function __construct($CB, $data = array())
 		{
+			if(!$_SESSION['user_id']) die("cb.ctr('gotorave','logout')");
+			
 			$data = $CB->minArray($data);
 			$this->search($CB, $data);
 		}

@@ -243,12 +243,6 @@ cb.define({
 			}
 		});
 		cb.send({id: id, letra: letra}, 'maderap', 'letra', function(res){
-			if(res){
-				$('#bsave').addClass('btn-success');
-				cb.sto(function(){
-					$('#bsave').removeClass('btn-success');
-				}, 500);
-			}
 			cb.ctr('maderap', 'load_letters');
 		});
 	},

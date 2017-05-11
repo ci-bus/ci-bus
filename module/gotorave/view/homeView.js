@@ -11,7 +11,7 @@ cb.define({
 		css: {opacity: 0},
 		items: [{
 			xtype: 'h3',
-			margin: 0,
+			margin: '10px 0 0 0',
 			text: 'Música reciente',
 		},{
 			store: 'new',

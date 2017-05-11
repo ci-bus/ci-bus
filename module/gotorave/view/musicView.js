@@ -105,6 +105,7 @@ cb.define({
 										},
 										glyphicon: 'music',
 										caret: false,
+										css: {'margin-top': '6px'},
 										text: ' A&ntilde;adir tag ',
 										size: 'small',
 										id: 'add-tag',

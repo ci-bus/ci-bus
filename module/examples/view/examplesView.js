@@ -58,7 +58,7 @@ cb.define({
 			// pero en vez de añadir el elemento al final lo añade al principio
 			appendTo: 'body'
 		},
-		//Los items son los elementos hijos (se crea dentro)
+		//Los items son los elementos hijos (se crean dentro)
 		items: [{
 			xtype: 'h3',
 			text: '...Callout'
@@ -162,9 +162,11 @@ cb.define({
 			}]
 		},{
 			xtype: 'h3',
-			text: '...Table',
+			text: '...Table'
 		},{
 			xtype: 'table',
+			width: 'calc(100% - 20px)',
+			margin: 10,
 			items: [{
 				xtype: 'head',
 				items: [{
@@ -185,6 +187,125 @@ cb.define({
 					text: 'root'
 				}]
 			}]
+		},{
+			xtype: 'h3',
+			text: '...Progress'
+		},{
+			xtype: 'progress',
+			margin: 10,
+			items: {
+				striped: true,
+				animated: true,
+				min: 0,
+				max: 100,
+				value: 50
+			}
+		},{
+			xtype: 'h3',
+			text: '...Ico'
+		},{
+			xtype: 'ico',
+			type: 'glyphicon glyphicon-search',
+			margin: 10
+		},{
+			xtype: 'h3',
+			text: '...Glyphicon'
+		},{
+			xtype: 'glyphicon',
+			type: 'search',
+			margin: 10
+		},{
+			xtype: 'h3',
+			text: '...Thumbnail'
+		},{
+			xtype: 'div',
+			float: 'left',
+			width: '100%',
+			items: {
+				xtype: 'thumbnail',
+				type: 'a',
+				href: '#',
+				margin: 10,
+				float: 'left',
+				items: {
+					xtype: 'img',
+					src: 'assets/img/backmenu.jpg'
+				}
+			}
+		},{
+			xtype: 'h3',
+			text: '...Alert'
+		},{
+			xtype: 'alert',
+			text: 'This is a alert!',
+			margin: '10px'
+		},{
+			xtype: 'h3',
+			text: '...Badge'
+		},{
+			xtype: 'badge',
+			text: 'This is a badge',
+			margin: '10px',
+			padding: 5
+		},{
+			xtype: 'h3',
+			text: '...Row with 2 columns'
+		},{
+			xtype: 'row',
+			items: [{
+				xtype: 'col',
+				size: {
+					xs: 12,
+					sm: 6
+				},
+				background: '#AAA',
+				color: 'white',
+				padding: 10,
+				text: 'Column 1'
+			},{
+				xtype: 'col',
+				size: {
+					xs: 12,
+					sm: 6
+				},
+				background: '#CCC',
+				color: 'white',
+				padding: 10,
+				text: 'Column 2'
+			}]
+		},{
+			xtype: 'h3',
+			text: '...Input'
+		},{
+			xtype: 'input',
+			type: 'text',
+			width: 'calc(100% - 20px)',
+			margin: 10,
+			text: 'Input to example'
+		},{
+			xtype: 'h3',
+			text: '...Input select'
+		},{
+			xtype: 'select',
+			width: 'calc(100% - 20px)',
+			margin: 10,
+			items: [{
+				xtype: 'option',
+				value: 1,
+				text: 'one'
+			},{
+				xtype: 'option',
+				value: 2,
+				text: 'two'
+			}]
+		},{
+			xtype: 'h3',
+			text: '...Label'
+		},{
+			xtype: 'label',
+			type: 'primary',
+			margin: 10,
+			text: 'Label to test'
 		}]
 	}]
 });

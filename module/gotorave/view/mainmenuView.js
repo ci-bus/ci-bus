@@ -146,6 +146,21 @@ cb.define({
 					}]
 				},{
 					xtype: 'dropdown-menu',
+					text: ' Más ',
+					glyphicon: 'certificate',
+					css: {'font-size':'17px'},
+					items: [{
+						xtype: 'a',
+						text: 'Escribir letra de canción',
+						listener: {
+							click: function(){
+								cb.setConfig('no_refresh_chat', true);
+								cb.load('controller', 'maderap');
+							}
+						}
+					}]
+				},{
+					xtype: 'dropdown-menu',
 					text: ' '+cb.getConfig('user_data')['name'],
 					glyphicon: 'user',
 					css: { 'font-size': 17 },

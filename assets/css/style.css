@@ -105,6 +105,10 @@ a.disabled {
 	border-color: #454b49;
 }
 
+.btn-group>.btn:not(first-child):not(:last-child):not(.dropdown-toggle):not(.dropup-toggle) {
+	border-right: 0px;
+}
+
 @media only screen and (min-width : 0px) {
 	.cubi-name {
 		max-height: 36px;

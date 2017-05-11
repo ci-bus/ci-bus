@@ -144,7 +144,9 @@ cb.define = function(obj)
 		{
 			for(var fie in this.module[obj.xtype][obj.name].data)
 			{
-				obj.data[fie] = this.module[obj.xtype][obj.name].data[fie];
+				if(!obj.data[fie]){
+					obj.data[fie] = this.module[obj.xtype][obj.name].data[fie];
+				}
 			}
 		}
 		this.module[obj.xtype][obj.name] = this.cloneObject(obj);
@@ -574,7 +576,10 @@ cb.module.bootstrapComponent = {
 				'type':'button'}
 		});
 		if(!opt.id) opt.id=cb.autoname();
-		if(opt.size) opt.cls += ' btn-'+opt.size;
+		if(opt.size){
+			if(opt.cls) opt.cls += ' btn-'+opt.size;
+			else opt.cls = 'btn-'+opt.size;
+		}
 		if(opt.split)
 		{
 			var but2 = cb.create({
@@ -593,6 +598,7 @@ cb.module.bootstrapComponent = {
 		}
 		else
 		{
+			console.log(opt);
 			but = cb.common_prop(but, opt);
 			if(opt.caret!==false)
 			{
@@ -798,8 +804,8 @@ cb.module.bootstrapComponent = {
 			attr: {'role':'alert'}});
 		opt.notype = true;
 		var spa2 = document.createElement('span');
-		spa2 = cb.common_prop(spa2, opt);
 		$(ele).append(spa2);
+		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
 	'badge': function(opt, record){
@@ -1191,7 +1197,6 @@ cb.module.bootstrapComponent = {
 	},
 	'label': function(opt, record){
 		var ele = document.createElement(opt.xtype);
-		if(!opt.for)$(ele).attr('for', opt.for);
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},

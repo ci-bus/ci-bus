@@ -5,6 +5,11 @@ cb.define({
 	renderTo: '#content',
 
 	items: [{
+		xtype: 'input',
+		type: 'text',
+		css: {position: 'absolute', top: '-100px', left: '-100px'},
+		id: 'keyboardopen'
+	},{
 		xtype: 'container',
 		border: '1px solid #DDD',
 		padding: 0,
@@ -13,6 +18,17 @@ cb.define({
 			css: {'padding-top': 5}
 		},
 		items: [{
+			xtype: 'div',
+			items: {
+				xtype: 'button',
+				text: 'Volver a Go to Rave',
+				css: {'margin-left': 10},
+				click: function(){
+					cb.setConfig('no_refresh_chat', false);
+					cb.ctr('gotorave', 'acceder');
+				}
+			}
+		},{
 			xtype: 'row',
 			css: { 'padding-bottom': 10 },
 			items: [{
@@ -101,6 +117,7 @@ cb.define({
 					padding: '5px 10px',
 					listener: {
 						click: function(){
+							$('#keyboardopen').focus();
 							if(!cb.getConfig('editing')){
 								cb.setConfig('editing', setInterval(function(){
 									$('#cursor').css('display', 'block');
