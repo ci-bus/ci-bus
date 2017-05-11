@@ -15,5 +15,20 @@ cb.define({
 			['view', 'bioculuspro', 'suscribe'],
 			['view', 'bioculuspro', 'footer']
 		]);
+		
+		$(window).scroll(function(){
+			var top = $(window).scrollTop();
+			var top2 = $('header').height() - top;
+			if(top2 < -20){
+				if($('#submenu').css('position') == 'absolute'){
+					
+					$('#submenu').stop().css({position: 'fixed', top: top2}).animate({top: 0}, 'fast');
+				}
+			}else if(top2 > 0){
+				if($('#submenu').css('position') == 'fixed'){
+					$('#submenu').stop().css({position: 'absolute', top: 0});
+				}
+			}
+		});
 	}
 });
