@@ -16,19 +16,15 @@
 		if($CB->getConfig('auto_min_js') == 'local'){
 			$CB->setConfig('auto_min_js', true);
 		}
-		$turi = $_SERVER['REQUEST_URI'];
-		$tpath = substr(getcwd(), strlen($turi)*-1);
-		$tpath = str_replace("\\", "/", $tpath);
-			
-		for($i=0;$i<strlen($tpath);$i++)
-		{
-			if(substr($tpath, $i) == substr($turi, 0, strlen($tpath) - $i))
-			{
-				if(substr($turi, strlen(substr($tpath, $i))+1))
-				{
-					$urlparts = explode("/", substr($turi, strlen(substr($tpath, $i))+1));
-				}
-			}
+		$fname = trim(str_replace('\\', '/', getcwd()), '/');
+		$fname = end(explode('/', $fname));
+		$uri = trim(str_replace('\\', '/', $_SERVER['REQUEST_URI']), '/');
+		
+		if(strpos($uri, $fname) !== false){
+			$temp = end(explode($fname, $uri));
+			$urlparts = explode('/', trim($temp, '/'));
+		}else{
+			$urlparts = explode('/', $uri);
 		}
 	}
 	else
