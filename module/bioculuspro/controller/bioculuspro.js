@@ -31,5 +31,14 @@ cb.define({
 				}
 			}
 		});
+	},
+	
+	load_product: function(){
+		 cb.loadAll([
+		     ['view','common','base'],
+		     ['view', 'bioculuspro', 'product/menu'],
+		     ['view', 'bioculuspro', 'product/landing'],
+		     ['view','bioculuspro','product/video']
+		]);
 	}
 });
