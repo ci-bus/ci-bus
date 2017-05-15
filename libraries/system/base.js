@@ -1619,7 +1619,7 @@ cb.effect = function(obj, eff){
 		if(eff.value) var val = eff.value;
 		if(eff.vel) var vel = eff.vel;
 		if(eff.dire) var dire = eff.dire;
-		if($.isFunction(eff.fun)) var fun = eff.fun;
+		if($.isFunction(eff.fn)) var fun = eff.fn;
 	}
 	if(!fun) var fun = function(){};
 	if(!vel){

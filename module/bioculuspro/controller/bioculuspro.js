@@ -5,6 +5,7 @@ cb.define({
 	
 	onload: function(){
 		cb.loadAll([
+		    ['store','bioculuspro','home'],        
 			['view', 'common', 'base'],
 			['view', 'bioculuspro', 'menu'],
 			['view', 'bioculuspro', 'landing'],

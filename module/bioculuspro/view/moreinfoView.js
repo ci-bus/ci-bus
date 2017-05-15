@@ -24,6 +24,8 @@ cb.define({
 			color: '#AAA',
 			items: [{
 				xtype: 'col',
+				store:"home",
+				field:"aunmas",
 				css: {"background-color": "#fff", "padding": 30, "border-right":"1px solid #e5ebdc", "border-bottom": "1px solid #e5ebdc"},
 				size: 6,
 				items: {
@@ -37,12 +39,12 @@ cb.define({
 						items: [{
 							xtype: 'img',
 							width: '100%',
-							src: "https://www.monorean.com/assets/picto_01-06c1ce1341112f256e1f252030ac360a.png"
+							src: "{imagen}"
 						}]
 					},{
 						xtype: 'col',
-					size: 10,
-						text: "Indetectable: El pinganillo para exámenes no se verá ni se escuchará nada en absoluto desde fuera. Es invisible para el ojo humano."
+						size: 10,
+						text: "{texto}"
 					}]
 				}
 			}]

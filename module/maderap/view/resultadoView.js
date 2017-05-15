@@ -17,7 +17,7 @@ cb.define({
 				xtype: 'div',
 				items: [{
 					xtype: 'a',
-					href: 'http://diccionario.reverso.net/espanol-definiciones/{palabra}',
+					href: 'http://es.thefreedictionary.com/{palabra}',
 					target: '_blank',
 					color: '#fff',
 					pull: 'left',

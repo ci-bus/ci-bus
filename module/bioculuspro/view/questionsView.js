@@ -27,40 +27,31 @@ cb.define({
 				size: 12,
 				items:[{
 					xtype: 'group',
+					store:"home",
 					type: 'vertical',
 					width: "100%",
 					items: [{
 						xtype: 'button',
-						text: '¡Lo necesito ya!',
-						glyphicon: 'chevron-down',
-						attr: {
-							'data-toggle': "collapse",
-							'data-paren': "#accordion"
-						},
-						href: "#collapse1"
-						
-					},{
-						xtype: 'div',
-						cls: 'panel-collapse collapse',
-						id: 'collapse1',
-						background: 'white',
-						text: 'No hay problema, los pinganillos de nuestra tienda se mandan mediante envío 24 horas y el paquete se despacha el mismo día que se recibe el pago. Por lo tanto el pinganillo para exámenes te llegará al día siguiente de hacer el pedido.<br><br>Nota: Los tiempos de envío podrían variar según el país de envío, cuando realices el pedido de tu pinganillo a través de la página web se indicará el tiempo de envío según el tipo de envío.',
-						padding: 20
-					},{
-						xtype: 'button',
-						text: '¿Envío gratuito?',
-						attr: {
-							'data-toggle': "collapse",
-							'data-paren': "#accordion"
-						},
-						href: "#collapse2"
-					},{
-						xtype: 'div',
-						cls: 'panel-collapse collapse',
-						id: 'collapse2',
-						background: 'white',
-						text: 'No hay problema, los pinganillos de nuestra tienda se mandan mediante envío 24 horas y el paquete se despacha el mismo día que se recibe el pago. Por lo tanto el pinganillo para exámenes te llegará al día siguiente de hacer el pedido.<br><br>Nota: Los tiempos de envío podrían variar según el país de envío, cuando realices el pedido de tu pinganillo a través de la página web se indicará el tiempo de envío según el tipo de envío.',
-						padding: 20
+						field:"preguntas",
+						items: [{
+							xtype: 'div',
+							text: '{texto1}',
+							glyphicon: 'chevron-down',
+							attr: {
+								'data-toggle': "collapse",
+								'data-paren': "#accordion"
+							},
+							href: "#colla{id}"
+							
+						},{
+							xtype: 'div',
+							css: {'word-wrap': 'break-word'},
+							cls: 'panel-collapse collapse',
+							id: 'colla{id}',
+							background: 'white',
+							text: '{texto2}',
+							padding: 20
+						}]
 					}]
 				}]
 			}]

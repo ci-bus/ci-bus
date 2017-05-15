@@ -74,6 +74,7 @@ cb.define({
 								glyphicon: 'plus',
 								width: '100%',
 								click: function(){
+									cb.ctr('maderap', 'cursorOut');
 									cb.ctr('maderap', 'new_letter');
 								}
 							}

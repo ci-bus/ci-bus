@@ -11,6 +11,7 @@ cb.define({
 		items: [{
 			xtype: 'div',
 			css:{'position':'absolute'},
+			store: "home",
 			background: '#cce8f6',
 			width: '100%',
 			items: [{
@@ -69,21 +70,10 @@ cb.define({
 							css: {"border-color":"#0097dd"}
 						},
 						items: [{
-							text: " &nbsp; DE UN VISTAZO",
-							glyphicon: 'eye-open',
-						},{
-							text: " &nbsp; MODELOS",
-							glyphicon: 'list'
-						},{
-							text: " &nbsp; QUÉ ES?",
-							glyphicon: 'book'
-							
-						},{
-							text: " &nbsp; DUDAS",
-							glyphicon: 'question-sign'
-						},{
-							text: " &nbsp; CONTACTO",
-							glyphicon: 'comment'
+							store:"home",
+							field:"submenu",
+							text: "{texto}",
+							glyphicon: '{imagen}'
 						}]
 					}
 				}

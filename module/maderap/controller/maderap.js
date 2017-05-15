@@ -14,11 +14,17 @@ cb.define({
 			cb.ctr('maderap', 'insert', record.text);
 		});
 		
-		cb.setConfig('letters', '1234567890qwertyuiopasdfghjklñzxcvbnmáéíóú,._');
+		cb.setConfig('letters', '1234567890qwertyuiopasdfghjklzxcvbnmáéíóúñ.,_-?¿!¡()'+
+			'QWERTYUIOPASDFGHJKLÑZXCVBNM;:#*=&');
 		
-		$('body').on('keydown', function(e){
+		$( window ).off().on('blur', function() {
+			cb.ctr('maderap', 'cursorOut');
+		});
+		
+		$('body').off().on('keydown', function(e){
 			if(cb.getConfig('editing')){
 				var letters = cb.getConfig('letters');
+				
 				if(e.keyCode == 8){
 					if(cb.getConfig('writing')){
 						$(cb.getConfig('writing')).html($(cb.getConfig('writing')).text().substr(0, $(cb.getConfig('writing')).text().length-1));
@@ -47,20 +53,19 @@ cb.define({
 					cb.ctr('maderap', 'insertBr', true);
 					cb.setConfig('writing', false);
 				}
-				else if(letters.indexOf(String.fromCharCode(e.keyCode).toLowerCase()) >= 0){
+				else if(letters.indexOf(e.key) >= 0 && e.key.length == 1){
+										
 					if(cb.getConfig('writing')){
-						$(cb.getConfig('writing')).append(String.fromCharCode(e.keyCode).toLowerCase());
+						$(cb.getConfig('writing')).append(e.key);
 					}else{
-						var word = cb.ctr('maderap', 'createWord', String.fromCharCode(e.keyCode).toLowerCase());
+						var word = cb.ctr('maderap', 'createWord', e.key);
 						var temp_id = cb.autoname();
 						$(word).attr('id', temp_id);
 						cb.setConfig('writing', '#'+temp_id);
 						$('#cursor').before(word);
 					}
-				}else{
-					if(cb.getConfig('writing')){
-						e.preventDefault();
-					}
+				}
+				else if(e.keyCode == 32){
 					cb.setConfig('writing', false);
 				}
 			}
@@ -163,6 +168,7 @@ cb.define({
 					}
 				},
 				click: function(e){
+					cb.setConfig('writing', false);
 					var x = e.offsetX,
 					w = $(this).width();
 					
@@ -250,10 +256,14 @@ cb.define({
 	new_letter: function(){
 		cb.popup({
 			type: 'primary',
+			id: 'popupcnl',
 			effect: {
 				type: 'flipin',
 				vel: 'fast',
-				dire: 'down'
+				dire: 'down',
+				fn: function(){
+					$('input[name="new_letter"]').focus();
+				}
 			},
 			offsetTop: 100,
 			css: {
@@ -275,7 +285,7 @@ cb.define({
 							cb.effect($(this).parent().parent(), {
 								type: 'flipout',
 								dire: 'up',
-								fun: function(){
+								fn: function(){
 									$(this).parent().remove();
 								}
 							});
@@ -318,7 +328,9 @@ cb.define({
 				$('#cnlbody').html(cb.create({
 					xtype: 'div',
 					margin: 10,
-					text: 'Letra para la cación creada con éxito!'
+					color: 'green',
+					size: 14,
+					text: 'Letra para la canción creada con éxito!'
 				}));
 				cb.ctr('maderap', 'reset');
 				cb.loadAll([
@@ -326,6 +338,15 @@ cb.define({
 					['view', 'maderap', 'csel']
 				]);
 				$('select[name="letra"]').val(id).attr('value', id);
+				cb.sto(function(){
+					cb.effect('#popupcnl', {
+						type: 'flipout',
+						dire: 'up',
+						fn: function(){
+							$(this).parent().remove();
+						}
+					});
+				}, 1000);
 			}
 		});
 	},

@@ -544,7 +544,7 @@ cb.define({
 							cb.effect('#popupinforeg', {
 								type: 'flipout',
 								dire: 'right',
-								fun: function(){
+								fn: function(){
 									$(this).parent().remove();
 								}
 							});
@@ -598,7 +598,7 @@ cb.define({
 							cb.effect($(this).parent().parent(), {
 								type: 'flipout',
 								dire: 'up',
-								fun: function(){
+								fn: function(){
 									$(this).parent().remove();
 								}
 							});
