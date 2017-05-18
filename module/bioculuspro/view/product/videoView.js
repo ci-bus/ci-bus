@@ -1,16 +1,16 @@
 cb.define({
 	xtype: 'view',
-	name: "video",
+	name: 'video',
 	appendTo: "#content",
 	items: [{
 		xtype: 'div',
 		width: "100%",
 		padding: 50,
-		background: "blue",
+		background: "#1976D2",
 		items: [{
 			xtype:'div',
 			text:"¿Como funciona bioculusPro?",
-			css:{'text-align':'center', 'font-size':'36px','font-weight':100},
+			css:{'text-align':'center', 'font-size':'36px','font-weight':100, 'color':'#263238'},
 
 		},{
 			xtype: 'div',

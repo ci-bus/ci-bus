@@ -31,7 +31,7 @@ cb.define({
 			items: [{
 				xtype: 'col',
 				css: {
-					'background': '#fff',
+					'background': '#283593',
 					'-webkit-box-shadow': '0px 0px 15px 0px rgba(170,170,170,1)',
 					'-moz-box-shadow': '0px 0px 15px 0px rgba(170,170,170,1)',
 					'box-shadow': '0px 0px 15px 0px rgba(170,170,170,1)'

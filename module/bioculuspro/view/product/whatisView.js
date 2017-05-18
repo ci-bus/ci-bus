@@ -3,7 +3,7 @@ cb.define({
 	xtype: 'view',
 	name: 'whatis',
 	appendTo: '#content',
-
+//no consigo que el controlador carge esta vista.
 	items: [{
 		xtype: 'row',
 		css: {'max-width': '980px'},
@@ -12,7 +12,7 @@ cb.define({
 		items: [{
 			xtype: 'col',
 			size: 12,
-			text: "¿Qué es?",
+			text: "Equipo De BioculusPro",
 			margin: '50px 0px 10px 0px',
 			css: {"text-align":"center",'font-size': 32, 'font-weight': 100}
 
@@ -25,16 +25,35 @@ cb.define({
 		items: [{
 			xtype: 'col',
 			size: 6,
-			
-			items: [{
-				xtype: 'div',
-				text: "¿Que es bioculus?",
-				css: {"text-align":"center",'font-size': 24}
+			defaults: {
+				width: "40%",
+				float:"left",
+				margin:'5%',
+			},
+			items:[{
+				xtype:'thumbnail',
+				items: [{
+					xtype: 'img',
+					src: 'assets/img/imgejemplo.png'
+				}]
 			},{
-				xtype: 'div',
-				padding: '0px 10%',
-				margin: '10px 0px 0px 0px',
-				text: "Bioculus es un sistema de comunicación diseñado para copiar en los exámenes. Monorean consiste en un pinganillo invisible del tamaño de una lenteja que deberás de introducir en tu oído. Por el pinganillo podrás escuchar a tu compañero alto y claro de manera totalmente discreta.",
+				xtype:'thumbnail',
+				items: [{
+					xtype: 'img',
+					src: 'assets/img/imgejemplo.png'
+				}]
+			},{
+				xtype:'thumbnail',
+				items: [{
+					xtype: 'img',
+					src: 'assets/img/imgejemplo.png'
+				}]
+			},{
+				xtype:'thumbnail',
+				items: [{
+					xtype: 'img',
+					src: 'assets/img/imgejemplo.png'
+				}]
 			}]
 		},{
 			xtype: 'col',
@@ -43,20 +62,22 @@ cb.define({
 			items: [{
 				xtype: 'div',
 				text: "¿Como funciona?",
+				margin: '30px 0px 0px 0px',
 				css: {"text-align":"center",'font-size': 24},
 			},{
 				xtype: 'div',
 				padding: '0px 10%',
-				margin: '10px 0px 0px 0px',
-				text: "Conecta tu modelo de Bioculus con tu teléfono móvil, colócate el anillo inductor en el cuello e introduce el pinganillo en tu oído.",
+				margin: '30px 0px 0px 0px',
+				text: "Espera una llamada entrante y pulsa prolongadamente el Pulsador Beeper, que tendrás en tu pie, para aceptarla. Puedes optar por presionar el Pulsador prolongadamente y llamar al último número marcado.Empezarás a escuchar a tu compañero a través del pinganillo oculto en tu oído. Durante la conversación presiona el Pulsador para enviar zumbidos a tu compañero. Por ejemplo usa: un pitido para decir 'sí'; dos pitidos para decir 'no'; varias pulsaciones rápidas para decir 'dicta más despacio'. Podrás establecer códigos según tus necesidades. Presiona el Pulsador prolongadamente para finalizar la llamada.",
+			},{
+					xtype: 'button',
+					type: 'primary',
+					text: 'Compralo ahora',
+					margin: '30px 10px 0px 32px',
+					width: '80%',
+					height: '50px'
 			}]
 		}]
-	},{
-		xtype: 'div',
-		css: {'text-align': 'center'},
-		items: {
-			xtype: 'img',
-			src: 'https://www.monorean.com/assets/I18n/es/infography_what_is-46e48b439a92d8a37913ef47ee8277f3.png'
-		}
 	}]
 });
+

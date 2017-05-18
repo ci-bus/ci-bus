@@ -38,7 +38,17 @@ cb.define({
 		     ['view','common','base'],
 		     ['view', 'bioculuspro', 'product/menu'],
 		     ['view', 'bioculuspro', 'product/landing'],
-		     ['view','bioculuspro','product/video']
+		     ['view','bioculuspro','product/video'],
+		     ['view','bioculuspro','product/whatis'],
+		     ['view','bioculuspro','product/instalacion'],
+		     ['view','bioculuspro','product/moreinfo'],
+		     ['view','bioculuspro','product/questions'],
+		     ['view','bioculuspro','product/footer'],
+
+
+
+		     
+
 		]);
 	}
 });

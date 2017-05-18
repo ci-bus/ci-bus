@@ -96,9 +96,11 @@
 							$time_ctr = time();
 							touch('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.min.js', $time_ctr);
 							touch('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.js', $time_ctr);
-							echo $codemin;
+							echo $codemin.'
+									';
 						}else{
-							echo file_get_contents('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.min.js');
+							echo file_get_contents('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.min.js').'
+									';
 						}
 					}
 					else if(file_exists('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.js'))
@@ -111,9 +113,11 @@
 							$time_ctr = time();
 							touch('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.min.js', $time_ctr);
 							touch('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.js', $time_ctr);
-							echo $codemin;
+							echo $codemin.'
+									';
 						}else{
-							echo file_get_contents('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.js');
+							echo file_get_contents('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.js').'
+									';
 						}
 					}
 					
