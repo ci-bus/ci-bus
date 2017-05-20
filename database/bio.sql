@@ -3,18 +3,12 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 15-05-2017 a las 19:37:38
+-- Tiempo de generación: 20-05-2017 a las 11:10:50
 -- Versión del servidor: 5.5.42
 -- Versión de PHP: 5.6.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Base de datos: `gotorave`
@@ -113,15 +107,47 @@ CREATE TABLE `bio_productos` (
   `id_usuario` int(11) NOT NULL,
   `imagen` text COLLATE utf8_bin NOT NULL,
   `texto` text COLLATE utf8_bin NOT NULL,
-  `precio` float NOT NULL
+  `precio` float NOT NULL,
+  `but_menu_text1` varchar(50) COLLATE utf8_bin NOT NULL,
+  `but_menu_text2` varchar(50) COLLATE utf8_bin NOT NULL,
+  `landing_html` text COLLATE utf8_bin NOT NULL,
+  `but_buy_text` varchar(50) COLLATE utf8_bin NOT NULL,
+  `video_titulo` varchar(100) COLLATE utf8_bin NOT NULL,
+  `video_html` text COLLATE utf8_bin NOT NULL,
+  `whatis_titulo` varchar(100) COLLATE utf8_bin NOT NULL,
+  `whatis_html` text COLLATE utf8_bin NOT NULL,
+  `whatis_but_buy_text` varchar(50) COLLATE utf8_bin NOT NULL,
+  `install_imagen` text COLLATE utf8_bin NOT NULL,
+  `install_html` text COLLATE utf8_bin NOT NULL,
+  `install_titulo` varchar(100) COLLATE utf8_bin NOT NULL,
+  `caract_titulo` varchar(100) COLLATE utf8_bin NOT NULL,
+  `color_back_landing` varchar(7) COLLATE utf8_bin NOT NULL,
+  `color_back_video` varchar(7) COLLATE utf8_bin NOT NULL,
+  `color_back_install` varchar(7) COLLATE utf8_bin NOT NULL,
+  `color_back_caract` varchar(7) COLLATE utf8_bin NOT NULL,
+  `color_back_question` varchar(7) COLLATE utf8_bin NOT NULL,
+  `color_back_footer` varchar(7) COLLATE utf8_bin NOT NULL
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Volcado de datos para la tabla `bio_productos`
 --
 
-INSERT INTO `bio_productos` (`id`, `id_usuario`, `imagen`, `texto`, `precio`) VALUES
-(1, 1, 'assets/img/producto1.png', 'La versión avanzada de nuestro pinganillo para exámenes. <br><br>Mejores prestaciones para garantizar el aprobado en tus exámenes con nuestos pinganillos invisibles.', 1400);
+INSERT INTO `bio_productos` (`id`, `id_usuario`, `imagen`, `texto`, `precio`, `but_menu_text1`, `but_menu_text2`, `landing_html`, `but_buy_text`, `video_titulo`, `video_html`, `whatis_titulo`, `whatis_html`, `whatis_but_buy_text`, `install_imagen`, `install_html`, `install_titulo`, `caract_titulo`, `color_back_landing`, `color_back_video`, `color_back_install`, `color_back_caract`, `color_back_question`, `color_back_footer`) VALUES
+(1, 1, 'assets/img/producto1.png', 'La versión avanzada de nuestro pinganillo para exámenes. <br><br>Mejores prestaciones para garantizar el aprobado en tus exámenes con nuestos pinganillos invisibles.', 1400, 'Camara', 'CMR', 'Monorean® Pro Copia en los exámenes con absoluta tranquilidad sin cables.  Conécta el pinganillo a tu teléfono mediante Bluetooth y haz una llamada de teléfono normal.  Su collar inductor es plano como un papel, no se notará debajo de una camiseta fina.  Envía pitidos a tu compañero y descuelga el teléfono pulsando el Pulsador Beeper.  Controla las grabaciones MP3 de tu teléfono móvil con los Pulsadores MP3.', '¡COMPRALO AHORA!', '¿Como funciona bioculusPro?', '<iframe width="560" height="315" src="https://www.youtube.com/embed/JOPUeq8kRhM" frameborder="0" allowfullscreen></iframe>', '0', '¿Como funciona?\r\nEspera una llamada entrante y pulsa prolongadamente el Pulsador Beeper, que tendrás en tu pie, para aceptarla. Puedes optar por presionar el Pulsador prolongadamente y llamar al último número marcado.Empezarás a escuchar a tu compañero a través del pinganillo oculto en tu oído. Durante la conversación presiona el Pulsador para enviar zumbidos a tu compañero. Por ejemplo usa: un pitido para decir ''sí''; dos pitidos para decir ''no''; varias pulsaciones rápidas para decir ''dicta más despacio''. Podrás establecer códigos según tus necesidades. Presiona el Pulsador prolongadamente para finalizar la llamada.', 'Compralo ahora', 'assets/img/figura.png', '¿Como funciona?\r\nEspera una llamada entrante y pulsa prolongadamente el Pulsador Beeper, que tendrás en tu pie, para aceptarla. Puedes optar por presionar el Pulsador prolongadamente y llamar al último número marcado.Empezarás a escuchar a tu compañero a través del pinganillo oculto en tu oído. Durante la conversación presiona el Pulsador para enviar zumbidos a tu compañero. Por ejemplo usa: un pitido para decir ''sí''; dos pitidos para decir ''no''; varias pulsaciones rápidas para decir ''dicta más despacio''. Podrás establecer códigos según tus necesidades. Presiona el Pulsador prolongadamente para finalizar la llamada.', 'Instalación del pinganillo BioculusPro', 'Características técnicas del pinganillo BioculusPro', '', '', '', '', '', '');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `bio_product_images`
+--
+
+CREATE TABLE `bio_product_images` (
+  `id` int(11) NOT NULL,
+  `id_usuario` int(11) NOT NULL,
+  `titulo` varchar(200) COLLATE utf8_bin NOT NULL,
+  `imagen` text COLLATE utf8_bin NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
 
@@ -204,6 +230,12 @@ ALTER TABLE `bio_productos`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `bio_product_images`
+--
+ALTER TABLE `bio_product_images`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `bio_quees`
 --
 ALTER TABLE `bio_quees`
@@ -245,6 +277,11 @@ ALTER TABLE `bio_preguntas`
 ALTER TABLE `bio_productos`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
+-- AUTO_INCREMENT de la tabla `bio_product_images`
+--
+ALTER TABLE `bio_product_images`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT de la tabla `bio_quees`
 --
 ALTER TABLE `bio_quees`
@@ -254,6 +291,3 @@ ALTER TABLE `bio_quees`
 --
 ALTER TABLE `bio_submenu`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
