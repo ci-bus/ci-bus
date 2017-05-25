@@ -6,6 +6,7 @@ cb.define({
 	
 	items: [{
 		xtype: 'div',
+		id: 'preguntas',
 		css: {"background-color": "#013b6f", "padding": "110px 10px 35px 10px" },
 		items: [{
 			xtype: 'row',

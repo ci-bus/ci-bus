@@ -6,6 +6,7 @@ cb.define({
 	
 	items: [{
 		xtype: 'div',
+		id: 'aunmas',
 		css: {"background-color": "#e5ebdc", "padding": "110px 10px 35px 10px" },
 		items: [{
 			xtype: 'row',
@@ -26,7 +27,7 @@ cb.define({
 				xtype: 'col',
 				store:"home",
 				field:"aunmas",
-				css: {"background-color": "#fff", "padding": 30, "border-right":"1px solid #e5ebdc", "border-bottom": "1px solid #e5ebdc"},
+				css: {"background-color": "#{color}", "padding": 30, "border-right":"1px solid #e5ebdc", "border-bottom": "1px solid #e5ebdc"},
 				size: 6,
 				items: {
 					xtype: 'row',

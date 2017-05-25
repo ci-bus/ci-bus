@@ -12,13 +12,14 @@ cb.define({
 			xtype: 'div',
 			css:{'position':'absolute'},
 			store: "home",
-			background: '#cce8f6',
+			field: 'cabezera',
+			background: '#{color}',
 			width: '100%',
 			items: [{
 				xtype: 'row',
 				css: {'max-width': '980px', 'height': '500px', 'background-size': 'cover'},
 				margin: 'auto',
-				background: 'url(assets/img/cabezera1.jpg)',
+				background: 'url(sistema/{imagen})',
 				
 				items: [{
 					xtype: 'col',
@@ -31,15 +32,9 @@ cb.define({
 					xtype: 'col',
 					size: 4,
 					items: [{
-						xtype: 'div',
-						text: "BioculusPro",
-						css: {"font-size":"32px", "font-weight":100, "text-align":"center","margin-top":"100px"},
-						items: [{
-							xtype:'div',
-							text: "La versión básica de nuestro pinganillo para exámenes ¡la evolución de las clásicas chuletas para examen!",
-							css: {"font-size":"22px", "font-weight":120, "text-align":"center", "margin-bottom":"120px" }
-						}]
-						
+						xtype:'div',
+						text: "{texto}",
+						css: {"font-size":"22px", "font-weight":120, "text-align":"center", "margin-top":"100px" }
 					}]
 				}]
 			}]
@@ -65,15 +60,36 @@ cb.define({
 							margin: 0,
 							padding: '15px 0px',
 							width: '20%',
-							background: "#00a7ed",
-							color: "#e1f6ff",
-							css: {"border-color":"#0097dd"}
+							background: "#{color}",
+							attr: {'colover': '#{color2}', 'colout': '#{color}'},
+							css: {"border": 0},
+							color: '#{color3}',
+							text: "<img style=\"max-height:24px;\" src=\"sistema/{imagen}\"> {texto}",
+							listener: {
+								mouseover: function(){
+									$(this).css({
+										'background-color': $(this).attr('colover')
+									});
+								},
+								mouseout: function(){
+									$(this).css({
+										'background-color': $(this).attr('colout')
+									});
+								}
+							}
 						},
 						items: [{
 							store:"home",
 							field:"submenu",
-							text: "{texto}",
-							glyphicon: '{imagen}'
+							
+							click: function(){
+								event.preventDefault();
+							    var id = '#'+$(this).getRecord().enlace;
+							    var top = $(id).offset().top;
+							    $('body').stop().animate({
+							    	scrollTop: top
+							    }, 'swing');
+							}
 						}]
 					}
 				}

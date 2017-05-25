@@ -43,12 +43,7 @@ cb.define({
 		     ['view','bioculuspro','product/instalacion'],
 		     ['view','bioculuspro','product/moreinfo'],
 		     ['view','bioculuspro','product/questions'],
-		     ['view','bioculuspro','product/footer'],
-
-
-
-		     
-
+		     ['view','bioculuspro','product/footer']
 		]);
 	}
 });

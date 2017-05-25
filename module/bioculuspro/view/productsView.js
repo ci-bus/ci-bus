@@ -11,6 +11,7 @@ cb.define({
 		
 		items: [{
 			xtype: 'row',
+			id: 'productos',
 			css: {'max-width': '980px'},
 			margin: 'auto',
 			color: '#AAA',

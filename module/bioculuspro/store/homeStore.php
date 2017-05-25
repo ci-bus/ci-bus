@@ -9,7 +9,7 @@
 			if(!$cabezera) $cabezera=array();
 			$CB->db->reset();
 			
-			$CB->db->select('id, imagen, texto, enlace');
+			$CB->db->select('id, imagen, texto, enlace, color, color2, color3');
 			$submenu = $CB->db->get_array('bio_submenu');
 			if(!$submenu) $submenu=array();
 			$CB->db->reset();
@@ -19,12 +19,12 @@
 			if(!$productos) $productos=array();
 			$CB->db->reset();
 			
-			$CB->db->select('id, texto1, texto2, imagen');
+			$CB->db->select('id, texto1, texto2, imagen, texto_cabecera, color');
 			$quees = $CB->db->get_array('bio_quees');
 			if(!$quees) $quees=array();
 			$CB->db->reset();
 			
-			$CB->db->select('id, imagen, texto');
+			$CB->db->select('id, imagen, color, texto');
 			$aunmas = $CB->db->get_array('bio_aunmas');
 			if(!$aunmas) $aunmas=array();
 			$CB->db->reset();
