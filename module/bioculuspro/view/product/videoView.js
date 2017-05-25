@@ -2,19 +2,22 @@ cb.define({
 	xtype: 'view',
 	name: 'video',
 	appendTo: "#content",
+	
 	items: [{
+		store:'producto',
+		field:'productos',
 		xtype: 'div',
 		width: "100%",
 		padding: 50,
 		background: "#1976D2",
 		items: [{
 			xtype:'div',
-			text:"¿Como funciona bioculusPro?",
-			css:{'text-align':'center', 'font-size':'36px','font-weight':100, 'color':'#263238'},
+			text:"{video_titulo}",
+			css:{'text-align':'center', 'font-size':'36px','font-weight':100, 'color':'#{color_back_video}'},
 
 		},{
 			xtype: 'div',
-			html:'<iframe width="560" height="315" src="https://www.youtube.com/embed/JOPUeq8kRhM" frameborder="0" allowfullscreen></iframe>',
+			html:'{video_html}',
 			css:{'text-align':'center'},
 			margin:" 50px 0px 0px 0px",
 		}]

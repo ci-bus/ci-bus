@@ -27,12 +27,12 @@ cb.define({
 				size: 12,
 				items:[{
 					xtype: 'group',
-					store:"home",
+					store:"productos",
 					type: 'vertical',
 					width: "100%",
 					items: [{
 						xtype: 'button',
-						field:"preguntas",
+						field:"producto",
 						items: [{
 							xtype: 'div',
 							text: '{texto1}',
@@ -48,7 +48,7 @@ cb.define({
 							css: {'word-wrap': 'break-word'},
 							cls: 'panel-collapse collapse',
 							id: 'colla{id}',
-							background: 'white',
+							background: '{color_back_question}',
 							text: '{texto2}',
 							padding: 20
 						}]

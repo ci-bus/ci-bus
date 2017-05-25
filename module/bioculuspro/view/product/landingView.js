@@ -11,8 +11,9 @@ cb.define({
 		items: [{
 			xtype: 'div',
 			css:{'position':'absolute'},
-			store: "home",
-			background: '#cce8f6',
+			store: "producto",
+			field:'productos',
+			background: '#{color_back_landing}',
 			width: '100%',
 			items: [{
 				xtype: 'row',
@@ -24,7 +25,7 @@ cb.define({
 					size: 6,
 					items: [{
 						xtype: 'img', 
-						src: 'assets/img/producto1.png',
+						src: 'sistema/{imagen}',
 						css: {'width': '60%'},
 						margin: '100px 20% 0px 20%'
 					},{
@@ -36,7 +37,7 @@ cb.define({
 							size: 5,
 							items: [{
 								xtype: 'h3',
-								text: '1400€',
+								text: '{precio}',
 								css: {'margin-top': '0px'}
 							},{
 								xtype:'small',
@@ -62,13 +63,8 @@ cb.define({
 					size: 6,
 					items: [{
 						xtype: 'div',
-						text: "BioculusPro",
-						css: {"font-size":"32px", "font-weight":100, "text-align":"center","margin-top":"100px"},
-						items: [{
-							xtype:'div',
-							text: "La versión básica de nuestro pinganillo para exámenes ¡la evolución de las clásicas chuletas para examen!",
-							css: {"font-size":"22px", "font-weight":120, "text-align":"center", "margin-bottom":"120px" }
-						}]
+						text: "{landing_html}",
+						
 						
 					}]
 				}]
@@ -95,12 +91,12 @@ cb.define({
 							margin: 0,
 							padding: '15px 0px',
 							width: '20%',
-							background: "#00a7ed",
+							background: "#{color_back_landing}",
 							color: "#e1f6ff",
 							css: {"border-color":"#0097dd"}
 						},
 						items: [{
-							store:"home",
+							store:"producto",
 							field:"submenu",
 							text: "{texto}",
 							glyphicon: '{imagen}'

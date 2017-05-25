@@ -3,7 +3,8 @@ cb.define({
 	xtype: 'view',
 	name: 'menu',
 	appendTo: 'header',
-
+	store:'producto',
+	field:'productos',
 	items: [{
 		xtype: 'div',
 		css: {'background': 'url(assets/img/backmenu.jpg)'},
