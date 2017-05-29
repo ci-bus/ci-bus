@@ -7,6 +7,7 @@ cb.define({
 		store:'producto',
 		field:'productos',
 		xtype: 'row',
+		id: 'whatis',
 		css: {'max-width': '980px'},
 		margin: 'auto',
 			

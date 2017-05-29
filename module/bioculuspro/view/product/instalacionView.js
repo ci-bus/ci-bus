@@ -6,6 +6,7 @@ cb.define({
 	
 	items: [{
 		xtype: 'div',
+		id: 'install',
 		store: 'producto',
 		field: 'productos',
 		background:'#{color_back_install}',
@@ -33,6 +34,7 @@ cb.define({
 				
 				items: [{
 					xtype: 'img',
+					width: '100%',
 					src: 'sistema/{install_imagen}',
 					
 				}]

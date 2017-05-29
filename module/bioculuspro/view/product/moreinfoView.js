@@ -6,6 +6,7 @@ cb.define({
 	
 	items: [{
 		xtype: 'div',
+		id: 'aunmas',
 		css: {"background-color": "#e5ebdc", "padding": "110px 10px 35px 10px" },
 		items: [{
 			xtype: 'row',
@@ -20,17 +21,18 @@ cb.define({
 		},{
 			xtype: 'thumbnail',
 			css: {'max-width': '980px','margin-bottom':'100px'},
+			background: 'none',
+			padding: 10,
 			margin: 'auto',
 			items: {
 				xtype: 'row',
 				css: {'max-width': '980px'},
 				margin: 'auto',
-				color: '#AAA',
 				items: [{
 					xtype: 'col',
-					store:"home",
+					store:"producto",
 					field:"aunmas",
-					css: {"background-color": "#fff", "padding": 30},
+					css: {"background-color": "#{color}", "padding": 30, 'max-height': 250, 'min-height': 250},
 					size: 6,
 					items: {
 						xtype: 'row',
@@ -43,12 +45,12 @@ cb.define({
 							items: [{
 								xtype: 'img',
 								width: '100%',
-								src: "assets/img/anillo.png"
+								src: "sistema/{imagen}"
 							}]
 						},{
 							xtype: 'col',
 							size: 9,
-							text: "La tecnología del pinganillo Monorean® Pro permite que el collar sea igual de fino que un papel. Si lo escondes debajo de una camiseta fina de algodón no se notará en absoluto."
+							text: "{texto}"
 						}]
 					}
 				}]

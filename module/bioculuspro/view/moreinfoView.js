@@ -40,7 +40,7 @@ cb.define({
 						items: [{
 							xtype: 'img',
 							width: '100%',
-							src: "{imagen}"
+							src: "sistema/{imagen}"
 						}]
 					},{
 						xtype: 'col',

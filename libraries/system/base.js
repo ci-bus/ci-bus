@@ -1333,14 +1333,23 @@ cb.props = {
 	}
 };
 
+cb.mergeDataStore = function(record){
+	
+};
+
 cb.create = function(opt, record){
 
 	if(!opt.xtype) opt.xtype='span';
 	
 	if($.type(opt.xtype) == 'string')
 	{
+		//Variables temp
+		var store = false;
+		var temp_record = false;
+		
 		//Opt copy
 		var opt_origin = cb.cloneObject(opt);
+		
 		//Coge store
 		if(opt.store){
 			if(this.module.store[opt.store]){
@@ -1349,16 +1358,76 @@ cb.create = function(opt, record){
 				return;
 			}
 		}
+		
 		//Coge field del store
 		if(opt.field){
-			if(record){
-				if(record[opt.field]){
-					record = record[opt.field];
+			if(typeof opt.field === 'string'){
+				if(record){
+					if(record[opt.field]){
+						record = record[opt.field];
+					}else{
+						return;
+					}
 				}else{
 					return;
 				}
-			}else{
-				return;
+			}
+			else if($.isArray(opt.field))
+			{
+				if(record)
+				{
+					//Recorre los fields
+					for(var o=0; o<opt.field.length; o++)
+					{
+						//Si el field es un string
+						if(typeof opt.field[o] === 'string')
+						{
+							//Si existe datos en el store para ese field
+							if(record[opt.field[o]])
+							{
+								//Si no existen record temporal
+								if(!temp_record)
+								{
+									temp_record = record[opt.field[o]];
+								}
+								//Si el record temporal es un array
+								else if($.isArray(temp_record))
+								{
+									//Si el record actual es un array
+									for(var o2=0; o2<temp_record.length; o2++)
+									{
+										if($.isPlainObject(temp_record[o2]))
+										{
+											temp_record[o2][opt.field[o]] = record[opt.field[o]]; 
+										}else{
+											$.extend(temp_record, record[opt.field[o]]);
+											o2 = opt.temp_record.length;
+										}
+									}
+								}
+								//Si el record temporal es un objeto
+								else if($.isPlainObject(temp_record))
+								{
+									temp_record[opt.field[o]] = record[opt.field[o]];
+								}
+								else
+								{
+									$.extend(temp_record, record[opt.field[o]]);
+								}
+							}
+						}
+						//Si el field es un objecto
+						else if($.isPlainObject(opt.field[o])){
+							
+						}
+					}
+					if(temp_record){
+						record = temp_record;
+						console.log('temp_record', temp_record);
+					}
+				}else{
+					return;
+				}
 			}
 		}
 		

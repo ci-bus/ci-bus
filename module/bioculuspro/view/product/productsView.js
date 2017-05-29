@@ -8,6 +8,7 @@ cb.define({
 		xtype: 'div',
 		css: {'background': '#f1f1f1'},
 		padding: 10,
+		id: 'productos',
 		
 		items: [{
 			xtype: 'row',

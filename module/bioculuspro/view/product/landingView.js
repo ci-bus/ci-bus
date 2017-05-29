@@ -91,15 +91,36 @@ cb.define({
 							margin: 0,
 							padding: '15px 0px',
 							width: '20%',
-							background: "#{color_back_landing}",
-							color: "#e1f6ff",
-							css: {"border-color":"#0097dd"}
+							background: "#{color}",
+							attr: {'colover': '#{color2}', 'colout': '#{color}'},
+							css: {"border": 0},
+							color: '#{color3}',
+							text: "<img style=\"max-height:24px;\" src=\"sistema/{imagen}\"> {texto}",
+							listener: {
+								mouseover: function(){
+									$(this).css({
+										'background-color': $(this).attr('colover')
+									});
+								},
+								mouseout: function(){
+									$(this).css({
+										'background-color': $(this).attr('colout')
+									});
+								}
+							}
 						},
 						items: [{
 							store:"producto",
 							field:"submenu",
-							text: "{texto}",
-							glyphicon: '{imagen}'
+							
+							click: function(){
+								event.preventDefault();
+							    var id = '#'+$(this).getRecord().enlace;
+							    var top = $(id).offset().top;
+							    $('body').stop().animate({
+							    	scrollTop: top
+							    }, 'swing');
+							}
 						}]
 					}
 				}

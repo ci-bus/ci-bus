@@ -14,10 +14,11 @@
 			if(!$submenu) $submenu=array();
 			$CB->db->reset();
 			
-			$CB->db->select('id, texto, imagen, precio');
+			$CB->db->select('id, texto, imagen, precio, but_menu_text1, but_menu_text2');
 			$productos = $CB->db->get_array('bio_productos');
 			if(!$productos) $productos=array();
 			$CB->db->reset();
+			$menucolsize = round(6/count($productos));
 			
 			$CB->db->select('id, texto1, texto2, imagen, texto_cabecera, color');
 			$quees = $CB->db->get_array('bio_quees');
@@ -40,7 +41,7 @@
 			$CB->db->reset();
 			
 			
-			$CB->parseStore('home', array('cabezera' => $cabezera, 'submenu' => $submenu, 'productos' => $productos, 'quees' => $quees, 'aunmas' => $aunmas, 'preguntas' => $preguntas, 'piedepagina' => $pie));
+			$CB->parseStore('home', array('menucol' => $menucolsize, 'cabezera' => $cabezera, 'submenu' => $submenu, 'productos' => $productos, 'quees' => $quees, 'aunmas' => $aunmas, 'preguntas' => $preguntas, 'piedepagina' => $pie));
 		}
 
 	}
