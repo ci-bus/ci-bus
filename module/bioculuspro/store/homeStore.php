@@ -10,6 +10,7 @@
 			$CB->db->reset();
 			
 			$CB->db->select('id, imagen, texto, enlace, color, color2, color3');
+			$CB->db->where('id_producto', 0);
 			$submenu = $CB->db->get_array('bio_submenu');
 			if(!$submenu) $submenu=array();
 			$CB->db->reset();

@@ -1423,7 +1423,6 @@ cb.create = function(opt, record){
 					}
 					if(temp_record){
 						record = temp_record;
-						console.log('temp_record', temp_record);
 					}
 				}else{
 					return;

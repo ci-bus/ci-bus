@@ -35,11 +35,9 @@ cb.define({
 	
 	load_product: function(record){
 		
-		console.log('record', record);
-		
 		 cb.loadAll([
 		     ['view','common','base'],
-			 ['store','bioculuspro','producto', record.id],        
+			 ['store','bioculuspro','producto', { id: record.id }],        
 		     ['view', 'bioculuspro', 'product/menu'],
 		     ['view', 'bioculuspro', 'product/landing'],
 		     ['view','bioculuspro','product/video'],
