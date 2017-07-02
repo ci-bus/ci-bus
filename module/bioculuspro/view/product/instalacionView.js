@@ -10,6 +10,7 @@ cb.define({
 		store: 'producto',
 		field: 'productos',
 		background:'#{color_back_install}',
+		css: {'padding-bottom': '30px'},
 		items: [{
 			xtype: 'row',
 			css: {'max-width': '980px'},
@@ -19,7 +20,7 @@ cb.define({
 				xtype: 'col',
 				size: 12,
 				text: "{install_titulo}",
-				margin: '50px 0px 10px 0px',
+				margin: '110px 0px 30px 0px',
 				css: {"text-align":"center",'font-size': 32, 'font-weight': 100}
 	
 			}]

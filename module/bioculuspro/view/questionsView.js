@@ -7,7 +7,9 @@ cb.define({
 	items: [{
 		xtype: 'div',
 		id: 'preguntas',
-		css: {"background-color": "#013b6f", "padding": "110px 10px 35px 10px" },
+		store: 'home',
+		field: 'colores',
+		css: {"background-color": "#{preguntas_color}", "padding": "110px 10px 35px 10px" },
 		items: [{
 			xtype: 'row',
 			css: {'max-width': '980px'},
@@ -33,11 +35,17 @@ cb.define({
 					width: "100%",
 					items: [{
 						xtype: 'button',
+						margin: 0,
+						padding: '10px',
+						defaults:{
+							margin:'0px',
+							padding:'0px'
+						},
 						field:"preguntas",
 						items: [{
 							xtype: 'div',
 							text: '{texto1}',
-							glyphicon: 'chevron-down',
+							size: 21,
 							attr: {
 								'data-toggle': "collapse",
 								'data-paren': "#accordion"
@@ -46,12 +54,17 @@ cb.define({
 							
 						},{
 							xtype: 'div',
-							css: {'word-wrap': 'break-word'},
+							css: {'word-wrap': 'break-word', 'white-space': 'pre-line'},
 							cls: 'panel-collapse collapse',
 							id: 'colla{id}',
 							background: 'white',
-							text: '{texto2}',
-							padding: 20
+							padding: '0 10px',
+							items: {
+								xtype: 'div',
+								padding: '20px 0',
+								size: '21px !important',
+								text: '{texto2}'
+							}
 						}]
 					}]
 				}]

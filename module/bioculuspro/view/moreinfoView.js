@@ -4,10 +4,16 @@ cb.define({
 	name: 'moreinfo',
 	appendTo: '#content',
 	
+	onLoad: function(){
+		cb.ctr('bioculuspro', 'adapt_content');
+	},
+	
 	items: [{
 		xtype: 'div',
 		id: 'aunmas',
-		css: {"background-color": "#e5ebdc", "padding": "110px 10px 35px 10px" },
+		store: 'home',
+		field: 'colores',
+		css: {"background-color": "#{aunmas_color}", "padding": "110px 10px 35px 10px" },
 		items: [{
 			xtype: 'row',
 			css: {'max-width': '980px'},

@@ -5,6 +5,7 @@ cb.module.view = {};
 cb.module.store = {};
 cb.module.component = {};
 cb.module.model = {};
+cb.module.parseData = {};
 cb.config = [];
 cb.elenamed = 0;
 
@@ -103,6 +104,9 @@ cb.load = function(type, module, name, data, callback)
 		data = name;
 		name = module;
 	}
+	if($.isPlainObject(data)){
+		cb.module.parseData[name] = data;
+	}
 	if(type == 'store')
 	{
 		$.ajax({
@@ -183,10 +187,18 @@ cb.define = function(obj)
 			}
 			
 			this.render(obj);
+			
+			if($.isFunction(obj.onLoad)){
+				obj.onLoad();
+			}
 		}
 		
 		if($.isFunction(obj['onload'])){
-			obj['onload']();
+			if(cb.module.parseData[obj.name]){
+				obj['onload'](cb.module.parseData[obj.name]);
+			}else{
+				obj['onload']();
+			}
 		}
 	}
 }
@@ -1717,13 +1729,12 @@ cb.effect = function(obj, eff){
 	if(effe == 'flipin'){
 		if(dire == 'up'){
 			var wh = $(window).height();
+			var mt = $(obj).css('margin-top').replace('px', '');
 			var tt = $(obj).css('top').replace('px', '');
-			if($.isNumeric(tt)){
+			if($.isNumeric(mt)){
+				$(obj).css({'margin-top': wh, opacity: 0}).animate({opacity: 1, 'margin-top': mt+'px'}, vel, fun);
+			}else if($.isNumeric(tt)){
 				$(obj).css({top: wh+'px', opacity: 0}).animate({opacity: 1, top: tt+'px'}, vel, fun);
-			}else{
-				var mt = $(obj).css('margin-top').replace('px', '');
-				if(!$.isNumeric(mt)){ mt = 0; }
-				$(obj).css({'margin-top': wh+'px', opacity: 0}).animate({opacity: 1, 'margin-top': mt+'px'}, vel, fun);
 			}
 		}else if(dire == 'down'){
 			var th = $(obj).height() * -1;

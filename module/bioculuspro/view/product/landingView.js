@@ -6,6 +6,7 @@ cb.define({
 
 	items: [{
 		xtype: 'div',
+		id: 'landing',
 		css: {'position':'relative', 'height': '500px'},
 		width: '100%',
 		items: [{
@@ -50,10 +51,12 @@ cb.define({
 							items: [{
 								xtype: 'button',
 								type: 'primary',
-								text: 'Comprar',
+								text: '{but_buy_text}',
 								width: 'calc(100% - 50px)',
 								height: '50px',
-								
+								click: function(){
+									cb.ctr('bioculuspro', 'comprar', $(this).getRecord())
+								}
 							}] 
 							
 						}]
@@ -91,11 +94,12 @@ cb.define({
 							margin: 0,
 							padding: '15px 0px',
 							width: '20%',
+							size: 19,
 							background: "#{color}",
 							attr: {'colover': '#{color2}', 'colout': '#{color}'},
 							css: {"border": 0},
 							color: '#{color3}',
-							text: "<img style=\"max-height:24px;\" src=\"sistema/{imagen}\"> {texto}",
+							text: "<img style=\"max-height:24px;\" src=\"sistema/{imagen}\"> &nbsp;{texto}",
 							listener: {
 								mouseover: function(){
 									$(this).css({

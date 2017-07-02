@@ -1,8 +1,19 @@
 <?php session_start();
 
-	error_reporting(E_ERROR);
-	ini_set('display_errors', 1);
-	ini_set('display_startup_errors', 1);
+error_reporting(E_ERROR);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+
+//Redsys entrada de respuestas
+if($_POST["Ds_Signature"] && file_exists(getcwd()."/sistema/librerias/redsys/recibe.php")){
+	try {
+		require_once getcwd()."/sistema/librerias/redsys/recibe.php";
+	} catch (Exception $e) {
+		file_put_contents("Log_Redsys", "Error redsys: ".$e->getMessage());
+	}
+}else if($_POST["Ds_Signature"]){
+	file_put_contents("Log_Redsys", "No se escuentra el archivo: ".getcwd()."/sistema/librerias/redsys/recibe.php");
+}
 	
 	include "core/Store.php";
 	include "libraries/jsmin-php-master/jsmin.php";
@@ -158,33 +169,47 @@
 		<script type="text/javascript" src="libraries/system/cookie.js"></script>
 		<script type="text/javascript" src="libraries/system/cacheJs.js"></script>
 		<script type="text/javascript" src="libraries/system/base.js"></script>
+		<link type="text/css" rel="stylesheet" href="libraries/featherlight-1.7.1/release/featherlight.min.css" />
+		<link type="text/css" rel="stylesheet" href="libraries/featherlight-1.7.1/release/featherlight.gallery.min.css" />
+		<script src="libraries/featherlight-1.7.1/release/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="libraries/featherlight-1.7.1/release/featherlight.gallery.min.js" type="text/javascript" charset="utf-8"></script>
 		
 		<link name="apple-touch-icon" href="" />
 		<link name="apple-touch-startup-image" href="" />
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-status-bar-style" content="default" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-
+		<meta name="viewport" content="width=980">
+				
 		<script type="text/javascript">
 			
 			$(document).ready(function(){
 				<?php
 					if($urlparts[0])
 					{
-						echo "cb.load('controller', '".$urlparts[0]."');";
+						if(strpos($urlparts[0], '?') !== false && !empty($_GET)){
+							$urlparts[0] = explode('?', $urlparts[0])[0];
+							if($urlparts[0]){
+								echo "cb.load('controller', '".$urlparts[0]."', ".json_encode($_GET).");";
+							}else{
+								echo "cb.load('controller', '".$CB->getConfig('default_controller')."', ".json_encode($_GET).");";
+							}
+						}else{
+							echo "cb.load('controller', '".$urlparts[0]."');";
+						}
 					}
 					else
 					{
 						echo "cb.load('controller', '".$CB->getConfig('default_controller')."');";
 					}
-				?>
-				$.cachedScript("libraries/bootstrap/js/bootstrap.min.js");
+				?> $.cachedScript("libraries/bootstrap/js/bootstrap.min.js");
 			});
 			
 		</script>
+		
+
 	</head>
 	<body>
-
+		
 	</body>
 </html>
 

@@ -6,7 +6,7 @@ cb.define({
 	items: [{
 		xtype: 'div',
 		id: 'video',
-		
+		margin: '14px 0',
 		items: [{
 			store:'producto',
 			field:'productos',
@@ -17,7 +17,13 @@ cb.define({
 			items: [{
 				xtype:'div',
 				text:"{video_titulo}",
-				css:{'text-align':'center', 'font-size':'36px','font-weight':100, 'color':'#{color_text_video}'}
+				css:{
+					'text-align':'center', 
+					'font-size':'36px',
+					'font-weight':100, 
+					'color':'#{color_text_video}', 
+					'margin-top': '30px'
+				}
 	
 			},{
 				xtype: 'div',

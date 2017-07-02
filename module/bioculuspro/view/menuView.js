@@ -6,14 +6,19 @@ cb.define({
 
 	items: [{
 		xtype: 'div',
-		css: {'background': 'url(assets/img/backmenu.jpg)'},
-		padding: 10,
-		
+		css: {
+			'background': '#fff',
+			'-webkit-box-shadow': '0px 2px 10px 0px rgba(47, 159, 213,0.2)', 
+			'-moz-box-shadow': '0px 2px 10px 0px rgba(47, 159, 213,0.2)',
+			'box-shadow': '0px 2px 10px 0px rgba(47, 159, 213,0.2)',
+			'border-bottom': '1px solid #2f9fd5'
+		},
+		padding: '10px 10px 0px 10px',
 		items: [{
 			xtype: 'row',
 			css: {'max-width': '980px'},
 			margin: 'auto',
-			color: '#fff',
+			color: '#000',
 			
 			items: [{
 				xtype: 'col',
@@ -36,7 +41,8 @@ cb.define({
 				cursor: 'pointer',
 				size: '{menucol}',
 				click: function(){
-					cb.ctr("bioculuspro","load_product", $(this).getRecord());
+					var record = $(this).getRecord();
+					location.href = '/?producto='+record.but_menu_text1+'-'+record.but_menu_text2;
 				},
 				mouseover: function(){
 					$(this).stop().animate({zoom: '120%', 'margin-top': 5}, 100);
@@ -47,6 +53,7 @@ cb.define({
 				
 				items: [{
 					xtype: 'div',
+					color: '#2f9fd5',
 					css: {'font-weight': 100},
 					size: '13px',
 					text: '{but_menu_text1}'
@@ -58,8 +65,41 @@ cb.define({
 				}]
 			},{
 				xtype: 'col',
-				size: 1,
+				size: 3,
+				items: {
+					xtype: 'div',
+					padding: '5px 0 0 0',
+					defaults: {
+						margin: '0 0 5px 0'
+					},
+					items: [{
+						xtype: 'p',
+						color: 'black',
+						text: '<img width="16" src="assets/img/phone.png"> (+34) 91 123 12 12',
+						css: {
+							'text-align': 'center'
+						}
+					},{
+						xtype: 'p',
+						color: 'black',
+						text: '<img width="16" src="assets/img/WhatsApp.png"> (+34) 654 65 65 34',
+						css: {
+							'text-align': 'center'
+						}
+					},{
+						xtype: 'p',
+						text: 'Tu tienda online de confianza',
+						color: 'rgb(47, 159, 213)',
+						css: {
+							'text-align': 'center'
+						}
+					}]
+				}
+			},{
+				xtype: 'col',
+				size: 2,
 				css: {'margin-top': 10},
+				cursor: 'pointer',
 				defaults: {
 					css: {'text-align': 'center'},
 				},
@@ -75,7 +115,7 @@ cb.define({
 				items: [{
 					xtype: 'div',
 					width: '100%',
-					color: 'white',
+					color: '#2f9fd5',
 					items: [{
 						xtype: 'glyphicon',
 						size: 27,

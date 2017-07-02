@@ -20,7 +20,7 @@ cb.define({
 				xtype: 'row',
 				css: {'max-width': '980px', 'height': '500px', 'background-size': 'cover'},
 				margin: 'auto',
-				background: 'url(sistema/{imagen})',
+				background: 'url("sistema/{imagen}")',
 				
 				items: [{
 					xtype: 'col',
@@ -65,7 +65,6 @@ cb.define({
 							attr: {'colover': '#{color2}', 'colout': '#{color}'},
 							css: {"border": 0},
 							color: '#{color3}',
-							text: "<img style=\"max-height:24px;\" src=\"sistema/{imagen}\"> {texto}",
 							listener: {
 								mouseover: function(){
 									$(this).css({
@@ -77,7 +76,17 @@ cb.define({
 										'background-color': $(this).attr('colout')
 									});
 								}
-							}
+							},
+							items: [{
+								xtype: 'img',
+								src: 'sistema/{imagen}',
+								css: {'max-width': '24px', position: 'relative', top: '-4px'}
+							},{
+								xtype: 'span',
+								margin: '0 0 0 10px',
+								size: 19,
+								text: '{texto}'
+							}]
 						},
 						items: [{
 							store:"home",

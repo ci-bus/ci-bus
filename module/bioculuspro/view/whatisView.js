@@ -20,7 +20,7 @@ cb.define({
 				xtype: 'col',
 				size: 12,
 				text: "{texto_cabecera}",
-				margin: '50px 0px 10px 0px',
+				margin: '100px 0px 10px 0px',
 				css: {"text-align":"center",'font-size': 32, 'font-weight': 100}
 
 			}]
@@ -36,6 +36,7 @@ cb.define({
 				items: [{
 					xtype: 'div',
 					text: "{texto1}",
+					padding: 20,
 					css: {"text-align":"center",'font-size': 24}
 				}]
 			},{
@@ -45,6 +46,7 @@ cb.define({
 				items: [{
 					xtype: 'div',
 					text: "{texto2}",
+					padding: 20,
 					css: {"text-align":"center",'font-size': 24},
 				}]
 			}]

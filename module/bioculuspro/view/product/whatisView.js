@@ -3,6 +3,25 @@ cb.define({
 	xtype: 'view',
 	name: 'whatis',
 	appendTo: '#content',
+	
+	onLoad: function(){
+		$('.gallery').featherlightGallery({
+			gallery: {
+				fadeIn: 300,
+				fadeOut: 300
+			},
+			openSpeed:    300,
+			closeSpeed:   300
+		});
+		$('.gallery2').featherlightGallery({
+			gallery: {
+				next: 'next »',
+				previous: '« previous'
+			},
+			variant: 'featherlight-gallery2'
+		});
+	},
+	
 	items: [{
 		store:'producto',
 		field:'productos',
@@ -15,7 +34,7 @@ cb.define({
 			xtype: 'col',
 			size: 12,
 			text: "{whatis_titulo}",
-			margin: '50px 0px 10px 0px',
+			margin: '80px 0px 10px 0px',
 			css: {"text-align":"center",'font-size': 32, 'font-weight': 100}
 
 		}]
@@ -23,7 +42,7 @@ cb.define({
 		store:'producto',
 		field:'productos',
 		xtype:'row',
-		css: {'max-width': '980px'},
+		css: {'max-width': '980px', 'padding-bottom': '30px'},
 		margin: 'auto',
 				
 		items: [{
@@ -35,13 +54,15 @@ cb.define({
 				margin:'5%',
 			},
 			items:[{
-				xtype:'thumbnail',
 				store: 'producto',
 				field: 'imagenes',
-				items: [{
+				xtype: 'a',
+				href: 'sistema/{imagen}',
+				cls: 'thumbnail gallery',
+				items: {
 					xtype: 'img',
-					src: 'sistema/{imagen}',
-				}]
+					src: 'sistema/{imagen}'
+				}
 			}]
 		},{
 			xtype: 'col',
@@ -58,7 +79,10 @@ cb.define({
 					text: '{whatis_but_buy_text}',
 					margin: '30px 10px 0px 32px',
 					width: '80%',
-					height: '50px'
+					height: '50px',
+					click: function(){
+						cb.ctr('bioculuspro', 'comprar', $(this).getRecord())
+					}
 			}]
 		}]
 	}]
