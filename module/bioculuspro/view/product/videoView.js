@@ -5,32 +5,40 @@ cb.define({
 	
 	items: [{
 		xtype: 'div',
-		id: 'video',
-		margin: '14px 0',
-		items: [{
-			store:'producto',
-			field:'productos',
+		store:'producto',
+		field:'productos',
+		items: {
 			xtype: 'div',
-			width: "100%",
-			padding: 50,
-			background: "#{color_back_video}",
+			field:'video_titulo',
+			id: 'video',
+			margin: '14px 0',
+			css: { 'position': 'relative'},
+			width: '100%',
 			items: [{
-				xtype:'div',
-				text:"{video_titulo}",
-				css:{
-					'text-align':'center', 
-					'font-size':'36px',
-					'font-weight':100, 
-					'color':'#{color_text_video}', 
-					'margin-top': '30px'
-				}
-	
-			},{
+				store:'producto',
+				field:'productos',
 				xtype: 'div',
-				html:'{video_html}',
-				css:{'text-align':'center'},
-				margin:" 50px 0px 0px 0px"
+				width: "100%",
+				padding: 50,
+				background: "#{color_back_video}",
+				items: [{
+					xtype:'div',
+					text:"{video_titulo}",
+					css:{
+						'text-align':'center', 
+						'font-size':'36px',
+						'font-weight':100, 
+						'color':'#{color_text_video}', 
+						'margin-top': '30px'
+					}
+		
+				},{
+					xtype: 'div',
+					html:'{video_html}',
+					css:{'text-align':'center'},
+					margin:" 50px 0px 0px 0px"
+				}]
 			}]
-		}]
+		}
 	}]
 })

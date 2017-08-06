@@ -23,6 +23,7 @@ cb.define({
 		},{
 			xtype: 'thumbnail',
 			css: {'max-width': '980px','margin-bottom':'100px'},
+			border: '0px',
 			background: 'none',
 			padding: 10,
 			margin: 'auto',
@@ -35,8 +36,7 @@ cb.define({
 					store:"producto",
 					field:"caracteristicas",
 					css: {"background-color": "#{color}", "padding": 30},
-					cls: 'caract',
-					size: 6,
+					size: 12,
 					items: {
 						xtype: 'row',
 						css: {'max-width': '980px'},
@@ -44,15 +44,7 @@ cb.define({
 						color: '#AAA',
 						items: [{
 							xtype: 'col',
-							size: 3,
-							items: [{
-								xtype: 'img',
-								width: '100%',
-								src: "sistema/{imagen}"
-							}]
-						},{
-							xtype: 'col',
-							size: 9,
+							size: 12,
 							text: "{texto}"
 						}]
 					}

@@ -83,7 +83,7 @@
 			if(!$submenu) $submenu=array();
 			$CB->db->reset();
 			
-			$CB->db->select('id, texto, imagen, precio, but_menu_text1, but_menu_text2');
+			$CB->db->select('id, texto, imagen, precio, but_menu_text1, but_menu_text2, form_button_paypal, texto_compra_trans, texto_compra_contra, text_compra_realizada');
 			$CB->db->where('id_idioma', $this->lang_id);
 			$productos = $CB->db->get_array('bio_productos');
 			for($i=0;$i<count($productos);$i++){

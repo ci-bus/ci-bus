@@ -7,7 +7,7 @@ cb.define({
 	items: [{
 		xtype: 'div',
 		id: 'landing',
-		css: {'position':'relative', 'height': '500px'},
+		css: {'position':'relative', 'height': '600px'},
 		width: '100%',
 		items: [{
 			xtype: 'div',

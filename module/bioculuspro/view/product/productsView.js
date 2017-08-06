@@ -75,7 +75,7 @@ cb.define({
 						items: [{
 							xtype: 'button',
 							type: 'primary',
-							text: 'Comprar',
+							text: '¡CÓMPRALO AHORA!',
 							width: '100%',
 							height: '50px'
 						}] 

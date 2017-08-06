@@ -48,6 +48,7 @@ cb.define({
 		items: [{
 			xtype: 'col',
 			size: 6,
+			css: {'padding-top': '50px'},
 			defaults: {
 				width: "40%",
 				float:"left",

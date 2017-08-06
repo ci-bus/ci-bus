@@ -43,6 +43,7 @@ cb.define({
 				click: function(){
 					var record = $(this).getRecord();
 					location.href = '/?producto='+record.but_menu_text1+'-'+record.but_menu_text2;
+					//cb.ctr("bioculuspro","load_product", $(this).getRecord());
 				},
 				mouseover: function(){
 					$(this).stop().animate({zoom: '120%', 'margin-top': 5}, 100);
@@ -74,15 +75,23 @@ cb.define({
 					},
 					items: [{
 						xtype: 'p',
-						color: 'black',
-						text: '<img width="16" src="assets/img/phone.png"> (+34) 91 123 12 12',
+						items: {
+							xtype: 'a',
+							href: 'tel:+34911231212',
+							text: '<img width="16" src="assets/img/phone.png"> (+34) 91 123 12 12',
+							color: 'black'
+						},
 						css: {
 							'text-align': 'center'
 						}
 					},{
 						xtype: 'p',
-						color: 'black',
-						text: '<img width="16" src="assets/img/WhatsApp.png"> (+34) 654 65 65 34',
+						items: {
+							xtype: 'a',
+							href: 'tel:+34654656534',
+							text: '<img width="16" src="assets/img/WhatsApp.png"> (+34) 654 65 65 34',
+							color: 'black'
+						},
 						css: {
 							'text-align': 'center'
 						}

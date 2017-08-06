@@ -198,6 +198,53 @@ cb.define({
 		*/
 	},
 	
+	animate_gallery: function(){
+		cb.setConfig('c_galley', 1);
+		
+		cb.ctr('bioculuspro', 'next_gallery');
+		
+		if(cb.getConfig('galley_start') !== 1){
+			cb.setConfig('galley_start', 1);
+			setInterval(function(){
+				cb.ctr('bioculuspro', 'next_gallery');
+			}, 5000);
+		}
+	},
+	
+	next_gallery: function(){
+		c = cb.getConfig('c_galley'); //La cabecera que hay que mostrar
+		c2 = 1; //Contador de la cabecera que estamos procesando
+		a = $('#landing').children().length; //Numero máximo de cabeceras
+											//control para no borrar el submenu
+										   //que tambien se encuentra en la cabecera
+		
+		$('#landing').children().each(function(){
+			if(c2 < a)
+			{
+				if(c2 == c)
+				{
+					$(this).stop().fadeIn('slow');
+				}
+				else
+				{
+					$(this).stop().fadeOut('slow');
+				}
+			}
+			c2++;
+		});
+		
+		c++;
+		
+		if(c >= a) //Vuelta al principio
+		{
+			cb.setConfig('c_galley', 1);
+		}
+		else //Pasa a la siguiente cabecera
+		{
+			cb.setConfig('c_galley', c);
+		}
+	},
+	
 	adapt_content: function(){
 		this.adapt_height($('#aunmas').find('.col-xs-6'), 50);
 		this.adapt_height($('#caracteristicas').find('.caract'), 50);
@@ -343,6 +390,13 @@ cb.define({
 comprar: function(record){
 				
 		var id_producto = record.id;
+		
+		console.log('AAA---', record);
+		cb.define({
+			xtype: 'store',
+			name: 'prod_sel',
+			data: record
+		});
 		
 		if(id_producto){
 			setCookie('producto_selected', id_producto);
@@ -543,7 +597,10 @@ comprar: function(record){
 											
 											cb.effect('#popcompra', {
 												type: 'flipout',
-												dire: 'down'
+												dire: 'down',
+												fn: function(){
+													$(this).parent().remove();
+												}
 											});
 											
 											$('#capa-loading').fadeOut('slow', function(){
@@ -630,11 +687,15 @@ comprar: function(record){
 																		$(this).addClass('btn-default').removeClass('btn-primary').text('Aceptar');
 																		$('#but_redsys').addClass('disabled');
 																		$('#but_paypal').addClass('disabled');
+																		$('#but_trans').addClass('disabled');
+																		$('#but_reem').addClass('disabled');
 																	}else{
 																		$(this).css('border-color', '#ddd');
 																		$(this).addClass('btn-primary').removeClass('btn-default').text('Aceptadas');
 																		$('#but_redsys').removeClass('disabled');
 																		$('#but_paypal').removeClass('disabled');
+																		$('#but_trans').removeClass('disabled');
+																		$('#but_reem').removeClass('disabled');
 																	}
 																}
 															},{
@@ -692,16 +753,47 @@ comprar: function(record){
 																	xtype:'label',
 																	text:'Pago con Paypal',
 																},{
-																	xtype:'button',
-																	cls: 'disabled',
-																	border: '2px solid #337ab7',
+																	xtype: 'div',
+																	store: 'prod_sel',
+																	text: '{form_button_paypal}'
+																}]
+															},{
+																items: [{
+																	xtype:'label',
+																	text:'Transferencia',
+																},{
+																	xtype: 'button',
+																	border:'2px solid #337ab7',
 																	type:'default',
+																	cls: 'disabled',
 																	width:'100%',
-																	id: 'but_paypal',
-																	items:[{
-																		xtype:'img',
-																		src:'assets/img/paypal_icon.png'
-																	}]		
+																	padding: '6px 0px 7px 2px',
+																	css: {'font-weight': 600},
+																	id: 'but_trans',
+																	store: 'prod_sel',
+																	text: 'Mostrar datos bancarios',
+																	click: function(){
+																		cb.ctr('bioculuspro', 'show_bankdata');
+																	}
+																}]
+															},{
+																items: [{
+																	xtype:'label',
+																	text:'Contra reembolso',
+																},{
+																	xtype: 'button',
+																	border:'2px solid #337ab7',
+																	type:'default',
+																	cls: 'disabled',
+																	width:'100%',
+																	id: 'but_reem',
+																	store: 'prod_sel',
+																	padding: '6px 0px 7px 2px',
+																	css: {'font-weight': 600},
+																	text: 'Pagar cuando lo reciba',
+																	click: function(){
+																		cb.ctr('bioculuspro', 'show_contra');
+																	}
 																}]
 															}]
 														}]
@@ -735,6 +827,98 @@ comprar: function(record){
 						
 					}]
 				}
+			}]
+		});
+	},
+	
+	show_bankdata: function(){
+		
+		cb.effect('#comprarcontinue', {
+			type: 'flipout',
+			dire: 'down',
+			fn: function(){
+				$(this).parent().remove();
+			}
+		});
+		
+		var store = cb.get('store', 'prod_sel');
+		var texto = store.data.texto_compra_contra;
+		texto.replace('[id]', cb.getConfig('cliente', 'id'));
+		texto.replace('[precio]', store.data.precio);
+		texto.replace('[producto]', store.data.texto_compra_contra+' '+store.data.texto_compra_trans);
+		
+		this.showPopup(texto, store.data.text_compra_realizada);
+	},
+	
+	show_contra: function(){
+		
+		cb.effect('#comprarcontinue', {
+			type: 'flipout',
+			dire: 'down',
+			fn: function(){
+				$(this).parent().remove();
+			}
+		});
+		
+		var store = cb.get('store', 'prod_sel');
+		var texto = store.data.texto_compra_contra;
+		texto.replace('[id]', cb.getConfig('cliente', 'id'));
+		texto.replace('[precio]', store.data.precio);
+		texto.replace('[producto]', store.data.texto_compra_contra+' '+store.data.texto_compra_trans);
+		
+		this.showPopup(texto, store.data.text_compra_realizada);
+	},
+	
+	showPopup: function(msg, title){
+		if(!$.isPlainObject(msg) && !$.isArray(msg)){
+			msg = {
+				xtype: 'span',
+				text: msg
+			};
+		}
+		if(!title) title = 'Información';
+		cb.popup({
+			type: 'success',
+			effect: {
+				type: 'flipin',
+				vel: 'fast',
+				dire: 'down'
+			},
+			offsetTop: 100,
+			css: {
+				'max-width': 400
+			},
+			items: [{
+				xtype: 'head',
+				css: {'min-height': 40},
+				items: [{
+					xtype: 'span',
+					glyphicon: 'remove',
+					cls: 'pull-right',
+					css: {
+						cursor: 'pointer',
+						'padding-top': 4
+					},
+					listener: {
+						click: function(){
+							cb.effect($(this).parent(), {
+								type: 'flipout',
+								dire: 'up',
+								fn: function(){
+									$(this).parent().remove();
+								}
+							});
+						}
+					}
+				},{
+					xtype: 'div',
+					size: 19,
+					text: title,
+					cls: 'text-center'
+				}]
+			},{
+				xtype: 'body',
+				items: msg
 			}]
 		});
 	}
