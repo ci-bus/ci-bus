@@ -15,6 +15,18 @@ cb.define({
 				tags2: [{name:'ggg'}, {name:'hhh'}, {name:'iii'}]
 			}
 		});
+		
+		cb.define({
+			xtype: 'store',
+			name: 'test2',
+			data: {
+				a: [ 26, 43, 98, 43, 65, 13 ],
+				b: [{ a: 5 }, { a: 8 }, { a: 2 }]
+			}
+		});
+		
+		// cb.get('store', 'test2').sort({ data: 'b', order: 'desc', field: 'a'})
+		// cb.get('store', 'test2').sort('b', function(a,b){ return b.a - a.a; })
 
 		cb.create({
 

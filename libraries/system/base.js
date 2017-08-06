@@ -1,5 +1,6 @@
 var cb = {};
 cb.module = {};
+cb.base = {};
 cb.module.controller = {};
 cb.module.view = {};
 cb.module.store = {};
@@ -8,6 +9,50 @@ cb.module.model = {};
 cb.module.parseData = {};
 cb.config = [];
 cb.elenamed = 0;
+
+cb.base.store = {
+	getData: function(data)
+	{
+		if(typeof data === 'string'){
+			return cb.fetchFromObject(this.data, data);
+		}else{
+			return this.data;
+		}
+		return null;
+	},
+	getName: function()
+	{
+		return this.name;
+	},
+	sort: function(data, fun)
+	{
+		if($.isFunction(data))
+		{
+			if($.isFunction(this.data.sort)){
+				return this.data.sort(data);
+			}
+		}
+		else if(typeof data === 'string' && $.isFunction(fun))
+		{
+			if($.isFunction(cb.fetchFromObject(this.data, data).sort)){
+				return cb.fetchFromObject(this.data, data).sort(fun);
+			}
+		}else if($.isPlainObject(data)){
+			if(typeof data.data === 'string'){
+				if(typeof data.order === 'string' && typeof data.field === 'string'){
+					return cb.fetchFromObject(this.data, data.data).sort(function(a, b){
+						if(data.order == 'desc' || data.order == 'DESC'){
+							return b[data.field] - a[data.field];
+						}else{
+							return a[data.field] - b[data.field];
+						}
+					});
+				}
+			}
+		}
+		
+	}
+};
 
 cb.autoname = function(){
 	var r = 'autoname_'+this.elenamed;
@@ -153,11 +198,40 @@ cb.define = function(obj)
 				}
 			}
 		}
-		this.module[obj.xtype][obj.name] = this.cloneObject(obj);
+		
+		//Default extend
+		if(obj.xtype == 'store')
+		{			
+			if($.isArray(obj.extend)){
+				obj.extend.unshift('base.store');
+			}else if(typeof obj.extend === 'string'){
+				obj.extend = ['base.store', obj.extend];
+			}else{
+				obj.extend = 'base.store';
+			}
+		}
+		
+		//Extends
+		this.module[obj.xtype][obj.name] = {};//Init object
+		if(obj.extend){
+			if(typeof obj.extend === 'string'){
+				$.extend( this.module[obj.xtype][obj.name], this.fetchFromObject(this, obj.extend));
+			}
+			else if($.isArray(obj.extend)){
+				for(var i=0; i<obj.extend.length; i++){
+					if(typeof obj.extend[i] === 'string'){
+						$.extend( this.module[obj.xtype][obj.name], this.fetchFromObject(this, obj.extend[i]));
+					}
+				}
+			}
+		}
+		//To end Extend obj
+		$.extend( this.module[obj.xtype][obj.name], this.cloneObject(obj));
 		
 		if(obj.xtype == 'store')
 		{
 			//TODO Refrescar elementos que carguen datos de este store
+			//En planificación
 		}
 		
 		if($.isArray(obj['require'])){
@@ -201,6 +275,20 @@ cb.define = function(obj)
 			}
 		}
 	}
+}
+
+cb.fetchFromObject = function(obj, prop) {
+
+    if(typeof obj === 'undefined') {
+        return false;
+    }
+
+    var _index = prop.indexOf('.')
+    if(_index > -1) {
+        return this.fetchFromObject(obj[prop.substring(0, _index)], prop.substr(_index + 1));
+    }
+
+    return obj[prop];
 }
 
 cb.setMissingDinamicValue = function(obj, attr, value, nivels){
@@ -1582,6 +1670,9 @@ cb.create = function(opt, record){
 			else
 			{
 				return ele;
+			}
+			if($.isFunction(opt.onRender)){
+				opt.onRender(ele);
 			}
 		}
 	}
