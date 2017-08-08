@@ -54,6 +54,18 @@ cb.base.store = {
 	}
 };
 
+cb.base.element = {
+	getType: function(){
+		return this.xtype;
+	},
+	getRecord: function() {
+		return this.record? this.record: false;
+	},
+	getValue: function() {
+		return this.element.val()? this.element.val(): this.recordValue? this.recordValue: false;
+	}
+};
+
 cb.autoname = function(){
 	var r = 'autoname_'+this.elenamed;
 	this.elenamed++;
@@ -226,7 +238,7 @@ cb.define = function(obj)
 			}
 		}
 		//To end Extend obj
-		$.extend( this.module[obj.xtype][obj.name], this.cloneObject(obj));
+		$.extend( this.module[obj.xtype][obj.name], obj);
 		
 		if(obj.xtype == 'store')
 		{
@@ -1446,9 +1458,33 @@ cb.create = function(opt, record){
 		//Variables temp
 		var store = false;
 		var temp_record = false;
+				
+		//Default extend
+		if($.isArray(opt.extend)){
+			opt.extend.unshift('base.element');
+		}else if(typeof opt.extend === 'string'){
+			opt.extend = ['base.element', opt.extend];
+		}else{
+			opt.extend = 'base.element';
+		}
 		
-		//Opt copy
-		var opt_origin = cb.cloneObject(opt);
+		//Extends
+		var opt_extended = {};
+		if(opt.extend){
+			if(typeof opt.extend === 'string'){
+				$.extend( opt_extended, this.fetchFromObject(this, opt.extend));
+			}
+			else if($.isArray(opt.extend)){
+				for(var i=0; i<opt.extend.length; i++){
+					if(typeof opt.extend[i] === 'string'){
+						$.extend( opt_extended, this.fetchFromObject(this, opt.extend[i]));
+					}
+				}
+			}
+		}
+		//To end Extend obj
+		$.extend( opt_extended, opt);
+		delete opt_extended.extend;
 		
 		//Coge store
 		if(opt.store){
@@ -1620,7 +1656,7 @@ cb.create = function(opt, record){
 			
 			//Si hay record
 			if(record){
-				ele.record = record;
+				opt_extended.record = record;
 				//Si el record es un string
 				if($.type(record) === 'string' || $.type(record) === 'number'){
 					ele = this.storeSet(ele, record);
@@ -1641,10 +1677,11 @@ cb.create = function(opt, record){
 			}
 			
 			//Seteamos las opciones opt
-			ele.opt = opt_origin;
+			opt_extended.element = $(ele);
+			ele.opt = opt_extended;
 			//Seteamos value
 			if(record){
-				ele.recordValue = record;
+				opt_extended.recordValue = record;
 			}
 			
 			if(opt.renderTo)
