@@ -1317,6 +1317,27 @@ cb.module.bootstrapComponent = {
 		$(ele).addClass('glyphicon glyphicon-'+opt.type);
 		ele = cb.common_prop(ele, opt);
 		return ele;
+	},
+	'polyline': function(opt, record){
+		var ele = document.createElement('svg');
+		if(!opt.width) opt.width = 300;
+		if(!opt.height) opt.height = 150;
+		if(!opt.viewBox) opt.viewBox = '0 0 '+opt.width+' '+opt.height;
+		$(ele).attr({
+			'viewBox': opt.viewBox
+		});
+		var polyline = document.createElement('polyline');
+		if(!opt.fill) opt.fill = 'none';
+		if(!opt.stroke && opt.color) opt.stroke = opt.color;
+		else if(!opt.stroke) opt.stroke = '#0074d9';
+		if(!opt['stroke-width']) opt['stroke-width'] = 3;
+		//TODO calculate points
+		
+		$(polyline).attr({
+			fill: opt.fill,
+			stroke: opt.stroke,
+			'stroke-width': opt['stroke-width']
+		});
 	}
 };
 
