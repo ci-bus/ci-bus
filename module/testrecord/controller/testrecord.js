@@ -20,7 +20,7 @@ cb.define({
 			xtype: 'store',
 			name: 'test2',
 			data: {
-				a: [ 26, 43, 98, 43, 65, 13 ],
+				a: [ 26, 43, 98, 43, 65, 13, 25, 30, 25, 10, 130, 50, 10 ],
 				b: [{ a: 5 }, { a: 8 }, { a: 2 }]
 			}
 		});
@@ -138,9 +138,14 @@ cb.define({
 		});
 		
 		cb.create({
-			xtype: 'div',
 			appendTo: 'body',
-			html: '<svg viewBox="0 0 500 100" class="chart"><polyline fill="none" stroke="#0074d9" stroke-width="3" points="0,120 20,60 40,80 60,20"/></svg>'
+			store: 'test2',
+			xtype: 'svg',
+			items: [{
+				field: 'a',
+				xtype: 'polyline',
+				fill: 'RED'
+			}]
 		});
 		
 		

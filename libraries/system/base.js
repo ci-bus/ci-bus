@@ -1,3 +1,40 @@
+//Compatibilidad
+if (!Array.prototype.indexOf) {
+    Array.prototype.indexOf = function (searchElement) {
+        "use strict";
+        if (this == null) {
+            throw new TypeError();
+        }
+        var t = Object(this);
+        var len = t.length >>> 0;
+        if (len === 0) {
+            return -1;
+        }
+        var n = 0;
+        if (arguments.length > 1) {
+            n = Number(arguments[1]);
+            if (n != n) { // para verificar si es NaN
+                n = 0;
+            } else if (n != 0 && n != Infinity && n != -Infinity) {
+                n = (n > 0 || -1) * Math.floor(Math.abs(n));
+            }
+        }
+        if (n >= len) {
+            return -1;
+        }
+        var k = n >= 0 ? n : Math.max(len - Math.abs(n), 0);
+        for (; k < len; k++) {
+            if (k in t && t[k] === searchElement) {
+                return k;
+            }
+        }
+        return -1;
+    }
+}
+
+
+//[ INICIO DE CI-BUS ]//
+
 var cb = {};
 cb.module = {};
 cb.base = {};
@@ -9,6 +46,10 @@ cb.module.model = {};
 cb.module.parseData = {};
 cb.config = [];
 cb.elenamed = 0;
+//Por defecto cuando un record es un array
+//se crea un elemento por cada valor
+//añadiendo el xtype a este array lo evitamos
+cb.eleArrayAcept = ['polyline'];
 
 cb.base.store = {
 	getData: function(data)
@@ -56,13 +97,16 @@ cb.base.store = {
 
 cb.base.element = {
 	getType: function(){
-		return this.xtype;
+		return this.opt.xtype;
 	},
 	getRecord: function() {
-		return this.record? this.record: false;
+		return this.opt.record? this.opt.record: this.record? this.record: false;
 	},
 	getValue: function() {
-		return this.element.val()? this.element.val(): this.recordValue? this.recordValue: false;
+		return this.val()? this.val(): this.getRecord();
+	},
+	getOpt: function() {
+		return this.opt? this.opt: false;
 	}
 };
 
@@ -763,7 +807,7 @@ cb.module.bootstrapComponent = {
 		return ele;
 	},
 	'dropup': function(opt, record){
-		var ele = cb.module.bootstrapComponent['dropdown'](opt);
+		var ele = cb.module.bootstrapComponent['dropdown'](opt, record);
 		return ele;
 	},
 	'container': function(opt, record){
@@ -1019,11 +1063,11 @@ cb.module.bootstrapComponent = {
 		return ele;
 	},
 	'panel-body': function(opt, record){
-		var ele = cb.module.bootstrapComponent['panel-heading'](opt);
+		var ele = cb.module.bootstrapComponent['panel-heading'](opt, record);
 		return ele;
 	},
 	'panel-footer': function(opt, record){
-		var ele = cb.module.bootstrapComponent['panel-heading'](opt);
+		var ele = cb.module.bootstrapComponent['panel-heading'](opt, record);
 		return ele;
 	},
 	'panel-title': function(opt, record){
@@ -1318,26 +1362,48 @@ cb.module.bootstrapComponent = {
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'polyline': function(opt, record){
-		var ele = document.createElement('svg');
+	'svg': function(opt, record){
+		var ele = document.createElementNS("http://www.w3.org/2000/svg", "svg");
 		if(!opt.width) opt.width = 300;
 		if(!opt.height) opt.height = 150;
-		if(!opt.viewBox) opt.viewBox = '0 0 '+opt.width+' '+opt.height;
-		$(ele).attr({
-			'viewBox': opt.viewBox
-		});
-		var polyline = document.createElement('polyline');
+		ele = cb.common_prop(ele, opt);
+		return ele;
+	},
+	'polyline': function(opt, record){
+		var ele = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
 		if(!opt.fill) opt.fill = 'none';
+		if(!opt.width) opt.width = 300;
+		if(!opt.height) opt.height = 150;
 		if(!opt.stroke && opt.color) opt.stroke = opt.color;
 		else if(!opt.stroke) opt.stroke = '#0074d9';
 		if(!opt['stroke-width']) opt['stroke-width'] = 3;
 		//TODO calculate points
+		var points = "0,"+parseInt(opt.height)+" 0,";
+		if($.isArray(record)){
+			var xspace = parseInt(parseInt(opt.width) / (record.length - 1));
+			var pointMax = Math.max.apply(null, record);
+			var pointMin = Math.min.apply(null, record);
+			var xwrite = xspace;
+			var ywrite = 0;
+			for(var i=0; i<record.length; i++){
+				ywrite = parseInt(opt.height) - parseInt((record[i]-pointMin)*parseInt(opt.height)/pointMax) - pointMin;
+				if(i<record.length-1){
+					points += ywrite+" "+xwrite+",";
+					xwrite += xspace;
+				}else{
+					points += ywrite+" "+parseInt(opt.width)+","+parseInt(opt.height);
+				}
+			}
+		}
 		
-		$(polyline).attr({
+		$(ele).attr({
 			fill: opt.fill,
 			stroke: opt.stroke,
-			'stroke-width': opt['stroke-width']
+			'stroke-width': opt['stroke-width'],
+			points: points
 		});
+		ele = cb.common_prop(ele, opt);
+		return ele;
 	}
 };
 
@@ -1468,6 +1534,10 @@ cb.props = {
 
 cb.mergeDataStore = function(record){
 	
+};
+
+cb.getCmp = function(ref){
+	return $.extend($(ref), $(ref)[0]);
 };
 
 cb.create = function(opt, record){
@@ -1611,8 +1681,8 @@ cb.create = function(opt, record){
 			opt.items = [opt.items];
 		}
 		
-		//Si el record contiene un array creamos varios elementos
-		if($.isArray(record)){
+		//Si el record contiene un array y no acepta arrays creamos varios elementos
+		if($.isArray(record) && cb.eleArrayAcept.indexOf(opt.xtype) < 0){
 			ele = [];
 			for(var c=0; c<record.length; c++){
 				if(record[c]){
@@ -1660,7 +1730,7 @@ cb.create = function(opt, record){
 			//Si es un componente de bootstrap
 			if($.isFunction(cb.module.bootstrapComponent[opt.xtype]))
 			{
-				var ele = cb.module.bootstrapComponent[opt.xtype](opt);
+				var ele = cb.module.bootstrapComponent[opt.xtype](opt, record);
 			}
 			//Si es un componente personalizado
 			else if($.isPlainObject(cb.module.component[opt.xtype]))
@@ -1671,7 +1741,7 @@ cb.create = function(opt, record){
 			//Por defecto crea un elemento con el xtype
 			else
 			{
-				var ele = document.createElement(opt.xtype, record);
+				var ele = document.createElement(opt.xtype);
 				ele = this.common_prop(ele, opt);
 			}
 			
@@ -1697,14 +1767,18 @@ cb.create = function(opt, record){
 				}
 			}
 			
-			//Seteamos las opciones opt
+			//Seteamos las opciones opt y metodos
+			ele.opt = {};
 			opt_extended.element = $(ele);
-			ele.opt = opt_extended;
-			//Seteamos value
-			if(record){
-				opt_extended.recordValue = record;
+			var methods = Object.getOwnPropertyNames(opt_extended);
+			for(var i=0; i<methods.length; i++){
+				if(typeof opt_extended[methods[i]] === 'function'){
+					ele[methods[i]] = opt_extended[methods[i]];
+				}else{
+					ele.opt[methods[i]] = opt_extended[methods[i]];
+				}
 			}
-			
+
 			if(opt.renderTo)
 			{
 				$(opt.renderTo).empty().append(ele);
