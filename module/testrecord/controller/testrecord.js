@@ -25,7 +25,7 @@ cb.define({
 			}
 		});
 		
-		// cb.get('store', 'test2').sort({ data: 'b', order: 'desc', field: 'a'})
+		//cb.get('store', 'test2').sort({ data: 'a', order: 'desc'})
 		// cb.get('store', 'test2').sort('b', function(a,b){ return b.a - a.a; })
 
 		cb.create({
@@ -141,9 +141,15 @@ cb.define({
 			appendTo: 'body',
 			store: 'test2',
 			xtype: 'svg',
+			width: 500,
+			height: 400,
 			items: [{
+				store: 'test2',
 				field: 'a',
+				storelink: true,
 				xtype: 'polyline',
+				width: 500,
+				height: 400,
 				fill: 'RED'
 			}]
 		});
