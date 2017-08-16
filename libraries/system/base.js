@@ -44,6 +44,7 @@ cb.module.store = {};
 cb.module.component = {};
 cb.module.model = {};
 cb.module.parseData = {};
+cb.module.storelink = {};
 cb.config = [];
 cb.elenamed = 0;
 //Por defecto cuando un record es un array
@@ -60,6 +61,40 @@ cb.base.store = {
 			return this.data;
 		}
 		return null;
+	},
+	setData: function(ndata, data){
+		if(typeof ndata === 'string' && data !== undefined){
+			this.data[ndata] = data;
+		}else if(ndata !== undefined){
+			this.data = ndata;
+		}else if(data !== undefined){
+			this.data = data;
+		}
+		this.storelink();
+	},
+	storelink: function(){
+		if($.isArray(cb.module.storelink[this.name])){
+			var strlk = cb.module.storelink[this.name];
+			for(var i=0; i<strlk.length; i++){
+				if(strlk[i].ele && typeof strlk[i].ele.setData === 'function'){
+					if(strlk[i].field){
+						var record = cb.fetchFromObject(this.getData(), strlk[i].field);
+						strlk[i].ele.setData(record);
+					}else{
+						strlk[i].ele.setData(this.getData());
+					}
+				} 
+			}
+		}
+	},
+	extendData: function(ndata, data){
+		if(typeof ndata === 'string' && data !== undefined){
+			$.extend(this.data[ndata], data);
+		}else if(ndata !== undefined){
+			$.extend(this.data, ndata);
+		}else if(data !== undefined){
+			$.extend(this.data, data);
+		}
 	},
 	getName: function()
 	{
@@ -86,6 +121,14 @@ cb.base.store = {
 							return b[data.field] - a[data.field];
 						}else{
 							return a[data.field] - b[data.field];
+						}
+					});
+				}else if(typeof data.order === 'string'){
+					return cb.fetchFromObject(this.data, data.data).sort(function(a, b){
+						if(data.order == 'desc' || data.order == 'DESC'){
+							return b - a;
+						}else{
+							return a - b;
 						}
 					});
 				}
@@ -1403,6 +1446,36 @@ cb.module.bootstrapComponent = {
 			points: points
 		});
 		ele = cb.common_prop(ele, opt);
+		
+		ele.setData = function(record){
+			//debugger;
+			var ele = $.isArray(this)? this[0]: this;
+			if($.isArray(record)){
+				var opt = ele.getOpt();
+				var xspace = parseInt(parseInt(opt.width) / (record.length - 1));
+				var pointMax = Math.max.apply(null, record);
+				var pointMin = Math.min.apply(null, record);
+				var xwrite = xspace;
+				var ywrite = 0;
+				var points = "0,"+parseInt(opt.height)+" 0,";
+				for(var i=0; i<record.length; i++){
+					ywrite = parseInt(opt.height) - parseInt((record[i]-pointMin)*parseInt(opt.height)/pointMax) - pointMin;
+					if(i<record.length-1){
+						points += ywrite+" "+xwrite+",";
+						xwrite += xspace;
+					}else{
+						points += ywrite+" "+parseInt(opt.width)+","+parseInt(opt.height);
+					}
+				}
+			}
+			$(ele).removeAttr('points').attr({ points: points });
+		};
+		
+		ele.clearPoints = function(){
+			var ele = $.isArray(this)? this[0]: this;
+			$(ele).removeAttr('points');
+		};
+		
 		return ele;
 	}
 };
@@ -1755,6 +1828,16 @@ cb.create = function(opt, record){
 				//Si el record es un dom element
 				else if(this.isNode(record) || this.isElement(record)){
 					$(ele).append(record);
+				}
+			}
+			
+			//Storelink /////////
+			if(opt.storelink){
+				if(opt.store){
+					if(!cb.module.storelink[opt.store]){
+						cb.module.storelink[opt.store] = [];
+						cb.module.storelink[opt.store].push({field: opt.field? opt.field: false, ele: ele});
+					}
 				}
 			}
 						
