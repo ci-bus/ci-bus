@@ -53,6 +53,34 @@ cb.elenamed = 0;
 cb.eleArrayAcept = ['polyline'];
 
 cb.base.store = {
+	datarestore: [],
+	data: null,
+	restore: function(ndata)
+	{
+		if(typeof ndata === 'string' && this.datarestore && this.datarestore[ndata]){
+			var restdata = this.getRestoreData(ndata);
+			cb.putToObject(this.data, ndata, restdata);
+		}else if(!ndata && this.datarestore){
+			this.data = this.datarestore;
+		}
+		this.storelink();
+	},
+	setRestoreData: function(ndata, data){
+		if(typeof ndata === 'string' && data){
+			this.datarestore[ndata] = cb.clone(data);
+		}
+	},
+	getRestoreData: function(data)
+	{
+		if(typeof data === 'string'){
+			if(this.datarestore[data]){
+				return this.datarestore[data];
+			}
+		}else{
+			return this.datarestore;
+		}
+		return null;
+	},
 	getData: function(data)
 	{
 		if(typeof data === 'string'){
@@ -64,11 +92,13 @@ cb.base.store = {
 	},
 	setData: function(ndata, data){
 		if(typeof ndata === 'string' && data !== undefined){
-			this.data[ndata] = data;
+			this.putToObject(this.data, ndata, data);
+			if(this.getRestoreData(ndata)){
+				delete this.datarestore[ndata];
+			}
 		}else if(ndata !== undefined){
 			this.data = ndata;
-		}else if(data !== undefined){
-			this.data = data;
+			this.datarestore = [];
 		}
 		this.storelink();
 	},
@@ -95,6 +125,7 @@ cb.base.store = {
 		}else if(data !== undefined){
 			$.extend(this.data, data);
 		}
+		this.storelink();
 	},
 	getName: function()
 	{
@@ -105,36 +136,55 @@ cb.base.store = {
 		if($.isFunction(data))
 		{
 			if($.isFunction(this.data.sort)){
-				return this.data.sort(data);
+				this.data.sort(data);
 			}
 		}
 		else if(typeof data === 'string' && $.isFunction(fun))
 		{
 			if($.isFunction(cb.fetchFromObject(this.data, data).sort)){
-				return cb.fetchFromObject(this.data, data).sort(fun);
+				if(!this.getRestoreData(data)){
+					this.setRestoreData(data, cb.fetchFromObject(this.data, data));
+				}
+				if($.isFunction(cb.fetchFromObject(this.data, data).sort)){
+					cb.fetchFromObject(this.data, data).sort(fun);
+				}
 			}
-		}else if($.isPlainObject(data)){
+		}else if(typeof data === 'string' && typeof fun === 'string'){
+			data = { data: data, order: fun };
+		}
+		if($.isPlainObject(data)){
 			if(typeof data.data === 'string'){
 				if(typeof data.order === 'string' && typeof data.field === 'string'){
-					return cb.fetchFromObject(this.data, data.data).sort(function(a, b){
-						if(data.order == 'desc' || data.order == 'DESC'){
-							return b[data.field] - a[data.field];
-						}else{
-							return a[data.field] - b[data.field];
+					if($.isFunction(cb.fetchFromObject(this.data, data).sort)){
+						if(!this.getRestoreData(data.data)){
+							this.setRestoreData(data.data, cb.fetchFromObject(this.data, data.data));
 						}
-					});
+						cb.fetchFromObject(this.data, data.data).sort(function(a, b){
+							if(data.order == 'desc' || data.order == 'DESC'){
+								return b[data.field] - a[data.field];
+							}else{
+								return a[data.field] - b[data.field];
+							}
+						});
+					}
 				}else if(typeof data.order === 'string'){
-					return cb.fetchFromObject(this.data, data.data).sort(function(a, b){
-						if(data.order == 'desc' || data.order == 'DESC'){
-							return b - a;
-						}else{
-							return a - b;
+					if($.isFunction(cb.fetchFromObject(this.data, data.data).sort)){
+						if(!this.getRestoreData(data.data)){
+							debugger;
+							this.setRestoreData(data.data, cb.fetchFromObject(this.data, data.data));
 						}
-					});
+						cb.fetchFromObject(this.data, data.data).sort(function(a, b){
+							if(data.order == 'desc' || data.order == 'DESC'){
+								return b - a;
+							}else{
+								return a - b;
+							}
+						});
+					}
 				}
 			}
 		}
-		
+		this.storelink();
 	}
 };
 
@@ -153,22 +203,50 @@ cb.base.element = {
 	}
 };
 
+cb.clone = function(data){
+	return JSON.parse(JSON.stringify(data));
+};
+
 cb.autoname = function(){
 	var r = 'autoname_'+this.elenamed;
 	this.elenamed++;
 	return r;
-}
+};
 
 cb.ctr = function(ctr, fun, vals)
 {
 	if(cb.module.controller[ctr] && $.type(cb.module.controller[ctr][fun]) == 'function'){
 		return cb.module.controller[ctr][fun](vals);
 	}
-}
+};
 
 cb.get = function(type, name, field){
-	return cb.module[type]? cb.module[type][name]? cb.module[type][name][field]? cb.module[type][name][field]: cb.module[type][name]: false: false;
-}
+	if(field){
+		if(type == 'store'){
+			return cb.module[type]? cb.module[type][name]? cb.module[type][name].data[field]? cb.module[type][name].data[field]: null: null: null;
+		}else{
+			return cb.module[type]? cb.module[type][name]? cb.module[type][name][field]? cb.module[type][name][field]: null: null: null;
+		}
+	}else{
+		return cb.module[type]? cb.module[type][name]? cb.module[type][name]: null: null;
+	}
+};
+
+cb.getStore = function(name, field){
+	return cb.get('store', name, field);
+};
+
+cb.getView = function(name, field){
+	return cb.get('view', name, field);
+};
+
+cb.getController = function(name, field){
+	return cb.get('controller', name, field);
+};
+
+cb.getComponent = function(name, field){
+	return cb.get('component', name, field);
+};
 
 cb.send = function(formn,module,store,callback)
 {
@@ -181,7 +259,7 @@ cb.send = function(formn,module,store,callback)
 	  data: $.type(formn) == 'string'? $("form[name='"+formn+"']").serializeArray(): formn,
 	  success: callback
 	});
-}
+};
 
 cb.require = function(dt, callback)
 {
@@ -193,7 +271,7 @@ cb.require = function(dt, callback)
 		url: 'require',
 		success: callback
 	});
-}
+};
 
 cb.loadAll = function(dt, callback)
 {
@@ -205,7 +283,7 @@ cb.loadAll = function(dt, callback)
 		url: 'loadAll',
 		success: callback
 	});
-}
+};
 
 cb.loadLineal = function (arr)
 {
@@ -217,7 +295,7 @@ cb.loadLineal = function (arr)
 	{
 		cb.load(arr[0], arr[1], arr[2], arr[3]);
 	}
-}
+};
 
 cb.loadSecondLineal = function(arr, n)
 {
@@ -228,7 +306,7 @@ cb.loadSecondLineal = function(arr, n)
 	        cb.load(arr[n][0], arr[n][1], arr[n][2], arr[n][3], cb.loadSecondLineal(arr, n));
 		}
     };
-}
+};
 
 cb.load = function(type, module, name, data, callback)
 {
@@ -282,7 +360,7 @@ cb.load = function(type, module, name, data, callback)
 	{
 		$.cachedScript(module+'/'+type+'/'+name,'js').done(callback);
 	}
-}
+};
 
 cb.define = function(obj)
 {
@@ -374,7 +452,7 @@ cb.define = function(obj)
 			}
 		}
 	}
-}
+};
 
 cb.fetchFromObject = function(obj, prop) {
 
@@ -388,7 +466,23 @@ cb.fetchFromObject = function(obj, prop) {
     }
 
     return obj[prop];
-}
+};
+
+cb.putToObject = function(obj, prop, data) {
+
+    if(typeof obj === 'undefined') {
+        return false;
+    }
+
+    var _index = prop.indexOf('.')
+    if(_index > -1) {
+        return this.putToObject(obj[prop.substring(0, _index)], prop.substr(_index + 1), data);
+    }
+
+    obj[prop] = cb.clone(data);
+    
+    return true;
+};
 
 cb.setMissingDinamicValue = function(obj, attr, value, nivels){
 	if(!nivels){
@@ -1448,7 +1542,6 @@ cb.module.bootstrapComponent = {
 		ele = cb.common_prop(ele, opt);
 		
 		ele.setData = function(record){
-			//debugger;
 			var ele = $.isArray(this)? this[0]: this;
 			if($.isArray(record)){
 				var opt = ele.getOpt();
