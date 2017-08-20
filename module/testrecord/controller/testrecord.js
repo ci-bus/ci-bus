@@ -20,7 +20,7 @@ cb.define({
 			xtype: 'store',
 			name: 'test2',
 			data: {
-				a: [ 26, 43, 98, 43, 65, 13, 25, 30, 25, 10, 130, 50, 10 ],
+				a:[],b:[],c:[],d:[],e:[],f:[],g:[],h:[],i:[],j:[],
 				b: [{ a: 5 }, { a: 8 }, { a: 2 }]
 			}
 		});
@@ -139,18 +139,222 @@ cb.define({
 		
 		cb.create({
 			appendTo: 'body',
-			store: 'test2',
-			xtype: 'svg',
-			width: 500,
-			height: 400,
+			xtype: 'row',
+			defaults: {
+				xtype: 'col',
+				size: 6
+			},
 			items: [{
-				store: 'test2',
-				field: 'a',
-				storelink: true,
-				xtype: 'polyline',
-				width: 500,
-				height: 400,
-				fill: 'RED'
+				items: [{
+					store: 'test2',
+					xtype: 'svg',
+					width: 600,
+					height: 400,
+					items: [{
+						store: 'test2',
+						field: 'a',
+						storelink: true,
+						xtype: 'polyline',
+						'stroke-width': 1,
+						color: 'black',
+						width: 600,
+						height: 400,
+						fill: 'RED'
+					}]
+				},{
+					store: 'test2',
+					xtype: 'svg',
+					width: 600,
+					height: 400,
+					items: [{
+						store: 'test2',
+						field: 'b',
+						storelink: true,
+						xtype: 'polyline',
+						width: 600,
+						height: 400,
+						fill: 'RED'
+					}]
+				},{
+					store: 'test2',
+					xtype: 'svg',
+					width: 600,
+					height: 400,
+					items: [{
+						store: 'test2',
+						field: 'c',
+						storelink: true,
+						xtype: 'polyline',
+						width: 600,
+						height: 400,
+						fill: 'RED'
+					}]
+				},{
+					store: 'test2',
+					xtype: 'svg',
+					width: 600,
+					height: 400,
+					items: [{
+						store: 'test2',
+						field: 'd',
+						storelink: true,
+						xtype: 'polyline',
+						width: 600,
+						height: 400,
+						fill: 'RED'
+					}]
+				},{
+					store: 'test2',
+					xtype: 'svg',
+					width: 600,
+					height: 400,
+					items: [{
+						store: 'test2',
+						field: 'e',
+						storelink: true,
+						xtype: 'polyline',
+						width: 600,
+						height: 400,
+						fill: 'RED'
+					}]
+				},{
+					store: 'test2',
+					xtype: 'svg',
+					width: 600,
+					height: 400,
+					items: [{
+						store: 'test2',
+						field: 'f',
+						storelink: true,
+						xtype: 'polyline',
+						width: 600,
+						height: 400,
+						fill: 'RED'
+					}]
+				},{
+					store: 'test2',
+					xtype: 'svg',
+					width: 600,
+					height: 400,
+					items: [{
+						store: 'test2',
+						field: 'g',
+						storelink: true,
+						xtype: 'polyline',
+						width: 600,
+						height: 400,
+						fill: 'RED'
+					}]
+				},{
+					store: 'test2',
+					xtype: 'svg',
+					width: 600,
+					height: 400,
+					items: [{
+						store: 'test2',
+						field: 'h',
+						storelink: true,
+						xtype: 'polyline',
+						width: 600,
+						height: 400,
+						fill: 'RED'
+					}]
+				},{
+					store: 'test2',
+					xtype: 'svg',
+					width: 600,
+					height: 400,
+					items: [{
+						store: 'test2',
+						field: 'i',
+						storelink: true,
+						xtype: 'polyline',
+						width: 600,
+						height: 400,
+						fill: 'RED'
+					}]
+				},{
+					store: 'test2',
+					xtype: 'svg',
+					width: 600,
+					height: 400,
+					items: [{
+						store: 'test2',
+						field: 'j',
+						storelink: true,
+						xtype: 'polyline',
+						width: 600,
+						height: 400,
+						fill: 'RED'
+					}]
+				}]
+			},{
+				defaults: {
+					xtype: 'button',
+					margin: '0 0 10px 0'
+				},
+				items: [{
+					text: 'Ordenar ASC',
+					click: function(){
+						var fields = ['a','b','c','d','e','f','g','h','i','j'];
+						for(var l=0; l<fields.length; l++){
+							cb.getStore('test2').sort(fields[l], 'asc');
+						}
+					}
+				},{
+					xtype: 'br'
+				},{
+					text: 'Ordenar DESC',
+					click: function(){
+						var fields = ['a','b','c','d','e','f','g','h','i','j'];
+						for(var l=0; l<fields.length; l++){
+							cb.getStore('test2').sort(fields[l], 'desc');
+						}
+					}
+				},{
+					xtype: 'br'
+				},{
+					text: 'Restaurar',
+					click: function(){
+						var fields = ['a','b','c','d','e','f','g','h','i','j'];
+						for(var l=0; l<fields.length; l++){
+							cb.getStore('test2').restore(fields[l]);
+						}
+					}
+				},{
+					xtype: 'br'
+				},{
+					text: 'Generar',
+					click: function(){
+						if(!cb.aniline){
+							cb.aniline = setInterval(function(){
+								var fields = ['a','b','c','d','e','f','g','h','i','j'];
+								for(var l=0; l<fields.length; l++){
+									var ran = Math.floor((Math.random() * 100) + 1);
+									var data = cb.getStore('test2', fields[l]);
+									for(var i=0; i<5; i++){
+										ran = (ran + data[data.length-1])/2;
+									}
+									if(data.length > 200){ //Conf numero elementos array
+										data.shift();
+									}
+									data.push(ran);
+									cb.getStore('test2').setData(fields[l], data);
+								}
+							}, 50);
+						}
+					}
+				},{
+					xtype: 'br'
+				},{
+					text: 'Parar de generar',
+					click: function(){
+						if(cb.aniline){
+							clearInterval(cb.aniline);
+							cb.aniline = false;
+						}
+					}
+				}]
 			}]
 		});
 		

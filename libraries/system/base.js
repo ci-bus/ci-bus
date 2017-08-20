@@ -92,7 +92,7 @@ cb.base.store = {
 	},
 	setData: function(ndata, data){
 		if(typeof ndata === 'string' && data !== undefined){
-			this.putToObject(this.data, ndata, data);
+			cb.putToObject(this.data, ndata, data);
 			if(this.getRestoreData(ndata)){
 				delete this.datarestore[ndata];
 			}
@@ -170,7 +170,6 @@ cb.base.store = {
 				}else if(typeof data.order === 'string'){
 					if($.isFunction(cb.fetchFromObject(this.data, data.data).sort)){
 						if(!this.getRestoreData(data.data)){
-							debugger;
 							this.setRestoreData(data.data, cb.fetchFromObject(this.data, data.data));
 						}
 						cb.fetchFromObject(this.data, data.data).sort(function(a, b){
@@ -1847,8 +1846,8 @@ cb.create = function(opt, record){
 			opt.items = [opt.items];
 		}
 		
-		//Si el record contiene un array y no acepta arrays creamos varios elementos
-		if($.isArray(record) && cb.eleArrayAcept.indexOf(opt.xtype) < 0){
+		//Si el record contiene un array y no acepta arrays y no es un array de arrays creamos varios elementos
+		if($.isArray(record) && (cb.eleArrayAcept.indexOf(opt.xtype) < 0)){
 			ele = [];
 			for(var c=0; c<record.length; c++){
 				if(record[c]){
@@ -1929,8 +1928,8 @@ cb.create = function(opt, record){
 				if(opt.store){
 					if(!cb.module.storelink[opt.store]){
 						cb.module.storelink[opt.store] = [];
-						cb.module.storelink[opt.store].push({field: opt.field? opt.field: false, ele: ele});
 					}
+					cb.module.storelink[opt.store].push({field: opt.field? opt.field: false, ele: ele});
 				}
 			}
 						
