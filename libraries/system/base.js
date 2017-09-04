@@ -52,6 +52,50 @@ cb.elenamed = 0;
 //añadiendo el xtype a este array lo evitamos
 cb.eleArrayAcept = ['polyline'];
 
+cb.router = {
+	routes: {},
+	set: function(hash, ctr, fun){
+		if($.isString(hash) && $.isString(ctr) && $.isString(fun)){
+			this.routes[hash] = {
+				ctr: ctr,
+				fun: fun
+			};
+			return true;
+		}
+		return false;
+	},
+	getCtr: function(hash){
+		if(this.routes[hash] && this.routes[hash].ctr){
+			return this.routes[hash].ctr;
+		}
+		return null;
+	},
+	getFun: function(hash){
+		var ctr = this.getCtr(hash);
+		if(ctr && cb.module.controller[ctr]){
+			if($.isFunction(cb.module.controller[ctr])){
+				return cb.module.controller[ctr];
+			}
+		}
+		return null;
+	},
+	route: function(hash){
+		var hashpart = hash.split('/');
+		var hashend = hashpart[0];
+		for(var i=1; i<hashpart.length; i++){
+			if($.isNumeric(hashpart[i])){
+				hashend = hashend + '/:num';
+			}else if($.type(hashpart[i]) === 'string'){
+				hashend = hashend + '/:str';
+			}
+		}
+		var fun = this.getFun(hashend);
+		if($.isFunction(fun)){
+			fun(hashpart);
+		}
+	}
+};
+
 cb.base.store = {
 	datarestore: [],
 	data: null,
@@ -1505,31 +1549,31 @@ cb.module.bootstrapComponent = {
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
+	'graph': function(opt, record){
+		
+	},
 	'polyline': function(opt, record){
 		var ele = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
 		if(!opt.fill) opt.fill = 'none';
-		if(!opt.width) opt.width = 300;
-		if(!opt.height) opt.height = 150;
+		if(typeof opt.width === 'undefined') opt.width = 300;
+		if(typeof opt.height === 'undefined') opt.height = 150;
 		if(!opt.stroke && opt.color) opt.stroke = opt.color;
 		else if(!opt.stroke) opt.stroke = '#0074d9';
 		if(!opt['stroke-width']) opt['stroke-width'] = 3;
-		//TODO calculate points
-		var points = "0,"+parseInt(opt.height)+" 0,";
 		if($.isArray(record)){
-			var xspace = parseInt(parseInt(opt.width) / (record.length - 1));
-			var pointMax = Math.max.apply(null, record);
-			var pointMin = Math.min.apply(null, record);
-			var xwrite = xspace;
+			if(typeof opt.xspace   === 'undefined') opt.xspace   = parseInt(opt.width) / (record.length - 1);
+			if(typeof opt.pointMax === 'undefined') opt.pointMax = Math.max.apply(null, record);
+			if(typeof opt.pointMin === 'undefined') opt.pointMin = Math.min.apply(null, record);
+			var xwrite = 0;
 			var ywrite = 0;
+			var points = "0,"+parseInt(opt.height);
 			for(var i=0; i<record.length; i++){
-				ywrite = parseInt(opt.height) - parseInt((record[i]-pointMin)*parseInt(opt.height)/pointMax) - pointMin;
-				if(i<record.length-1){
-					points += ywrite+" "+xwrite+",";
-					xwrite += xspace;
-				}else{
-					points += ywrite+" "+parseInt(opt.width)+","+parseInt(opt.height);
-				}
+				//ywrite = parseInt(opt.height) - parseInt((record[i]-opt.pointMin)*parseInt(opt.height)/opt.pointMax) - opt.pointMin;
+				ywrite = parseInt(opt.height) - ((record[i]-opt.pointMin) * parseInt(opt.height) / (opt.pointMax-opt.pointMin));
+				points += " "+xwrite+","+ywrite;
+				xwrite += opt.xspace;
 			}
+			points += " "+xwrite+","+parseInt(opt.height);
 		}
 		
 		$(ele).attr({
@@ -1543,22 +1587,19 @@ cb.module.bootstrapComponent = {
 		ele.setData = function(record){
 			var ele = $.isArray(this)? this[0]: this;
 			if($.isArray(record)){
-				var opt = ele.getOpt();
-				var xspace = parseInt(parseInt(opt.width) / (record.length - 1));
-				var pointMax = Math.max.apply(null, record);
-				var pointMin = Math.min.apply(null, record);
-				var xwrite = xspace;
+				var opt = cb.cloneObject(ele.getOpt());
+				if(typeof opt.xspace   === 'undefined') opt.xspace   = parseInt(parseInt(opt.width) / (record.length - 1));
+				if(typeof opt.pointMax === 'undefined') opt.pointMax = Math.max.apply(null, record);
+				if(typeof opt.pointMin === 'undefined') opt.pointMin = Math.min.apply(null, record);
+				var xwrite = 0;
 				var ywrite = 0;
-				var points = "0,"+parseInt(opt.height)+" 0,";
+				var points = "0,"+parseInt(opt.height);
 				for(var i=0; i<record.length; i++){
-					ywrite = parseInt(opt.height) - parseInt((record[i]-pointMin)*parseInt(opt.height)/pointMax) - pointMin;
-					if(i<record.length-1){
-						points += ywrite+" "+xwrite+",";
-						xwrite += xspace;
-					}else{
-						points += ywrite+" "+parseInt(opt.width)+","+parseInt(opt.height);
-					}
+					ywrite = parseInt(opt.height) - parseInt((record[i]-opt.pointMin)*parseInt(opt.height)/opt.pointMax) - opt.pointMin;
+					points += " "+xwrite+","+ywrite;
+					xwrite += opt.xspace;
 				}
+				points += " "+xwrite+","+parseInt(opt.height);
 			}
 			$(ele).removeAttr('points').attr({ points: points });
 		};
@@ -1568,6 +1609,12 @@ cb.module.bootstrapComponent = {
 			$(ele).removeAttr('points');
 		};
 		
+		ele.opt = opt;
+		
+		ele.getOpt = function(){
+			return this.opt;
+		}
+				
 		return ele;
 	}
 };
@@ -1847,7 +1894,7 @@ cb.create = function(opt, record){
 		}
 		
 		//Si el record contiene un array y no acepta arrays y no es un array de arrays creamos varios elementos
-		if($.isArray(record) && (cb.eleArrayAcept.indexOf(opt.xtype) < 0)){
+		if($.isArray(record) && ((cb.eleArrayAcept.indexOf(opt.xtype) < 0) || $.isArray(record[0]))){
 			ele = [];
 			for(var c=0; c<record.length; c++){
 				if(record[c]){

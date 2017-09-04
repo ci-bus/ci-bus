@@ -20,7 +20,7 @@ cb.define({
 			xtype: 'store',
 			name: 'test2',
 			data: {
-				a:[],b:[],c:[],d:[],e:[],f:[],g:[],h:[],i:[],j:[],
+				a:[15,43,87,18,23,15,24,8],
 				b: [{ a: 5 }, { a: 8 }, { a: 2 }]
 			}
 		});
@@ -144,12 +144,20 @@ cb.define({
 				xtype: 'col',
 				size: 6
 			},
+			margin: '500px 0 0 0',
 			items: [{
 				items: [{
+					xtype: 'a',
+					text: 'aaa',
+					attr: {
+						name: "aaa"
+					}
+				},{
 					store: 'test2',
 					xtype: 'svg',
 					width: 600,
 					height: 400,
+					border: '1px solid green',
 					items: [{
 						store: 'test2',
 						field: 'a',
@@ -159,133 +167,9 @@ cb.define({
 						color: 'black',
 						width: 600,
 						height: 400,
-						fill: 'RED'
-					}]
-				},{
-					store: 'test2',
-					xtype: 'svg',
-					width: 600,
-					height: 400,
-					items: [{
-						store: 'test2',
-						field: 'b',
-						storelink: true,
-						xtype: 'polyline',
-						width: 600,
-						height: 400,
-						fill: 'RED'
-					}]
-				},{
-					store: 'test2',
-					xtype: 'svg',
-					width: 600,
-					height: 400,
-					items: [{
-						store: 'test2',
-						field: 'c',
-						storelink: true,
-						xtype: 'polyline',
-						width: 600,
-						height: 400,
-						fill: 'RED'
-					}]
-				},{
-					store: 'test2',
-					xtype: 'svg',
-					width: 600,
-					height: 400,
-					items: [{
-						store: 'test2',
-						field: 'd',
-						storelink: true,
-						xtype: 'polyline',
-						width: 600,
-						height: 400,
-						fill: 'RED'
-					}]
-				},{
-					store: 'test2',
-					xtype: 'svg',
-					width: 600,
-					height: 400,
-					items: [{
-						store: 'test2',
-						field: 'e',
-						storelink: true,
-						xtype: 'polyline',
-						width: 600,
-						height: 400,
-						fill: 'RED'
-					}]
-				},{
-					store: 'test2',
-					xtype: 'svg',
-					width: 600,
-					height: 400,
-					items: [{
-						store: 'test2',
-						field: 'f',
-						storelink: true,
-						xtype: 'polyline',
-						width: 600,
-						height: 400,
-						fill: 'RED'
-					}]
-				},{
-					store: 'test2',
-					xtype: 'svg',
-					width: 600,
-					height: 400,
-					items: [{
-						store: 'test2',
-						field: 'g',
-						storelink: true,
-						xtype: 'polyline',
-						width: 600,
-						height: 400,
-						fill: 'RED'
-					}]
-				},{
-					store: 'test2',
-					xtype: 'svg',
-					width: 600,
-					height: 400,
-					items: [{
-						store: 'test2',
-						field: 'h',
-						storelink: true,
-						xtype: 'polyline',
-						width: 600,
-						height: 400,
-						fill: 'RED'
-					}]
-				},{
-					store: 'test2',
-					xtype: 'svg',
-					width: 600,
-					height: 400,
-					items: [{
-						store: 'test2',
-						field: 'i',
-						storelink: true,
-						xtype: 'polyline',
-						width: 600,
-						height: 400,
-						fill: 'RED'
-					}]
-				},{
-					store: 'test2',
-					xtype: 'svg',
-					width: 600,
-					height: 400,
-					items: [{
-						store: 'test2',
-						field: 'j',
-						storelink: true,
-						xtype: 'polyline',
-						width: 600,
-						height: 400,
-						fill: 'RED'
+						fill: 'RED',
+						pointMax: 120,
+						pointMin: 0
 					}]
 				}]
 			},{
@@ -296,7 +180,7 @@ cb.define({
 				items: [{
 					text: 'Ordenar ASC',
 					click: function(){
-						var fields = ['a','b','c','d','e','f','g','h','i','j'];
+						var fields = ['a'];
 						for(var l=0; l<fields.length; l++){
 							cb.getStore('test2').sort(fields[l], 'asc');
 						}
@@ -306,7 +190,7 @@ cb.define({
 				},{
 					text: 'Ordenar DESC',
 					click: function(){
-						var fields = ['a','b','c','d','e','f','g','h','i','j'];
+						var fields = ['a'];
 						for(var l=0; l<fields.length; l++){
 							cb.getStore('test2').sort(fields[l], 'desc');
 						}
@@ -316,7 +200,7 @@ cb.define({
 				},{
 					text: 'Restaurar',
 					click: function(){
-						var fields = ['a','b','c','d','e','f','g','h','i','j'];
+						var fields = ['a'];
 						for(var l=0; l<fields.length; l++){
 							cb.getStore('test2').restore(fields[l]);
 						}
@@ -328,7 +212,7 @@ cb.define({
 					click: function(){
 						if(!cb.aniline){
 							cb.aniline = setInterval(function(){
-								var fields = ['a','b','c','d','e','f','g','h','i','j'];
+								var fields = ['a'];
 								for(var l=0; l<fields.length; l++){
 									var ran = Math.floor((Math.random() * 100) + 1);
 									var data = cb.getStore('test2', fields[l]);
