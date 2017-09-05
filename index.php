@@ -169,10 +169,6 @@ if($_POST["Ds_Signature"] && file_exists(getcwd()."/sistema/librerias/redsys/rec
 		<script type="text/javascript" src="libraries/system/cookie.js"></script>
 		<script type="text/javascript" src="libraries/system/cacheJs.js"></script>
 		<script type="text/javascript" src="libraries/system/base.js"></script>
-		<link type="text/css" rel="stylesheet" href="libraries/featherlight-1.7.1/release/featherlight.min.css" />
-		<link type="text/css" rel="stylesheet" href="libraries/featherlight-1.7.1/release/featherlight.gallery.min.css" />
-		<script src="libraries/featherlight-1.7.1/release/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
-		<script src="libraries/featherlight-1.7.1/release/featherlight.gallery.min.js" type="text/javascript" charset="utf-8"></script>
 		
 		<link name="apple-touch-icon" href="" />
 		<link name="apple-touch-startup-image" href="" />
