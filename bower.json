@@ -1,0 +1,21 @@
+{
+  "name": "ci-bus",
+  "version": "2.3",
+  "homepage": "https://github.com/ci-bus/ci-bus",
+  "authors": [
+    "Miguel Angel Calero Ponce <miguelelinventor@gmail.com>"
+  ],
+  "description": "Javascript and PHP FrameWork",
+  "main": "libraries/system/base.js",
+  "keywords": [
+    "Javascript",
+    "php",
+    "framework"
+  ],
+  "license": "MIT",
+  
+  "dependencies": {
+    "bootstrap": "~3.3.7",
+    "jquery": "~3.1.0"
+  }
+}
