@@ -165,7 +165,7 @@ if($_POST["Ds_Signature"] && file_exists(getcwd()."/sistema/librerias/redsys/rec
 		
 		<link rel="stylesheet" type="text/css" href="main.css" />
 
-		<script type="text/javascript" src="libraries/jQuery/jQuery.min.js"></script>
+		<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
 		<script type="text/javascript" src="libraries/system/cookie.js"></script>
 		<script type="text/javascript" src="libraries/system/cacheJs.js"></script>
 		<script type="text/javascript" src="libraries/system/base.js"></script>
