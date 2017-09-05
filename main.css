@@ -1,4 +1,3 @@
 @viewport {width:device-width;}
-@import url("libraries/bootstrap/css/bootstrap.min.css");
-@import url("libraries/bootstrap/css/extra.css");
+@import url("bower_components/bootstrap/dist/css/bootstrap.min.css");
 @import url("assets/css/style.css");

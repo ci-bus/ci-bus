@@ -91,6 +91,7 @@ cb.router = {
 		for(var i=1; i<hashpart.length; i++){
 			if($.isNumeric(hashpart[i])){
 				hashend = hashend + '/:num';
+				hashpart[i] = parseInt(hashpart[i]);
 			}else if($.type(hashpart[i]) === 'string'){
 				hashend = hashend + '/:str';
 			}

@@ -4,11 +4,21 @@ cb.define({
 	name: 'testrecord',
 	
 	route: {
-		'#aaa': 'test1'
+		'#aaa': 'test1',
+		'#aaa/:num': 'test2',
+		'#aaa/:num/:str': 'test3'
 	},
 	
-	test1: function(){
-		alert('test oks');
+	test1: function(hash){
+		console.log('test1', hash);
+	},
+	
+	test2: function(hash){
+		console.log('test2', hash);
+	},
+	
+	test3: function(hash){
+		console.log('test3', hash);
 	},
 	
 	onload: function(){
