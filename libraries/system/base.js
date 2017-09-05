@@ -55,7 +55,7 @@ cb.eleArrayAcept = ['polyline'];
 cb.router = {
 	routes: {},
 	set: function(hash, ctr, fun){
-		if($.isString(hash) && $.isString(ctr) && $.isString(fun)){
+		if($.type(hash) === 'string' && $.type(ctr) === 'string' && $.type(fun) === 'string'){
 			this.routes[hash] = {
 				ctr: ctr,
 				fun: fun
@@ -64,6 +64,12 @@ cb.router = {
 		}
 		return false;
 	},
+	get: function(hash){
+		if(this.routes[hash]){
+			return this.routes[hash];
+		}
+		return null;
+	},
 	getCtr: function(hash){
 		if(this.routes[hash] && this.routes[hash].ctr){
 			return this.routes[hash].ctr;
@@ -71,10 +77,10 @@ cb.router = {
 		return null;
 	},
 	getFun: function(hash){
-		var ctr = this.getCtr(hash);
-		if(ctr && cb.module.controller[ctr]){
-			if($.isFunction(cb.module.controller[ctr])){
-				return cb.module.controller[ctr];
+		var rt = this.get(hash);
+		if(rt && cb.module.controller[rt.ctr]){
+			if($.isFunction(cb.module.controller[rt.ctr][rt.fun])){
+				return cb.module.controller[rt.ctr][rt.fun];
 			}
 		}
 		return null;
@@ -93,7 +99,12 @@ cb.router = {
 		if($.isFunction(fun)){
 			fun(hashpart);
 		}
-	}
+	},
+	hashchange: function(){
+		var hash = top.window.location.hash;
+		this.route(hash);
+	},
+	listener: addEventListener('hashchange', function(){ cb.router.hashchange(); }, false)
 };
 
 cb.base.store = {
@@ -485,6 +496,13 @@ cb.define = function(obj)
 			if($.isFunction(obj.onLoad)){
 				obj.onLoad();
 			}
+		}
+		
+		//Add routes
+		if(obj.xtype == 'controller' && $.isPlainObject(obj.route)){
+			$.each(obj.route, function(hash, fun) {
+				cb.router.set(hash, obj.name, fun);
+			});
 		}
 		
 		if($.isFunction(obj['onload'])){
