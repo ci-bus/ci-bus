@@ -3,7 +3,16 @@ cb.define({
 	xtype: 'controller',
 	name: 'testrecord',
 	
+	route: {
+		'#aaa': 'test1'
+	},
+	
+	test1: function(){
+		alert('test oks');
+	},
+	
 	onload: function(){
+		
 		cb.define({
 			xtype: 'store',
 			name: 'test',
@@ -144,15 +153,8 @@ cb.define({
 				xtype: 'col',
 				size: 6
 			},
-			margin: '500px 0 0 0',
 			items: [{
 				items: [{
-					xtype: 'a',
-					text: 'aaa',
-					attr: {
-						name: "aaa"
-					}
-				},{
 					store: 'test2',
 					xtype: 'svg',
 					width: 600,
@@ -240,10 +242,6 @@ cb.define({
 					}
 				}]
 			}]
-		});
-		
-		
-			
-			
+		});	
 	}
 });
