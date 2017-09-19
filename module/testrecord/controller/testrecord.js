@@ -105,9 +105,9 @@ cb.define({
 					field: 'tags1',
 					listener: {
 						click: function(){
-							console.log($(this).getCmp());
-							console.log($(this).getRecord());
-							console.log($(this).getValue());
+							console.log(cb.getCmp(this));
+							console.log(cb.getCmp($(this).parent()).getRecord());
+							console.log(cb.getCmp(this).getValue());
 						}
 					}
 				}]
