@@ -3,6 +3,10 @@ cb.define({
 	xtype: 'view',
 	name: 'landing',
 	appendTo: '#content',
+	
+	onload: function(){
+		cb.ctr('bioculuspro', 'animate_gallery');
+	},
 
 	items: [{
 		xtype: 'div',
@@ -11,7 +15,7 @@ cb.define({
 		width: '100%',
 		items: [{
 			xtype: 'div',
-			css:{'position':'absolute'},
+			css: {'position': 'absolute', 'display': 'none'},
 			store: "home",
 			field: 'cabezera',
 			background: '#{color}',

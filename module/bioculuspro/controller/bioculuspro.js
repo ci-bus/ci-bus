@@ -198,6 +198,53 @@ cb.define({
 		*/
 	},
 	
+	animate_gallery: function(){
+		cb.setConfig('c_galley', 1);
+		
+		cb.ctr('bioculuspro', 'next_gallery');
+		
+		if(cb.getConfig('galley_start') !== 1){
+			cb.setConfig('galley_start', 1);
+			setInterval(function(){
+				cb.ctr('bioculuspro', 'next_gallery');
+			}, 5000);
+		}
+	},
+	
+	next_gallery: function(){
+		c = cb.getConfig('c_galley'); //La cabecera que hay que mostrar
+		c2 = 1; //Contador de la cabecera que estamos procesando
+		a = $('#landing').children().length; //Numero máximo de cabeceras
+											//control para no borrar el submenu
+										   //que tambien se encuentra en la cabecera
+		
+		$('#landing').children().each(function(){
+			if(c2 < a)
+			{
+				if(c2 == c)
+				{
+					$(this).stop().fadeIn('slow');
+				}
+				else
+				{
+					$(this).stop().fadeOut('slow');
+				}
+			}
+			c2++;
+		});
+		
+		c++;
+		
+		if(c >= a) //Vuelta al principio
+		{
+			cb.setConfig('c_galley', 1);
+		}
+		else //Pasa a la siguiente cabecera
+		{
+			cb.setConfig('c_galley', c);
+		}
+	},
+	
 	adapt_content: function(){
 		this.adapt_height($('#aunmas').find('.col-xs-6'), 50);
 		this.adapt_height($('#caracteristicas').find('.caract'), 50);

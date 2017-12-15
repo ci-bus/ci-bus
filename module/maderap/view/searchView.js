@@ -108,7 +108,51 @@ cb.define({
 								}
 							}
 						}]
-					}]
+					},{
+                        xtype: 'row',
+                        margin: 10,
+                        defaults: {
+                            xtype: 'col',
+                            size: 6
+                        },
+                        items: [{
+                            items: {
+                                xtype: 'input',
+                                id: 'velocidad',
+                                value: '10',
+                                attr: { placeholder: 'Velocidad' }
+                            }
+                        },{
+                            items: [{
+                                xtype: 'button',
+                                type: 'warning',
+                                id: 'butautoscr',
+                                text: 'Auto Scroll',
+                                click: function(){
+                                    if(cb.autoscroll){
+                                        clearInterval(cb.autoscroll);
+                                        cb.autoscroll = false;
+                                    }
+                                    cb.autoscroll = setInterval(function(){
+                                        var vel = $('#velocidad').val();
+                                        $('#pizarra').animate( { scrollTop : '+='+vel+'px' }, 1000 );
+                                    }, 1000);
+                                    $(this).removeClass('btn-warning').addClass('btn-success');
+                                }
+                            },{
+                                xtype: 'button',
+                                type: 'default',
+                                text: 'Parar',
+                                click: function(){
+                                    if(cb.autoscroll){
+                                        clearInterval(cb.autoscroll);
+                                        cb.autoscroll = false;
+                                    }
+                                    $('#butautoscr').removeClass('btn-success').addClass('btn-warning');
+                                }
+                            }]
+                        }]
+                    }]
 				},{
 					xtype: 'div',
 					id: 'pizarra',

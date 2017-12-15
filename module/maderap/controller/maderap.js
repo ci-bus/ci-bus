@@ -131,42 +131,8 @@ cb.define({
 			padding: '0px 3px',
 			css: {'font-size': '17px'},
 			cursor: 'text',
-			attr: {'draggable': 'true'},
 			float: 'left',
 			listener: {
-				dragover: function(e){
-					e.preventDefault();
-				},
-				dragstart: function(e){
-										
-					if($(this).attr('id')){
-						var id = $(this).attr('id');
-					}else{
-						var id = cb.autoname();
-						$(this).attr('id', id);
-					}
-					e.originalEvent.dataTransfer.setData("id_word", id);
-					e.originalEvent.dataTransfer.setData("word", $(this).text());
-				},
-				drop: function(e){
-					var x = e.offsetX,
-						w = $(this).width(),
-						id_word = e.originalEvent.dataTransfer.getData("id_word"),
-						word = e.originalEvent.dataTransfer.getData("word");
-					
-					if($(this).attr('id')){
-						var id = $(this).attr('id');
-					}else{
-						var id = cb.autoname();
-						$(this).attr('id', id);
-					}
-					
-					if(x > w/2){
-						$('#'+id).after($('#'+id_word));
-					}else{
-						$('#'+id).before($('#'+id_word));
-					}
-				},
 				click: function(e){
 					cb.setConfig('writing', false);
 					var x = e.offsetX,
@@ -329,7 +295,7 @@ cb.define({
 					xtype: 'div',
 					margin: 10,
 					color: 'green',
-					size: 14,
+					size: 13,
 					text: 'Letra para la canción creada con éxito!'
 				}));
 				cb.ctr('maderap', 'reset');
