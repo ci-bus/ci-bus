@@ -11,7 +11,7 @@
 		
 		"default_controller" => "examples",
 		"charset" => "UTF-8",
-		"title" => "Go to rave",
+		"title" => "Ci-bus Framework",
 		"local_ips" => array('127.0.0.1', '::1'),
 		"auto_min_js" => false
 	);
