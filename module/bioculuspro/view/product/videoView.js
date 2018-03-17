@@ -9,7 +9,6 @@ cb.define({
 		field:'productos',
 		items: {
 			xtype: 'div',
-			field:'video_titulo',
 			id: 'video',
 			margin: '14px 0',
 			css: { 'position': 'relative'},

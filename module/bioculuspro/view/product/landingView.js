@@ -7,7 +7,7 @@ cb.define({
 	items: [{
 		xtype: 'div',
 		id: 'landing',
-		css: {'position':'relative', 'height': '600px'},
+		css: {'position':'relative', 'height': '630px'},
 		width: '100%',
 		items: [{
 			xtype: 'div',
@@ -38,7 +38,7 @@ cb.define({
 							size: 5,
 							items: [{
 								xtype: 'h3',
-								text: '{precio}',
+								text: '{precio} €',
 								css: {'margin-top': '0px'}
 							},{
 								xtype:'small',

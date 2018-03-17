@@ -20,7 +20,7 @@ SET time_zone = "+00:00";
 -- Estructura de tabla para la tabla `bio_aunmas`
 --
 
-CREATE TABLE IF NOT EXISTS `bio_aunmas` (
+CREATE TABLE `bio_aunmas` (
   `id` int(11) NOT NULL,
   `id_usuario` int(11) NOT NULL,
   `imagen` text COLLATE utf8_bin NOT NULL,
@@ -41,7 +41,7 @@ INSERT INTO `bio_aunmas` (`id`, `id_usuario`, `imagen`, `texto`) VALUES
 -- Estructura de tabla para la tabla `bio_cabezera`
 --
 
-CREATE TABLE IF NOT EXISTS `bio_cabezera` (
+CREATE TABLE `bio_cabezera` (
   `id` int(11) NOT NULL,
   `id_usuario` int(11) NOT NULL,
   `imagen` text COLLATE utf8_bin NOT NULL,
@@ -62,7 +62,7 @@ INSERT INTO `bio_cabezera` (`id`, `id_usuario`, `imagen`, `color`, `texto`) VALU
 -- Estructura de tabla para la tabla `bio_piedepagina`
 --
 
-CREATE TABLE IF NOT EXISTS `bio_piedepagina` (
+CREATE TABLE `bio_piedepagina` (
   `id` int(11) NOT NULL,
   `id_usuario` int(11) NOT NULL,
   `texto` text COLLATE utf8_bin NOT NULL
@@ -81,7 +81,7 @@ INSERT INTO `bio_piedepagina` (`id`, `id_usuario`, `texto`) VALUES
 -- Estructura de tabla para la tabla `bio_preguntas`
 --
 
-CREATE TABLE IF NOT EXISTS `bio_preguntas` (
+CREATE TABLE `bio_preguntas` (
   `id` int(11) NOT NULL,
   `id_usuario` int(11) NOT NULL,
   `texto1` text COLLATE utf8_bin NOT NULL,
@@ -102,7 +102,7 @@ INSERT INTO `bio_preguntas` (`id`, `id_usuario`, `texto1`, `texto2`) VALUES
 -- Estructura de tabla para la tabla `bio_productos`
 --
 
-CREATE TABLE IF NOT EXISTS `bio_productos` (
+CREATE TABLE `bio_productos` (
   `id` int(11) NOT NULL,
   `id_usuario` int(11) NOT NULL,
   `imagen` text COLLATE utf8_bin NOT NULL,
@@ -142,7 +142,7 @@ INSERT INTO `bio_productos` (`id`, `id_usuario`, `imagen`, `texto`, `precio`, `b
 -- Estructura de tabla para la tabla `bio_product_images`
 --
 
-CREATE TABLE IF NOT EXISTS `bio_product_images` (
+CREATE TABLE `bio_product_images` (
   `id` int(11) NOT NULL,
   `id_usuario` int(11) NOT NULL,
   `titulo` varchar(200) COLLATE utf8_bin NOT NULL,
@@ -155,7 +155,7 @@ CREATE TABLE IF NOT EXISTS `bio_product_images` (
 -- Estructura de tabla para la tabla `bio_quees`
 --
 
-CREATE TABLE IF NOT EXISTS `bio_quees` (
+CREATE TABLE `bio_quees` (
   `id` int(11) NOT NULL,
   `id_usuario` int(11) NOT NULL,
   `texto1` text COLLATE utf8_bin NOT NULL,
@@ -176,7 +176,7 @@ INSERT INTO `bio_quees` (`id`, `id_usuario`, `texto1`, `texto2`, `imagen`) VALUE
 -- Estructura de tabla para la tabla `bio_submenu`
 --
 
-CREATE TABLE IF NOT EXISTS `bio_submenu` (
+CREATE TABLE `bio_submenu` (
   `id` int(11) NOT NULL,
   `id_usuario` int(11) NOT NULL,
   `imagen` text COLLATE utf8_bin NOT NULL,
@@ -184,51 +184,110 @@ CREATE TABLE IF NOT EXISTS `bio_submenu` (
   `enlace` varchar(200) COLLATE utf8_bin NOT NULL
 ) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
+--
+-- Volcado de datos para la tabla `bio_submenu`
+--
 
+INSERT INTO `bio_submenu` (`id`, `id_usuario`, `imagen`, `texto`, `enlace`) VALUES
+(1, 1, 'eye-open', ' &nbsp; DE UN VISTAZO', '#vistazo'),
+(2, 1, 'list', ' &nbsp; MODELOS', '#modelos'),
+(3, 1, 'book', ' &nbsp; QUÉ ES?', '#quees'),
+(4, 1, 'question-sign', ' &nbsp; DUDAS', '#dudas'),
+(5, 1, 'comment', ' &nbsp; CONTACTO', '#contacto');
+
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `bio_aunmas`
+--
 ALTER TABLE `bio_aunmas`
   ADD PRIMARY KEY (`id`);
 
+--
+-- Indices de la tabla `bio_cabezera`
+--
 ALTER TABLE `bio_cabezera`
   ADD PRIMARY KEY (`id`);
 
+--
+-- Indices de la tabla `bio_piedepagina`
+--
 ALTER TABLE `bio_piedepagina`
   ADD PRIMARY KEY (`id`);
 
+--
+-- Indices de la tabla `bio_preguntas`
+--
 ALTER TABLE `bio_preguntas`
   ADD PRIMARY KEY (`id`);
 
+--
+-- Indices de la tabla `bio_productos`
+--
 ALTER TABLE `bio_productos`
   ADD PRIMARY KEY (`id`);
 
+--
+-- Indices de la tabla `bio_product_images`
+--
 ALTER TABLE `bio_product_images`
   ADD PRIMARY KEY (`id`);
 
+--
+-- Indices de la tabla `bio_quees`
+--
 ALTER TABLE `bio_quees`
   ADD PRIMARY KEY (`id`);
 
+--
+-- Indices de la tabla `bio_submenu`
+--
 ALTER TABLE `bio_submenu`
   ADD PRIMARY KEY (`id`);
 
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `bio_aunmas`
+--
 ALTER TABLE `bio_aunmas`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
-
+--
+-- AUTO_INCREMENT de la tabla `bio_cabezera`
+--
 ALTER TABLE `bio_cabezera`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
-
+--
+-- AUTO_INCREMENT de la tabla `bio_piedepagina`
+--
 ALTER TABLE `bio_piedepagina`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
-
+--
+-- AUTO_INCREMENT de la tabla `bio_preguntas`
+--
 ALTER TABLE `bio_preguntas`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
-
+--
+-- AUTO_INCREMENT de la tabla `bio_productos`
+--
 ALTER TABLE `bio_productos`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
-
+--
+-- AUTO_INCREMENT de la tabla `bio_product_images`
+--
 ALTER TABLE `bio_product_images`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
+--
+-- AUTO_INCREMENT de la tabla `bio_quees`
+--
 ALTER TABLE `bio_quees`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
-
+--
+-- AUTO_INCREMENT de la tabla `bio_submenu`
+--
 ALTER TABLE `bio_submenu`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;

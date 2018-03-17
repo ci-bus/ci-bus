@@ -55,16 +55,11 @@
 			$this->add("join", strtoupper($type)." JOIN ".$this->getConfig("prefix").$table." ON ".$where, true);
 		}
 		
-		public function getArray($table = false){
+		public function get_array($table = false){
 			
 			$res = $this->get($table);
 			if(is_object($res)) return array($res);
 			return $res;
-		}
-		
-		public function get_array($table = false){
-			
-			return $this->getArray($table);
 		}
 		
 		public function get($table = false){

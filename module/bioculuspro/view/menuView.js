@@ -77,8 +77,8 @@ cb.define({
 						xtype: 'p',
 						items: {
 							xtype: 'a',
-							href: 'tel:+34911231212',
-							text: '<img width="16" src="assets/img/phone.png"> (+34) 91 123 12 12',
+							href: 'tel:+34910756759',
+							text: '<img width="16" src="assets/img/phone.png"> (+34) 91 075 67 59',
 							color: 'black'
 						},
 						css: {
@@ -88,8 +88,8 @@ cb.define({
 						xtype: 'p',
 						items: {
 							xtype: 'a',
-							href: 'tel:+34654656534',
-							text: '<img width="16" src="assets/img/WhatsApp.png"> (+34) 654 65 65 34',
+							href: 'tel:+34617909858',
+							text: '<img width="16" src="assets/img/WhatsApp.png"> (+34) 617 90 98 58',
 							color: 'black'
 						},
 						css: {
