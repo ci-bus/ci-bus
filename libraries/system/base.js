@@ -92,8 +92,10 @@ cb.router = {
 			if($.isNumeric(hashpart[i])){
 				hashend = hashend + '/:num';
 				hashpart[i] = parseInt(hashpart[i]);
-			}else if($.type(hashpart[i]) === 'string'){
+			}else if($.type(hashpart[i]) === 'string' && hashpart[i] != ""){
 				hashend = hashend + '/:str';
+			}else if(hashpart[i] == ""){
+				hashpart.splice(i, 1);
 			}
 		}
 		var fun = this.getFun(hashend);
@@ -254,7 +256,13 @@ cb.base.element = {
 		return this.val()? this.val(): this.getRecord();
 	},
 	getOpt: function() {
-		return this.opt? this.opt: false;
+		if(this.component){
+			if(this.opt){
+				return $.extend(this.component, this.opt);
+			}else{
+				return this.component
+			}
+		} else return this.opt? this.opt: false;
 	}
 };
 
@@ -496,6 +504,10 @@ cb.define = function(obj)
 			
 			if($.isFunction(obj.onLoad)){
 				obj.onLoad();
+			}
+		}else if(obj.xtype == 'controller' && obj.route){
+			if(top.window.location.hash){
+				cb.router.hashchange();
 			}
 		}
 		
@@ -1968,6 +1980,10 @@ cb.create = function(opt, record){
 			{
 				var ele = this.create(cb.module.component[opt.xtype], record);
 				ele = this.common_prop(ele, opt);
+				ele.component = cb.module.component[opt.xtype];
+				if(cb.module.component[opt.xtype].onRender && !opt.onRender) {
+					opt.onRender = cb.module.component[opt.xtype].onRender;
+				}
 			}
 			//Por defecto crea un elemento con el xtype
 			else
@@ -2044,6 +2060,7 @@ cb.create = function(opt, record){
 			{
 				return ele;
 			}
+			
 			if($.isFunction(opt.onRender)){
 				opt.onRender(ele);
 			}
