@@ -391,7 +391,6 @@ comprar: function(record){
 				
 		var id_producto = record.id;
 		
-		console.log('AAA---', record);
 		cb.define({
 			xtype: 'store',
 			name: 'prod_sel',
@@ -487,7 +486,7 @@ comprar: function(record){
 								name:'Apellidos'
 							}]
 						},{
-							
+							size: 12,
 							items: [{
 								xtype:'label',
 								text:'Dirección completa',
@@ -495,6 +494,16 @@ comprar: function(record){
 								xtype:'input',
 								type:'text',
 								name:'direccion'
+							}]
+						},{
+							
+							items: [{
+								xtype:'label',
+								text:'País',
+							},{
+								xtype:'input',
+								type:'text',
+								name:'pais'
 							}]
 						},{
 							
@@ -520,7 +529,7 @@ comprar: function(record){
 							
 							items: [{
 								xtype:'label',
-								text:'Dni',
+								text:'Dni (Opcional)',
 							},{
 								xtype:'input',
 								type:'text',
@@ -742,6 +751,7 @@ comprar: function(record){
 																	}],
 																	click: function(){
 																		if($('#cucheck').hasClass('btn-primary')){
+																			cb.load('store','bioculuspro','comprar', { id: cb.getConfig('cliente', 'id'), sele: 'tarjet' });
 																			$('form[name="redsys"]').submit();
 																		}else{
 																			$('#cucheck').css('border-color', '#f00');
@@ -841,6 +851,8 @@ comprar: function(record){
 			}
 		});
 		
+		cb.load('store','bioculuspro','comprar', { id: cb.getConfig('cliente', 'id'), sele: 'transf' });
+		
 		var store = cb.get('store', 'prod_sel');
 		var texto = store.data.texto_compra_contra;
 		texto.replace('[id]', cb.getConfig('cliente', 'id'));
@@ -859,6 +871,8 @@ comprar: function(record){
 				$(this).parent().remove();
 			}
 		});
+		
+		cb.load('store','bioculuspro','comprar', { id: cb.getConfig('cliente', 'id'), sele: 'contra' });
 		
 		var store = cb.get('store', 'prod_sel');
 		var texto = store.data.texto_compra_contra;
@@ -905,7 +919,7 @@ comprar: function(record){
 								type: 'flipout',
 								dire: 'up',
 								fn: function(){
-									$(this).parent().remove();
+									$(this).parent().parent().remove();
 								}
 							});
 						}
