@@ -2109,12 +2109,12 @@ cb.strpos = function(texto, word){
 
 ////[ General functions ]////
 
-cb.enable = function(id){
-	$(id).removeAttr('disabled');
+cb.enable = function(ele){
+	$(ele).removeAttr('disabled');
 }
 
-cb.disable = function(id){
-	$(id).attr('disabled','disabled');
+cb.disable = function(ele){
+	$(ele).attr('disabled','disabled');
 }
 
 cb.sto = function(fn, to){
