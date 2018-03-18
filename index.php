@@ -197,7 +197,7 @@ if($_POST["Ds_Signature"] && file_exists(getcwd()."/sistema/librerias/redsys/rec
 					{
 						echo "cb.load('controller', '".$CB->getConfig('default_controller')."');";
 					}
-				?> $.cachedScript("libraries/bootstrap/js/bootstrap.min.js");
+				?> $.cachedScript("bower_components/bootstrap/dist/js/bootstrap.min.js");
 			});
 			
 		</script>
