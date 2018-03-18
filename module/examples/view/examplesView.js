@@ -47,10 +47,10 @@ alert(ccc['unobject']['mas_cosas']);
 cb.define({
 	xtype: 'view',
 	name: 'examples',
+	renderTo: 'body',
 	
 	items: [{
 		xtype: 'div',
-		appendTo: 'body',
 		id: 'cibus-header',
 		css: {
 			'max-height': '200px',
@@ -59,19 +59,12 @@ cb.define({
 			overflow: 'hidden',
 			position: 'absolute',
 			'background-color': '#000',
-			'text-align': 'center'
+			'text-align': 'center',
+			top: 0
 		}
 	}, {
 		xtype: 'container',
-		//Las propiedades del objeto defaults se setean a todos sis hijos
-		defaults: {
-			// appenTo es donde quiere que el elemento se 'cargue'
-			// tambien puedes definir renderTo, este sustitulle lo que haya por el elemento
-			// y prependTo, este funciona como appendTo
-			// pero en vez de añadir el elemento al final lo añade al principio
-			appendTo: 'body'
-		},
-		//Los items son los elementos hijos (se crean dentro)
+		css: {'margin-top': '200px'},
 		items: [{
 			xtype: 'h3',
 			text: '...Callout'
@@ -342,10 +335,13 @@ cb.define({
 			}
 			var boton = {
 					xtype: 'button',
-					text: 'Ci-bus'
+					text: 'Ci-bus Framework',
+					click: function () {
+						cb.magia = 0;
+						$(this).remove();
+					}
 			};
 			var color = cb.rcolor();
-			console.log(color);
 			for (var i = count; i > 0; i--) {
 				boton = {
 					xtype: 'button',
@@ -366,6 +362,6 @@ cb.define({
 				};
 			cb.create(boton);
 			
-		}, 100);
+		}, 90);
 	}
 });

@@ -965,7 +965,6 @@ cb.module.bootstrapComponent = {
 		}
 		else
 		{
-			console.log(opt);
 			but = cb.common_prop(but, opt);
 			if(opt.caret!==false)
 			{
