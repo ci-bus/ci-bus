@@ -136,8 +136,10 @@ cb.define({
 					text: 'Tab button 1'
 				},
 				panel: {
-					xtype: 'container', type: 'fluid',
-					css: {'padding-top': '10px'}
+					xtype: 'container', type: 'fluid', html: 'Texto panel 1',
+					css: {
+						padding: 10
+					}
 				}
 			},{
 				id: 'profile2',
@@ -313,55 +315,5 @@ cb.define({
 			margin: 10,
 			text: 'Label to test'
 		}]
-	}],
-	
-	onload: function () {
-		cb.magia = 10;
-		cb.rcolor = function getRandomColor() {
-		  var letters = '0123456789ABCDEF';
-		  var color = '#';
-		  for (var i = 0; i < 6; i++) {
-		    color += letters[Math.floor(Math.random() * 16)];
-		  }
-		  return color;
-		};
-		setInterval(function () {
-			var n = Math.floor((Math.random() * 10)) - 5;
-			cb.magia += n;
-			var count = cb.magia;
-			var min = 2;
-			if(cb.magia < min) {
-				cb.magia = min;
-			}
-			var boton = {
-					xtype: 'button',
-					text: 'Ci-bus Framework',
-					click: function () {
-						cb.magia = 0;
-						$(this).remove();
-					}
-			};
-			var color = cb.rcolor();
-			for (var i = count; i > 0; i--) {
-				boton = {
-					xtype: 'button',
-					background: cb.rcolor(),
-					padding: '20px 40px',
-					items: boton
-				}
-			}
-			
-			boton.renderTo = '#cibus-header';
-			boton.css = {
-				    position: 'absolute',
-				    top: '50%',
-				    left: '50%',
-				    transform: 'translate(-50%, -50%)',
-				    '-ms-transform': 'translate(-50%, -50%)',
-				    '-webkit-transform': 'translate(-50%, -50%)'    
-				};
-			cb.create(boton);
-			
-		}, 90);
-	}
+	}]
 });
