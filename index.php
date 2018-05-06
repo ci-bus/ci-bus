@@ -146,6 +146,7 @@
 		<link rel="stylesheet" type="text/css" href="main.css" />
 
 		<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+		<script type="text/javascript" src="bower_components/bootstrap-toggle/js/bootstrap-toggle.min.js"></script>
 		<script type="text/javascript" src="libraries/system/cookie.js"></script>
 		<script type="text/javascript" src="libraries/system/cacheJs.js"></script>
 		<script type="text/javascript" src="libraries/system/base.js"></script>
