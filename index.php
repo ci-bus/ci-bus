@@ -1,19 +1,8 @@
 <?php session_start();
 
-error_reporting(E_ERROR);
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-
-//Redsys entrada de respuestas
-if($_POST["Ds_Signature"] && file_exists(getcwd()."/sistema/librerias/redsys/recibe.php")){
-	try {
-		require_once getcwd()."/sistema/librerias/redsys/recibe.php";
-	} catch (Exception $e) {
-		file_put_contents("Log_Redsys", "Error redsys: ".$e->getMessage());
-	}
-}else if($_POST["Ds_Signature"]){
-	file_put_contents("Log_Redsys", "No se escuentra el archivo: ".getcwd()."/sistema/librerias/redsys/recibe.php");
-}
+	error_reporting(E_ERROR);
+	ini_set('display_errors', 1);
+	ini_set('display_startup_errors', 1);
 	
 	include "core/Store.php";
 	include "libraries/jsmin-php-master/jsmin.php";
@@ -27,25 +16,16 @@ if($_POST["Ds_Signature"] && file_exists(getcwd()."/sistema/librerias/redsys/rec
 		if($CB->getConfig('auto_min_js') == 'local'){
 			$CB->setConfig('auto_min_js', true);
 		}
-		$fname = trim(str_replace('\\', '/', getcwd()), '/');
-		$fname = end(explode('/', $fname));
-		$uri = trim(str_replace('\\', '/', $_SERVER['REQUEST_URI']), '/');
-		
-		if(strpos($uri, $fname) !== false){
-			$temp = end(explode($fname, $uri));
-			$urlparts = explode('/', trim($temp, '/'));
-		}else{
-			$urlparts = explode('/', $uri);
-		}
 	}
 	else
 	{
 		if($CB->getConfig('auto_min_js') == 'local'){
 			$CB->setConfig('auto_min_js', false);
 		}
-		$turi = trim($_SERVER['REQUEST_URI'], "/");
-		$urlparts = explode('/', $turi);
 	}
+	
+	$turi = trim($_SERVER['argv'][0], "/");
+	$urlparts = explode('/', $turi);
 			
 	if ((!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') || $_FILES['file']) {
 		
@@ -131,7 +111,7 @@ if($_POST["Ds_Signature"] && file_exists(getcwd()."/sistema/librerias/redsys/rec
 									';
 						}
 					}
-					
+										
 					if($dt[0] == 'store')
 					{
 						$temp_class = ucwords($dt[2]);

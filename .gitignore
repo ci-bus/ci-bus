@@ -1,5 +1,6 @@
 /sistema/
 /sistema.zip
 /bower_components/
+/uploads/
 *.DS_Store
 !spec/*.DS_Store
