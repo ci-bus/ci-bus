@@ -9,7 +9,7 @@ cb.define({
             ['view', 'tasks', 'dashboard']
         ], function(){
             // TODO do after load
-            alert('loaded dashboard');
+            //alert('loaded dashboard');
         });
     }
 });

@@ -16,7 +16,6 @@ cb.define({
 	doMagia: function () {
 		var n = Math.floor((Math.random() * 10)) - 5;
 		cb.magia += n;
-		var count = cb.magia;
 		var min = 2;
 		if(cb.magia < min) {
 			cb.magia = min;
@@ -26,7 +25,7 @@ cb.define({
 			text: 'Ci-bus Framework'
 		};
 		var color = cb.rcolor();
-		for (var i = count; i > 0; i--) {
+		for (var i = cb.magia; i > 0; i--) {
 			boton = {
 				xtype: 'button',
 				background: cb.rcolor(),

@@ -47,6 +47,7 @@ cb.module.parseData = {};
 cb.module.storelink = {};
 cb.config = [];
 cb.elenamed = 0;
+cb.eleids = 0;
 //Por defecto cuando un record es un array
 //se crea un elemento por cada valor
 //añadiendo el xtype a este array lo evitamos
@@ -274,6 +275,12 @@ cb.autoname = function(){
 	var r = 'autoname_'+this.elenamed;
 	this.elenamed++;
 	return r;
+};
+
+cb.autoid = function(){
+    var r = 'autoid_'+this.eleids;
+    this.eleids++;
+    return r;
 };
 
 cb.ctr = function(ctr, fun, vals)
@@ -942,7 +949,7 @@ cb.module.bootstrapComponent = {
 				'aria-expanded':'false',
 				'type':'button'}
 		});
-		if(!opt.id) opt.id=cb.autoname();
+		if(!opt.id) opt.id=cb.autoid();
 		if(opt.size){
 			if(opt.cls) opt.cls += ' btn-'+opt.size;
 			else opt.cls = 'btn-'+opt.size;
@@ -1302,7 +1309,7 @@ cb.module.bootstrapComponent = {
 			opt.t_n = 1;
 			for(var a=0; a<opt.items.length; a++)
 			{
-				if(!opt.items[a].id) opt.items[a].id = cb.autoname();
+				if(!opt.items[a].id) opt.items[a].id = cb.autoid();
 				
 				if($.isPlainObject(opt.items[a].tab))
 				{
@@ -1646,6 +1653,50 @@ cb.module.bootstrapComponent = {
 		}
 				
 		return ele;
+	},
+	'toggle': function (opt, record) {
+	    var ele = document.createElement('input');
+	    $(ele).attr('type', 'checkbox');
+        $(ele).attr('data-toggle', 'toggle');
+        
+        if (!opt.on) {
+            opt.on = {text: 'On'};
+        }
+        if (!opt.off) {
+            opt.off = {text: 'Off'};
+        }
+        if (!opt.on.type && opt.type) {
+            opt.on.type = opt.type;
+        }
+        $(ele).attr('data-on', opt.on.text);
+        $(ele).attr('data-off', opt.off.text);
+        if (opt.size) {
+            $(ele).attr('data-size', opt.size);
+        }
+        if (opt.on.type) {
+            $(ele).attr('data-onstyle', opt.on.type);
+        }
+        if (opt.off.type) {
+            $(ele).attr('data-offstyle', opt.off.type);
+        }
+        if (opt.width) {
+            $(ele).attr('data-width', opt.width);
+            opt.width = null;
+        }
+        if (opt.height) {
+            $(ele).attr('data-height', opt.height);
+            opt.height = null;
+        }
+        if (!opt.id) {
+            opt.id = cb.autoid();
+        }
+        
+        ele = cb.common_prop(ele, opt);
+        ele.afterRender = function () {
+            $('#' + opt.id).bootstrapToggle();
+        }
+            
+        return ele;
 	}
 };
 
@@ -2038,22 +2089,27 @@ cb.create = function(opt, record){
 			if(opt.renderTo)
 			{
 				$(opt.renderTo).empty().append(ele);
+				cb.doAfterRender(ele);
 			}
 			else if(opt.appendTo)
 			{
 				$(opt.appendTo).append(ele);
+				cb.doAfterRender(ele);
 			}
 			else if(opt.prependTo)
 			{
 				$(opt.prependTo).prepend(ele);
+				cb.doAfterRender(ele);
 			}
 			else if(opt.beforeTo)
 			{
 				$(opt.beforeTo).before(ele);
+				cb.doAfterRender(ele);
 			}
 			else if(opt.afterTo)
 			{
 				$(opt.afterTo).after(ele);
+				cb.doAfterRender(ele);
 			}
 			else
 			{
@@ -2065,6 +2121,21 @@ cb.create = function(opt, record){
 			}
 		}
 	}
+}
+
+// TODO ahora mismo se recorren todos los elementos para poder ejecutar los afterRender, hay que buscar un modo mas elegante de hacerlo que no suponga tal carga de trabajo innecesaria
+cb.doAfterRender = function (ele) {
+    if (ele.afterRender && $.isFunction(ele.afterRender)) {
+        ele.afterRender(ele);
+    }
+    var childNodes = ele.childNodes,
+    i = childNodes.length;
+
+    while (i--) {
+        if (childNodes[i].nodeType == 1) {
+            cb.doAfterRender(childNodes[i]);
+        }
+    }
 }
 
 cb.common_prop = function(ele, opt)
@@ -2126,7 +2197,7 @@ cb.popup = function(pp){
 	{
 		if(!pp.xtype)pp.xtype = 'panel';
 		if(!pp.css) pp.css = {};
-		if(!pp.id) pp.id = this.autoname();
+		if(!pp.id) pp.id = this.autoid();
 		if(!pp.offsetTop) pp.offsetTop = 0;
 		pp.css.margin = 'auto';
 		

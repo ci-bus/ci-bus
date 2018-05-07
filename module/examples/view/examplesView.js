@@ -61,6 +61,9 @@ cb.define({
 			'background-color': '#000',
 			'text-align': 'center',
 			top: 0
+		},
+		click: function () {
+		    cb.ctr('examples', 'doMagia');
 		}
 	}, {
 		xtype: 'container',
@@ -314,6 +317,23 @@ cb.define({
 			type: 'primary',
 			margin: 10,
 			text: 'Label to test'
-		}]
+		},{
+            xtype: 'h3',
+            text: '...Toggle'
+        },{
+            xtype: 'toggle',
+            on: {
+                type: 'primary',
+                text: 'On'
+            },
+            off: {
+                type: 'default',
+                text: 'Off'
+            },
+            margin: 10,
+            onRender: function () {
+                debugger;
+            }
+        }]
 	}]
 });
