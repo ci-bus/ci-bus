@@ -2124,6 +2124,10 @@ cb.create = function(opt, record){
 }
 
 // TODO ahora mismo se recorren todos los elementos para poder ejecutar los afterRender, hay que buscar un modo mas elegante de hacerlo que no suponga tal carga de trabajo innecesaria
+// En teoría se podría ir guardando las funciones en un array y ejecutarlas al renderizar un elemento
+// Pero podría pasar que al renderizar un hijo que tenga renderTo ejecute funciones del padre cuando el padre no está renderizado
+// Porque al llevar el renderTo el padre en las definiciones no será el padre en el html final... jmm...
+
 cb.doAfterRender = function (ele) {
     if (ele.afterRender && $.isFunction(ele.afterRender)) {
         ele.afterRender(ele);
