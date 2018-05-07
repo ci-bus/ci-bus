@@ -1672,6 +1672,7 @@ cb.module.bootstrapComponent = {
         $(ele).attr('data-off', opt.off.text);
         if (opt.size) {
             $(ele).attr('data-size', opt.size);
+            opt.size = null;
         }
         if (opt.on.type) {
             $(ele).attr('data-onstyle', opt.on.type);
@@ -1679,6 +1680,8 @@ cb.module.bootstrapComponent = {
         if (opt.off.type) {
             $(ele).attr('data-offstyle', opt.off.type);
         }
+        opt.on = null;
+        opt.off = null;
         if (opt.width) {
             $(ele).attr('data-width', opt.width);
             opt.width = null;
@@ -1690,10 +1693,29 @@ cb.module.bootstrapComponent = {
         if (!opt.id) {
             opt.id = cb.autoid();
         }
+        $(ele).attr('id', opt.id);
+        opt.id = null;
+        if (opt.require) {
+        	cb.require(opt.require);
+        	opt.require = null;
+        }
+        if (opt.name) {
+        	$(ele).attr('name', opt.name);
+        	opt.name = null;
+        }
+        if (opt.value) {
+        	if(!opt.novalue){
+    			$(ele).attr('value', opt.value);
+    		}
+        	opt.name = null;
+        }
+        if (opt.disabled) {
+        	$(ele).attr('disabled', 'disabled');
+        }
         
-        ele = cb.common_prop(ele, opt);
-        ele.afterRender = function () {
-            $('#' + opt.id).bootstrapToggle();
+        ele.afterRender = function (ele) {
+            $(ele).bootstrapToggle();
+            cb.common_prop($(ele).parent(), ele.getOpt());
         }
             
         return ele;

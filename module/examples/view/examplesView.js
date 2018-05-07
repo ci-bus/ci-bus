@@ -322,6 +322,7 @@ cb.define({
             text: '...Toggle'
         },{
             xtype: 'toggle',
+            margin: 10,
             on: {
                 type: 'primary',
                 text: 'On'
@@ -330,7 +331,6 @@ cb.define({
                 type: 'default',
                 text: 'Off'
             },
-            margin: 10,
             onRender: function () {
                 debugger;
             }
