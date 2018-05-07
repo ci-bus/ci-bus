@@ -24,9 +24,14 @@
 		}
 	}
 	
-	$turi = trim($_SERVER['argv'][0], "/");
+	if ($_SERVER['argv']) {
+	    $turi = trim($_SERVER['argv'][0], "/");
+	} else {
+	    $turi = trim($_SERVER['QUERY_STRING'], "/");
+	}
+	
 	$urlparts = explode('/', $turi);
-			
+
 	if ((!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') || $_FILES['file']) {
 		
 		if($urlparts[0] == 'require')
