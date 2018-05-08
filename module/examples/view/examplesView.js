@@ -334,6 +334,70 @@ cb.define({
             onRender: function () {
                 debugger;
             }
+        }, {
+            xtype: 'h3',
+            text: '...Polyline'
+        }, {
+            xtype: 'svg',
+            width: 300,
+            height: 200,
+            margin: 10,
+            border: '1px solid #AAA',
+            items: [{
+                xtype: 'polyline',
+                store: 'example',
+                field: 'a',
+                storelink: true,
+                'stroke-width': 1,
+                color: '#AAA',
+                width: 300,
+                height: 200,
+                fill: '#CCC',
+                pointMax: 100,
+                pointMin: 0
+            }]
+        }, {
+            xtype: 'container',
+            text: '<strong>Testing storelink </strong>',
+            defaults: {
+                xtype: 'button',
+                margin: '0 10px 10px 0'
+            },
+            items: [{
+                text: 'Order ASC',
+                click: function(){
+                    cb.getStore('example').sort('a', 'asc');
+                }
+            }, {
+                text: 'Order DESC',
+                click: function(){
+                    cb.getStore('example').sort('a', 'desc');
+                }
+            }, {
+                text: 'Reset order',
+                click: function(){
+                    cb.getStore('example').restore('a');
+                }
+            }, {
+                text: 'Generate',
+                click: function(){
+                    if(!cb.aniline){
+                        cb.aniline = setInterval(function(){
+                            var ran = Math.floor((Math.random() * 100) + 1);
+                            var data = cb.getStore('example', 'a');
+                            data.push(ran);
+                            data.shift();
+                            cb.getStore('example').setData('a', data);
+                        }, 100);
+                        var butt = this;
+                        cb.getCmp(this).html('<strong>Stop</strong>');
+                    } else {
+                        clearInterval(cb.aniline);
+                        cb.aniline = false;
+                        cb.getCmp(this).html('Generate');
+                    }
+                }
+            }]
         }]
 	}]
 });

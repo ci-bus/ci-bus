@@ -2,14 +2,19 @@ cb.define({
 	xtype: 'controller',
 	name: 'examples',
 	onload: function () {
+	    
+	    // Create store to polyline example
+	    cb.define({
+            xtype: 'store',
+            name: 'example',
+            data: {
+                a: [15,43,87,18,23,15,24,8]
+            }
+        });
+	    
+	    // Load view
 		cb.load('view', 'examples', 'examples', function () {
 			cb.getController('examples').doMagia();
-			setTimeout(function () {
-				if (cb.magiaInterval) {
-					clearInterval(cb.magiaInterval);
-					cb.magiaInterval = null;
-				}
-			}, 2000);
 		});
 	},
 	

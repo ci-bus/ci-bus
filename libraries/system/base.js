@@ -2138,9 +2138,22 @@ cb.create = function(opt, record){
 				return ele;
 			}
 			
-			if($.isFunction(opt.onRender)){
-				opt.onRender(ele);
+			// Execute alferRender private function
+			if (opt.onRender && $.isFunction(opt.onRender)) {
+                opt.onRender(ele);
+            }
+			// Execute afteres, afterRender of childs
+			if (opt.afteres && $.isArray(opt.afteres)) {
+			    for (var i=0; i<opt.afteres.length; i++) {
+			        if ($.isFunction(opt.afteres[i])) {
+		                opt.afteres[i](ele);
+		            }
+			    }
 			}
+			// Execute onRender
+            if (opt.onRender && $.isFunction(opt.onRender)) {
+                opt.onRender(ele);
+            }
 		}
 	}
 }
@@ -2149,7 +2162,6 @@ cb.create = function(opt, record){
 // En teoría se podría ir guardando las funciones en un array y ejecutarlas al renderizar un elemento
 // Pero podría pasar que al renderizar un hijo que tenga renderTo ejecute funciones del padre cuando el padre no está renderizado
 // Porque al llevar el renderTo el padre en las definiciones no será el padre en el html final... jmm...
-
 cb.doAfterRender = function (ele) {
     if (ele.afterRender && $.isFunction(ele.afterRender)) {
         ele.afterRender(ele);
