@@ -1,3 +1,17 @@
+/*
+ * Este archivo es la base de Ci-bus
+ * ---------------------------------
+ * Ci-bus es un proyecto personal el cual hace de pegamento entre jQuery y bootstrap
+ * creando elementos html en base a definiciones en objetos javascript
+ * pero la cosa no queda ahí, también cuenta con todo lo necesatio para crear
+ * una página web o applicación con las más novedosas técnicas de programación
+ * 
+ * Creado por: Miguel Ángel Calero Ponce
+ * Email: miguelelinventor@gmail.com
+ * Tlf: +34 722-128-106
+ * 
+ */
+
 //Compatibilidad
 if (!Array.prototype.indexOf) {
     Array.prototype.indexOf = function (searchElement) {
@@ -53,10 +67,11 @@ cb.eleids = 0;
 //añadiendo el xtype a este array lo evitamos
 cb.eleArrayAcept = ['polyline'];
 
+//El route te permine ejecutar una funcion de un controlador visitando un hash #ejemplo
 cb.router = {
 	routes: {},
-	set: function(hash, ctr, fun){
-		if($.type(hash) === 'string' && $.type(ctr) === 'string' && $.type(fun) === 'string'){
+	set: function(hash, ctr, fun) {
+		if ($.type(hash) === 'string' && $.type(ctr) === 'string' && $.type(fun) === 'string') {
 			this.routes[hash] = {
 				ctr: ctr,
 				fun: fun
@@ -65,74 +80,75 @@ cb.router = {
 		}
 		return false;
 	},
-	get: function(hash){
-		if(this.routes[hash]){
+	get: function(hash) {
+		if (this.routes[hash]) {
 			return this.routes[hash];
 		}
 		return null;
 	},
-	getCtr: function(hash){
-		if(this.routes[hash] && this.routes[hash].ctr){
+	getCtr: function(hash) {
+		if (this.routes[hash] && this.routes[hash].ctr) {
 			return this.routes[hash].ctr;
 		}
 		return null;
 	},
-	getFun: function(hash){
+	getFun: function(hash) {
 		var rt = this.get(hash);
-		if(rt && cb.module.controller[rt.ctr]){
-			if($.isFunction(cb.module.controller[rt.ctr][rt.fun])){
+		if (rt && cb.module.controller[rt.ctr]) {
+			if ($.isFunction(cb.module.controller[rt.ctr][rt.fun])) {
 				return cb.module.controller[rt.ctr][rt.fun];
 			}
 		}
 		return null;
 	},
-	route: function(hash){
+	route: function(hash) {
 		var hashpart = hash.split('/');
 		var hashend = hashpart[0];
-		for(var i=1; i<hashpart.length; i++){
-			if($.isNumeric(hashpart[i])){
+		for (var i=1; i<hashpart.length; i++) {
+			if ($.isNumeric(hashpart[i])) {
 				hashend = hashend + '/:num';
 				hashpart[i] = parseInt(hashpart[i]);
-			}else if($.type(hashpart[i]) === 'string' && hashpart[i] != ""){
+			}else if ($.type(hashpart[i]) === 'string' && hashpart[i] != "") {
 				hashend = hashend + '/:str';
-			}else if(hashpart[i] == ""){
+			}else if (hashpart[i] == "") {
 				hashpart.splice(i, 1);
 			}
 		}
 		var fun = this.getFun(hashend);
-		if($.isFunction(fun)){
+		if ($.isFunction(fun)) {
 			fun(hashpart);
 		}
 	},
-	hashchange: function(){
+	hashchange: function() {
 		var hash = top.window.location.hash;
 		this.route(hash);
 	},
-	listener: addEventListener('hashchange', function(){ cb.router.hashchange(); }, false)
+	listener: addEventListener('hashchange', function() { cb.router.hashchange(); }, false)
 };
 
+//Funciones base para los store javascript
 cb.base.store = {
 	datarestore: [],
 	data: null,
 	restore: function(ndata)
 	{
-		if(typeof ndata === 'string' && this.datarestore && this.datarestore[ndata]){
+		if (typeof ndata === 'string' && this.datarestore && this.datarestore[ndata]) {
 			var restdata = this.getRestoreData(ndata);
 			cb.putToObject(this.data, ndata, restdata);
-		}else if(!ndata && this.datarestore){
+		}else if (!ndata && this.datarestore) {
 			this.data = this.datarestore;
 		}
 		this.storelink();
 	},
-	setRestoreData: function(ndata, data){
-		if(typeof ndata === 'string' && data){
+	setRestoreData: function(ndata, data) {
+		if (typeof ndata === 'string' && data) {
 			this.datarestore[ndata] = cb.clone(data);
 		}
 	},
 	getRestoreData: function(data)
 	{
-		if(typeof data === 'string'){
-			if(this.datarestore[data]){
+		if (typeof data === 'string') {
+			if (this.datarestore[data]) {
 				return this.datarestore[data];
 			}
 		}else{
@@ -142,31 +158,31 @@ cb.base.store = {
 	},
 	getData: function(data)
 	{
-		if(typeof data === 'string'){
+		if (typeof data === 'string') {
 			return cb.fetchFromObject(this.data, data);
 		}else{
 			return this.data;
 		}
 		return null;
 	},
-	setData: function(ndata, data){
-		if(typeof ndata === 'string' && data !== undefined){
+	setData: function(ndata, data) {
+		if (typeof ndata === 'string' && data !== undefined) {
 			cb.putToObject(this.data, ndata, data);
-			if(this.getRestoreData(ndata)){
+			if (this.getRestoreData(ndata)) {
 				delete this.datarestore[ndata];
 			}
-		}else if(ndata !== undefined){
+		}else if (ndata !== undefined) {
 			this.data = ndata;
 			this.datarestore = [];
 		}
 		this.storelink();
 	},
-	storelink: function(){
-		if($.isArray(cb.module.storelink[this.name])){
+	storelink: function() {
+		if ($.isArray(cb.module.storelink[this.name])) {
 			var strlk = cb.module.storelink[this.name];
-			for(var i=0; i<strlk.length; i++){
-				if(strlk[i].ele && typeof strlk[i].ele.setData === 'function'){
-					if(strlk[i].field){
+			for (var i=0; i<strlk.length; i++) {
+				if (strlk[i].ele && typeof strlk[i].ele.setData === 'function') {
+					if (strlk[i].field) {
 						var record = cb.fetchFromObject(this.getData(), strlk[i].field);
 						strlk[i].ele.setData(record);
 					}else{
@@ -176,12 +192,12 @@ cb.base.store = {
 			}
 		}
 	},
-	extendData: function(ndata, data){
-		if(typeof ndata === 'string' && data !== undefined){
+	extendData: function(ndata, data) {
+		if (typeof ndata === 'string' && data !== undefined) {
 			$.extend(this.data[ndata], data);
-		}else if(ndata !== undefined){
+		}else if (ndata !== undefined) {
 			$.extend(this.data, ndata);
-		}else if(data !== undefined){
+		}else if (data !== undefined) {
 			$.extend(this.data, data);
 		}
 		this.storelink();
@@ -192,47 +208,47 @@ cb.base.store = {
 	},
 	sort: function(data, fun)
 	{
-		if($.isFunction(data))
+		if ($.isFunction(data))
 		{
-			if($.isFunction(this.data.sort)){
+			if ($.isFunction(this.data.sort)) {
 				this.data.sort(data);
 			}
 		}
-		else if(typeof data === 'string' && $.isFunction(fun))
+		else if (typeof data === 'string' && $.isFunction(fun))
 		{
-			if($.isFunction(cb.fetchFromObject(this.data, data).sort)){
-				if(!this.getRestoreData(data)){
+			if ($.isFunction(cb.fetchFromObject(this.data, data).sort)) {
+				if (!this.getRestoreData(data)) {
 					this.setRestoreData(data, cb.fetchFromObject(this.data, data));
 				}
-				if($.isFunction(cb.fetchFromObject(this.data, data).sort)){
+				if ($.isFunction(cb.fetchFromObject(this.data, data).sort)) {
 					cb.fetchFromObject(this.data, data).sort(fun);
 				}
 			}
-		}else if(typeof data === 'string' && typeof fun === 'string'){
+		}else if (typeof data === 'string' && typeof fun === 'string') {
 			data = { data: data, order: fun };
 		}
-		if($.isPlainObject(data)){
-			if(typeof data.data === 'string'){
-				if(typeof data.order === 'string' && typeof data.field === 'string'){
-					if($.isFunction(cb.fetchFromObject(this.data, data).sort)){
-						if(!this.getRestoreData(data.data)){
+		if ($.isPlainObject(data)) {
+			if (typeof data.data === 'string') {
+				if (typeof data.order === 'string' && typeof data.field === 'string') {
+					if ($.isFunction(cb.fetchFromObject(this.data, data).sort)) {
+						if (!this.getRestoreData(data.data)) {
 							this.setRestoreData(data.data, cb.fetchFromObject(this.data, data.data));
 						}
-						cb.fetchFromObject(this.data, data.data).sort(function(a, b){
-							if(data.order == 'desc' || data.order == 'DESC'){
+						cb.fetchFromObject(this.data, data.data).sort(function(a, b) {
+							if (data.order == 'desc' || data.order == 'DESC') {
 								return b[data.field] - a[data.field];
 							}else{
 								return a[data.field] - b[data.field];
 							}
 						});
 					}
-				}else if(typeof data.order === 'string'){
-					if($.isFunction(cb.fetchFromObject(this.data, data.data).sort)){
-						if(!this.getRestoreData(data.data)){
+				}else if (typeof data.order === 'string') {
+					if ($.isFunction(cb.fetchFromObject(this.data, data.data).sort)) {
+						if (!this.getRestoreData(data.data)) {
 							this.setRestoreData(data.data, cb.fetchFromObject(this.data, data.data));
 						}
-						cb.fetchFromObject(this.data, data.data).sort(function(a, b){
-							if(data.order == 'desc' || data.order == 'DESC'){
+						cb.fetchFromObject(this.data, data.data).sort(function(a, b) {
+							if (data.order == 'desc' || data.order == 'DESC') {
 								return b - a;
 							}else{
 								return a - b;
@@ -246,8 +262,9 @@ cb.base.store = {
 	}
 };
 
+//Funciones base para todos los elementos
 cb.base.element = {
-	getType: function(){
+	getType: function() {
 		return this.opt.xtype;
 	},
 	getRecord: function() {
@@ -257,8 +274,8 @@ cb.base.element = {
 		return this.val()? this.val(): this.getRecord();
 	},
 	getOpt: function() {
-		if(this.component){
-			if(this.opt){
+		if (this.component) {
+			if (this.opt) {
 				return $.extend(this.component, this.opt);
 			}else{
 				return this.component
@@ -267,32 +284,60 @@ cb.base.element = {
 	}
 };
 
-cb.clone = function(data){
+//Funciones base para los polyline
+cb.base.polyline = {
+	setData: function(record) {
+		var ele = $.isArray(this)? this[0]: this;
+		if ($.isArray(record)) {
+			var opt = cb.cloneObject(ele.getOpt());
+			if (typeof opt.xspace   === 'undefined') opt.xspace   = parseInt(parseInt(opt.width) / (record.length - 1));
+			if (typeof opt.pointMax === 'undefined') opt.pointMax = Math.max.apply(null, record);
+			if (typeof opt.pointMin === 'undefined') opt.pointMin = Math.min.apply(null, record);
+			var xwrite = 0;
+			var ywrite = 0;
+			var points = "0,"+parseInt(opt.height);
+			for (var i=0; i<record.length; i++) {
+				ywrite = parseInt(opt.height) - parseInt((record[i]-opt.pointMin)*parseInt(opt.height)/opt.pointMax) - opt.pointMin;
+				points += " "+xwrite+","+ywrite;
+				xwrite += opt.xspace;
+			}
+			points += " "+xwrite+","+parseInt(opt.height);
+		}
+		$(ele).removeAttr('points').attr({ points: points });
+	}
+};
+
+//Funcion para clonar un array u objeto
+cb.clone = function(data) {
 	return JSON.parse(JSON.stringify(data));
 };
 
-cb.autoname = function(){
+//Funcion para generar un nombre único
+cb.autoname = function() {
 	var r = 'autoname_'+this.elenamed;
 	this.elenamed++;
 	return r;
 };
 
-cb.autoid = function(){
+//Funcion para generar un id único
+cb.autoid = function() {
     var r = 'autoid_'+this.eleids;
     this.eleids++;
     return r;
 };
 
+//Funcion para ejecutar un método de un controlador
 cb.ctr = function(ctr, fun, vals)
 {
-	if(cb.module.controller[ctr] && $.type(cb.module.controller[ctr][fun]) == 'function'){
+	if (cb.module.controller[ctr] && $.type(cb.module.controller[ctr][fun]) == 'function') {
 		return cb.module.controller[ctr][fun](vals);
 	}
 };
 
-cb.get = function(type, name, field){
-	if(field){
-		if(type == 'store'){
+//Funcion para coger un controlador, store, vista o componente
+cb.get = function(type, name, field) {
+	if (field) {
+		if (type == 'store') {
 			return cb.module[type]? cb.module[type][name]? cb.module[type][name].data[field]? cb.module[type][name].data[field]: null: null: null;
 		}else{
 			return cb.module[type]? cb.module[type][name]? cb.module[type][name][field]? cb.module[type][name][field]: null: null: null;
@@ -302,22 +347,33 @@ cb.get = function(type, name, field){
 	}
 };
 
-cb.getStore = function(name, field){
+//Funcion para coger un store
+cb.getStore = function(name, field) {
 	return cb.get('store', name, field);
 };
 
-cb.getView = function(name, field){
+//Funcion para coger la definición de una vista
+cb.getView = function(name, field) {
 	return cb.get('view', name, field);
 };
 
-cb.getController = function(name, field){
+//Funcion para coger un controlador
+cb.getController = function(name, field) {
 	return cb.get('controller', name, field);
 };
 
-cb.getComponent = function(name, field){
+//Funcion para coger la definición de un componente
+cb.getComponent = function(name, field) {
 	return cb.get('component', name, field);
 };
 
+//Funcion para coger un elemento
+//éste poseerá las funciones base de ci-bus y de jQuery
+cb.getCmp = function(ref) {
+	return $.extend($(ref), $(ref)[0]);
+};
+
+//Funcion para enviar un formulario a un store PHP
 cb.send = function(formn,module,store,callback)
 {
 	$.ajax({
@@ -343,6 +399,7 @@ cb.require = function(dt, callback)
 	});
 };
 
+//Funciona para cargar varios controladores y vistas en una sola llamada
 cb.loadAll = function(dt, callback)
 {
 	$.ajax({
@@ -355,13 +412,14 @@ cb.loadAll = function(dt, callback)
 	});
 };
 
+//Funcion igual que loadAll pero haciendo una llamada por archivo
 cb.loadLineal = function (arr)
 {
-	if($.isArray(arr[0]))
+	if ($.isArray(arr[0]))
 	{
 		cb.load(arr[0][0], arr[0][1], arr[0][2], arr[0][3], cb.loadSecondLineal(arr, 0));
 	}
-	else if($.isArray(arr) && arr.length > 2)
+	else if ($.isArray(arr) && arr.length > 2)
 	{
 		cb.load(arr[0], arr[1], arr[2], arr[3]);
 	}
@@ -371,35 +429,36 @@ cb.loadSecondLineal = function(arr, n)
 {
 	return function(data, textStatus, jqXHR) {
 		n++;
-		if($.isArray(arr[n]))
+		if ($.isArray(arr[n]))
 		{
 	        cb.load(arr[n][0], arr[n][1], arr[n][2], arr[n][3], cb.loadSecondLineal(arr, n));
 		}
     };
 };
 
+//Funcion para cargar un controlador, vista, store  o componente
 cb.load = function(type, module, name, data, callback)
 {
-	if($.isFunction(name))
+	if ($.isFunction(name))
 	{
 		callback = name;
 		name = module;
 	}
-	if(!name) name = module;
-	if($.isFunction(data))
+	if (!name) name = module;
+	if ($.isFunction(data))
 	{
 		callback = data;
 		data = {};
 	}
-	if($.isPlainObject(name))
+	if ($.isPlainObject(name))
 	{
 		data = name;
 		name = module;
 	}
-	if($.isPlainObject(data)){
+	if ($.isPlainObject(data)) {
 		cb.module.parseData[name] = data;
 	}
-	if(type == 'store')
+	if (type == 'store')
 	{
 		$.ajax({
 		  dataType: "script",
@@ -410,9 +469,9 @@ cb.load = function(type, module, name, data, callback)
 		  success: callback
 		});
 	}
-	else if(type == 'component')
+	else if (type == 'component')
 	{		
-		if(!this.module.component[name])
+		if (!this.module.component[name])
 		{
 			this.module.component[name] = {};
 		}
@@ -432,26 +491,27 @@ cb.load = function(type, module, name, data, callback)
 	}
 };
 
+//Funcion para definir un controlador, vista, store o componente
 cb.define = function(obj)
 {
-	if(obj.name && obj.xtype)
+	if (obj.name && obj.xtype)
 	{	
-		if(!$.isArray(obj.data) && this.module[obj.xtype][obj.name])
+		if (!$.isArray(obj.data) && this.module[obj.xtype][obj.name])
 		{
-			for(var fie in this.module[obj.xtype][obj.name].data)
+			for (var fie in this.module[obj.xtype][obj.name].data)
 			{
-				if(!obj.data[fie]){
+				if (!obj.data[fie]) {
 					obj.data[fie] = this.module[obj.xtype][obj.name].data[fie];
 				}
 			}
 		}
 		
 		//Default extend
-		if(obj.xtype == 'store')
+		if (obj.xtype == 'store')
 		{			
-			if($.isArray(obj.extend)){
+			if ($.isArray(obj.extend)) {
 				obj.extend.unshift('base.store');
-			}else if(typeof obj.extend === 'string'){
+			}else if (typeof obj.extend === 'string') {
 				obj.extend = ['base.store', obj.extend];
 			}else{
 				obj.extend = 'base.store';
@@ -460,13 +520,13 @@ cb.define = function(obj)
 		
 		//Extends
 		this.module[obj.xtype][obj.name] = {};//Init object
-		if(obj.extend){
-			if(typeof obj.extend === 'string'){
+		if (obj.extend) {
+			if (typeof obj.extend === 'string') {
 				$.extend( this.module[obj.xtype][obj.name], this.fetchFromObject(this, obj.extend));
 			}
-			else if($.isArray(obj.extend)){
-				for(var i=0; i<obj.extend.length; i++){
-					if(typeof obj.extend[i] === 'string'){
+			else if ($.isArray(obj.extend)) {
+				for (var i=0; i<obj.extend.length; i++) {
+					if (typeof obj.extend[i] === 'string') {
 						$.extend( this.module[obj.xtype][obj.name], this.fetchFromObject(this, obj.extend[i]));
 					}
 				}
@@ -475,19 +535,19 @@ cb.define = function(obj)
 		//To end Extend obj
 		$.extend( this.module[obj.xtype][obj.name], obj);
 		
-		if(obj.xtype == 'store')
+		if (obj.xtype == 'store')
 		{
 			//TODO Refrescar elementos que carguen datos de este store
 			//En planificación
 		}
 		
-		if($.isArray(obj['require'])){
+		if ($.isArray(obj['require'])) {
 			this.require(obj['require']);
 		}
 		
-		if(obj.xtype == 'view')
+		if (obj.xtype == 'view')
 		{			
-			if(obj.renderTo)
+			if (obj.renderTo)
 			{
 				//TODO No borrar los elementos con reload: false
 				$(obj.renderTo).empty();
@@ -495,13 +555,13 @@ cb.define = function(obj)
 				delete obj.renderTo;
 			}
 			
-			if(obj.items)
+			if (obj.items)
 			{
-				if(obj.appendTo)
+				if (obj.appendTo)
 				{
 					obj.items = this.setMissingDinamicValue(obj.items, 'appendTo', obj.appendTo);
 				}
-				else if(obj.prependTo)
+				else if (obj.prependTo)
 				{
 					obj.items = this.setMissingDinamicValue(obj.items, 'prependTo', obj.prependTo);
 				}
@@ -509,24 +569,24 @@ cb.define = function(obj)
 			
 			this.render(obj);
 			
-			if($.isFunction(obj.onLoad)){
+			if ($.isFunction(obj.onLoad)) {
 				obj.onLoad();
 			}
-		}else if(obj.xtype == 'controller' && obj.route){
-			if(top.window.location.hash){
+		}else if (obj.xtype == 'controller' && obj.route) {
+			if (top.window.location.hash) {
 				cb.router.hashchange();
 			}
 		}
 		
 		//Add routes
-		if(obj.xtype == 'controller' && $.isPlainObject(obj.route)){
+		if (obj.xtype == 'controller' && $.isPlainObject(obj.route)) {
 			$.each(obj.route, function(hash, fun) {
 				cb.router.set(hash, obj.name, fun);
 			});
 		}
 		
-		if($.isFunction(obj['onload'])){
-			if(cb.module.parseData[obj.name]){
+		if ($.isFunction(obj['onload'])) {
+			if (cb.module.parseData[obj.name]) {
 				obj['onload'](cb.module.parseData[obj.name]);
 			}else{
 				obj['onload']();
@@ -537,12 +597,12 @@ cb.define = function(obj)
 
 cb.fetchFromObject = function(obj, prop) {
 
-    if(typeof obj === 'undefined') {
+    if (typeof obj === 'undefined') {
         return false;
     }
 
     var _index = prop.indexOf('.')
-    if(_index > -1) {
+    if (_index > -1) {
         return this.fetchFromObject(obj[prop.substring(0, _index)], prop.substr(_index + 1));
     }
 
@@ -551,12 +611,12 @@ cb.fetchFromObject = function(obj, prop) {
 
 cb.putToObject = function(obj, prop, data) {
 
-    if(typeof obj === 'undefined') {
+    if (typeof obj === 'undefined') {
         return false;
     }
 
     var _index = prop.indexOf('.')
-    if(_index > -1) {
+    if (_index > -1) {
         return this.putToObject(obj[prop.substring(0, _index)], prop.substr(_index + 1), data);
     }
 
@@ -565,26 +625,26 @@ cb.putToObject = function(obj, prop, data) {
     return true;
 };
 
-cb.setMissingDinamicValue = function(obj, attr, value, nivels){
-	if(!nivels){
+cb.setMissingDinamicValue = function(obj, attr, value, nivels) {
+	if (!nivels) {
 		nivels=0;
 	}
 	
-	if($.isPlainObject(obj) && !obj[attr])
+	if ($.isPlainObject(obj) && !obj[attr])
 	{
 		obj[attr] = value;
 	}
-	else if($.isArray(obj))
+	else if ($.isArray(obj))
 	{
-		for(n=0; n<obj.length; n++)
+		for (n=0; n<obj.length; n++)
 		{
-			if($.isPlainObject(obj[n]) && !obj[n][attr])
+			if ($.isPlainObject(obj[n]) && !obj[n][attr])
 			{
 				obj[n][attr] = value;
 			}
 		}
 	}
-	if(nivels > 0 && obj.items)
+	if (nivels > 0 && obj.items)
 	{
 		nivels--;
 		obj.items = this.setMissingDinamicValue(obj.items, attr, value, nivels);
@@ -593,26 +653,26 @@ cb.setMissingDinamicValue = function(obj, attr, value, nivels){
 	return obj;
 }
 
-cb.setDinamicValue = function(obj, attr, value, nivels){
-	if(!nivels){
+cb.setDinamicValue = function(obj, attr, value, nivels) {
+	if (!nivels) {
 		nivels=0;
 	}
 	
-	if($.isPlainObject(obj))
+	if ($.isPlainObject(obj))
 	{
 		obj[attr] = value;
 	}
-	else if($.isArray(obj))
+	else if ($.isArray(obj))
 	{
-		for(n=0; n<obj.length; n++)
+		for (n=0; n<obj.length; n++)
 		{
-			if($.isPlainObject(obj[n]))
+			if ($.isPlainObject(obj[n]))
 			{
 				obj[n][attr] = value;
 			}
 		}
 	}
-	if(nivels > 0 && obj.items)
+	if (nivels > 0 && obj.items)
 	{
 		nivels--;
 		obj.items = this.setDinamicValue(obj.items, attr, value, nivels);
@@ -623,7 +683,7 @@ cb.setDinamicValue = function(obj, attr, value, nivels){
 
 cb.storeSet = function(ele, value)
 {
-	if($(ele).is('input'))
+	if ($(ele).is('input'))
 	{
 		$(ele).val(value);
 	}
@@ -634,9 +694,10 @@ cb.storeSet = function(ele, value)
 	return ele;
 }
 
-cb.setConfig = function(va, val){
+//Funciona para setear valores de configuracion que necesitemos
+cb.setConfig = function(va, val) {
 			
-	if($.isArray(va) || $.isPlainObject(va))
+	if ($.isArray(va) || $.isPlainObject(va))
 	{	
 		this.config = $.extend(this.config, va);
 	}
@@ -645,35 +706,35 @@ cb.setConfig = function(va, val){
 		this.config[va] = val;
 	}
 }
-
-cb.getConfig = function(va, var2){
+//Funcion para coger valores de configuracion
+cb.getConfig = function(va, var2) {
 			
-	if(!var2){
-		if(this.config[va])
+	if (!var2) {
+		if (this.config[va])
 		{
 			return this.config[va];
 		}
 	}else{
-		if(this.config[va])
+		if (this.config[va])
 		{
-			if(this.config[va][var2])
+			if (this.config[va][var2])
 			{
 				return this.config[va][var2];
 			}
 		}
 	}
 }
-
-cb.delConfig = function(va, var2){
-	if(!var2){
-		if(this.config[va])
+//Funcion para borrar valores de configuracion
+cb.delConfig = function(va, var2) {
+	if (!var2) {
+		if (this.config[va])
 		{
 			delete this.config[va];
 		}
 	}else{
-		if(this.config[va])
+		if (this.config[va])
 		{
-			if(this.config[va][var2])
+			if (this.config[va][var2])
 			{
 				delete this.config[va][var2];
 			}
@@ -684,70 +745,71 @@ cb.delConfig = function(va, var2){
 cb.render = function(obj, callback)
 {
 	vw = obj.name;
-	if($.isPlainObject(obj.items))
+	if ($.isPlainObject(obj.items))
 	{
-		if(obj.items.reload !== false || !$('#'+obj.items.id).length){
-			if(obj.items.renderTo){
+		if (obj.items.reload !== false || !$('#'+obj.items.id).length) {
+			if (obj.items.renderTo) {
 				$(obj.items.renderTo).html('');
 			}
 			this.create(obj.items);
 		}
 	}
-	else if($.isArray(obj.items))
+	else if ($.isArray(obj.items))
 	{
 		for (var j=0; j<obj.items.length; j++) {
-			if(obj.items[j].reload !== false || !$('#'+obj.items[j].id).length){
-				if(obj.items[j].renderTo){
+			if (obj.items[j].reload !== false || !$('#'+obj.items[j].id).length) {
+				if (obj.items[j].renderTo) {
 					$(obj.items[j].renderTo).html('');
 				}
 				this.create(obj.items[j]);
 			}
 		}
 	}
-	if($.isFunction(callback))
+	if ($.isFunction(callback))
 	{
 		callback();
 	}
 }
 
-cb.extend = function(opt1, opt2){
-	if(opt2.forEach){
-		opt2.forEach(function(ele, idx){
+cb.extend = function(opt1, opt2) {
+	if (opt2.forEach) {
+		opt2.forEach(function(ele, idx) {
 			opt1[idx] = ele;
 		});
 	}
 	return opt1;
 }
 
-cb.cloneObject = function(obj){
+cb.cloneObject = function(obj) {
 	return $.extend({}, obj);
 }
 
-cb.cloneArray = function(arr){
+cb.cloneArray = function(arr) {
 	return $.extend([], arr);
 }
 
+//Para la creación de componentes de boostrap
 cb.module.bootstrapComponent = {
-	'button': function(opt, record){
+	'button': function(opt, record) {
 		var ele = document.createElement(opt.xtype);
-		if(!opt.type) opt.type = 'default';
+		if (!opt.type) opt.type = 'default';
 		opt.cls? opt.cls = 'btn btn-'+opt.type+' '+opt.cls : opt.cls = 'btn btn-'+opt.type;
-		if(opt.size) opt.cls += ' btn-'+opt.size;
+		if (opt.size) opt.cls += ' btn-'+opt.size;
 		opt.type = 'button';
-		if(!opt.margin && opt.margin !== 0) opt.margin = '0 5px 0 0';
+		if (!opt.margin && opt.margin !== 0) opt.margin = '0 5px 0 0';
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'nav': function(opt, record){
-		if(!opt.toggle)opt.toggle = cb.autoname();
+	'nav': function(opt, record) {
+		if (!opt.toggle)opt.toggle = cb.autoname();
 		var ele = document.createElement('nav');
 		$(ele).addClass('navbar');
-		if(opt.type)
+		if (opt.type)
 		{
 			var tcls = opt.type.split(' ');
-			for(var i=0; i<tcls.length; i++)
+			for (var i=0; i<tcls.length; i++)
 			{
-				if(tcls[i].trim() != '') $(ele).addClass('navbar-'+tcls[i]);
+				if (tcls[i].trim() != '') $(ele).addClass('navbar-'+tcls[i]);
 			}
 			opt.notype = true;
 		}
@@ -758,16 +820,16 @@ cb.module.bootstrapComponent = {
 		var conta = document.createElement('div');
 		$(conta).addClass('container-fluid');
 		conta = cb.common_prop(conta, opt);
-		if($.isArray(opt.items))
+		if ($.isArray(opt.items))
 		{
-			for(var a=0;a<opt.items.length;a++)
+			for (var a=0;a<opt.items.length;a++)
 			{
-				if(opt.items[a].xtype == 'header')
+				if (opt.items[a].xtype == 'header')
 				{
 					opt.items[a].xtype = 'navbar-header';
 					opt.items[a].target = opt.toggle;
 				}
-				else if(opt.items[a].xtype == 'collapse' || opt.items[a].xtype == 'navbar-collapse')
+				else if (opt.items[a].xtype == 'collapse' || opt.items[a].xtype == 'navbar-collapse')
 				{
 					opt.items[a].xtype = 'navbar-collapse';
 					opt.items[a].cls = opt.toggle;
@@ -779,13 +841,13 @@ cb.module.bootstrapComponent = {
 		$(ele).append(conta);
 		return ele;
 	},
-	'navbar-collapse': function(opt, record){
+	'navbar-collapse': function(opt, record) {
 		var ele = document.createElement('div');
 		$(ele).addClass('collapse navbar-collapse');
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'navbar-header': function(opt, record){
+	'navbar-header': function(opt, record) {
 		var ele = document.createElement('div');
 		$(ele).addClass('navbar-header');
 		ele = cb.common_prop(ele, opt);
@@ -812,7 +874,7 @@ cb.module.bootstrapComponent = {
 		}));
 		return ele;
 	},
-	'button-menu': function(opt, record){
+	'button-menu': function(opt, record) {
 		opt.xtype = 'button';
 		conta = cb.create(cb.cloneObject(opt), record);
 		$(conta).addClass('navbar-btn');
@@ -820,7 +882,7 @@ cb.module.bootstrapComponent = {
 		$(ele).append(conta);
 		return ele;
 	},
-	'text-menu': function(opt, record){
+	'text-menu': function(opt, record) {
 		conta = document.createElement('p');
 		$(conta).addClass('navbar-text');
 		conta = cb.common_prop(conta, opt);
@@ -828,12 +890,12 @@ cb.module.bootstrapComponent = {
 		$(ele).append(conta);
 		return ele;
 	},
-	'navbar': function(opt, record){
+	'navbar': function(opt, record) {
 		opt.cls? opt.cls = 'nav navbar-nav '+opt.cls : opt.cls = 'nav navbar-nav';
-		if(opt.type)
+		if (opt.type)
 		{
 			var tcls = opt.type.split(' ');
-			for(var i=0; i<tcls.length; i++)
+			for (var i=0; i<tcls.length; i++)
 			{
 				opt.cls = opt.cls + ' navbar-'+tcls[i];
 			}
@@ -841,25 +903,25 @@ cb.module.bootstrapComponent = {
 		}
 		var ele = document.createElement('ul');
 		ele = cb.common_prop(ele, opt);
-		if($.isArray(opt.items))
+		if ($.isArray(opt.items))
 		{
-			for(var a=0;a<opt.items.length;a++)
+			for (var a=0;a<opt.items.length;a++)
 			{
-				if(opt.items[a].xtype == 'dropdown') opt.items[a].xtype = 'dropdown-menu';
-				if(opt.items[a].xtype == 'button') opt.items[a].xtype = 'button-menu';
-				if(opt.items[a].xtype == 'text') opt.items[a].xtype = 'text-menu';
+				if (opt.items[a].xtype == 'dropdown') opt.items[a].xtype = 'dropdown-menu';
+				if (opt.items[a].xtype == 'button') opt.items[a].xtype = 'button-menu';
+				if (opt.items[a].xtype == 'text') opt.items[a].xtype = 'text-menu';
 				$(ele).append(cb.create(cb.cloneObject(opt.items[a]), record));
 			}
 		}
 		opt.noitems = true;
 		return ele;
 	},
-	'dropdown-menu': function(opt, record){
+	'dropdown-menu': function(opt, record) {
 		opt.cls? opt.cls = 'dropdown '+opt.cls : opt.cls = 'dropdown';
 		var ele = document.createElement('li');
-		if(!opt.type) opt.type = 'dropdown';
+		if (!opt.type) opt.type = 'dropdown';
 		$(ele).addClass(opt.type);
-		if(opt.id)
+		if (opt.id)
 		{
 			$(ele).attr('id',opt.id);
 			opt.id = false;
@@ -873,7 +935,7 @@ cb.module.bootstrapComponent = {
 				'aria-haspopup':'true',
 				'aria-expanded':'true'}});
 		but = cb.common_prop(but, opt);
-		if(opt.caret!==false)
+		if (opt.caret!==false)
 		{
 			$(but).append(cb.create({
 				xtype: 'span',
@@ -881,38 +943,38 @@ cb.module.bootstrapComponent = {
 			}));
 		}
 		$(ele).append(but);
-		if($.isArray(opt.items))
+		if ($.isArray(opt.items))
 		{
 			var ul = document.createElement('ul');
 			$(ul).addClass('dropdown-menu');
-			if(opt.items)
+			if (opt.items)
 			{
-				for(var a=0;a<opt.items.length;a++)
+				for (var a=0;a<opt.items.length;a++)
 				{
 					var li = document.createElement('li');
-					if(opt.items[a].xtype == 'separator' || opt.items[a].xtype == 'divider')
+					if (opt.items[a].xtype == 'separator' || opt.items[a].xtype == 'divider')
 					{
 						li = cb.common_prop(li, {
 							cls: 'divider',
 							attr: {'role':'separator'}});
 						li = cb.common_prop(li, opt.items[a]);
 					}
-					else if(opt.items[a].xtype == 'dropdown-header' || opt.items[a].xtype == 'header')
+					else if (opt.items[a].xtype == 'dropdown-header' || opt.items[a].xtype == 'header')
 					{
 						opt.items[a].cls? opt.items[a].cls = 'dropdown-header '+opt.items[a].cls : opt.items[a].cls = 'dropdown-header';
 						li = cb.common_prop(li, opt.items[a]);
 					}
 					else
 					{
-						if(opt.items[a].xtype == 'li'){
+						if (opt.items[a].xtype == 'li') {
 							li = cb.create(opt.items[a], record);
 						}else{
 							oli = {xtype: 'li'};
-							if(opt.items[a].store){
+							if (opt.items[a].store) {
 								oli.store = opt.items[a].store;
 								delete opt.items[a].store;
 							}
-							if(opt.items[a].field){
+							if (opt.items[a].field) {
 								oli.field = opt.items[a].field;
 								delete opt.items[a].field;
 							}
@@ -928,16 +990,16 @@ cb.module.bootstrapComponent = {
 		opt.noitems = true;
 		return ele;
 	},
-	'dropdown': function(opt, record){
-		if(!opt.type) opt.type2 = 'default';
+	'dropdown': function(opt, record) {
+		if (!opt.type) opt.type2 = 'default';
 		else opt.type2 = opt.type;
 		opt.type = 'button';
-		if(opt.xtype == 'dropup') var t_xtype = 'btn-group ' + opt.xtype;
+		if (opt.xtype == 'dropup') var t_xtype = 'btn-group ' + opt.xtype;
 		else var t_xtype = 'btn-group';
 		var ele = document.createElement('div');
 		$(ele).attr('role', 'group');
 		$(ele).addClass(t_xtype);
-		if(opt.group){
+		if (opt.group) {
 			ele = cb.common_prop(ele, opt.group);
 		}
 		var but = document.createElement('button');
@@ -949,12 +1011,12 @@ cb.module.bootstrapComponent = {
 				'aria-expanded':'false',
 				'type':'button'}
 		});
-		if(!opt.id) opt.id=cb.autoid();
-		if(opt.size){
-			if(opt.cls) opt.cls += ' btn-'+opt.size;
+		if (!opt.id) opt.id=cb.autoid();
+		if (opt.size) {
+			if (opt.cls) opt.cls += ' btn-'+opt.size;
 			else opt.cls = 'btn-'+opt.size;
 		}
-		if(opt.split)
+		if (opt.split)
 		{
 			var but2 = cb.create({
 				xtype:'button',
@@ -964,7 +1026,7 @@ cb.module.bootstrapComponent = {
 			but2 = cb.common_prop(but2, opt);
 			$(ele).append(but2);
 			$(but).append(cb.create({xtype:'span',text:'&nbsp;'}));
-			if(opt.caret!==false)
+			if (opt.caret!==false)
 			{
 				$(but).append(cb.create({xtype:'span', cls:'caret'}));
 			}
@@ -973,7 +1035,7 @@ cb.module.bootstrapComponent = {
 		else
 		{
 			but = cb.common_prop(but, opt);
-			if(opt.caret!==false)
+			if (opt.caret!==false)
 			{
 				$(but).append(cb.create({xtype:'span', cls:'caret'}));
 			}
@@ -981,34 +1043,34 @@ cb.module.bootstrapComponent = {
 		$(ele).append(but);
 		var ul = document.createElement('ul');
 		$(ul).addClass('dropdown-menu').attr('aria-labelledby',opt.id);
-		if($.isArray(opt.items))
+		if ($.isArray(opt.items))
 		{
-			for(var a=0;a<opt.items.length;a++)
+			for (var a=0;a<opt.items.length;a++)
 			{
 				var li = document.createElement('li');
-				if(opt.items[a].xtype == 'separator' || opt.items[a].xtype == 'divider')
+				if (opt.items[a].xtype == 'separator' || opt.items[a].xtype == 'divider')
 				{
 					li = cb.common_prop(li, {
 						cls: 'divider',
 						attr: {'role':'separator'}});
 					li = cb.common_prop(li, opt.items[a]);
 				}
-				else if(opt.items[a].xtype == 'dropdown-header' || opt.items[a].xtype == 'header')
+				else if (opt.items[a].xtype == 'dropdown-header' || opt.items[a].xtype == 'header')
 				{
 					opt.items[a].cls? opt.items[a].cls = 'dropdown-header '+opt.items[a].cls : opt.items[a].cls = 'dropdown-header';
 					li = cb.common_prop(li, opt.items[a]);
 				}
 				else
 				{
-					if(opt.items[a].xtype == 'li'){
+					if (opt.items[a].xtype == 'li') {
 						li = cb.create(opt.items[a], record);
 					}else{
 						oli = {xtype: 'li'};
-						if(opt.items[a].store){
+						if (opt.items[a].store) {
 							oli.store = opt.items[a].store;
 							delete opt.items[a].store;
 						}
-						if(opt.items[a].field){
+						if (opt.items[a].field) {
 							oli.field = opt.items[a].field;
 							delete opt.items[a].field;
 						}
@@ -1023,13 +1085,13 @@ cb.module.bootstrapComponent = {
 		opt.noitems = true;
 		return ele;
 	},
-	'dropup': function(opt, record){
+	'dropup': function(opt, record) {
 		var ele = cb.module.bootstrapComponent['dropdown'](opt, record);
 		return ele;
 	},
-	'container': function(opt, record){
+	'container': function(opt, record) {
 		var ele = document.createElement('div');
-		if(opt.type == 'fluid'){
+		if (opt.type == 'fluid') {
 			$(ele).addClass('container-fluid');
 			opt.notype = true;
 		}else{
@@ -1038,54 +1100,54 @@ cb.module.bootstrapComponent = {
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'progress': function(opt, record){
+	'progress': function(opt, record) {
 		var ele = document.createElement('div');
 		$(ele).addClass('progress');
-		if($.isArray(opt.items))
+		if ($.isArray(opt.items))
 		{
-			for(var a=0; a<opt.items.length; a++)
+			for (var a=0; a<opt.items.length; a++)
 			{
-				if(!opt.items[a].xtype) opt.items[a].xtype = 'progress-bar';
+				if (!opt.items[a].xtype) opt.items[a].xtype = 'progress-bar';
 			}
 		}
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'progress-bar': function(opt, record){
+	'progress-bar': function(opt, record) {
 		var ele = document.createElement('div');
 		$(ele).addClass('progress-bar');
-		if(opt.type) $(ele).addClass('progress-bar-'+opt.type);
-		if(opt.striped) $(ele).addClass('progress-bar-striped');
-		if(opt.animated || opt.active) $(ele).addClass('active');
-		if(!opt.min) opt.min = 0;
-		if(!opt.max) opt.max = 100;
-		if(opt.value) opt.width = opt.value+'%';
+		if (opt.type) $(ele).addClass('progress-bar-'+opt.type);
+		if (opt.striped) $(ele).addClass('progress-bar-striped');
+		if (opt.animated || opt.active) $(ele).addClass('active');
+		if (!opt.min) opt.min = 0;
+		if (!opt.max) opt.max = 100;
+		if (opt.value) opt.width = opt.value+'%';
 		$(ele).attr({'aria-valuemin':opt.min, 'aria-valuemax':opt.max, 'aria-valuenow':opt.value});
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'table': function(opt, record){
+	'table': function(opt, record) {
 		var ele = document.createElement('table');
 		$(ele).addClass('table');
-		if($.isArray(opt.items))
+		if ($.isArray(opt.items))
 		{
-			for(var a=0; a<opt.items.length; a++)
+			for (var a=0; a<opt.items.length; a++)
 			{
-				if(opt.items[a].xtype == 'head')
+				if (opt.items[a].xtype == 'head')
 					opt.items[a].xtype = 'thead';
-		 		if(opt.items[a].xtype == 'body')
+		 		if (opt.items[a].xtype == 'body')
 					opt.items[a].xtype = 'tbody';
 		 	}
 		 }			 
 		 ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'thead': function(opt, record){
+	'thead': function(opt, record) {
 		var ele = document.createElement('thead');
 	 	opt.t_tr = document.createElement('tr');
-	 	for(var h=0;h<opt.items.length;h++)
+	 	for (var h=0;h<opt.items.length;h++)
 	 	{
-	 		if(!opt.items[h].xtype)
+	 		if (!opt.items[h].xtype)
 	 		{
 	 			opt.items[h].xtype = 'th';
 	 			opt.t_th = cb.create(cb.cloneObject(opt.items[h]), record);
@@ -1102,17 +1164,17 @@ cb.module.bootstrapComponent = {
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'tbody': function(opt, record){
+	'tbody': function(opt, record) {
 		var ele = document.createElement('tbody');
 	 	opt.t_tr = document.createElement('tr');
-	 	if(opt.items)
+	 	if (opt.items)
 	 	{
-		 	for(var h=0;h<opt.items.length;h++)
+		 	for (var h=0;h<opt.items.length;h++)
 		 	{
 		 		opt.t_type = h==0? 'th': 'td';
-		 		if(!opt.items[h].xtype || opt.items[h].xtype == 'td' || opt.items[h].xtype == 'th')
+		 		if (!opt.items[h].xtype || opt.items[h].xtype == 'td' || opt.items[h].xtype == 'th')
 		 		{
-		 			if(!opt.items[h].xtype) opt.items[h].xtype = opt.t_type;
+		 			if (!opt.items[h].xtype) opt.items[h].xtype = opt.t_type;
 		 			opt.t_th = cb.create(cb.cloneObject(opt.items[h]), record);
 		 		}
 		 		else
@@ -1120,8 +1182,8 @@ cb.module.bootstrapComponent = {
 		 			opt.t_th = document.createElement(opt.t_type);
 		 			$(opt.t_th).append(cb.create(cb.cloneObject(opt.items[h]), record));
 		 		}
-		 		if(opt.items[h].scope) $(opt.t_th).attr('scope', opt.items[h].scope);
-		 		if(opt.items[h].field)
+		 		if (opt.items[h].scope) $(opt.t_th).attr('scope', opt.items[h].scope);
+		 		if (opt.items[h].field)
 		 		{
 		 			$(opt.t_tr).css('display','none');
 		 		}
@@ -1133,32 +1195,32 @@ cb.module.bootstrapComponent = {
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'th': function(opt, record){
+	'th': function(opt, record) {
 		var ele = document.createElement('th');
-		if(opt.scope) $(ele).attr('scope', opt.scope);
+		if (opt.scope) $(ele).attr('scope', opt.scope);
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'ico': function(opt, record){
+	'ico': function(opt, record) {
 		var ele = document.createElement('span');
 		$(ele).addClass(opt.type).attr({'aria-hidden':'true'});
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'thumbnail': function(opt, record){
-		if(!opt.type) opt.type = 'div';
+	'thumbnail': function(opt, record) {
+		if (!opt.type) opt.type = 'div';
 		var ele = document.createElement(opt.type);
 		opt.notype = true;
 		opt.cls? opt.cls = 'thumbnail '+opt.cls : opt.cls = 'thumbnail';
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'alert': function(opt, record){
-		if(!opt.type) opt.type = 'warning';
-		if(opt.dismissible || opt.closable)
+	'alert': function(opt, record) {
+		if (!opt.type) opt.type = 'warning';
+		if (opt.dismissible || opt.closable)
 			opt.type += ' alert-dismissible';
 		var ele = document.createElement('div');
-		if(opt.dismissible || opt.closable)
+		if (opt.dismissible || opt.closable)
 		{
 			var spa = document.createElement('span');
 			spa = cb.common_prop(spa, {
@@ -1181,47 +1243,47 @@ cb.module.bootstrapComponent = {
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'badge': function(opt, record){
+	'badge': function(opt, record) {
 		var ele = document.createElement('span');
 		opt.cls = 'badge';
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'toolbar': function(opt, record){
+	'toolbar': function(opt, record) {
 		var ele = document.createElement('div');
 		$(ele).addClass('btn-toolbar');
 		$(ele).attr('role','toolbar');
-		if(opt.label) $(ele).attr('aria-label', opt.label);
+		if (opt.label) $(ele).attr('aria-label', opt.label);
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'group': function(opt, record){
+	'group': function(opt, record) {
 		var ele = document.createElement('div');
-		if(opt.type == 'vertical') $(ele).addClass('btn-group-vertical');
+		if (opt.type == 'vertical') $(ele).addClass('btn-group-vertical');
 		else $(ele).addClass('btn-group');
-		if(opt.type == 'justified') $(ele).addClass('btn-group-justified');
+		if (opt.type == 'justified') $(ele).addClass('btn-group-justified');
 		$(ele).attr('role','group');
-		if(opt.label) $(ele).attr('aria-label', opt.label);
-		if(opt.size) $(ele).addClass('btn-group-'+opt.size);
+		if (opt.label) $(ele).attr('aria-label', opt.label);
+		if (opt.size) $(ele).addClass('btn-group-'+opt.size);
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'callout': function(opt, record){
+	'callout': function(opt, record) {
 		var ele = document.createElement('div');
 		$(ele).addClass('bs-callout');
-		if(opt.type) $(ele).addClass('bs-callout-'+opt.type);
-		if(opt.title) $(ele).append(cb.create({ xtype: 'h4', text: opt.title }));
+		if (opt.type) $(ele).addClass('bs-callout-'+opt.type);
+		if (opt.title) $(ele).append(cb.create({ xtype: 'h4', text: opt.title }));
 		opt.ele_p = document.createElement('p');
-		if(opt.text || opt.html)
+		if (opt.text || opt.html)
 		{
 			opt.text? opt.ttext = opt.text : opt.ttext = opt.html;
 			$(opt.ele_p).html(opt.ttext);
 			opt.notext = true;
 			opt.nohtml = true;
 		}
-		if($.isArray(opt.items))
+		if ($.isArray(opt.items))
 		{
-			for(var a=0;a<opt.items.length;a++)
+			for (var a=0;a<opt.items.length;a++)
 				$(opt.ele_p).append(cb.create(cb.cloneObject(opt.items[a]), record));
 				
 			opt.noitems = true;
@@ -1230,10 +1292,10 @@ cb.module.bootstrapComponent = {
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'panel': function(opt, record){
+	'panel': function(opt, record) {
 		var ele = document.createElement('div');
 		$(ele).addClass('panel').css('margin-bottom', '0px');
-		if(opt.type)
+		if (opt.type)
 		{
 			$(ele).addClass('panel-'+opt.type);
 			opt.notype = true;
@@ -1242,20 +1304,20 @@ cb.module.bootstrapComponent = {
 		{
 			$(ele).addClass('panel-default');
 		}
-		if($.isArray(opt.items))
+		if ($.isArray(opt.items))
 		{
-			for(var a=0;a<opt.items.length;a++)
+			for (var a=0;a<opt.items.length;a++)
 			{
-				if(opt.items[a].xtype == 'head' || opt.items[a].xtype == 'heading'){
+				if (opt.items[a].xtype == 'head' || opt.items[a].xtype == 'heading') {
 					opt.items[a].xtype = 'panel-heading';
 				}
-				else if(opt.items[a].xtype == 'body' || opt.items[a].xtype == 'content'){
+				else if (opt.items[a].xtype == 'body' || opt.items[a].xtype == 'content') {
 					opt.items[a].xtype = 'panel-body';
 				}
-				else if(opt.items[a].xtype == 'footer'){
+				else if (opt.items[a].xtype == 'footer') {
 					opt.items[a].xtype = 'panel-footer';
 				}
-				else if(opt.items[a].xtype == 'title'){
+				else if (opt.items[a].xtype == 'title') {
 					opt.items[a].xtype = 'panel-title';
 				}
 			}
@@ -1263,15 +1325,15 @@ cb.module.bootstrapComponent = {
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'panel-heading': function(opt, record){
+	'panel-heading': function(opt, record) {
 		var ele = document.createElement('div');
 		$(ele).addClass(opt.xtype);
-		if(opt.title) $(ele).append(cb.create({ xtype: 'panel-title', text: opt.title }))
-		if($.isArray(opt.items))
+		if (opt.title) $(ele).append(cb.create({ xtype: 'panel-title', text: opt.title }))
+		if ($.isArray(opt.items))
 		{
-			for(var a=0;a<opt.items.length;a++)
+			for (var a=0;a<opt.items.length;a++)
 			{
-				if(opt.items[a].xtype == 'title'){
+				if (opt.items[a].xtype == 'title') {
 					opt.items[a].xtype = 'panel-title';
 				}
 			}
@@ -1279,21 +1341,21 @@ cb.module.bootstrapComponent = {
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'panel-body': function(opt, record){
+	'panel-body': function(opt, record) {
 		var ele = cb.module.bootstrapComponent['panel-heading'](opt, record);
 		return ele;
 	},
-	'panel-footer': function(opt, record){
+	'panel-footer': function(opt, record) {
 		var ele = cb.module.bootstrapComponent['panel-heading'](opt, record);
 		return ele;
 	},
-	'panel-title': function(opt, record){
+	'panel-title': function(opt, record) {
 		var ele = document.createElement('h3');
 		$(ele).addClass(opt.xtype);
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'tabpanel': function(opt, record){
+	'tabpanel': function(opt, record) {
 		opt.t_ul = document.createElement('ul');
 		$(opt.t_ul).addClass('nav nav-tabs');
 		$(opt.t_ul).attr('role','tablist');
@@ -1304,19 +1366,19 @@ cb.module.bootstrapComponent = {
 		opt.t_content = document.createElement('div');
 		$(opt.t_content).addClass('tab-content');
 		
-		if($.isArray(opt.items))
+		if ($.isArray(opt.items))
 		{
 			opt.t_n = 1;
-			for(var a=0; a<opt.items.length; a++)
+			for (var a=0; a<opt.items.length; a++)
 			{
-				if(!opt.items[a].id) opt.items[a].id = cb.autoid();
+				if (!opt.items[a].id) opt.items[a].id = cb.autoid();
 				
-				if($.isPlainObject(opt.items[a].tab))
+				if ($.isPlainObject(opt.items[a].tab))
 				{
 					opt.t_a = document.createElement('a');
 					opt.t_li = document.createElement('li');
 					
-					if(opt.items[a].tab.xtype == 'dropdown')
+					if (opt.items[a].tab.xtype == 'dropdown')
 					{
 						opt.t_a = cb.common_prop(opt.t_a, {
 							cls: 'dropdown-toggle',
@@ -1328,7 +1390,7 @@ cb.module.bootstrapComponent = {
 						$(opt.t_a).attr('href', '#');
 						opt.t_a = cb.common_prop(opt.t_a, opt.items[a].tab);
 						$(opt.t_a).append('&nbsp;');
-						if(opt.caret!==false)
+						if (opt.caret!==false)
 						{
 							$(opt.t_a).append(cb.create({xtype: 'span', cls: 'caret'}));
 						}
@@ -1338,29 +1400,29 @@ cb.module.bootstrapComponent = {
 						$(opt.t_ul2).attr({ 'aria-labelledby': opt.items[a].id,
 										id: opt.items[a].id+'-contents'
 						});
-						if($.isArray(opt.items[a].tab.items))
+						if ($.isArray(opt.items[a].tab.items))
 						{
-							for(var k=0;k<opt.items[a].tab.items.length;k++)
+							for (var k=0;k<opt.items[a].tab.items.length;k++)
 							{
 								opt.t_li2 = document.createElement('li');
-								if(!opt.items[a].tab.items[k].xtype) opt.items[a].tab.items[k].xtype = "a";
-								if(opt.items[a].tab.items[k].xtype == 'separator' || opt.items[a].tab.items[k].xtype == 'divider')
+								if (!opt.items[a].tab.items[k].xtype) opt.items[a].tab.items[k].xtype = "a";
+								if (opt.items[a].tab.items[k].xtype == 'separator' || opt.items[a].tab.items[k].xtype == 'divider')
 								{
 									opt.t_li2 = cb.common_prop(opt.t_li2, {
 										cls: 'divider',
 										attr: {'role':'separator'}});
 									opt.t_li2 = cb.common_prop(opt.t_li2, opt.items[a].tab.items[k]);
 								}
-								else if(opt.items[a].tab.items[k].xtype == 'dropdown-header' || opt.items[a].tab.items[k].xtype == 'header')
+								else if (opt.items[a].tab.items[k].xtype == 'dropdown-header' || opt.items[a].tab.items[k].xtype == 'header')
 								{
 									opt.items[a].tab.items[k].cls? opt.items[a].tab.items[k].cls = 'dropdown-header '+opt.items[a].tab.items[k].cls : opt.items[a].tab.items[k].cls = 'dropdown-header';
 									opt.t_li2 = cb.common_prop(opt.t_li2, opt.items[a].tab.items[k]);
 								}
 								else
 								{
-									if(opt.items[a].tab.items[k].xtype == "a")
+									if (opt.items[a].tab.items[k].xtype == "a")
 									{
-										if(opt.items[a].tab.items[k].ref)
+										if (opt.items[a].tab.items[k].ref)
 										{
 											opt.items[a].tab.items[k].attr = {
 												role: 'tab',
@@ -1393,34 +1455,34 @@ cb.module.bootstrapComponent = {
 						$(opt.t_a).append(cb.create(cb.cloneObject(opt.items[a].tab), record));
 					}
 					
-					if(opt.items[a].active) $(opt.t_a).attr('aria-expanded', 'true');
+					if (opt.items[a].active) $(opt.t_a).attr('aria-expanded', 'true');
 					else $(opt.t_a).attr('aria-expanded', 'false');
 					
 					$(opt.t_li).append(opt.t_a);
-					if(opt.t_ul2)
+					if (opt.t_ul2)
 					{
 						$(opt.t_li).append(opt.t_ul2);
 						opt.t_ul2 = false;
 					}
 					$(opt.t_li).attr('role', 'presentation');
-					if(opt.items[a].active) $(opt.t_li).addClass('active');
+					if (opt.items[a].active) $(opt.t_li).addClass('active');
 					$(opt.t_ul).append(opt.t_li);
 					opt.t_li = false;
 				}
 				
-				if($.isPlainObject(opt.items[a].panel))
+				if ($.isPlainObject(opt.items[a].panel))
 				{
 					opt.items[a].panel = [opt.items[a].panel];
 				}
 				
-				if($.isArray(opt.items[a].panel))
+				if ($.isArray(opt.items[a].panel))
 				{
-					for(var k=0;k<opt.items[a].panel.length;k++)
+					for (var k=0;k<opt.items[a].panel.length;k++)
 					{
-						if($.isPlainObject(opt.items[a].panel[k]))
+						if ($.isPlainObject(opt.items[a].panel[k]))
 						{
-							if(!opt.items[a].panel[k].id) opt.items[a].panel[k].id = opt.items[a].id;
-							if(!opt.items[a].panel[k].active && opt.items[a].panel.length == 1) opt.items[a].panel[k].active = opt.items[a].active;
+							if (!opt.items[a].panel[k].id) opt.items[a].panel[k].id = opt.items[a].id;
+							if (!opt.items[a].panel[k].active && opt.items[a].panel.length == 1) opt.items[a].panel[k].active = opt.items[a].active;
 							opt.t_div = document.createElement('div');
 							opt.t_div = cb.common_prop(opt.t_div, {
 								cls: 'tab-pane fade',
@@ -1431,7 +1493,7 @@ cb.module.bootstrapComponent = {
 										'border-right': '1px solid #DDD',
 										'border-bottom': '1px solid #DDD'}
 							});
-							if(opt.items[a].panel[k].active) $(opt.t_div).addClass('active in');
+							if (opt.items[a].panel[k].active) $(opt.t_div).addClass('active in');
 							$(opt.t_div).append(cb.create(cb.cloneObject(opt.items[a].panel[k]), record));
 							$(opt.t_content).append(opt.t_div);
 							opt.t_div = false;
@@ -1449,55 +1511,55 @@ cb.module.bootstrapComponent = {
 		$(ele).append(opt.t_content);
 		return ele;
 	},
-	'row': function(opt, record){
+	'row': function(opt, record) {
 		var ele = document.createElement('div');
 		$(ele).addClass('row');
-		if(opt.margin==null || opt.margin==undefined) opt.margin = '3px';
+		if (opt.margin==null || opt.margin==undefined) opt.margin = '3px';
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'col': function(opt, record){
+	'col': function(opt, record) {
 		var ele = document.createElement('div');
-		if(!opt.size) opt.size = 12;
-		if($.isPlainObject(opt.size))
+		if (!opt.size) opt.size = 12;
+		if ($.isPlainObject(opt.size))
 		{
 			for (var key in opt.size) {
 				$(ele).addClass('col-'+key+'-'+opt.size[key]);
 			}
 		}
-		else if(!$.isArray(opt.size))
+		else if (!$.isArray(opt.size))
 		{
 			$(ele).addClass('col-xs-'+opt.size);
 		}
-		if($.isPlainObject(opt.offset))
+		if ($.isPlainObject(opt.offset))
 		{
 			for (var key in opt.offset) {
-				if(opt.offset[key]){
+				if (opt.offset[key]) {
 					$(ele).addClass('col-'+key+'-offset-'+opt.offset[key]);
 				}
 			}
 		}
-		else if(!$.isArray(opt.offset))
+		else if (!$.isArray(opt.offset))
 		{
-			if(opt.offset){
+			if (opt.offset) {
 				$(ele).addClass('col-xs-offset-'+opt.offset);
 			}
 		}
-		if(!opt.padding && opt.padding!==0)opt.padding = '0px 5px';
+		if (!opt.padding && opt.padding!==0)opt.padding = '0px 5px';
 		delete opt.size;
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'input': function(opt, record){
+	'input': function(opt, record) {
 		
-		if(opt.type == 'file')
+		if (opt.type == 'file')
 		{
 			var ele = document.createElement('label');
 			$(ele).addClass('btn btn-default btn-file');
-			if(opt.items){
-				if($.isArray(opt.items))
+			if (opt.items) {
+				if ($.isArray(opt.items))
 				{
-					for(var r=0; r<opt.items.length; r++)
+					for (var r=0; r<opt.items.length; r++)
 					{
 						$(ele).append(cb.create(cb.cloneObject(opt.items[r]), record));
 					}
@@ -1505,20 +1567,20 @@ cb.module.bootstrapComponent = {
 			}
 			var input = document.createElement('input');
 			$(input).attr({type: 'file', hidden: 'hidden'});
-			if(opt.id){
+			if (opt.id) {
 				$(input).attr('id', opt.id);
 				delete opt.type;
 			}
-			if(opt.name){
+			if (opt.name) {
 				$(input).attr('name', opt.name);
 				delete opt.name;
 			}
-			if(opt.listener){
+			if (opt.listener) {
 				$(input).on(opt.listener);
 				delete opt.listener;
 			}
 			delete opt.type;
-			if(!opt.text && !opt.html && !opt.items && opt.name){
+			if (!opt.text && !opt.html && !opt.items && opt.name) {
 				opt.text = opt.name;
 			}
 			ele = cb.common_prop(ele, opt);
@@ -1529,82 +1591,82 @@ cb.module.bootstrapComponent = {
 			var ele = document.createElement(opt.xtype);
 			$(ele).addClass('form-control');
 			
-			if(!opt.type)opt.type = "text";
+			if (!opt.type)opt.type = "text";
 			
 			ele = cb.common_prop(ele, opt);
 		}
 		
 		return ele;
 	},
-	'select': function(opt, record){
+	'select': function(opt, record) {
 		var ele = document.createElement(opt.xtype);
 		$(ele).addClass('form-control');
-		if($.isArray(opt.items))
+		if ($.isArray(opt.items))
 		{
-			for(var s=0; s<opt.items.length; s++)
+			for (var s=0; s<opt.items.length; s++)
 			{
-				if(!opt.items[s].xtype) opt.items[s].xtype = 'option';
+				if (!opt.items[s].xtype) opt.items[s].xtype = 'option';
 			}
 		}
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'form': function(opt, record){
-		if(!opt.name) opt.name = cb.autoname();
+	'form': function(opt, record) {
+		if (!opt.name) opt.name = cb.autoname();
 		var ele = document.createElement('form');
-		if($.isArray(opt.items))
+		if ($.isArray(opt.items))
 		{
-			for(var s=0; s<opt.items.length; s++)
+			for (var s=0; s<opt.items.length; s++)
 			{
-				if(opt.items[s].xtype == 'group') opt.items[s].xtype = 'form-group';
+				if (opt.items[s].xtype == 'group') opt.items[s].xtype = 'form-group';
 			}
 		}
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'form-group': function(opt, record){
+	'form-group': function(opt, record) {
 		var ele = document.createElement('div');
 		$(ele).addClass('form-group');
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'label': function(opt, record){
+	'label': function(opt, record) {
 		var ele = document.createElement(opt.xtype);
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'glyphicon': function(opt, record){
+	'glyphicon': function(opt, record) {
 		var ele = document.createElement('span');
 		$(ele).addClass('glyphicon glyphicon-'+opt.type);
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'svg': function(opt, record){
+	'svg': function(opt, record) {
 		var ele = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-		if(!opt.width) opt.width = 300;
-		if(!opt.height) opt.height = 150;
+		if (!opt.width) opt.width = 300;
+		if (!opt.height) opt.height = 150;
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'graph': function(opt, record){
+	'graph': function(opt, record) {
 		
 	},
-	'polyline': function(opt, record){
+	'polyline': function(opt, record) {
 		var ele = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
-		if(!opt.fill) opt.fill = 'none';
-		if(typeof opt.width === 'undefined') opt.width = 300;
-		if(typeof opt.height === 'undefined') opt.height = 150;
-		if(!opt.stroke && opt.color) opt.stroke = opt.color;
-		else if(!opt.stroke) opt.stroke = '#0074d9';
-		if(!opt['stroke-width']) opt['stroke-width'] = 3;
-		if($.isArray(record)){
-			if(typeof opt.xspace   === 'undefined') opt.xspace   = parseInt(opt.width) / (record.length - 1);
-			if(typeof opt.pointMax === 'undefined') opt.pointMax = Math.max.apply(null, record);
-			if(typeof opt.pointMin === 'undefined') opt.pointMin = Math.min.apply(null, record);
+		if (!opt.fill) opt.fill = 'none';
+		if (typeof opt.width === 'undefined') opt.width = 300;
+		if (typeof opt.height === 'undefined') opt.height = 150;
+		if (!opt.stroke && opt.color) opt.stroke = opt.color;
+		else if (!opt.stroke) opt.stroke = '#0074d9';
+		if (!opt['stroke-width']) opt['stroke-width'] = 3;
+		if ($.isArray(record)) {
+			if (typeof opt.xspace   === 'undefined') opt.xspace   = parseInt(opt.width) / (record.length - 1);
+			if (typeof opt.pointMax === 'undefined') opt.pointMax = Math.max.apply(null, record);
+			if (typeof opt.pointMin === 'undefined') opt.pointMin = Math.min.apply(null, record);
 			var xwrite = 0;
 			var ywrite = 0;
 			var points = "0,"+parseInt(opt.height);
-			for(var i=0; i<record.length; i++){
+			for (var i=0; i<record.length; i++) {
 				//ywrite = parseInt(opt.height) - parseInt((record[i]-opt.pointMin)*parseInt(opt.height)/opt.pointMax) - opt.pointMin;
 				ywrite = parseInt(opt.height) - ((record[i]-opt.pointMin) * parseInt(opt.height) / (opt.pointMax-opt.pointMin));
 				points += " "+xwrite+","+ywrite;
@@ -1621,34 +1683,14 @@ cb.module.bootstrapComponent = {
 		});
 		ele = cb.common_prop(ele, opt);
 		
-		ele.setData = function(record){
-			var ele = $.isArray(this)? this[0]: this;
-			if($.isArray(record)){
-				var opt = cb.cloneObject(ele.getOpt());
-				if(typeof opt.xspace   === 'undefined') opt.xspace   = parseInt(parseInt(opt.width) / (record.length - 1));
-				if(typeof opt.pointMax === 'undefined') opt.pointMax = Math.max.apply(null, record);
-				if(typeof opt.pointMin === 'undefined') opt.pointMin = Math.min.apply(null, record);
-				var xwrite = 0;
-				var ywrite = 0;
-				var points = "0,"+parseInt(opt.height);
-				for(var i=0; i<record.length; i++){
-					ywrite = parseInt(opt.height) - parseInt((record[i]-opt.pointMin)*parseInt(opt.height)/opt.pointMax) - opt.pointMin;
-					points += " "+xwrite+","+ywrite;
-					xwrite += opt.xspace;
-				}
-				points += " "+xwrite+","+parseInt(opt.height);
-			}
-			$(ele).removeAttr('points').attr({ points: points });
-		};
-		
-		ele.clearPoints = function(){
+		ele.clearPoints = function() {
 			var ele = $.isArray(this)? this[0]: this;
 			$(ele).removeAttr('points');
 		};
 		
 		ele.opt = opt;
 		
-		ele.getOpt = function(){
+		ele.getOpt = function() {
 			return this.opt;
 		}
 				
@@ -1704,7 +1746,7 @@ cb.module.bootstrapComponent = {
         	opt.name = null;
         }
         if (opt.value) {
-        	if(!opt.novalue){
+        	if (!opt.novalue) {
     			$(ele).attr('value', opt.value);
     		}
         	opt.name = null;
@@ -1722,179 +1764,177 @@ cb.module.bootstrapComponent = {
 	}
 };
 
+//Para el seteo de propiedades
 cb.props = {
-	'require': function(ele, opt){
+	'require': function(ele, opt) {
 		cb.require(opt.require);
 	},
-	'cls': function(ele, opt){
-		if(!opt.nocls){
+	'cls': function(ele, opt) {
+		if (!opt.nocls) {
 			$(ele).addClass(opt.cls);
 		}
 	},
-	'html': function(ele, opt){
-		if(!opt.nohtml){
+	'html': function(ele, opt) {
+		if (!opt.nohtml) {
 			$(ele).html(opt.html);
 		}
 	},
-	'text': function(ele, opt){
-		if(!opt.notext){
+	'text': function(ele, opt) {
+		if (!opt.notext) {
 			$(ele).append(opt.text);
 		}
 	},
-	'glyphicon': function(ele, opt){
+	'glyphicon': function(ele, opt) {
 		$(ele).prepend(cb.create({xtype:'glyphicon',type:opt.glyphicon}));
 	},
-	'id': function(ele, opt){
+	'id': function(ele, opt) {
 		$(ele).attr('id', opt.id);
 	},
-	'disable': function(ele, opt){
+	'disable': function(ele, opt) {
 		$(ele).attr('disable', 'disable');
 	},
-	'disabled': function(ele, opt){
+	'disabled': function(ele, opt) {
 		$(ele).attr('disabled', 'disabled');
 	},
-	'name': function(ele, opt){
-		if(!opt.noname){
+	'name': function(ele, opt) {
+		if (!opt.noname) {
 			$(ele).attr('name', opt.name);
 		}
 	},
-	'type': function(ele, opt){
-		if(!opt.notype){
+	'type': function(ele, opt) {
+		if (!opt.notype) {
 			$(ele).attr('type', opt.type);
 		}
 	},
-	'href': function(ele, opt){
+	'href': function(ele, opt) {
 		$(ele).attr('href', opt.href);
 	},
-	'value': function(ele, opt){
-		if(!opt.novalue){
+	'value': function(ele, opt) {
+		if (!opt.novalue) {
 			$(ele).attr('value', opt.value);
 		}
 	},
-	'margin': function(ele, opt){
+	'margin': function(ele, opt) {
 		$(ele).css('margin', opt.margin);
 	},
-	'padding': function(ele, opt){
+	'padding': function(ele, opt) {
 		$(ele).css('padding', opt.padding);
 	},
-	'color': function(ele, opt){
+	'color': function(ele, opt) {
 		$(ele).css('color', opt.color);
 	},
-	'border': function(ele, opt){
+	'border': function(ele, opt) {
 		$(ele).css('border', opt.border);
 	},
-	'src': function(ele, opt){
+	'src': function(ele, opt) {
 		$(ele).attr('src', opt.src);
 	},
-	'float': function(ele, opt){
+	'float': function(ele, opt) {
 		$(ele).css('float', opt.float);
 	},
-	'shadow': function(ele, opt){
+	'shadow': function(ele, opt) {
 		$(ele).css('box-shadow', opt.shadow);
 	},
-	'size': function(ele, opt){
+	'size': function(ele, opt) {
 		$(ele).css('font-size', opt.size);
 	},
-	'weight': function(ele, opt){
+	'weight': function(ele, opt) {
 		$(ele).css('font-weight', opt.weight);
 	},
-	'align': function(ele, opt){
+	'align': function(ele, opt) {
 		$(ele).css('text-align', opt.align);
 	},
-	'pull': function(ele, opt){
+	'pull': function(ele, opt) {
 		$(ele).addClass('pull-'+opt.pull);
 	},
-	'height': function(ele, opt){
+	'height': function(ele, opt) {
 		$(ele).css('height', opt.height);
 	},
-	'width': function(ele, opt){
+	'width': function(ele, opt) {
 		$(ele).css('width', opt.width);
 	},
-	'placeholder': function(ele, opt){
+	'placeholder': function(ele, opt) {
 		$(ele).attr('placeholder', opt.placeholder);
 	},
-	'display': function(ele, opt){
+	'display': function(ele, opt) {
 		$(ele).css('display', opt.display);
 	},
-	'cursor': function(ele, opt){
+	'cursor': function(ele, opt) {
 		$(ele).css('cursor', opt.cursor);
 	},
-	'background': function(ele, opt){
+	'background': function(ele, opt) {
 		$(ele).css('background', opt.background);
 	},
-	'badge': function(ele, opt){
+	'badge': function(ele, opt) {
 		$(ele).append('&nbsp;').append(cb.create({
 			xtype: 'badge',
 			text: opt.badge }));
 	},
-	'reload': function(ele, opt){
+	'reload': function(ele, opt) {
 		$(ele).attr('reload', opt.reload);
 	},
-	'target': function(ele, opt){
+	'target': function(ele, opt) {
 		$(ele).attr('target', opt.target);
 	},
-	'click': function(ele, opt){
+	'click': function(ele, opt) {
 		$(ele).click(opt.click);
 	},
-	'dblclick': function(ele, opt){
+	'dblclick': function(ele, opt) {
 		$(ele).dblclick(opt.dblclick);
 	},
-	'mouseover': function(ele, opt){
+	'mouseover': function(ele, opt) {
 		$(ele).mouseover(opt.mouseover);
 	},
-	'mouseout': function(ele, opt){
+	'mouseout': function(ele, opt) {
 		$(ele).mouseout(opt.mouseout);
 	}
 };
 
-cb.mergeDataStore = function(record){
-	
+cb.mergeDataStore = function(record) {
+	// TODO en planificación, lo necesitaré en alguna circunstancia?
 };
 
-cb.getCmp = function(ref){
-	return $.extend($(ref), $(ref)[0]);
-};
+//Funciona para la creación de elementos
+cb.create = function(opt, record) {
 
-cb.create = function(opt, record){
-
-	if(!opt.xtype) opt.xtype='span';
+	if (!opt.xtype) opt.xtype='span';
 	
-	if($.type(opt.xtype) == 'string')
+	if ($.type(opt.xtype) == 'string')
 	{
 		//Variables temp
 		var store = false;
 		var temp_record = false;
 				
 		//Default extend
-		if($.isArray(opt.extend)){
+		if ($.isArray(opt.extend)) {
 			opt.extend.unshift('base.element');
-		}else if(typeof opt.extend === 'string'){
+		} else if (typeof opt.extend === 'string') {
 			opt.extend = ['base.element', opt.extend];
-		}else{
+		} else {
 			opt.extend = 'base.element';
 		}
 		
 		//Extends
 		var opt_extended = {};
-		if(opt.extend){
-			if(typeof opt.extend === 'string'){
-				$.extend( opt_extended, this.fetchFromObject(this, opt.extend));
-			}
-			else if($.isArray(opt.extend)){
-				for(var i=0; i<opt.extend.length; i++){
-					if(typeof opt.extend[i] === 'string'){
-						$.extend( opt_extended, this.fetchFromObject(this, opt.extend[i]));
-					}
+		if (typeof opt.extend === 'string') {
+			$.extend( opt_extended, this.fetchFromObject(this, opt.extend));
+		}
+		else if ($.isArray(opt.extend)) {
+			for (var i=0; i<opt.extend.length; i++) {
+				if (typeof opt.extend[i] === 'string') {
+					$.extend( opt_extended, this.fetchFromObject(this, opt.extend[i]));
 				}
 			}
 		}
+		//Extend by xtype
+		$.extend( opt_extended, this.fetchFromObject(this, 'base.' + opt.xtype));
 		//To end Extend obj
 		$.extend( opt_extended, opt);
 		delete opt_extended.extend;
 		
 		//Coge store
-		if(opt.store){
-			if(this.module.store[opt.store]){
+		if (opt.store) {
+			if (this.module.store[opt.store]) {
 				record = this.module.store[opt.store]['data'];
 			}else{
 				return;
@@ -1902,10 +1942,10 @@ cb.create = function(opt, record){
 		}
 		
 		//Coge field del store
-		if(opt.field){
-			if(typeof opt.field === 'string'){
-				if(record){
-					if(record[opt.field]){
+		if (opt.field) {
+			if (typeof opt.field === 'string') {
+				if (record) {
+					if (record[opt.field]) {
 						record = record[opt.field];
 					}else{
 						return;
@@ -1914,31 +1954,31 @@ cb.create = function(opt, record){
 					return;
 				}
 			}
-			else if($.isArray(opt.field))
+			else if ($.isArray(opt.field))
 			{
-				if(record)
+				if (record)
 				{
 					//Recorre los fields
-					for(var o=0; o<opt.field.length; o++)
+					for (var o=0; o<opt.field.length; o++)
 					{
 						//Si el field es un string
-						if(typeof opt.field[o] === 'string')
+						if (typeof opt.field[o] === 'string')
 						{
 							//Si existe datos en el store para ese field
-							if(record[opt.field[o]])
+							if (record[opt.field[o]])
 							{
 								//Si no existen record temporal
-								if(!temp_record)
+								if (!temp_record)
 								{
 									temp_record = record[opt.field[o]];
 								}
 								//Si el record temporal es un array
-								else if($.isArray(temp_record))
+								else if ($.isArray(temp_record))
 								{
 									//Si el record actual es un array
-									for(var o2=0; o2<temp_record.length; o2++)
+									for (var o2=0; o2<temp_record.length; o2++)
 									{
-										if($.isPlainObject(temp_record[o2]))
+										if ($.isPlainObject(temp_record[o2]))
 										{
 											temp_record[o2][opt.field[o]] = record[opt.field[o]]; 
 										}else{
@@ -1948,7 +1988,7 @@ cb.create = function(opt, record){
 									}
 								}
 								//Si el record temporal es un objeto
-								else if($.isPlainObject(temp_record))
+								else if ($.isPlainObject(temp_record))
 								{
 									temp_record[opt.field[o]] = record[opt.field[o]];
 								}
@@ -1959,11 +1999,11 @@ cb.create = function(opt, record){
 							}
 						}
 						//Si el field es un objecto
-						else if($.isPlainObject(opt.field[o])){
+						else if ($.isPlainObject(opt.field[o])) {
 							
 						}
 					}
-					if(temp_record){
+					if (temp_record) {
 						record = temp_record;
 					}
 				}else{
@@ -1973,34 +2013,34 @@ cb.create = function(opt, record){
 		}
 		
 		//Alterdata
-		if(opt.alterdata && ($.type(record) === 'string' || $.type(record) === 'number'))
+		if (opt.alterdata && ($.type(record) === 'string' || $.type(record) === 'number'))
 		{
-			if($.isFunction(opt.alterdata)){
+			if ($.isFunction(opt.alterdata)) {
 				record = opt.alterdata(record);
-			}else if($.isPlainObject(opt.alterdata) && opt.field && opt.alterdata[opt.field]){
+			}else if ($.isPlainObject(opt.alterdata) && opt.field && opt.alterdata[opt.field]) {
 				record = opt.alterdata[opt.field](record);
 			}
 			
 		}
-		else if($.isPlainObject(opt.alterdata) && $.isPlainObject(record))
+		else if ($.isPlainObject(opt.alterdata) && $.isPlainObject(record))
 		{
-			$.each(record, function(i){
-				if($.isFunction(opt.alterdata[i])){
+			$.each(record, function(i) {
+				if ($.isFunction(opt.alterdata[i])) {
 					record[i] = opt.alterdata[i](record[i]);
 				}
 			});
 		}
 		
 		//Arreglo para cuando se define items como objeto
-		if($.isPlainObject(opt.items)){
+		if ($.isPlainObject(opt.items)) {
 			opt.items = [opt.items];
 		}
 		
 		//Si el record contiene un array y no acepta arrays y no es un array de arrays creamos varios elementos
-		if($.isArray(record) && ((cb.eleArrayAcept.indexOf(opt.xtype) < 0) || $.isArray(record[0]))){
+		if ($.isArray(record) && ((cb.eleArrayAcept.indexOf(opt.xtype) < 0) || $.isArray(record[0]))) {
 			ele = [];
-			for(var c=0; c<record.length; c++){
-				if(record[c]){
+			for (var c=0; c<record.length; c++) {
+				if (record[c]) {
 					//Se borra store y field para que no entre en un bucle infinito
 					delete opt.store;
 					delete opt.field;
@@ -2012,19 +2052,19 @@ cb.create = function(opt, record){
 		else
 		{
 			//Si el record es un objeto
-			if($.isPlainObject(record)){
+			if ($.isPlainObject(record)) {
 				//Reemplaza {field} por el valor del record
-				$.each(opt, function(ix, el){
-					if($.type(el) === 'string'){						
-						$.each(record, function(ix2, el2){
+				$.each(opt, function(ix, el) {
+					if ($.type(el) === 'string') {						
+						$.each(record, function(ix2, el2) {
 							opt[ix] = opt[ix].replace(new RegExp('{'+ix2+'}',"g"), el2);
 						});
 					}
-					else if($.isPlainObject(el) && ix !== 'items'){
+					else if ($.isPlainObject(el) && ix !== 'items') {
 						opt[ix] = cb.cloneObject(opt[ix]);
-						$.each(el, function(ix3, el3){
-							if($.type(el3) === 'string'){
-								$.each(record, function(ix2, el2){
+						$.each(el, function(ix3, el3) {
+							if ($.type(el3) === 'string') {
+								$.each(record, function(ix2, el2) {
 									opt[ix][ix3] = opt[ix][ix3].replace(new RegExp('{'+ix2+'}',"g"), el2);
 								});
 							}
@@ -2035,7 +2075,7 @@ cb.create = function(opt, record){
 			}
 		
 			//Aplica defaults a sus items
-			if(opt.defaults && opt.items)
+			if (opt.defaults && opt.items)
 			{
 				for (var def in opt.defaults) {
 					opt.items = this.setMissingDinamicValue(opt.items, def, opt.defaults[def]);
@@ -2043,17 +2083,17 @@ cb.create = function(opt, record){
 			}
 			
 			//Si es un componente de bootstrap
-			if($.isFunction(cb.module.bootstrapComponent[opt.xtype]))
+			if ($.isFunction(cb.module.bootstrapComponent[opt.xtype]))
 			{
 				var ele = cb.module.bootstrapComponent[opt.xtype](opt, record);
 			}
 			//Si es un componente personalizado
-			else if($.isPlainObject(cb.module.component[opt.xtype]))
+			else if ($.isPlainObject(cb.module.component[opt.xtype]))
 			{
 				var ele = this.create(cb.module.component[opt.xtype], record);
 				ele = this.common_prop(ele, opt);
 				ele.component = cb.module.component[opt.xtype];
-				if(cb.module.component[opt.xtype].onRender && !opt.onRender) {
+				if (cb.module.component[opt.xtype].onRender && !opt.onRender) {
 					opt.onRender = cb.module.component[opt.xtype].onRender;
 				}
 			}
@@ -2065,22 +2105,22 @@ cb.create = function(opt, record){
 			}
 			
 			//Si hay record
-			if(record){
+			if (record) {
 				opt_extended.record = record;
 				//Si el record es un string
-				if($.type(record) === 'string' || $.type(record) === 'number'){
+				if ($.type(record) === 'string' || $.type(record) === 'number') {
 					ele = this.storeSet(ele, record);
 				}
 				//Si el record es un dom element
-				else if(this.isNode(record) || this.isElement(record)){
+				else if (this.isNode(record) || this.isElement(record)) {
 					$(ele).append(record);
 				}
 			}
 			
 			//Storelink /////////
-			if(opt.storelink){
-				if(opt.store){
-					if(!cb.module.storelink[opt.store]){
+			if (opt.storelink) {
+				if (opt.store) {
+					if (!cb.module.storelink[opt.store]) {
 						cb.module.storelink[opt.store] = [];
 					}
 					cb.module.storelink[opt.store].push({field: opt.field? opt.field: false, ele: ele});
@@ -2088,9 +2128,9 @@ cb.create = function(opt, record){
 			}
 						
 			//Añade sus items
-			if($.isArray(opt.items) && !opt.noitems)
+			if ($.isArray(opt.items) && !opt.noitems)
 			{
-				for(var a=0; a<opt.items.length; a++)
+				for (var a=0; a<opt.items.length; a++)
 				{
 					$(ele).append(this.create(cb.cloneObject(opt.items[a]), record));
 				}
@@ -2100,78 +2140,58 @@ cb.create = function(opt, record){
 			ele.opt = {};
 			opt_extended.element = $(ele);
 			var methods = Object.getOwnPropertyNames(opt_extended);
-			for(var i=0; i<methods.length; i++){
-				if(typeof opt_extended[methods[i]] === 'function'){
+			for (var i=0; i<methods.length; i++) {
+				if (typeof opt_extended[methods[i]] === 'function') {
 					ele[methods[i]] = opt_extended[methods[i]];
 				}else{
 					ele.opt[methods[i]] = opt_extended[methods[i]];
 				}
 			}
 
-			if(opt.renderTo)
+			if (opt.renderTo)
 			{
 				$(opt.renderTo).empty().append(ele);
-				cb.doAfterRender(ele);
 			}
-			else if(opt.appendTo)
+			else if (opt.appendTo)
 			{
 				$(opt.appendTo).append(ele);
-				cb.doAfterRender(ele);
 			}
-			else if(opt.prependTo)
+			else if (opt.prependTo)
 			{
 				$(opt.prependTo).prepend(ele);
-				cb.doAfterRender(ele);
 			}
-			else if(opt.beforeTo)
+			else if (opt.beforeTo)
 			{
 				$(opt.beforeTo).before(ele);
-				cb.doAfterRender(ele);
 			}
-			else if(opt.afterTo)
+			else if (opt.afterTo)
 			{
 				$(opt.afterTo).after(ele);
-				cb.doAfterRender(ele);
 			}
 			else
 			{
 				return ele;
 			}
 			
-			// Execute alferRender private function
-			if (opt.onRender && $.isFunction(opt.onRender)) {
-                opt.onRender(ele);
-            }
-			// Execute afteres, afterRender of childs
-			if (opt.afteres && $.isArray(opt.afteres)) {
-			    for (var i=0; i<opt.afteres.length; i++) {
-			        if ($.isFunction(opt.afteres[i])) {
-		                opt.afteres[i](ele);
-		            }
-			    }
-			}
-			// Execute onRender
-            if (opt.onRender && $.isFunction(opt.onRender)) {
-                opt.onRender(ele);
-            }
+			// Execute alferRender private function and onRender event
+			cb.doRenderFunctions(ele);
 		}
 	}
 }
 
-// TODO ahora mismo se recorren todos los elementos para poder ejecutar los afterRender, hay que buscar un modo mas elegante de hacerlo que no suponga tal carga de trabajo innecesaria
-// En teoría se podría ir guardando las funciones en un array y ejecutarlas al renderizar un elemento
-// Pero podría pasar que al renderizar un hijo que tenga renderTo ejecute funciones del padre cuando el padre no está renderizado
-// Porque al llevar el renderTo el padre en las definiciones no será el padre en el html final... jmm...
-cb.doAfterRender = function (ele) {
-    if (ele.afterRender && $.isFunction(ele.afterRender)) {
+cb.doRenderFunctions = function (ele) {
+    if ($.isFunction(ele.afterRender)) {
         ele.afterRender(ele);
+        delete ele.afterRender;
     }
-    var childNodes = ele.childNodes,
-    i = childNodes.length;
-
-    while (i--) {
+    if ($.isFunction(ele.onRender)) {
+    	ele.onRender(ele);
+    	delete ele.onRender;
+    }
+    var childNodes = ele.childNodes;
+    for (var i = 0; i < childNodes.length; i ++) {
         if (childNodes[i].nodeType == 1) {
-            cb.doAfterRender(childNodes[i]);
+            cb.doRenderFunctions(childNodes[i]);
         }
     }
 }
@@ -2179,34 +2199,34 @@ cb.doAfterRender = function (ele) {
 cb.common_prop = function(ele, opt)
 {
 	for (var prop in opt) {
-		if(this.props[prop]){
+		if (this.props[prop]) {
 			this.props[prop](ele, opt);
 		}
 	}
 	
-	if($.isPlainObject(opt.css)){
+	if ($.isPlainObject(opt.css)) {
 		$(ele).css(opt.css);
 	}
 	
-	if($.isPlainObject(opt.attr)){
+	if ($.isPlainObject(opt.attr)) {
 		$(ele).attr(opt.attr);
 	}
 	
-	if(opt.listener){
+	if (opt.listener) {
 		$(ele).on(opt.listener);
 	}
 	
 	return ele;
 }
 
-cb.strpos = function(texto, word){
-	for(var i=0;i<texto.length;i++){
-		if(texto[i]==word[0]){
-			for(var r=1;r<=word.length;r++){
-				if(r==word.length){
+cb.strpos = function(texto, word) {
+	for (var i=0;i<texto.length;i++) {
+		if (texto[i]==word[0]) {
+			for (var r=1;r<=word.length;r++) {
+				if (r==word.length) {
 					return (i-word.length+1);
 				}
-				if(texto[i]!=word[r]){
+				if (texto[i]!=word[r]) {
 					r = word.length+1;
 				}
 			}
@@ -2217,26 +2237,26 @@ cb.strpos = function(texto, word){
 
 ////[ General functions ]////
 
-cb.enable = function(ele){
+cb.enable = function(ele) {
 	$(ele).removeAttr('disabled');
 }
 
-cb.disable = function(ele){
+cb.disable = function(ele) {
 	$(ele).attr('disabled','disabled');
 }
 
-cb.sto = function(fn, to){
+cb.sto = function(fn, to) {
 	setTimeout(fn, to);
 }
 
-cb.popup = function(pp){
+cb.popup = function(pp) {
 	
-	if($.isPlainObject(pp))
+	if ($.isPlainObject(pp))
 	{
-		if(!pp.xtype)pp.xtype = 'panel';
-		if(!pp.css) pp.css = {};
-		if(!pp.id) pp.id = this.autoid();
-		if(!pp.offsetTop) pp.offsetTop = 0;
+		if (!pp.xtype)pp.xtype = 'panel';
+		if (!pp.css) pp.css = {};
+		if (!pp.id) pp.id = this.autoid();
+		if (!pp.offsetTop) pp.offsetTop = 0;
 		pp.css.margin = 'auto';
 		
 		var popup = this.create({
@@ -2254,138 +2274,138 @@ cb.popup = function(pp){
 		});
 		var tid = pp.id;
 		var pp_item = this.create(pp);
-		$(pp_item).bind('destroy', function(){
+		$(pp_item).bind('destroy', function() {
 			$(this).parent().remove();
 		});
 		$(popup).append(pp_item);
 		$(document.body).append(popup);
 		this.verticalCenter('#'+tid, pp.offsetTop);
-		if(pp.effect){
+		if (pp.effect) {
 			this.effect('#'+tid, pp.effect);
 		}
 	}
 }
 
-cb.verticalCenter = function(obj, offset){
+cb.verticalCenter = function(obj, offset) {
 	var wh = $(window).height();
 	var oh = $(obj).height();
 	var mt = (wh-oh)/2-offset;
-	if(mt<0)mt=0;
+	if (mt<0)mt=0;
 	$(obj).css({'margin-top': mt});
 	return obj;
 }
 
-cb.effect = function(obj, eff){
-	if($.type(eff) == 'string'){
+cb.effect = function(obj, eff) {
+	if ($.type(eff) == 'string') {
 		var effe = eff;
-	}else if($.isArray(eff)){
-		if(eff[0]) var effe = eff[0];
-		if(eff[1]) var vel = eff[1];
-		if(eff[2]) var val = eff[2];
-		if(eff[3]) var dire = eff[3];
-	}else if($.isPlainObject(eff)){
-		if(eff.type) var effe = eff.type;
-		if(eff.value) var val = eff.value;
-		if(eff.vel) var vel = eff.vel;
-		if(eff.dire) var dire = eff.dire;
-		if($.isFunction(eff.fn)) var fun = eff.fn;
+	}else if ($.isArray(eff)) {
+		if (eff[0]) var effe = eff[0];
+		if (eff[1]) var vel = eff[1];
+		if (eff[2]) var val = eff[2];
+		if (eff[3]) var dire = eff[3];
+	}else if ($.isPlainObject(eff)) {
+		if (eff.type) var effe = eff.type;
+		if (eff.value) var val = eff.value;
+		if (eff.vel) var vel = eff.vel;
+		if (eff.dire) var dire = eff.dire;
+		if ($.isFunction(eff.fn)) var fun = eff.fn;
 	}
-	if(!fun) var fun = function(){};
-	if(!vel){
+	if (!fun) var fun = function() {};
+	if (!vel) {
 		var vel = 'fast';
-	}else if($.isFunction(vel)){
+	}else if ($.isFunction(vel)) {
 		fun = vel;
 		vel = 'fast';
 	}
-	if(!val || !$.isNumeric(val)){
+	if (!val || !$.isNumeric(val)) {
 		var val = 20;
-	}else if($.isFunction(val)){
+	}else if ($.isFunction(val)) {
 		fun = val;
 		val = 20;
 	}
-	if(!dire){
+	if (!dire) {
 		var dire = 'up';
-	}else if($.isFunction(dire)){
+	}else if ($.isFunction(dire)) {
 		fun = dire;
 		dire = 'up';
 	}
-	if(effe == 'fadein'){
+	if (effe == 'fadein') {
 		$(obj).fadeIn(vel, fun);
 	}
-	if(effe == 'fadeout'){
+	if (effe == 'fadeout') {
 		$(obj).fadeOut(vel, fun);
 	}
-	if(effe == 'flipin'){
-		if(dire == 'up'){
+	if (effe == 'flipin') {
+		if (dire == 'up') {
 			var wh = $(window).height();
 			var mt = $(obj).css('margin-top').replace('px', '');
 			var tt = $(obj).css('top').replace('px', '');
-			if($.isNumeric(mt)){
+			if ($.isNumeric(mt)) {
 				$(obj).css({'margin-top': wh, opacity: 0}).animate({opacity: 1, 'margin-top': mt+'px'}, vel, fun);
-			}else if($.isNumeric(tt)){
+			}else if ($.isNumeric(tt)) {
 				$(obj).css({top: wh+'px', opacity: 0}).animate({opacity: 1, top: tt+'px'}, vel, fun);
 			}
-		}else if(dire == 'down'){
+		}else if (dire == 'down') {
 			var th = $(obj).height() * -1;
 			var tt = $(obj).css('top').replace('px', '');
-			if($.isNumeric(tt)){
+			if ($.isNumeric(tt)) {
 				$(obj).css({top: th+'px', opacity: 0}).animate({opacity: 1, top: tt+'px'}, vel, fun);
 			}else{
 				var mt = $(obj).css('margin-top').replace('px', '');
-				if(!$.isNumeric(mt)){ mt = 0; }
+				if (!$.isNumeric(mt)) { mt = 0; }
 				$(obj).css({'margin-top': th+'px', opacity: 0}).animate({opacity: 1, 'margin-top': mt+'px'}, vel, fun);
 			}
-		}else if(dire == 'right'){
+		}else if (dire == 'right') {
 			var tw = $(obj).width() * -1;
 			var tl = $(obj).css('left').replace('px', '');
-			if($.isNumeric(tl)){
+			if ($.isNumeric(tl)) {
 				$(obj).css({left: tw+'px', opacity: 0}).animate({opacity: 1, left: tl+'px'}, vel, fun);
 			}else{
 				var mt = $(obj).css('margin-left').replace('px', '');
-				if(!$.isNumeric(mt)){ mt = 0; }
+				if (!$.isNumeric(mt)) { mt = 0; }
 				$(obj).css({'margin-left': tw+'px', opacity: 0}).animate({opacity: 1, 'margin-left': mt+'px'}, vel, fun);
 			}
-		}else if(dire == 'left'){
+		}else if (dire == 'left') {
 			var tw = $(window).width();
 			var tl = $(obj).css('left').replace('px', '');
-			if($.isNumeric(tl)){
+			if ($.isNumeric(tl)) {
 				$(obj).css({left: tw+'px', opacity: 0}).animate({opacity: 1, left: tl+'px'}, vel, fun);
 			}else{
 				var mt = $(obj).css('margin-left').replace('px', '');
-				if(!$.isNumeric(mt)){ mt = 0; }
+				if (!$.isNumeric(mt)) { mt = 0; }
 				$(obj).css({'margin-left': tw+'px', opacity: 0}).animate({opacity: 1, 'margin-left': mt+'px'}, vel, fun);
 			}
 		}
 	}
-	if(effe == 'flipout'){
-		if(dire == 'down'){
+	if (effe == 'flipout') {
+		if (dire == 'down') {
 			var wh = $(window).height();
 			var tt = $(obj).css('top').replace('px', '');
-			if($.isNumeric(tt)){
+			if ($.isNumeric(tt)) {
 				$(obj).animate({top: wh+'px', opacity: 0}, vel, fun);
 			}else{
 				$(obj).animate({'margin-top': wh+'px', opacity: 0}, vel, fun);
 			}
-		}else if(dire == 'up'){
+		}else if (dire == 'up') {
 			var th = $(obj).height() * -1;
 			var tt = $(obj).css('top').replace('px', '');
-			if($.isNumeric(tt)){
+			if ($.isNumeric(tt)) {
 				$(obj).animate({top: th+'px', opacity: 0}, vel, fun);
 			}else{
 				$(obj).animate({'margin-top': th+'px', opacity: 0}, vel, fun);
 			}
-		}else if(dire == 'left'){
+		}else if (dire == 'left') {
 			var tw = $(obj).width() * -1;
 			var tl = $(obj).css('left').replace('px', '');
-			if($.isNumeric(tl)){
+			if ($.isNumeric(tl)) {
 				$(obj).animate({left: tw+'px', opacity: 0}, vel, fun);
 			}else{
 				$(obj).animate({'margin-left': tw+'px', opacity: 0}, vel, fun);
 			}
-		}else if(dire == 'right'){
+		}else if (dire == 'right') {
 			var tw = $(window).width();
 			var tl = $(obj).css('left').replace('px', '');
-			if($.isNumeric(tl)){
+			if ($.isNumeric(tl)) {
 				$(obj).animate({left: tw+'px', opacity: 0}, vel, fun);
 			}else{
 				$(obj).animate({'margin-left': tw+'px', opacity: 0}, vel, fun);
@@ -2394,62 +2414,62 @@ cb.effect = function(obj, eff){
 	}
 }
 
-cb.fileUpload = function(file, module, store, progessbar, vals, callback){
-	if($.isFunction(vals)){
+cb.fileUpload = function(file, module, store, progessbar, vals, callback) {
+	if ($.isFunction(vals)) {
 		callback = vals;
 		delete vals;
 	}
-	if($.isFunction(progessbar)){
+	if ($.isFunction(progessbar)) {
 		callback = progessbar;
 		delete progessbar;
 	}
 	
-	if(window.XMLHttpRequest){
+	if (window.XMLHttpRequest) {
 		var xhr = new XMLHttpRequest();
 	}else{
 		var xhr = new ActiveXObject("Microsoft.XMLHTTP")
 	}
 	
 	var fd = new FormData();
-	if($.isPlainObject(vals)){
-		for(var ke in vals){
+	if ($.isPlainObject(vals)) {
+		for (var ke in vals) {
 			fd.append(ke, vals[ke]);
 		}
 	}
 	fd.append('file', file);
 	
-	if(progessbar){
-		if(!$(progessbar).hasClass('progress-bar')){
+	if (progessbar) {
+		if (!$(progessbar).hasClass('progress-bar')) {
 			var progessbarFinded = $(progessbar).find('.progress-bar');
 		}
-		if(progessbarFinded){
+		if (progessbarFinded) {
 			progessbar = progessbarFinded;
 		}
 		xhr.progessbar = progessbar;
 	}
 	
-	if($.isFunction(callback)){
+	if ($.isFunction(callback)) {
 		xhr.callback = callback;
 	}
 	
-	xhr.addEventListener('progress', function(e){
+	xhr.addEventListener('progress', function(e) {
 		var done = e.position || e.loaded;
 		var total = e.totalSize || e.total;
 		$(this.progessbar).css('width', (Math.floor(done/total*1000)/10)+'%');
 	});
 	
-	if(xhr.upload){
+	if (xhr.upload) {
 		xhr.upload.progessbar = progessbar;
-		xhr.upload.addEventListener('progress', function(e){
+		xhr.upload.addEventListener('progress', function(e) {
 			var done = e.position || e.loaded;
 			var total = e.totalSize || e.total;
 			$(this.progessbar).css('width', (Math.floor(done/total*1000)/10)+'%');
 		});
 	}
 	
-	xhr.onreadystatechange = function(e){
-		if(this.readyState == 4){
-			if(this.callback){
+	xhr.onreadystatechange = function(e) {
+		if (this.readyState == 4) {
+			if (this.callback) {
 				this.callback(this.response, e);
 			}
 		}
@@ -2459,14 +2479,14 @@ cb.fileUpload = function(file, module, store, progessbar, vals, callback){
 	xhr.send(fd);
 },
 
-cb.isNode = function(o){
+cb.isNode = function(o) {
   return (
     typeof Node === "object" ? o instanceof Node : 
     o && typeof o === "object" && typeof o.nodeType === "number" && typeof o.nodeName==="string"
   );
 },
 
-cb.isElement = function(o){
+cb.isElement = function(o) {
   return (
     typeof HTMLElement === "object" ? o instanceof HTMLElement :
     o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName==="string"

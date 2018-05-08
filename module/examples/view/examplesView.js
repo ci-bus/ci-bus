@@ -331,8 +331,8 @@ cb.define({
                 type: 'default',
                 text: 'Off'
             },
-            onRender: function () {
-                debugger;
+            onRender: function (el) {
+            	$(el).bootstrapToggle('on');
             }
         }, {
             xtype: 'h3',
