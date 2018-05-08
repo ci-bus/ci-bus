@@ -547,31 +547,8 @@ cb.define = function(obj)
 		
 		if (obj.xtype == 'view')
 		{			
-			if (obj.renderTo)
-			{
-				//TODO No borrar los elementos con reload: false
-				$(obj.renderTo).empty();
-				obj.appendTo = obj.renderTo;
-				delete obj.renderTo;
-			}
-			
-			if (obj.items)
-			{
-				if (obj.appendTo)
-				{
-					obj.items = this.setMissingDinamicValue(obj.items, 'appendTo', obj.appendTo);
-				}
-				else if (obj.prependTo)
-				{
-					obj.items = this.setMissingDinamicValue(obj.items, 'prependTo', obj.prependTo);
-				}
-			}
-			
 			this.render(obj);
 			
-			if ($.isFunction(obj.onLoad)) {
-				obj.onLoad();
-			}
 		}else if (obj.xtype == 'controller' && obj.route) {
 			if (top.window.location.hash) {
 				cb.router.hashchange();
@@ -744,7 +721,28 @@ cb.delConfig = function(va, var2) {
 
 cb.render = function(obj, callback)
 {
-	vw = obj.name;
+	var vw = obj.name;
+	
+	if (obj.renderTo)
+	{
+		//TODO No borrar los elementos con reload: false
+		$(obj.renderTo).empty();
+		obj.appendTo = obj.renderTo;
+		delete obj.renderTo;
+	}
+	
+	if (obj.items)
+	{
+		if (obj.appendTo)
+		{
+			obj.items = this.setMissingDinamicValue(obj.items, 'appendTo', obj.appendTo);
+		}
+		else if (obj.prependTo)
+		{
+			obj.items = this.setMissingDinamicValue(obj.items, 'prependTo', obj.prependTo);
+		}
+	}
+	
 	if ($.isPlainObject(obj.items))
 	{
 		if (obj.items.reload !== false || !$('#'+obj.items.id).length) {
@@ -764,6 +762,10 @@ cb.render = function(obj, callback)
 				this.create(obj.items[j]);
 			}
 		}
+	}
+	
+	if ($.isFunction(obj.onLoad)) {
+		obj.onLoad();
 	}
 	if ($.isFunction(callback))
 	{
