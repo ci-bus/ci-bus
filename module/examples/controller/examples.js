@@ -1,6 +1,32 @@
 cb.define({
 	xtype: 'controller',
 	name: 'examples',
+	
+	route: {
+		'#aaa': 'routeTest1',
+		'#aaa/:num': 'routeTest2',
+		'#aaa/:num/:str': 'routeTest3'
+	},
+	
+	routeTest1: function(hash){
+		console.log('routeTest1', hash);
+		this.showRouteAlert('Executed routeTest1 ' + hash.toString());
+	},
+	
+	routeTest2: function(hash){
+		console.log('routeTest2', hash);
+		this.showRouteAlert('Executed routeTest2 ' + hash.toString());
+	},
+	
+	routeTest3: function(hash){
+		console.log('routeTest3', hash);
+		this.showRouteAlert('Executed routeTest3 ' + hash.toString());
+	},
+	
+	showRouteAlert: function (text) {
+		cb.getCmp('#hash_console').text(text).show();
+	},
+	
 	onload: function () {
 	    
 	    // Create store to polyline example
@@ -13,8 +39,13 @@ cb.define({
         });
 	    
 	    // Load view
-		cb.load('view', 'examples', 'examples', function () {
+		cb.load('view', 'examples', 'examples', function () 
+		{
+			//Generate header buttons color
 			cb.getController('examples').doMagia();
+			
+			//Do hash change when view is loaded
+			cb.router.hashchange();
 		});
 	},
 	

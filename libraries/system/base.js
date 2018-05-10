@@ -92,11 +92,13 @@ cb.router = {
 		}
 		return null;
 	},
-	getFun: function(hash) {
+	doFun: function(hash, hashpart) {
 		var rt = this.get(hash);
 		if (rt && cb.module.controller[rt.ctr]) {
 			if ($.isFunction(cb.module.controller[rt.ctr][rt.fun])) {
-				return cb.module.controller[rt.ctr][rt.fun];
+				if ($.isFunction(cb.module.controller[rt.ctr][rt.fun])) {
+					cb.module.controller[rt.ctr][rt.fun](hashpart);
+				}
 			}
 		}
 		return null;
@@ -114,14 +116,12 @@ cb.router = {
 				hashpart.splice(i, 1);
 			}
 		}
-		var fun = this.getFun(hashend);
-		if ($.isFunction(fun)) {
-			fun(hashpart);
-		}
+		this.doFun(hashend, hashpart);
 	},
 	hashchange: function() {
-		var hash = top.window.location.hash;
-		this.route(hash);
+		if (top.window.location.hash) {
+			this.route(top.window.location.hash);
+		}
 	},
 	listener: addEventListener('hashchange', function() { cb.router.hashchange(); }, false)
 };
@@ -545,15 +545,6 @@ cb.define = function(obj)
 			this.require(obj['require']);
 		}
 		
-		if (obj.xtype == 'view')
-		{			
-			this.render(obj);
-			
-		}else if (obj.xtype == 'controller' && obj.route) {
-			if (top.window.location.hash) {
-				cb.router.hashchange();
-			}
-		}
 		
 		//Add routes
 		if (obj.xtype == 'controller' && $.isPlainObject(obj.route)) {
@@ -562,6 +553,13 @@ cb.define = function(obj)
 			});
 		}
 		
+		if (obj.xtype == 'view')
+		{			
+			this.render(obj);
+			
+		}
+		
+		//OnLoad function
 		if ($.isFunction(obj['onload'])) {
 			if (cb.module.parseData[obj.name]) {
 				obj['onload'](cb.module.parseData[obj.name]);
@@ -1866,6 +1864,13 @@ cb.props = {
 	},
 	'background': function(ele, opt) {
 		$(ele).css('background', opt.background);
+	},
+	'hidden': function(ele, opt) {
+		if (opt.hidden) {
+			$(ele).hide();
+		} else {
+			$(ele).show();
+		}
 	},
 	'badge': function(ele, opt) {
 		$(ele).append('&nbsp;').append(cb.create({

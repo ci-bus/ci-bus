@@ -398,6 +398,34 @@ cb.define({
                     }
                 }
             }]
+        }, {
+        	xtype: 'h3',
+            text: '...Route'
+        }, {
+        	xtype: 'container',
+        	css: {
+        		'margin-bottom': 10
+        	},
+        	defaults: {
+        		margin: '0 10px'
+        	},
+        	items: [{
+        		xtype: 'a',
+        		href: '#aaa',
+        		text: 'Route test 1'
+        	}, {
+        		xtype: 'a',
+        		href: '#aaa/57',
+        		text: 'Route test 2'
+        	}, {
+        		xtype: 'a',
+        		href: '#aaa/57/test',
+        		text: 'Route test 3'
+        	}]
+        }, {
+        	xtype: 'alert',
+        	id: 'hash_console',
+        	hidden: true
         }]
 	}]
 });
