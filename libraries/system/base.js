@@ -2499,3 +2499,12 @@ cb.isElement = function(o) {
     o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName==="string"
   );
 }
+
+cb.scrollTop = function (ele, time) {
+	if (!time) {
+		time = 1000;
+	}
+	$('html, body').animate({
+        scrollTop: $(ele).offset().top
+    }, time);
+}

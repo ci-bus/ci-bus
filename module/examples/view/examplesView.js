@@ -204,13 +204,18 @@ cb.define({
 		},{
 			xtype: 'progress',
 			margin: 10,
-			items: {
+			items: [{
 				striped: true,
 				animated: true,
 				min: 0,
 				max: 100,
 				value: 50
-			}
+			}, {
+				type: 'danger',
+				min: 0,
+				max: 100,
+				value: 3
+			}]
 		},{
 			xtype: 'h3',
 			text: '...Ico'
