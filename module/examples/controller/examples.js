@@ -25,7 +25,7 @@ cb.define({
 	
 	showRouteAlert: function (text) {
 		cb.getCmp('#hash_console').text(text).show();
-		cb.scrollTop('#hash_console');
+		cb.scrollTo('#hash_console');
 	},
 	
 	onload: function () {

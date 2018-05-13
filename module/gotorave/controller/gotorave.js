@@ -308,17 +308,7 @@ cb.define({
 	},
 	
 	auto_scroll: function(){
-		var t_top = $('#body-col2').position().top;
-		var w_wid = $(window).height();
-		if(w_wid > 600){
-			t_top-= 52;
-		}
-		if(t_top > 100)
-		{
-			cb.sto(function(){
-				$("html, body").animate({scrollTop: t_top}, 'fast', 'swing');
-			}, 200);
-		}
+		cb.scrollTo('#homenav', 500);
 	},
 	
 	load_events: function(id_tag){

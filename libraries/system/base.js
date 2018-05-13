@@ -307,22 +307,82 @@ cb.base.polyline = {
 	}
 };
 
+//Funciones base para los dropdown y dropup
+cb.base.dropdown = {
+	addItems: function(items) {
+		if (items) {
+			var eleCmp = cb.getCmp($.isArray(this)? this[0]: this);
+			var ul = eleCmp.find('ul');
+			var record = eleCmp.getRecord();
+			if (!$.isArray(items))
+			{
+				items = [items];
+			}
+			for (var a=0;a<items.length;a++)
+			{
+				var li = document.createElement('li');
+				if (items[a].xtype == 'separator' || items[a].xtype == 'divider')
+				{
+					li = cb.common_prop(li, {
+						cls: 'divider',
+						attr: {'role':'separator'}});
+					li = cb.common_prop(li, items[a]);
+				}
+				else if (items[a].xtype == 'dropdown-header' || items[a].xtype == 'header')
+				{
+					items[a].cls? items[a].cls = 'dropdown-header '+items[a].cls : items[a].cls = 'dropdown-header';
+					li = cb.common_prop(li, items[a]);
+				}
+				else
+				{
+					if (items[a].xtype == 'li') {
+						li = cb.create(items[a], record);
+					} else {
+						if (!items[a].xtype) {
+							items[a].xtype = 'a';
+						}
+						oli = {xtype: 'li'};
+						if (items[a].store) {
+							oli.store = items[a].store;
+							delete items[a].store;
+						}
+						if (items[a].field) {
+							oli.field = items[a].field;
+							delete items[a].field;
+						}
+						oli.items = items[a];
+						li = cb.create(oli, record);
+					}
+				}
+				$(ul).append(li);
+			}
+		}
+	}
+};
+cb.base.dropup = cb.base.dropdown;
+
 //Funcion para clonar un array u objeto
 cb.clone = function(data) {
 	return JSON.parse(JSON.stringify(data));
 };
 
 //Funcion para generar un nombre único
-cb.autoname = function() {
-	var r = 'autoname_'+this.elenamed;
-	this.elenamed++;
+cb.autoname = function(pre) {
+	if (!pre) {
+		pre = 'autoname';
+	}
+	var r = pre + '_' + this.elenamed;
+	this.elenamed ++;
 	return r;
 };
 
 //Funcion para generar un id único
-cb.autoid = function() {
-    var r = 'autoid_'+this.eleids;
-    this.eleids++;
+cb.autoid = function(pre) {
+	if (!pre) {
+		pre = 'autoid';
+	}
+    var r = pre + '_' + this.eleids;
+    this.eleids ++;
     return r;
 };
 
@@ -545,7 +605,6 @@ cb.define = function(obj)
 			this.require(obj['require']);
 		}
 		
-		
 		//Add routes
 		if (obj.xtype == 'controller' && $.isPlainObject(obj.route)) {
 			$.each(obj.route, function(hash, fun) {
@@ -556,7 +615,6 @@ cb.define = function(obj)
 		if (obj.xtype == 'view')
 		{			
 			this.render(obj);
-			
 		}
 		
 		//OnLoad function
@@ -993,12 +1051,17 @@ cb.module.bootstrapComponent = {
 	'dropdown': function(opt, record) {
 		if (!opt.type) opt.type2 = 'default';
 		else opt.type2 = opt.type;
-		opt.type = 'button';
 		if (opt.xtype == 'dropup') var t_xtype = 'btn-group ' + opt.xtype;
 		else var t_xtype = 'btn-group';
 		var ele = document.createElement('div');
 		$(ele).attr('role', 'group');
 		$(ele).addClass(t_xtype);
+		if (opt.id) {
+			$(ele).attr('id', opt.id);
+			opt.id = false;
+		} else {
+			$(ele).attr('id', cb.autoid(opt.xtype));
+		}
 		if (opt.group) {
 			ele = cb.common_prop(ele, opt.group);
 		}
@@ -1006,12 +1069,13 @@ cb.module.bootstrapComponent = {
 		but = cb.common_prop(but, {
 			cls:'btn btn-'+opt.type2+' dropdown-toggle',
 			attr: {
-				'data-toggle':'dropdown',
-				'aria-haspopup':'true',
-				'aria-expanded':'false',
-				'type':'button'}
+				'data-toggle': 'dropdown',
+				'aria-haspopup': 'true',
+				'aria-expanded': 'false',
+				'type': 'button'
+			}
 		});
-		if (!opt.id) opt.id=cb.autoid();
+		opt.id=cb.autoid();
 		if (opt.size) {
 			if (opt.cls) opt.cls += ' btn-'+opt.size;
 			else opt.cls = 'btn-'+opt.size;
@@ -1043,44 +1107,12 @@ cb.module.bootstrapComponent = {
 		$(ele).append(but);
 		var ul = document.createElement('ul');
 		$(ul).addClass('dropdown-menu').attr('aria-labelledby',opt.id);
-		if ($.isArray(opt.items))
-		{
-			for (var a=0;a<opt.items.length;a++)
-			{
-				var li = document.createElement('li');
-				if (opt.items[a].xtype == 'separator' || opt.items[a].xtype == 'divider')
-				{
-					li = cb.common_prop(li, {
-						cls: 'divider',
-						attr: {'role':'separator'}});
-					li = cb.common_prop(li, opt.items[a]);
-				}
-				else if (opt.items[a].xtype == 'dropdown-header' || opt.items[a].xtype == 'header')
-				{
-					opt.items[a].cls? opt.items[a].cls = 'dropdown-header '+opt.items[a].cls : opt.items[a].cls = 'dropdown-header';
-					li = cb.common_prop(li, opt.items[a]);
-				}
-				else
-				{
-					if (opt.items[a].xtype == 'li') {
-						li = cb.create(opt.items[a], record);
-					}else{
-						oli = {xtype: 'li'};
-						if (opt.items[a].store) {
-							oli.store = opt.items[a].store;
-							delete opt.items[a].store;
-						}
-						if (opt.items[a].field) {
-							oli.field = opt.items[a].field;
-							delete opt.items[a].field;
-						}
-						oli.items = opt.items[a];
-						li = cb.create(oli, record);
-					}
-				}
-				$(ul).append(li);
-			}
-		}
+		
+		//Add options li
+		ele.afterRender = function (ele) {
+            ele.addItems(ele.getOpt().items);
+        }
+		
 		$(ele).append(ul);
 		opt.noitems = true;
 		return ele;
@@ -2500,7 +2532,7 @@ cb.isElement = function(o) {
   );
 }
 
-cb.scrollTop = function (ele, time) {
+cb.scrollTo = function (ele, time) {
 	if (!time) {
 		time = 1000;
 	}

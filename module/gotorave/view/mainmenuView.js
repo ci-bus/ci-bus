@@ -61,7 +61,7 @@ cb.define({
 						text: '{name}',
 						listener: {
 							click: function(){
-								cb.ctr('gotorave', 'load_events', $(this).getRecord()['id']);
+								cb.ctr('gotorave', 'load_events', this.getRecord()['id']);
 							}
 						}
 					}]
@@ -89,7 +89,7 @@ cb.define({
 						text: '{name}',
 						listener: {
 							click: function(){
-								cb.ctr('gotorave', 'load_users', $(this).getRecord()['id']);
+								cb.ctr('gotorave', 'load_users', this.getRecord()['id']);
 							}
 						}
 					}]
@@ -117,7 +117,7 @@ cb.define({
 						text: '{name}',
 						listener: {
 							click: function(){
-								cb.ctr('gotorave', 'load_music', $(this).getRecord()['id']);
+								cb.ctr('gotorave', 'load_music', this.getRecord()['id']);
 							}
 						}
 					}]
@@ -140,13 +140,14 @@ cb.define({
 						text: '{name}',
 						listener: {
 							click: function(){
-								cb.ctr('gotorave', 'changesala', $(this).getRecord());
+								cb.ctr('gotorave', 'changesala', this.getRecord());
 							}
 						}
 					}]
 				},{
 					xtype: 'dropdown-menu',
 					text: ' Más ',
+					id: 'main-menu-mas',
 					glyphicon: 'certificate',
 					css: {'font-size':'17px'},
 					items: [{

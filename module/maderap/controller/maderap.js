@@ -10,7 +10,7 @@ cb.define({
 			['store', 'maderap', 'letra'],
 			['view', 'maderap', 'csel']
 		], function(){
-			var record = $('select[name="letra"] option:first').getRecord();
+			var record = cb.getCmp('select[name="letra"] option:first').getRecord();
 			cb.ctr('maderap', 'insert', record.text);
 		});
 		

@@ -27,7 +27,7 @@ cb.define({
 				items: [{
 					xtype: 'small',
 					color: 'red',
-					text: 'Solo puedes invitar a 1 persona'
+					text: 'Solo puedes invitar a ' + cb.getConfig('user_data').add_friends + ' persona'
 				},{
 					xtype: 'h5',
 					text: 'Introduce el correo electrónico'
