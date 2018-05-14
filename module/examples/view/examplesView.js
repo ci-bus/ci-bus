@@ -109,7 +109,15 @@ cb.define({
 				}, {
 					xtype: 'a',
 					text: 'Link 2'
-				}]
+				}],
+				changeItems: function () {
+					cb.sto(function () {
+		            	cb.getCmp('#exp-dropdown-1').open();
+		            }, 50);
+				},
+				loadItems: function () {
+					// First load
+				}
 			}]
 		}, {
 		    xtype: 'container',
@@ -119,7 +127,7 @@ cb.define({
 		        click: function () {
 		            cb.getCmp('#exp-dropdown-1').addItems([{
 		                text: 'Added option'
-		            }])
+		            }]);
 		        }
 		    }, {
                 xtype: 'button',

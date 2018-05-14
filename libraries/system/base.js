@@ -281,6 +281,13 @@ cb.base.element = {
 				return this.component
 			}
 		} else return this.opt? this.opt: false;
+	},
+	setRecord: function (record) {
+		if (this.opt) {
+			this.opt.record = record;
+		}
+		this.record = record;
+		return this;
 	}
 };
 
@@ -309,12 +316,15 @@ cb.base.polyline = {
 
 //Funciones base para los dropdown y dropup
 cb.base.dropdown = {
-	addItems: function(items, record) {
+	addItems: function(items, record, event) {
+		if (!event) {
+			event = 'changeItems';
+		}
 		if (items) {
 			var eleCmp = cb.getCmp($.isArray(this)? this[0]: this);
-			var ul = eleCmp.find('ul');
+			var ul = eleCmp.find('ul:first');
 			if (!record) {
-			    record = eleCmp.getRecord();
+			    record = false;
 			}
 			if (!$.isArray(items))
 			{
@@ -359,10 +369,17 @@ cb.base.dropdown = {
 				$(ul).append(li);
 			}
 		}
+		if ($.isFunction(this[event])) {
+			this[event]();
+		}
+		return this;
 	},
-	removeItems: function (items) {
+	removeItems: function (items, event) {
+		if (!event) {
+			event = 'changeItems';
+		}
 	    var eleCmp = cb.getCmp($.isArray(this)? this[0]: this);
-        var ul = eleCmp.find('ul');
+        var ul = eleCmp.find('ul:first');
         var lis = ul.children();
 	    if (items) {
             var toRemove = [];
@@ -394,10 +411,36 @@ cb.base.dropdown = {
 	    } else {
 	        ul.children().remove();
 	    }
+	    if ($.isFunction(this[event])) {
+			this[event]();
+		}
+	    return this;
 	},
 	replaceItems: function (items, record) {
 	    this.removeItems();
-	    this.addItems(items, record);
+	    this.addItems(items, record, 'changeItems');
+	    if ($.isFunction(this.changeItems)) {
+			this.changeItems();
+		}
+	    return this;
+	},
+	open: function () {
+		var eleCmp = cb.getCmp($.isArray(this)? this[0]: this);
+        var button = eleCmp.find('button:first');
+        if (button.attr('aria-expanded') == 'false') {
+        	eleCmp.addClass('open');
+        	button.attr('aria-expanded', 'true');
+        }
+        return this;
+	},
+	close: function () {
+		var eleCmp = cb.getCmp($.isArray(this)? this[0]: this);
+        var button = eleCmp.find('button:first');
+        if (button.attr('aria-expanded') == 'true') {
+        	eleCmp.removeClass('open');
+        	button.attr('aria-expanded', false);
+        }
+        return this;
 	}
 };
 cb.base.dropup = cb.base.dropdown;
@@ -1151,7 +1194,7 @@ cb.module.bootstrapComponent = {
 		
 		//Add options li
 		ele.afterRender = function (ele) {
-            ele.addItems(ele.getOpt().items);
+            ele.addItems(ele.getOpt().items, record, 'loadItems');
         }
 		
 		$(ele).append(ul);
