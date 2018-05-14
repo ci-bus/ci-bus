@@ -309,11 +309,13 @@ cb.base.polyline = {
 
 //Funciones base para los dropdown y dropup
 cb.base.dropdown = {
-	addItems: function(items) {
+	addItems: function(items, record) {
 		if (items) {
 			var eleCmp = cb.getCmp($.isArray(this)? this[0]: this);
 			var ul = eleCmp.find('ul');
-			var record = eleCmp.getRecord();
+			if (!record) {
+			    record = eleCmp.getRecord();
+			}
 			if (!$.isArray(items))
 			{
 				items = [items];
@@ -357,6 +359,45 @@ cb.base.dropdown = {
 				$(ul).append(li);
 			}
 		}
+	},
+	removeItems: function (items) {
+	    var eleCmp = cb.getCmp($.isArray(this)? this[0]: this);
+        var ul = eleCmp.find('ul');
+        var lis = ul.children();
+	    if (items) {
+            var toRemove = [];
+            if (!$.isArray(items))
+            {
+                items = [items];
+            }
+            for (var a=0;a<items.length;a++)
+            {
+                if ($.isNumeric(items[a])) {
+                    if (items[a] < 0) {
+                        items[a] = lis.length + items[a];
+                    }
+                    if (lis[items[a]]) {
+                        toRemove.push(lis[items[a]]);
+                    }
+                } else {
+                    if (ul.find(items[a])[0]) {
+                        toRemove.push(ul.find(items[a])[0])
+                    }
+                }
+            }
+            for (var a=0;a<toRemove.length;a++)
+            {
+                if ($.isFunction(toRemove[a].remove)) {
+                    toRemove[a].remove();
+                }
+            }
+	    } else {
+	        ul.children().remove();
+	    }
+	},
+	replaceItems: function (items, record) {
+	    this.removeItems();
+	    this.addItems(items, record);
 	}
 };
 cb.base.dropup = cb.base.dropdown;
