@@ -65,7 +65,7 @@ cb.eleids = 0;
 //Por defecto cuando un record es un array
 //se crea un elemento por cada valor
 //añadiendo el xtype a este array lo evitamos
-cb.eleArrayAcept = ['polyline'];
+cb.eleArrayAcept = ['polyline', 'tbody', 'grid'];
 
 //El route te permine ejecutar una funcion de un controlador visitando un hash #ejemplo
 cb.router = {
@@ -444,6 +444,54 @@ cb.base.dropdown = {
 	}
 };
 cb.base.dropup = cb.base.dropdown;
+
+//Funciones base para los grid
+cb.base.grid = {
+	addColumn: function (col, pos) {
+		var record = this.getRecord();
+		if (col) {
+			if ($.isNumeric(pos)) {
+				this.opt.columns.splice(pos, 0, cb.clone(col));
+			} else {
+				this.opt.columns.push(cb.clone(col));
+			}
+			if (col.text) {
+				var th = cb.create({
+					xtype: 'th',
+					text: col.text
+				});
+				if ($.isNumeric(pos)) {
+					this.find('thead').find('tr').find('th:eq(' + pos + ')').before(th);
+				} else {
+					this.find('thead').find('tr').append(th);
+				}
+				delete col.name;
+			}
+			if (col.field && record) {
+				if (!$.isArray(record)) {
+					record = [record];
+				}
+				col.xtype = 'td';
+				for (var r = 0; r < record.length; r ++) {
+					var td = cb.create(col, record[r]);
+					if ($.isNumeric(pos)) {
+						this.find('tbody').find('tr:eq(' + r + ')').find('th:eq(' + pos + ')').before(td);
+					} else {
+						this.find('tbody').find('tr:eq(' + r + ')').append(td);
+					}
+				}
+			}
+		}
+	},
+	
+	removeColumn: function (pos) {
+		if ($.isNumeric(pos)) {
+			this.opt.columns.splice(pos, 1);
+			this.find('thead').find('tr').find('th:eq(' + pos + ')').remove();
+			this.find('tbody').find('tr').find(':eq(' + pos + ')').remove();
+		}
+	}
+};
 
 //Funcion para clonar un array u objeto
 cb.clone = function(data) {
@@ -1282,32 +1330,34 @@ cb.module.bootstrapComponent = {
 	},
 	'tbody': function(opt, record) {
 		var ele = document.createElement('tbody');
-	 	opt.t_tr = document.createElement('tr');
-	 	if (opt.items)
-	 	{
-		 	for (var h=0;h<opt.items.length;h++)
+		if (!$.isArray(record)) {
+			record = [record];
+		}
+		for (var i = 0; i < record.length; i ++) {
+			opt.t_tr = document.createElement('tr');
+		 	if (opt.items)
 		 	{
-		 		opt.t_type = h==0? 'th': 'td';
-		 		if (!opt.items[h].xtype || opt.items[h].xtype == 'td' || opt.items[h].xtype == 'th')
-		 		{
-		 			if (!opt.items[h].xtype) opt.items[h].xtype = opt.t_type;
-		 			opt.t_th = cb.create(cb.cloneObject(opt.items[h]), record);
-		 		}
-		 		else
-		 		{
-		 			opt.t_th = document.createElement(opt.t_type);
-		 			$(opt.t_th).append(cb.create(cb.cloneObject(opt.items[h]), record));
-		 		}
-		 		if (opt.items[h].scope) $(opt.t_th).attr('scope', opt.items[h].scope);
-		 		if (opt.items[h].field)
-		 		{
-		 			$(opt.t_tr).css('display','none');
-		 		}
-		 		$(opt.t_tr).append(opt.t_th);
+			 	for (var h=0;h<opt.items.length;h++)
+			 	{
+			 		opt.t_type = h==0? 'th': 'td';
+			 		if (!opt.items[h].xtype || opt.items[h].xtype == 'td' || opt.items[h].xtype == 'th')
+			 		{
+			 			if (!opt.items[h].xtype) opt.items[h].xtype = opt.t_type;
+			 			opt.t_th = cb.create(cb.cloneObject(opt.items[h]), record[i]);
+			 		}
+			 		else
+			 		{
+			 			opt.t_th = document.createElement(opt.t_type);
+			 			$(opt.t_th).append(cb.create(cb.cloneObject(opt.items[h]), record[i]));
+			 		}
+			 		if (opt.items[h].scope) $(opt.t_th).attr('scope', opt.items[h].scope);
+			 		
+			 		$(opt.t_tr).append(opt.t_th);
+			 	}
+			 	$(ele).append(opt.t_tr);
+				opt.noitems = true;
 		 	}
-		 	$(ele).append(opt.t_tr);
-			opt.noitems = true;
-	 	}
+		}
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
@@ -1880,6 +1930,73 @@ cb.module.bootstrapComponent = {
 	}
 };
 
+//Para la creación de componentes de cibus
+cb.module.cbComponent = {
+	'grid': function (opt, record) {
+		opt = cb.cloneObject(opt);
+		var headItems = [];
+		var bodyItems = [];
+		for (var i = 0; i < opt.columns.length; i ++) {
+			var col = opt.columns[i];
+			headItems.push({
+				text: col.text
+			});
+			delete col.text;
+			bodyItems.push(col);
+		}
+		var tableItems = [{
+			xtype: 'head',
+			items: headItems
+		}, {
+			xtype: 'body',
+			store: opt.store,
+			field: opt.field,
+			items: bodyItems
+		}];
+		delete opt.columns;
+		delete opt.store;
+		delete opt.field;
+		if (opt.title) {
+			var title = opt.title;
+			delete opt.title;
+		}
+		//Creación del panel con la tabla
+		var panel = opt;
+		panel.xtype = 'panel';
+		if (!panel.items) {
+			panel.items = [];
+		}
+		if (title) {
+			if (typeof title == 'string') {
+				panel.items.push({
+					xtype: 'head',
+					title: title
+				});
+			} else {
+				panel.items.push({
+					xtype: 'head',
+					items: title
+				});
+			}
+		}
+		panel.items.push({
+			xtype: 'body',
+			padding: 0,
+			items: {
+				xtype: 'table',
+				margin: 0,
+				items: tableItems
+			}
+		});
+		
+		// TODO añadir footer para las acciones paginado etc...
+		
+		var ele = cb.create(panel);
+		
+		return ele;
+	}
+};
+
 //Para el seteo de propiedades
 cb.props = {
 	'require': function(ele, opt) {
@@ -2136,22 +2253,42 @@ cb.create = function(opt, record) {
 		}
 		
 		//Alterdata
-		if (opt.alterdata && ($.type(record) === 'string' || $.type(record) === 'number'))
-		{
-			if ($.isFunction(opt.alterdata)) {
-				record = opt.alterdata(record);
-			}else if ($.isPlainObject(opt.alterdata) && opt.field && opt.alterdata[opt.field]) {
-				record = opt.alterdata[opt.field](record);
-			}
-			
-		}
-		else if ($.isPlainObject(opt.alterdata) && $.isPlainObject(record))
-		{
-			$.each(record, function(i) {
-				if ($.isFunction(opt.alterdata[i])) {
-					record[i] = opt.alterdata[i](record[i]);
+		if (opt.alterdata && record) {
+			if ($.type(record) === 'string' || $.type(record) === 'number')
+			{
+				if ($.isFunction(opt.alterdata)) {
+					record = opt.alterdata(record);
+				}else if ($.isPlainObject(opt.alterdata) && opt.field && opt.alterdata[opt.field]) {
+					record = opt.alterdata[opt.field](record);
 				}
-			});
+			}
+			else if ($.isPlainObject(opt.alterdata) && $.isPlainObject(record))
+			{
+				$.each(record, function(i) {
+					if ($.isFunction(opt.alterdata[i])) {
+						record[i] = opt.alterdata[i](record[i]);
+					}
+				});
+			}
+			else if ($.isArray(record))
+			{
+				if ($.isFunction(opt.alterdata))
+				{
+					for (var i = 0; i < record.length; i ++) {
+						record[i] = opt.alterdata(record[i]);
+					}
+				}
+				else if ($.isPlainObject(opt.alterdata))
+				{
+					for (var j = 0; j < record.length; j ++) {
+						$.each(record[j], function(i) {
+							if ($.isFunction(opt.alterdata[i])) {
+								record[j][i] = opt.alterdata[i](record[j][i]);
+							}
+						});
+					}
+				}
+			}
 		}
 		
 		//Arreglo para cuando se define items como objeto
@@ -2209,6 +2346,11 @@ cb.create = function(opt, record) {
 			if ($.isFunction(cb.module.bootstrapComponent[opt.xtype]))
 			{
 				var ele = cb.module.bootstrapComponent[opt.xtype](opt, record);
+			}
+			//Si es un componente de cibus
+			else if ($.isFunction(cb.module.cbComponent[opt.xtype]))
+			{
+				var ele = cb.module.cbComponent[opt.xtype](opt, record);
 			}
 			//Si es un componente personalizado
 			else if ($.isPlainObject(cb.module.component[opt.xtype]))

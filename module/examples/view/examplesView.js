@@ -491,6 +491,33 @@ cb.define({
         	xtype: 'alert',
         	id: 'hash_console',
         	hidden: true
+        }, {
+        	xtype: 'h3',
+            text: '...Grid'
+        }, {
+        	xtype: 'grid',
+        	id: 'gridexa',
+        	type: 'primary',
+        	title: 'Grid example',
+        	store: 'example',
+        	field: 'grid',
+        	alterdata: {
+        		'date': function (date) {
+        			var d = new Date(date);
+        			return d.getDate() + '/' + d.getMonth()+1 + '/' + d.getFullYear();
+        		}
+        	},
+        	margin: 10,
+        	columns: [{
+        		text: 'Name',
+        		field: 'name'
+        	}, {
+        		text: 'Info',
+        		field: 'info'
+        	}, {
+        		text: 'Date',
+        		field: 'date'
+        	}]
         }]
 	}]
 });
