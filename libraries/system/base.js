@@ -447,37 +447,46 @@ cb.base.dropup = cb.base.dropdown;
 
 //Funciones base para los grid
 cb.base.grid = {
-	addColumn: function (col, pos) {
+	addColumns: function (cols, pos) {
 		var record = this.getRecord();
-		if (col) {
+		if (cols) {
+			if (!$.isArray(cols)) {
+				cols = [cols];
+			}
 			if ($.isNumeric(pos)) {
-				this.opt.columns.splice(pos, 0, cb.clone(col));
-			} else {
-				this.opt.columns.push(cb.clone(col));
+				cols.reverse();
 			}
-			if (col.text) {
-				var th = cb.create({
-					xtype: 'th',
-					text: col.text
-				});
+			for (var i = 0; i < cols.length; i++) {
+				var col = cols[i];
 				if ($.isNumeric(pos)) {
-					this.find('thead').find('tr').find('th:eq(' + pos + ')').before(th);
+					this.opt.columns.splice(pos, 0, cb.clone(col));
 				} else {
-					this.find('thead').find('tr').append(th);
+					this.opt.columns.push(cb.clone(col));
 				}
-				delete col.name;
-			}
-			if (col.field && record) {
-				if (!$.isArray(record)) {
-					record = [record];
-				}
-				col.xtype = 'td';
-				for (var r = 0; r < record.length; r ++) {
-					var td = cb.create(col, record[r]);
+				if (col.text) {
+					var th = cb.create({
+						xtype: 'th',
+						text: col.text
+					});
 					if ($.isNumeric(pos)) {
-						this.find('tbody').find('tr:eq(' + r + ')').find('th:eq(' + pos + ')').before(td);
+						this.find('thead').find('tr').find('th:eq(' + pos + ')').before(th);
 					} else {
-						this.find('tbody').find('tr:eq(' + r + ')').append(td);
+						this.find('thead').find('tr').append(th);
+					}
+					delete col.name;
+				}
+				if (col.field && record) {
+					if (!$.isArray(record)) {
+						record = [record];
+					}
+					col.xtype = 'td';
+					for (var r = 0; r < record.length; r ++) {
+						var td = cb.create(col, record[r]);
+						if ($.isNumeric(pos)) {
+							this.find('tbody').find('tr:eq(' + r + ')').find('th:eq(' + pos + ')').before(td);
+						} else {
+							this.find('tbody').find('tr:eq(' + r + ')').append(td);
+						}
 					}
 				}
 			}
@@ -489,6 +498,79 @@ cb.base.grid = {
 			this.opt.columns.splice(pos, 1);
 			this.find('thead').find('tr').find('th:eq(' + pos + ')').remove();
 			this.find('tbody').find('tr').find(':eq(' + pos + ')').remove();
+		}
+	},
+	
+	addRows: function (record, pos) {
+		//Save new record
+		// TODO add row to correct position when parse pos value...
+		if ($.isPlainObject(this.getOpt().record)) {
+			this.getOpt().record = [this.getOpt().record];
+		} else if (!$.isArray(this.getOpt().record)) {
+			this.getOpt().record = [];
+		}
+		if ($.isPlainObject(record)) {
+			this.getOpt().record.push(record);
+		} else if ($.isArray(record)) {
+			this.getOpt().record = this.getOpt().record.concat(record);
+		} else {
+			return;
+		}
+		//Add new row to table
+		var opt = cb.cloneObject(this.getOpt()),
+			bodyItems = [];
+		for (var i = 0; i < opt.columns.length; i ++) {
+			delete opt.columns[i].text;
+			bodyItems.push(opt.columns[i]);
+		}
+		if (opt.alterdata) {
+			cb.alterdata(opt.alterdata, record);
+		}
+		var tbody = cb.module.bootstrapComponent['tbody']({
+			items: bodyItems
+		}, record);
+		if ($.isNumeric(pos)) {
+			this.find('tbody').find('tr:eq(' + pos + ')').before($(tbody).children());
+		} else {
+			this.find('tbody').append($(tbody).children());
+		}
+	},
+	
+	removeRow: function (pos) {
+		//Remove record
+		delete this.getOpt().record.splice(pos, 1);
+		//Remove row table
+		this.find('tbody').find('tr:eq(' + pos + ')').remove();
+	},
+	
+	addItems: function (items, place) {
+		if (!$.isArray(items)) {
+			items = [items];
+		}
+		if (typeof place == 'string' && (place == 'head' || place == 'beforeTable' || place == 'afterTable' || place == 'footer')) {
+			var opt = this.getOpt();
+			if ($.isPlainObject(opt[place])) {
+				opt[place] = [opt[place]]
+			} else if (!$.isArray(opt[place])) {
+				opt[place] = [];
+			}
+			for (var i = 0; i < items.length; i ++) {
+				var item = items[i];
+				opt[place].push(item);
+				var ele = cb.create(item);
+				if (place == 'head') {
+					this.find('.panel-heading').append(ele);
+				}
+				if (place == 'beforeTable') {
+					this.find('.panel-body').find('table').before(ele);
+				}
+				if (place == 'afterTable') {
+					this.find('.panel-body').find('table').after(ele);
+				}
+				if (place == 'footer') {
+					this.find('.panel-footer').append(ele);
+				}
+			}
 		}
 	}
 };
@@ -1339,15 +1421,14 @@ cb.module.bootstrapComponent = {
 		 	{
 			 	for (var h=0;h<opt.items.length;h++)
 			 	{
-			 		opt.t_type = h==0? 'th': 'td';
 			 		if (!opt.items[h].xtype || opt.items[h].xtype == 'td' || opt.items[h].xtype == 'th')
 			 		{
-			 			if (!opt.items[h].xtype) opt.items[h].xtype = opt.t_type;
+			 			if (!opt.items[h].xtype) opt.items[h].xtype = 'td';
 			 			opt.t_th = cb.create(cb.cloneObject(opt.items[h]), record[i]);
 			 		}
 			 		else
 			 		{
-			 			opt.t_th = document.createElement(opt.t_type);
+			 			opt.t_th = document.createElement('td');
 			 			$(opt.t_th).append(cb.create(cb.cloneObject(opt.items[h]), record[i]));
 			 		}
 			 		if (opt.items[h].scope) $(opt.t_th).attr('scope', opt.items[h].scope);
@@ -1933,9 +2014,12 @@ cb.module.bootstrapComponent = {
 //Para la creación de componentes de cibus
 cb.module.cbComponent = {
 	'grid': function (opt, record) {
+		//To no edit original opts
 		opt = cb.cloneObject(opt);
-		var headItems = [];
-		var bodyItems = [];
+		
+		//Create table
+		var headItems = [],
+			bodyItems = [];
 		for (var i = 0; i < opt.columns.length; i ++) {
 			var col = opt.columns[i];
 			headItems.push({
@@ -1956,42 +2040,89 @@ cb.module.cbComponent = {
 		delete opt.columns;
 		delete opt.store;
 		delete opt.field;
-		if (opt.title) {
-			var title = opt.title;
-			delete opt.title;
+		
+		//Create panel
+		opt.xtype = 'panel';
+		opt.items = [];
+		//Head panel
+		if (opt.head) {
+			opt.head.xtype = 'head';
+			opt.items.push(opt.head);
+			delete opt.head;
 		}
-		//Creación del panel con la tabla
-		var panel = opt;
-		panel.xtype = 'panel';
-		if (!panel.items) {
-			panel.items = [];
-		}
-		if (title) {
-			if (typeof title == 'string') {
-				panel.items.push({
-					xtype: 'head',
-					title: title
-				});
+		//Body panel with table
+		if (opt.body) {
+			opt.body.xtype = 'body';
+			if (!opt.body.css) {
+				opt.body.css = {
+					padding: 0
+				};
+			} else if (!opt.body.css.padding) {
+				opt.body.css.padding = 0;
+			}
+			if (!opt.body.table) {
+				opt.body.table = {
+					xtype: 'table',
+					css: {
+						margin: 0
+					},
+					items: tableItems
+				};
 			} else {
-				panel.items.push({
-					xtype: 'head',
-					items: title
-				});
+				opt.body.table.xtype = 'table';
+				opt.body.table.items = tableItems;
+				if (!opt.body.table.css) {
+					opt.body.table.css = {
+						margin: 0
+					};
+				} else if (!opt.body.table.css.margin) {
+					opt.body.table.css.margin = 0;
+				}
 			}
+			if ($.isPlainObject(opt.body.table.beforeItems)) {
+				var beforeItems = [opt.body.table.beforeItems];
+			} else if ($.isArray(opt.body.table.beforeItems)) {
+				var beforeItems = opt.body.table.beforeItems;
+			} else {
+				var beforeItems = [];
+			}
+			if ($.isPlainObject(opt.body.table.afterItems)) {
+				var afterItems = [opt.body.table.afterItems];
+			} else if ($.isArray(opt.body.table.afterItems)) {
+				var afterItems = opt.body.table.afterItems;
+			} else {
+				var afterItems = [];
+			}
+			delete opt.body.table.beforeItems;
+			delete opt.body.table.afterItems;
+			
+			opt.body.items = beforeItems.concat(opt.body.table).concat(afterItems);
+			delete opt.body.table;
+			
+			opt.items.push(opt.body);
+			delete opt.body;
+		} else {
+			opt.items.push({
+				xtype: 'body',
+				css: {
+					padding: 0
+				},
+				items: {
+					xtype: 'table',
+					css: {
+						margin: 0
+					},
+					items: tableItems
+				}
+			});
 		}
-		panel.items.push({
-			xtype: 'body',
-			padding: 0,
-			items: {
-				xtype: 'table',
-				margin: 0,
-				items: tableItems
-			}
-		});
+		if (opt.footer) {
+			opt.footer.xtype = 'footer';
+			opt.items.push(opt.footer);
+			delete opt.footer;
+		}
 		
-		// TODO añadir footer para las acciones paginado etc...
-		
-		var ele = cb.create(panel);
+		var ele = cb.create(opt);
 		
 		return ele;
 	}
@@ -2134,6 +2265,46 @@ cb.mergeDataStore = function(record) {
 	// TODO en planificación, lo necesitaré en alguna circunstancia?
 };
 
+//Funciton alterdata to changes in record data before processing
+cb.alterdata = function (alterdata, record) {
+	if ($.type(record) === 'string' || $.type(record) === 'number')
+	{
+		if ($.isFunction(alterdata)) {
+			record = alterdata(record);
+		}else if ($.isPlainObject(alterdata) && opt.field && alterdata[opt.field]) {
+			record = alterdata[opt.field](record);
+		}
+	}
+	else if ($.isPlainObject(alterdata) && $.isPlainObject(record))
+	{
+		$.each(record, function(i) {
+			if ($.isFunction(alterdata[i])) {
+				record[i] = alterdata[i](record[i]);
+			}
+		});
+	}
+	else if ($.isArray(record))
+	{
+		if ($.isFunction(alterdata))
+		{
+			for (var i = 0; i < record.length; i ++) {
+				record[i] = alterdata(record[i]);
+			}
+		}
+		else if ($.isPlainObject(alterdata))
+		{
+			for (var j = 0; j < record.length; j ++) {
+				$.each(record[j], function(i) {
+					if ($.isFunction(alterdata[i])) {
+						record[j][i] = alterdata[i](record[j][i]);
+					}
+				});
+			}
+		}
+	}
+	return record;
+}
+
 //Funciona para la creación de elementos
 cb.create = function(opt, record) {
 
@@ -2254,41 +2425,7 @@ cb.create = function(opt, record) {
 		
 		//Alterdata
 		if (opt.alterdata && record) {
-			if ($.type(record) === 'string' || $.type(record) === 'number')
-			{
-				if ($.isFunction(opt.alterdata)) {
-					record = opt.alterdata(record);
-				}else if ($.isPlainObject(opt.alterdata) && opt.field && opt.alterdata[opt.field]) {
-					record = opt.alterdata[opt.field](record);
-				}
-			}
-			else if ($.isPlainObject(opt.alterdata) && $.isPlainObject(record))
-			{
-				$.each(record, function(i) {
-					if ($.isFunction(opt.alterdata[i])) {
-						record[i] = opt.alterdata[i](record[i]);
-					}
-				});
-			}
-			else if ($.isArray(record))
-			{
-				if ($.isFunction(opt.alterdata))
-				{
-					for (var i = 0; i < record.length; i ++) {
-						record[i] = opt.alterdata(record[i]);
-					}
-				}
-				else if ($.isPlainObject(opt.alterdata))
-				{
-					for (var j = 0; j < record.length; j ++) {
-						$.each(record[j], function(i) {
-							if ($.isFunction(opt.alterdata[i])) {
-								record[j][i] = opt.alterdata[i](record[j][i]);
-							}
-						});
-					}
-				}
-			}
+			this.alterdata(opt.alterdata, record);
 		}
 		
 		//Arreglo para cuando se define items como objeto

@@ -496,9 +496,8 @@ cb.define({
             text: '...Grid'
         }, {
         	xtype: 'grid',
-        	id: 'gridexa',
         	type: 'primary',
-        	title: 'Grid example',
+        	id: 'gridexa',
         	store: 'example',
         	field: 'grid',
         	alterdata: {
@@ -507,7 +506,6 @@ cb.define({
         			return d.getDate() + '/' + d.getMonth()+1 + '/' + d.getFullYear();
         		}
         	},
-        	margin: 10,
         	columns: [{
         		text: 'Name',
         		field: 'name'
@@ -517,7 +515,91 @@ cb.define({
         	}, {
         		text: 'Date',
         		field: 'date'
-        	}]
+        	}],
+        	margin: 10,
+        	
+        	head: {
+        		items: [{
+	        		cls: 'panel-title',
+	        		text: 'Grid example'
+	        	}, {
+	        		xtype: 'button',
+	        		text: 'Add column name',
+	        		css: {
+	        			'margin-left': 10
+	        		},
+	        		click: function () {
+	        			cb.getCmp('#gridexa').addColumns({
+	                		text: 'Name',
+	                		field: 'name'
+	                	});
+	        		}
+	        	}, {
+	        		xtype: 'button',
+	        		text: 'Remove first column',
+	        		click: function () {
+	        			cb.getCmp('#gridexa').removeColumn(0);
+	        		}
+	        	}]
+        	},
+        	
+        	body: {
+        		css: {
+        			overflow: 'auto'
+        		},
+        		table: {
+        			css: {
+        				'border': '1px solid #DDD',
+                		'border-bottom': '1px solid #DDD'
+        			},
+        			beforeItems: {
+                		xtype: 'div',
+                		text: 'Item text before',
+                		padding: 5,
+                		background: '#f2f5f7'
+                	},
+                	afterItems: {
+                		xtype: 'div',
+                		text: 'Item text after',
+                		padding: 5,
+                		background: '#fafafa'
+                	}
+        		}
+        	},
+        	
+        	footer: {
+        		items: [{
+            		xtype: 'button',
+            		text: 'Add two rows',
+            		click: function () {
+            			cb.getCmp('#gridexa').addRows([{
+            				name: 'Antonio',
+                        	info: 'User',
+                        	date: '2018-05-05'
+                    	}, {
+                    		name: 'Juan',
+                        	info: 'User',
+                        	date: '2018-05-06'
+                    	}]);
+            		}
+            	}, {
+            		xtype: 'button',
+            		text: 'Add row first position',
+            		click: function () {
+            			cb.getCmp('#gridexa').addRows({
+            				name: 'Sergio',
+                        	info: 'User',
+                        	date: '2018-05-07'
+                    	}, 0);
+            		}
+            	}, {
+            		xtype: 'button',
+            		text: 'Remove first row',
+            		click: function () {
+            			cb.getCmp('#gridexa').removeRow(0);
+            		}
+            	}]
+        	}
         }]
 	}]
 });
