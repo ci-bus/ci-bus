@@ -543,6 +543,11 @@ cb.base.grid = {
 		this.find('tbody').find('tr:eq(' + pos + ')').remove();
 	},
 	
+	removeAllRows: function () {
+		this.getOpt().record = [];
+		this.find('tbody').children().remove();
+	},
+	
 	addItems: function (items, place) {
 		if (!$.isArray(items)) {
 			items = [items];
