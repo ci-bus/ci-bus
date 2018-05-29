@@ -401,7 +401,7 @@ cb.define({
             }
         }, {
             xtype: 'h3',
-            text: '...Polyline'
+            text: '...Polyline with storelink'
         }, {
             xtype: 'svg',
             width: 300,
@@ -493,7 +493,7 @@ cb.define({
         	hidden: true
         }, {
         	xtype: 'h3',
-            text: '...Grid'
+            text: '...Grid with storelink'
         }, {
         	xtype: 'grid',
         	type: 'primary',
@@ -599,20 +599,36 @@ cb.define({
             		click: function () {
             			cb.getCmp('#gridexa').removeRow(0);
             		}
-            	}, {
-            		xtype: 'button',
-            		text: 'Filter name Miguel',
-            		click: function () {
-            			cb.getCmp('#gridexa').getStore().filter(function (r) {
-            				if (r.name == 'Miguel') {
-            					return true;
-            				} else {
-            					return false;
-            				}
-            			}, 'grid');
-            		}
             	}]
         	}
+        }, {
+            xtype: 'container',
+            text: '<strong>Testing storelink </strong>',
+            defaults: {
+                xtype: 'button',
+                margin: '0 10px 10px 0'
+            },
+            items: [{
+                text: 'Filter name Miguel',
+                click: function () {
+                    // TODO in process
+                    cb.getCmp('#gridexa').getStore().filter(function (r) {
+                        if (r.name == 'Miguel') {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }, 'grid');
+                    cb.setValue(this, '<b>Filtering</b>');
+                }
+            }, {
+                text: 'Remove filters',
+                click: function () {
+                    // TODO in process
+                    //cb.getCmp('#gridexa').getStore().removeFilters();
+                    cb.setValue(cb.getCmp(this).prev(), 'Filter name Miguel');
+                }
+            }]
         }]
 	}]
 });
