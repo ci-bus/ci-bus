@@ -235,7 +235,7 @@ cb.define({
 										data.shift();
 									}
 									data.push(ran);
-									cb.getStore('test2').setData(fields[l], data);
+									cb.getStore('test2').setData(data, fields[l]);
 								}
 							}, 50);
 						}

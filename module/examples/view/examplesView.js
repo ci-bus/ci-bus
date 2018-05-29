@@ -452,7 +452,7 @@ cb.define({
                             var data = cb.getStore('example', 'a');
                             data.push(ran);
                             data.shift();
-                            cb.getStore('example').setData('a', data);
+                            cb.getStore('example').setData(data, 'a');
                         }, 100);
                         var butt = this;
                         cb.getCmp(this).html('<strong>Stop</strong>');

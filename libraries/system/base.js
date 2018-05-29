@@ -127,55 +127,57 @@ cb.router = {
 };
 
 //Funciones base para los store javascript
+// TODO Re-do sort function
 cb.base.store = {
 	datarestore: [],
 	data: null,
-	restore: function(ndata)
+	restore: function(field)
 	{
-		if (typeof ndata === 'string' && this.datarestore && this.datarestore[ndata]) {
-			var restdata = this.getRestoreData(ndata);
-			cb.putToObject(this.data, ndata, restdata);
-		}else if (!ndata && this.datarestore) {
+		if (typeof field === 'string' && this.getRestoreData(field)) {
+			cb.putToObject(this.data, field, this.getRestoreData(field));
+		}else if (!field && this.datarestore) {
 			this.data = this.datarestore;
 		}
 		this.storelink();
 	},
-	setRestoreData: function(ndata, data) {
-		if (typeof ndata === 'string' && data) {
-			this.datarestore[ndata] = cb.clone(data);
-		}
+	setRestoreData: function(data, field) {
+		if (typeof field === 'string' && data) {
+			cb.putToObject(this.datarestore, field, cb.clone(data));
+		} else if (data) {
+		    this.datarestore = data;
+		} 
 	},
-	getRestoreData: function(data)
+	getRestoreData: function(field)
 	{
-		if (typeof data === 'string') {
-			if (this.datarestore[data]) {
-				return this.datarestore[data];
-			}
-		}else{
+		if (typeof field === 'string') {
+		    return cb.fetchFromObject(this.datarestore, field);
+		} else {
 			return this.datarestore;
 		}
-		return null;
 	},
-	getData: function(data)
+	getData: function(field)
 	{
-		if (typeof data === 'string') {
-			return cb.fetchFromObject(this.data, data);
+		if (typeof field === 'string') {
+			return cb.fetchFromObject(this.data, field);
 		}else{
 			return this.data;
 		}
 		return null;
 	},
-	setData: function(ndata, data) {
-		if (typeof ndata === 'string' && data !== undefined) {
-			cb.putToObject(this.data, ndata, data);
-			if (this.getRestoreData(ndata)) {
-				delete this.datarestore[ndata];
-			}
-		}else if (ndata !== undefined) {
-			this.data = ndata;
-			this.datarestore = [];
-		}
-		this.storelink();
+	setData: function(data, field) {
+	    if (data !== undefined) {
+	        if (typeof field === 'string') {
+	            cb.putToObject(this.data, field, data);
+	            if (this.getRestoreData(field)) {
+	                cb.putToObject(this.datarestore, field, undefined);
+	            }
+	        } else {
+	            this.data = field;
+	            this.datarestore = [];
+	        }
+	        this.storelink();
+	    }
+		
 	},
 	storelink: function() {
 		if ($.isArray(cb.module.storelink[this.name])) {
@@ -191,15 +193,16 @@ cb.base.store = {
 			}
 		}
 	},
-	extendData: function(ndata, data) {
-		if (typeof ndata === 'string' && data !== undefined) {
-			$.extend(this.data[ndata], data);
-		}else if (ndata !== undefined) {
-			$.extend(this.data, ndata);
-		}else if (data !== undefined) {
-			$.extend(this.data, data);
-		}
-		this.storelink();
+	extendData: function(data, field) {
+	    if (data !== undefined) {
+	        if (typeof field === 'string') {
+	            var newData = $.extend(this.getData(field), data);
+	            this.setData(newData, field);
+	        } else {
+	            $.extend(this.data, data);
+	        }
+	        this.storelink();
+	    }
 	},
 	getName: function()
 	{
@@ -217,7 +220,7 @@ cb.base.store = {
 		{
 			if ($.isFunction(cb.fetchFromObject(this.data, data).sort)) {
 				if (!this.getRestoreData(data)) {
-					this.setRestoreData(data, cb.fetchFromObject(this.data, data));
+					this.setRestoreData(cb.fetchFromObject(this.data, data), data);
 				}
 				if ($.isFunction(cb.fetchFromObject(this.data, data).sort)) {
 					cb.fetchFromObject(this.data, data).sort(fun);
@@ -231,7 +234,7 @@ cb.base.store = {
 				if (typeof data.order === 'string' && typeof data.field === 'string') {
 					if ($.isFunction(cb.fetchFromObject(this.data, data).sort)) {
 						if (!this.getRestoreData(data.data)) {
-							this.setRestoreData(data.data, cb.fetchFromObject(this.data, data.data));
+							this.setRestoreData(cb.fetchFromObject(this.data, data.data), data.data);
 						}
 						cb.fetchFromObject(this.data, data.data).sort(function(a, b) {
 							if (data.order == 'desc' || data.order == 'DESC') {
@@ -244,7 +247,7 @@ cb.base.store = {
 				}else if (typeof data.order === 'string') {
 					if ($.isFunction(cb.fetchFromObject(this.data, data.data).sort)) {
 						if (!this.getRestoreData(data.data)) {
-							this.setRestoreData(data.data, cb.fetchFromObject(this.data, data.data));
+							this.setRestoreData(cb.fetchFromObject(this.data, data.data), data.data);
 						}
 						cb.fetchFromObject(this.data, data.data).sort(function(a, b) {
 							if (data.order == 'desc' || data.order == 'DESC') {
@@ -259,17 +262,17 @@ cb.base.store = {
 		}
 		this.storelink();
 	},
+	// TODO in process...
 	filter: function (fun, field) {
-		if (field && typeof field == 'string') {
-			var data = this.data[field];
-			if (this.getRestoreData(field)) {
-				this.restore(field);
-			}
-		} else {
-			if (this.getRestoreData()) {
-				this.restore();
-			}
-		}
+	    //Restore data
+	    if (this.getRestoreData(field)) {
+            this.restore(field);
+        }
+	    //Get data
+        var data = this.data[field];
+        //Set restore data
+        this.setRestoreData(data, field);
+        
 		if ($.isArray(data)) {
 			var filtered_data = [];
 			for (var i = 0; i < data.length; i ++) {
