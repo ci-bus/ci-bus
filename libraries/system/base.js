@@ -942,19 +942,17 @@ cb.fetchFromObject = function(obj, prop) {
 };
 
 cb.putToObject = function(obj, prop, data) {
-
-    if (typeof obj === 'undefined') {
-        return false;
+    if (!obj) {
+        obj = {};
     }
-
     var _index = prop.indexOf('.')
     if (_index > -1) {
-        return this.putToObject(obj[prop.substring(0, _index)], prop.substr(_index + 1), data);
+        obj[prop.substring(0, _index)] = this.putToObject(obj[prop.substring(0, _index)], prop.substr(_index + 1), data);
     }
 
     obj[prop] = cb.clone(data);
     
-    return true;
+    return obj;
 };
 
 cb.setMissingDinamicValue = function(obj, attr, value, nivels) {
