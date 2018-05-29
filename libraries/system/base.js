@@ -181,14 +181,13 @@ cb.base.store = {
 		if ($.isArray(cb.module.storelink[this.name])) {
 			var strlk = cb.module.storelink[this.name];
 			for (var i=0; i<strlk.length; i++) {
-				if (strlk[i].ele && typeof strlk[i].ele.setData === 'function') {
-					if (strlk[i].field) {
-						var record = cb.fetchFromObject(this.getData(), strlk[i].field);
-						strlk[i].ele.setData(record);
-					}else{
-						strlk[i].ele.setData(this.getData());
-					}
-				} 
+				var ele = cb.getCmp('#'+strlk[i].ele);
+				if (ele.getOpt().field) {
+					var record = cb.fetchFromObject(this.getData(), ele.getOpt().field);
+					ele.setData(record);
+				}else{
+					ele.setData(this.getData());
+				}
 			}
 		}
 	},
@@ -259,6 +258,32 @@ cb.base.store = {
 			}
 		}
 		this.storelink();
+	},
+	filter: function (fun, field) {
+		if (field && typeof field == 'string') {
+			var data = this.data[field];
+			if (this.getRestoreData(field)) {
+				this.restore(field);
+			}
+		} else {
+			if (this.getRestoreData()) {
+				this.restore();
+			}
+		}
+		if ($.isArray(data)) {
+			var filtered_data = [];
+			for (var i = 0; i < data.length; i ++) {
+				if (fun(data[i])) {
+					filtered_data.push(data[i]);
+				}
+			}
+			if (field && typeof field == 'string') {
+				this.data[field] = filtered_data;
+			} else {
+				this.data = filtered_data;
+			}
+		}
+		this.storelink();
 	}
 };
 
@@ -288,15 +313,17 @@ cb.base.element = {
 		}
 		this.record = record;
 		return this;
+	},
+	getStore: function () {
+		return this.getOpt().store? cb.getStore(this.getOpt().store): false;
 	}
 };
 
 //Funciones base para los polyline
 cb.base.polyline = {
 	setData: function(record) {
-		var ele = $.isArray(this)? this[0]: this;
 		if ($.isArray(record)) {
-			var opt = cb.cloneObject(ele.getOpt());
+			var opt = cb.cloneObject(this.getOpt());
 			if (typeof opt.xspace   === 'undefined') opt.xspace   = parseInt(parseInt(opt.width) / (record.length - 1));
 			if (typeof opt.pointMax === 'undefined') opt.pointMax = Math.max.apply(null, record);
 			if (typeof opt.pointMin === 'undefined') opt.pointMin = Math.min.apply(null, record);
@@ -310,7 +337,7 @@ cb.base.polyline = {
 			}
 			points += " "+xwrite+","+parseInt(opt.height);
 		}
-		$(ele).removeAttr('points').attr({ points: points });
+		this.removeAttr('points').attr({ points: points });
 	}
 };
 
@@ -494,57 +521,89 @@ cb.base.grid = {
 	},
 	
 	removeColumn: function (pos) {
-		if ($.isNumeric(pos)) {
+		if ($.isNumeric(pos) && pos >= 0) {
 			this.opt.columns.splice(pos, 1);
 			this.find('thead').find('tr').find('th:eq(' + pos + ')').remove();
 			this.find('tbody').find('tr').find(':eq(' + pos + ')').remove();
 		}
 	},
 	
-	addRows: function (record, pos) {
-		//Save new record
-		// TODO add row to correct position when parse pos value...
-		if ($.isPlainObject(this.getOpt().record)) {
-			this.getOpt().record = [this.getOpt().record];
-		} else if (!$.isArray(this.getOpt().record)) {
-			this.getOpt().record = [];
-		}
-		if ($.isPlainObject(record)) {
-			this.getOpt().record.push(record);
-		} else if ($.isArray(record)) {
-			this.getOpt().record = this.getOpt().record.concat(record);
-		} else {
-			return;
-		}
-		//Add new row to table
-		var opt = cb.cloneObject(this.getOpt()),
-			bodyItems = [];
-		for (var i = 0; i < opt.columns.length; i ++) {
-			delete opt.columns[i].text;
-			bodyItems.push(opt.columns[i]);
-		}
-		if (opt.alterdata) {
-			cb.alterdata(opt.alterdata, record);
-		}
-		var tbody = cb.module.bootstrapComponent['tbody']({
-			items: bodyItems
-		}, record);
-		if ($.isNumeric(pos)) {
-			this.find('tbody').find('tr:eq(' + pos + ')').before($(tbody).children());
-		} else {
-			this.find('tbody').append($(tbody).children());
+	addRows: function (record, pos, noSync) {
+		if (!pos || pos >= 0) {
+			//Save new record
+			if ($.isPlainObject(this.getOpt().record)) {
+				this.getOpt().record = [this.getOpt().record];
+			} else if (!$.isArray(this.getOpt().record)) {
+				this.getOpt().record = [];
+			}
+			if ($.isPlainObject(record)) {
+				if ($.isNumeric(pos)) {
+					this.getOpt().record.splice(pos, 0, record);
+				} else {
+					this.getOpt().record.push(record);
+				}
+			} else if ($.isArray(record)) {
+				if ($.isNumeric(pos) && pos <= this.getOpt().record.length) {
+					for (var f = record.length - 1; f >= 0; f --) {
+						this.getOpt().record.splice(pos, 0, record[f]);
+					}
+				} else {
+					this.getOpt().record = this.getOpt().record.concat(record);
+				}
+			} else {
+				return;
+			}
+			//Sync up store
+			if (noSync !== true) {
+				this.syncStore();
+			}
+			//Add new row to table
+			var opt = cb.cloneObject(this.getOpt()),
+				bodyItems = [];
+			for (var i = 0; i < opt.columns.length; i ++) {
+				delete opt.columns[i].text;
+				bodyItems.push(opt.columns[i]);
+			}
+			if (opt.alterdata) {
+				record = cb.clone(record);
+				cb.alterdata(opt.alterdata, record);
+			}
+			var tbody = cb.module.bootstrapComponent['tbody']({
+				items: bodyItems
+			}, record);
+			if ($.isNumeric(pos)) {
+				if (pos) {
+					if (pos <= this.find('tbody').find('tr').length) {
+						this.find('tbody').find('tr:eq(' + (pos - 1) + ')').after($(tbody).children());
+					} else {
+						this.find('tbody').append($(tbody).children());
+					}
+				} else {
+					this.find('tbody').prepend($(tbody).children());
+				}
+			} else {
+				this.find('tbody').append($(tbody).children());
+			}
 		}
 	},
 	
 	removeRow: function (pos) {
 		//Remove record
 		delete this.getOpt().record.splice(pos, 1);
+		//Sync up store
+		this.syncStore();
 		//Remove row table
 		this.find('tbody').find('tr:eq(' + pos + ')').remove();
 	},
 	
-	removeAllRows: function () {
+	removeAllRows: function (noSync) {
+		//Remove records
 		this.getOpt().record = [];
+		//Sync up store
+		if (noSync !== true) {
+			this.syncStore();
+		}
+		//Remove rows table
 		this.find('tbody').children().remove();
 	},
 	
@@ -575,6 +634,24 @@ cb.base.grid = {
 				if (place == 'footer') {
 					this.find('.panel-footer').append(ele);
 				}
+			}
+		}
+	},
+	
+	setData: function (record) {
+		this.removeAllRows(true);
+		this.addRows(record, false, true);
+	},
+	
+	syncStore: function () {
+		//Sync up store
+		var opt = this.getOpt();
+		if (opt.storelink) {
+			var record = this.getRecord();
+			if (opt.field) {
+				this.getStore().data[opt.field] = record;
+			} else {
+				this.getStore().data = record;
 			}
 		}
 	}
@@ -2357,6 +2434,11 @@ cb.create = function(opt, record) {
 			}
 		}
 		
+		//Required id if storelink
+		if (opt.storelink && !opt.id) {
+			opt.id = this.autoid(opt.xtype);
+		}
+		
 		//Coge field del store
 		if (opt.field) {
 			if (typeof opt.field === 'string') {
@@ -2430,6 +2512,8 @@ cb.create = function(opt, record) {
 		
 		//Alterdata
 		if (opt.alterdata && record) {
+			var raw_record = cb.clone(record);
+			record = cb.clone(record);
 			this.alterdata(opt.alterdata, record);
 		}
 		
@@ -2513,7 +2597,7 @@ cb.create = function(opt, record) {
 			
 			//Si hay record
 			if (record) {
-				opt_extended.record = record;
+				opt_extended.record = raw_record;
 				//Si el record es un string
 				if ($.type(record) === 'string' || $.type(record) === 'number') {
 					ele = this.storeSet(ele, record);
@@ -2530,7 +2614,7 @@ cb.create = function(opt, record) {
 					if (!cb.module.storelink[opt.store]) {
 						cb.module.storelink[opt.store] = [];
 					}
-					cb.module.storelink[opt.store].push({field: opt.field? opt.field: false, ele: ele});
+					cb.module.storelink[opt.store].push({ele: ele.id});
 				}
 			}
 						

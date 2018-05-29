@@ -500,6 +500,7 @@ cb.define({
         	id: 'gridexa',
         	store: 'example',
         	field: 'grid',
+        	storelink: true,
         	alterdata: {
         		'date': function (date) {
         			var d = new Date(date);
@@ -597,6 +598,18 @@ cb.define({
             		text: 'Remove first row',
             		click: function () {
             			cb.getCmp('#gridexa').removeRow(0);
+            		}
+            	}, {
+            		xtype: 'button',
+            		text: 'Filter name Miguel',
+            		click: function () {
+            			cb.getCmp('#gridexa').getStore().filter(function (r) {
+            				if (r.name == 'Miguel') {
+            					return true;
+            				} else {
+            					return false;
+            				}
+            			}, 'grid');
             		}
             	}]
         	}

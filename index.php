@@ -156,11 +156,9 @@
 		<script type="text/javascript" src="libraries/system/cacheJs.js"></script>
 		<script type="text/javascript" src="libraries/system/base.js"></script>
 		
-		<link name="apple-touch-icon" href="" />
-		<link name="apple-touch-startup-image" href="" />
-		<meta name="apple-mobile-web-app-capable" content="yes" />
-		<meta name="apple-mobile-web-app-status-bar-style" content="default" />
-		<meta name="viewport" content="width=980">
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 				
 		<script type="text/javascript">
 			
