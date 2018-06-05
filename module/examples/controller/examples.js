@@ -41,6 +41,10 @@ cb.define({
                 	info: 'Root',
                 	date: '2018-05-01'
                 }, {
+                	name: 'Miguel',
+                	info: 'Root',
+                	date: '2018-05-06'
+                }, {
                 	name: 'Jimena',
                 	info: 'Admin',
                 	date: '2018-05-02'

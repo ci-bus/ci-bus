@@ -12,7 +12,7 @@
  * 
  */
 
-//Compatibilidad
+// Compatibilidad
 if (!Array.prototype.indexOf) {
     Array.prototype.indexOf = function (searchElement) {
         "use strict";
@@ -47,7 +47,7 @@ if (!Array.prototype.indexOf) {
 }
 
 
-//[ INICIO DE CI-BUS ]//
+// [ INICIO DE CI-BUS ]// 
 
 var cb = {};
 cb.module = {};
@@ -62,12 +62,12 @@ cb.module.storelink = {};
 cb.config = [];
 cb.elenamed = 0;
 cb.eleids = 0;
-//Por defecto cuando un record es un array
-//se crea un elemento por cada valor
-//añadiendo el xtype a este array lo evitamos
+// Por defecto cuando un record es un array
+// se crea un elemento por cada valor
+// añadiendo el xtype a este array lo evitamos
 cb.eleArrayAcept = ['polyline', 'tbody', 'grid'];
 
-//El route te permine ejecutar una funcion de un controlador visitando un hash #ejemplo
+// El route te permine ejecutar una funcion de un controlador visitando un hash #ejemplo
 cb.router = {
 	routes: {},
 	set: function(hash, ctr, fun) {
@@ -126,30 +126,41 @@ cb.router = {
 	listener: addEventListener('hashchange', function() { cb.router.hashchange(); }, false)
 };
 
-//Funciones base para los store javascript
+// Funciones base para los store javascript
 // TODO Re-do sort function
 cb.base.store = {
-	datarestore: [],
+	datarestore: null,
 	data: null,
+	filters: [],
 	restore: function(field)
 	{
 		if (typeof field === 'string' && this.getRestoreData(field)) {
-			cb.putToObject(this.data, field, this.getRestoreData(field));
+			this.setData(this.getRestoreData(field), field);
+			cb.deleteToObject(this.datarestore, field);
 		}else if (!field && this.datarestore) {
-			this.data = this.datarestore;
+			this.setData(this.datarestore);
+			cb.deleteToObject(this.datarestore);
 		}
-		this.storelink();
+	},
+	restoreWithoutStorelink: function (field) {
+		if (typeof field === 'string' && this.getRestoreData(field)) {
+			this.data = cb.clone(cb.putToObject(this.data, this.getRestoreData(field), field));
+			cb.deleteToObject(this.datarestore, field);
+		}else if (!field && this.datarestore) {
+			this.data = cb.clone(this.datarestore);
+			cb.deleteToObject(this.datarestore);
+		}
 	},
 	setRestoreData: function(data, field) {
-		if (typeof field === 'string' && data) {
-			cb.putToObject(this.datarestore, field, cb.clone(data));
-		} else if (data) {
-		    this.datarestore = data;
-		} 
+		if (typeof field == 'string') {
+			this.datarestore = cb.clone(cb.putToObject(this.datarestore, data, field));
+		} else {
+		    this.datarestore = cb.clone(data);
+		}
 	},
 	getRestoreData: function(field)
 	{
-		if (typeof field === 'string') {
+		if (typeof field == 'string') {
 		    return cb.fetchFromObject(this.datarestore, field);
 		} else {
 			return this.datarestore;
@@ -157,29 +168,77 @@ cb.base.store = {
 	},
 	getData: function(field)
 	{
-		if (typeof field === 'string') {
+		if (typeof field == 'string') {
 			return cb.fetchFromObject(this.data, field);
 		}else{
 			return this.data;
 		}
 		return null;
 	},
-	setData: function(data, field) {
-	    if (data !== undefined) {
-	        if (typeof field === 'string') {
-	            cb.putToObject(this.data, field, data);
-	            if (this.getRestoreData(field)) {
-	                cb.putToObject(this.datarestore, field, undefined);
-	            }
+	setData: function(data, field)
+	{
+        if (typeof field == 'string') {
+        	this.data = cb.clone(cb.putToObject(this.data, data, field));
+        } else {
+            this.data = cb.clone(data);
+        }
+        this.storelink();
+	},
+	addData: function (data, field, pos)
+	{
+		if (data !== undefined) {
+	        if (typeof field == 'string') {
+	        	var newData = this.getData(field);
+	        	if (!$.isArray(newData)) {
+	        		newData = [newData];
+	        	}
+	        	if ($.isNumeric(pos)) {
+	        		newData.splice(pos, 0, data);
+	        	} else {
+	        		newData.push(data);
+	        	}
+	            this.setData(newData, field);
 	        } else {
-	            this.data = field;
-	            this.datarestore = [];
+	        	if (!$.isArray(this.data)) {
+	        		this.data = [this.data];
+	        	}
+	        	if ($.isNumeric(pos)) {
+	        		this.data.splice(pos, 0, data);
+	        	} else {
+	        		this.data.push(data);
+	        	}
 	        }
 	        this.storelink();
 	    }
-		
 	},
-	storelink: function() {
+	extendData: function(data, field)
+	{
+	    if (data !== undefined) {
+	        if (typeof field == 'string') {
+	        	var newData = this.getData(field);
+	        	$.extend(newData, data);
+	            this.setData(newData, field);
+	        } else {
+	        	$.extend(this.data, data);
+	        }
+	        this.storelink();
+	    }
+	},
+	mergeData: function(data, field)
+	{
+	    if (data !== undefined) {
+	        if (typeof field == 'string') {
+	        	var newData = this.getData(field);
+	        	$.merge(newData, data);
+	            this.setData(newData, field);
+	        } else {
+	        	$.merge(this.data, data);
+	        }
+	        this.storelink();
+	    }
+	},
+	storelink: function()
+	{
 		if ($.isArray(cb.module.storelink[this.name])) {
 			var strlk = cb.module.storelink[this.name];
 			for (var i=0; i<strlk.length; i++) {
@@ -192,17 +251,6 @@ cb.base.store = {
 				}
 			}
 		}
-	},
-	extendData: function(data, field) {
-	    if (data !== undefined) {
-	        if (typeof field === 'string') {
-	            var newData = $.extend(this.getData(field), data);
-	            this.setData(newData, field);
-	        } else {
-	            $.extend(this.data, data);
-	        }
-	        this.storelink();
-	    }
 	},
 	getName: function()
 	{
@@ -220,7 +268,7 @@ cb.base.store = {
 		{
 			if ($.isFunction(cb.fetchFromObject(this.data, data).sort)) {
 				if (!this.getRestoreData(data)) {
-					this.setRestoreData(cb.fetchFromObject(this.data, data), data);
+					this.setRestoreData(this.getData(data), data);
 				}
 				if ($.isFunction(cb.fetchFromObject(this.data, data).sort)) {
 					cb.fetchFromObject(this.data, data).sort(fun);
@@ -234,7 +282,7 @@ cb.base.store = {
 				if (typeof data.order === 'string' && typeof data.field === 'string') {
 					if ($.isFunction(cb.fetchFromObject(this.data, data).sort)) {
 						if (!this.getRestoreData(data.data)) {
-							this.setRestoreData(cb.fetchFromObject(this.data, data.data), data.data);
+							this.setRestoreData(this.getData(data.data), data.data);
 						}
 						cb.fetchFromObject(this.data, data.data).sort(function(a, b) {
 							if (data.order == 'desc' || data.order == 'DESC') {
@@ -247,7 +295,7 @@ cb.base.store = {
 				}else if (typeof data.order === 'string') {
 					if ($.isFunction(cb.fetchFromObject(this.data, data.data).sort)) {
 						if (!this.getRestoreData(data.data)) {
-							this.setRestoreData(cb.fetchFromObject(this.data, data.data), data.data);
+							this.setRestoreData(this.getData(data.data), data.data);
 						}
 						cb.fetchFromObject(this.data, data.data).sort(function(a, b) {
 							if (data.order == 'desc' || data.order == 'DESC') {
@@ -262,35 +310,77 @@ cb.base.store = {
 		}
 		this.storelink();
 	},
-	// TODO in process...
-	filter: function (fun, field) {
-	    //Restore data
+	applyFilters: function (field) {
+		// Get data
 	    if (this.getRestoreData(field)) {
-            this.restore(field);
+            var data = this.getRestoreData(field);
+        } else {
+        	var data = this.getData(field);
+        	// Set restore data
+	        this.setRestoreData(data, field);
         }
-	    //Get data
-        var data = this.data[field];
-        //Set restore data
-        this.setRestoreData(data, field);
-        
+        for (var i = 0; i < this.filters.length; i ++) {
+        	if (this.filters[i].field == field) {
+        		data = this.filter(data, this.filters[i].fun, this.filters[i].field);
+        	}
+        }
+        // Set filtered data
+		this.setData(data, field);
+	},
+	filter: function (data, fun, field) {        
 		if ($.isArray(data)) {
+	        // Filter data
 			var filtered_data = [];
 			for (var i = 0; i < data.length; i ++) {
 				if (fun(data[i])) {
 					filtered_data.push(data[i]);
 				}
 			}
-			if (field && typeof field == 'string') {
-				this.data[field] = filtered_data;
-			} else {
-				this.data = filtered_data;
-			}
+			return filtered_data;
 		}
-		this.storelink();
+		return data;
+	},
+	addFilter: function (fun, field) {
+		// Add filter
+		this.filters.push({
+			fun: fun,
+			field: field
+		});
+		// Apply filters
+		this.applyFilters(field);
+		// Return array position
+		return (this.filters.length -1);
+	},
+	removeFilter: function (pos) {
+		if (this.filters[pos]) {
+			// Get field
+			var field = this.filters[pos].field;
+			// Remove filter by array position
+			this.filters.splice(pos, 1);
+			// Apply filters
+			this.applyFilters(field);
+		}
+	},
+	removeAllFilters: function (field) {
+		if (field) {
+			var i = 0;
+			while (i < this.filters.length) {
+				if (this.filters[i].field == field) {
+					this.removeFilter(i);
+				} else {
+					i ++;
+				}
+			}
+		} else {
+			// Remove all filters
+			this.filters = [];
+		}
+		// Apply filters
+		this.applyFilters(field);
 	}
 };
 
-//Funciones base para todos los elementos
+// Funciones base para todos los elementos
 cb.base.element = {
 	getType: function() {
 		return this.opt.xtype;
@@ -319,10 +409,62 @@ cb.base.element = {
 	},
 	getStore: function () {
 		return this.getOpt().store? cb.getStore(this.getOpt().store): false;
+	},
+	down: function (id, pos) {
+		if (!pos) pos = 0;
+	    if (typeof id == 'string') {
+	        // Search by css selector
+	        if (id.substr(0, 1) == '#' || id.substr(0, 1) == '.') {
+	            if (cb.isNode(this.find(id)[pos])) {
+	                return cb.getCmp(this.find(id)[pos]);
+	            }
+	        } else { // Search by xtype
+	            var childs = this.find('*');
+	            var count = 0;
+	            for (var i = 0; i < childs.length; i ++) {
+	                if (cb.isNode(childs[i]) && cb.getCmp(childs[i]).getOpt) {
+	                    if (cb.getCmp(childs[i]).getOpt().xtype == id) {
+	                        if (pos == count) {
+	                            return cb.getCmp(childs[i]);
+	                        } else {
+	                            count ++;
+	                        }
+	                    }
+	                }
+	            }
+	        }
+	    }
+	    return null;
+	},
+	up: function (id, pos) {
+	    if (!pos) pos = 0;
+	    if (typeof id == 'string') {
+	        // Search by css selector
+	        if (id.substr(0, 1) == '#' || id.substr(0, 1) == '.') {
+	            if (cb.isNode(this.parents(id)[pos])) {
+	                return cb.getCmp(this.parents(id)[pos]);
+	            }
+	        } else { // Search by xtype
+	            var parents = this.parents();
+	            var count = 0;
+	            for (var i = 0; i < parents.length; i ++) {
+	                if (cb.isNode(parents[i]) && cb.getCmp(parents[i]).getOpt) {
+	                    if (cb.getCmp(parents[i]).getOpt().xtype == id) {
+	                        if (pos == count) {
+	                            return cb.getCmp(parents[i]);
+	                        } else {
+	                            count ++;
+	                        }
+	                    }
+	                }
+	            }
+	        }
+	    }
+        return null;
 	}
 };
 
-//Funciones base para los polyline
+// Funciones base para los polyline
 cb.base.polyline = {
 	setData: function(record) {
 		if ($.isArray(record)) {
@@ -344,7 +486,7 @@ cb.base.polyline = {
 	}
 };
 
-//Funciones base para los dropdown y dropup
+// Funciones base para los dropdown y dropup
 cb.base.dropdown = {
 	addItems: function(items, record, event) {
 		if (!event) {
@@ -475,7 +617,7 @@ cb.base.dropdown = {
 };
 cb.base.dropup = cb.base.dropdown;
 
-//Funciones base para los grid
+// Funciones base para los grid
 cb.base.grid = {
 	addColumns: function (cols, pos) {
 		var record = this.getRecord();
@@ -533,7 +675,7 @@ cb.base.grid = {
 	
 	addRows: function (record, pos, noSync) {
 		if (!pos || pos >= 0) {
-			//Save new record
+			// Save new record
 			if ($.isPlainObject(this.getOpt().record)) {
 				this.getOpt().record = [this.getOpt().record];
 			} else if (!$.isArray(this.getOpt().record)) {
@@ -556,11 +698,11 @@ cb.base.grid = {
 			} else {
 				return;
 			}
-			//Sync up store
+			// Sync up store
 			if (noSync !== true) {
 				this.syncStore();
 			}
-			//Add new row to table
+			// Add new row to table
 			var opt = cb.cloneObject(this.getOpt()),
 				bodyItems = [];
 			for (var i = 0; i < opt.columns.length; i ++) {
@@ -591,22 +733,22 @@ cb.base.grid = {
 	},
 	
 	removeRow: function (pos) {
-		//Remove record
+		// Remove record
 		delete this.getOpt().record.splice(pos, 1);
-		//Sync up store
+		// Sync up store
 		this.syncStore();
-		//Remove row table
+		// Remove row table
 		this.find('tbody').find('tr:eq(' + pos + ')').remove();
 	},
 	
 	removeAllRows: function (noSync) {
-		//Remove records
+		// Remove records
 		this.getOpt().record = [];
-		//Sync up store
+		// Sync up store
 		if (noSync !== true) {
 			this.syncStore();
 		}
-		//Remove rows table
+		// Remove rows table
 		this.find('tbody').children().remove();
 	},
 	
@@ -647,7 +789,7 @@ cb.base.grid = {
 	},
 	
 	syncStore: function () {
-		//Sync up store
+		// Sync up store
 		var opt = this.getOpt();
 		if (opt.storelink) {
 			var record = this.getRecord();
@@ -660,12 +802,12 @@ cb.base.grid = {
 	}
 };
 
-//Funcion para clonar un array u objeto
+// Funcion para clonar un array u objeto
 cb.clone = function(data) {
 	return JSON.parse(JSON.stringify(data));
 };
 
-//Funcion para generar un nombre único
+// Funcion para generar un nombre único
 cb.autoname = function(pre) {
 	if (!pre) {
 		pre = 'autoname';
@@ -675,7 +817,7 @@ cb.autoname = function(pre) {
 	return r;
 };
 
-//Funcion para generar un id único
+// Funcion para generar un id único
 cb.autoid = function(pre) {
 	if (!pre) {
 		pre = 'autoid';
@@ -685,7 +827,7 @@ cb.autoid = function(pre) {
     return r;
 };
 
-//Funcion para ejecutar un método de un controlador
+// Funcion para ejecutar un método de un controlador
 cb.ctr = function(ctr, fun, vals)
 {
 	if (cb.module.controller[ctr] && $.type(cb.module.controller[ctr][fun]) == 'function') {
@@ -693,7 +835,7 @@ cb.ctr = function(ctr, fun, vals)
 	}
 };
 
-//Funcion para coger un controlador, store, vista o componente
+// Funcion para coger un controlador, store, vista o componente
 cb.get = function(type, name, field) {
 	if (field) {
 		if (type == 'store') {
@@ -706,33 +848,33 @@ cb.get = function(type, name, field) {
 	}
 };
 
-//Funcion para coger un store
+// Funcion para coger un store
 cb.getStore = function(name, field) {
 	return cb.get('store', name, field);
 };
 
-//Funcion para coger la definición de una vista
+// Funcion para coger la definición de una vista
 cb.getView = function(name, field) {
 	return cb.get('view', name, field);
 };
 
-//Funcion para coger un controlador
+// Funcion para coger un controlador
 cb.getController = function(name, field) {
 	return cb.get('controller', name, field);
 };
 
-//Funcion para coger la definición de un componente
+// Funcion para coger la definición de un componente
 cb.getComponent = function(name, field) {
 	return cb.get('component', name, field);
 };
 
-//Funcion para coger un elemento
-//éste poseerá las funciones base de ci-bus y de jQuery
+// Funcion para coger un elemento
+// éste poseerá las funciones base de ci-bus y de jQuery
 cb.getCmp = function(ref) {
 	return $.extend($(ref), $(ref)[0]);
 };
 
-//Funcion para enviar un formulario a un store PHP
+// Funcion para enviar un formulario a un store PHP
 cb.send = function(formn,module,store,callback)
 {
 	$.ajax({
@@ -758,7 +900,7 @@ cb.require = function(dt, callback)
 	});
 };
 
-//Funciona para cargar varios controladores y vistas en una sola llamada
+// Funciona para cargar varios controladores y vistas en una sola llamada
 cb.loadAll = function(dt, callback)
 {
 	$.ajax({
@@ -771,7 +913,7 @@ cb.loadAll = function(dt, callback)
 	});
 };
 
-//Funcion igual que loadAll pero haciendo una llamada por archivo
+// Funcion igual que loadAll pero haciendo una llamada por archivo
 cb.loadLineal = function (arr)
 {
 	if ($.isArray(arr[0]))
@@ -795,7 +937,7 @@ cb.loadSecondLineal = function(arr, n)
     };
 };
 
-//Funcion para cargar un controlador, vista, store  o componente
+// Funcion para cargar un controlador, vista, store  o componente
 cb.load = function(type, module, name, data, callback)
 {
 	if ($.isFunction(name))
@@ -850,7 +992,7 @@ cb.load = function(type, module, name, data, callback)
 	}
 };
 
-//Funcion para definir un controlador, vista, store o componente
+// Funcion para definir un controlador, vista, store o componente
 cb.define = function(obj)
 {
 	if (obj.name && obj.xtype)
@@ -865,7 +1007,7 @@ cb.define = function(obj)
 			}
 		}
 		
-		//Default extend
+		// Default extend
 		if (obj.xtype == 'store')
 		{			
 			if ($.isArray(obj.extend)) {
@@ -877,8 +1019,8 @@ cb.define = function(obj)
 			}
 		}
 		
-		//Extends
-		this.module[obj.xtype][obj.name] = {};//Init object
+		// Extends
+		this.module[obj.xtype][obj.name] = {};// Init object
 		if (obj.extend) {
 			if (typeof obj.extend === 'string') {
 				$.extend( this.module[obj.xtype][obj.name], this.fetchFromObject(this, obj.extend));
@@ -891,20 +1033,20 @@ cb.define = function(obj)
 				}
 			}
 		}
-		//To end Extend obj
+		// To end Extend obj
 		$.extend( this.module[obj.xtype][obj.name], obj);
 		
 		if (obj.xtype == 'store')
 		{
-			//TODO Refrescar elementos que carguen datos de este store
-			//En planificación
+			// TODO Refrescar elementos que carguen datos de este store
+			// En planificación
 		}
 		
 		if ($.isArray(obj['require'])) {
 			this.require(obj['require']);
 		}
 		
-		//Add routes
+		// Add routes
 		if (obj.xtype == 'controller' && $.isPlainObject(obj.route)) {
 			$.each(obj.route, function(hash, fun) {
 				cb.router.set(hash, obj.name, fun);
@@ -916,7 +1058,7 @@ cb.define = function(obj)
 			this.render(obj);
 		}
 		
-		//OnLoad function
+		// OnLoad function
 		if ($.isFunction(obj['onload'])) {
 			if (cb.module.parseData[obj.name]) {
 				obj['onload'](cb.module.parseData[obj.name]);
@@ -928,31 +1070,53 @@ cb.define = function(obj)
 };
 
 cb.fetchFromObject = function(obj, prop) {
-
-    if (typeof obj === 'undefined') {
-        return false;
+    if (!obj) {
+        return obj;
     }
-
-    var _index = prop.indexOf('.')
+    var _index = prop.indexOf('.');
     if (_index > -1) {
         return this.fetchFromObject(obj[prop.substring(0, _index)], prop.substr(_index + 1));
     }
-
+    
     return obj[prop];
 };
 
-cb.putToObject = function(obj, prop, data) {
-    if (!obj) {
-        obj = {};
+cb.putToObject = function(obj, data, prop) {
+    if (prop && typeof prop == 'string') {
+    	if (!obj) {
+            obj = {};
+        }
+        var _index = prop.indexOf('.');
+        if (_index > -1) {
+        	if (typeof obj[prop.substring(0, _index)] != 'object') {
+        		obj[prop.substring(0, _index)] = {};
+        	}
+            obj[prop.substring(0, _index)] = this.putToObject(obj[prop.substring(0, _index)], data, prop.substr(_index + 1));
+        } else {
+        	obj[prop] = data;
+        }
+    } else {
+    	obj = data;
     }
-    var _index = prop.indexOf('.')
-    if (_index > -1) {
-        obj[prop.substring(0, _index)] = this.putToObject(obj[prop.substring(0, _index)], prop.substr(_index + 1), data);
-    }
-
-    obj[prop] = cb.clone(data);
     
     return obj;
+};
+
+cb.deleteToObject = function (obj, prop) {
+	if (prop && typeof prop == 'string') {
+		var _index = prop.indexOf('.');
+		if (_index > -1) {
+	    	obj[prop.substring(0, _index)] = this.deleteToObject(obj[prop.substring(0, _index)], prop.substr(_index + 1));
+	    } else {
+	    	delete obj[prop];
+	    }
+	} else {
+		if (!delete obj) {
+			obj = undefined;
+		}
+	}
+	
+	return obj;
 };
 
 cb.setMissingDinamicValue = function(obj, attr, value, nivels) {
@@ -1024,7 +1188,7 @@ cb.setValue = function(ele, value)
 	return ele;
 }
 
-//Funciona para setear valores de configuracion que necesitemos
+// Funciona para setear valores de configuracion que necesitemos
 cb.setConfig = function(va, val) {
 			
 	if ($.isArray(va) || $.isPlainObject(va))
@@ -1036,7 +1200,7 @@ cb.setConfig = function(va, val) {
 		this.config[va] = val;
 	}
 }
-//Funcion para coger valores de configuracion
+// Funcion para coger valores de configuracion
 cb.getConfig = function(va, var2) {
 			
 	if (!var2) {
@@ -1054,7 +1218,7 @@ cb.getConfig = function(va, var2) {
 		}
 	}
 }
-//Funcion para borrar valores de configuracion
+// Funcion para borrar valores de configuracion
 cb.delConfig = function(va, var2) {
 	if (!var2) {
 		if (this.config[va])
@@ -1078,7 +1242,7 @@ cb.render = function(obj, callback)
 	
 	if (obj.renderTo)
 	{
-		//TODO No borrar los elementos con reload: false
+		// TODO No borrar los elementos con reload: false
 		$(obj.renderTo).empty();
 		obj.appendTo = obj.renderTo;
 		delete obj.renderTo;
@@ -1143,7 +1307,7 @@ cb.cloneArray = function(arr) {
 	return $.extend([], arr);
 }
 
-//Para la creación de componentes de boostrap
+// Para la creación de componentes de boostrap
 cb.module.bootstrapComponent = {
 	'button': function(opt, record) {
 		var ele = document.createElement(opt.xtype);
@@ -1405,7 +1569,7 @@ cb.module.bootstrapComponent = {
 		var ul = document.createElement('ul');
 		$(ul).addClass('dropdown-menu').attr('aria-labelledby',opt.id);
 		
-		//Add options li
+		// Add options li
 		ele.afterRender = function (ele) {
             ele.addItems(ele.getOpt().items, record, 'loadItems');
         }
@@ -1997,7 +2161,7 @@ cb.module.bootstrapComponent = {
 			var ywrite = 0;
 			var points = "0,"+parseInt(opt.height);
 			for (var i=0; i<record.length; i++) {
-				//ywrite = parseInt(opt.height) - parseInt((record[i]-opt.pointMin)*parseInt(opt.height)/opt.pointMax) - opt.pointMin;
+				// ywrite = parseInt(opt.height) - parseInt((record[i]-opt.pointMin)*parseInt(opt.height)/opt.pointMax) - opt.pointMin;
 				ywrite = parseInt(opt.height) - ((record[i]-opt.pointMin) * parseInt(opt.height) / (opt.pointMax-opt.pointMin));
 				points += " "+xwrite+","+ywrite;
 				xwrite += opt.xspace;
@@ -2094,13 +2258,13 @@ cb.module.bootstrapComponent = {
 	}
 };
 
-//Para la creación de componentes de cibus
+// Para la creación de componentes de cibus
 cb.module.cbComponent = {
 	'grid': function (opt, record) {
-		//To no edit original opts
+		// To no edit original opts
 		opt = cb.cloneObject(opt);
 		
-		//Create table
+		// Create table
 		var headItems = [],
 			bodyItems = [];
 		for (var i = 0; i < opt.columns.length; i ++) {
@@ -2123,16 +2287,16 @@ cb.module.cbComponent = {
 		delete opt.store;
 		delete opt.field;
 		
-		//Create panel
+		// Create panel
 		opt.xtype = 'panel';
 		opt.items = [];
-		//Head panel
+		// Head panel
 		if (opt.head) {
 			opt.head.xtype = 'head';
 			opt.items.push(opt.head);
 			delete opt.head;
 		}
-		//Body panel with table
+		// Body panel with table
 		if (opt.body) {
 			opt.body.xtype = 'body';
 			if (!opt.body.css) {
@@ -2210,7 +2374,7 @@ cb.module.cbComponent = {
 	}
 };
 
-//Para el seteo de propiedades
+// Para el seteo de propiedades
 cb.props = {
 	'require': function(ele, opt) {
 		cb.require(opt.require);
@@ -2347,7 +2511,7 @@ cb.mergeDataStore = function(record) {
 	// TODO en planificación, lo necesitaré en alguna circunstancia?
 };
 
-//Funciton alterdata to changes in record data before processing
+// Funciton alterdata to changes in record data before processing
 cb.alterdata = function (alterdata, record) {
 	if ($.type(record) === 'string' || $.type(record) === 'number')
 	{
@@ -2387,18 +2551,18 @@ cb.alterdata = function (alterdata, record) {
 	return record;
 }
 
-//Funciona para la creación de elementos
+// Funciona para la creación de elementos
 cb.create = function(opt, record) {
 
 	if (!opt.xtype) opt.xtype='span';
 	
 	if ($.type(opt.xtype) == 'string')
 	{
-		//Variables temp
+		// Variables temp
 		var store = false;
 		var temp_record = false;
 				
-		//Default extend
+		// Default extend
 		if ($.isArray(opt.extend)) {
 			opt.extend.unshift('base.element');
 		} else if (typeof opt.extend === 'string') {
@@ -2407,7 +2571,7 @@ cb.create = function(opt, record) {
 			opt.extend = 'base.element';
 		}
 		
-		//Extends
+		// Extends
 		var opt_extended = {};
 		if (typeof opt.extend === 'string') {
 			$.extend( opt_extended, this.fetchFromObject(this, opt.extend));
@@ -2419,24 +2583,24 @@ cb.create = function(opt, record) {
 				}
 			}
 		}
-		//Extend by xtype
+		// Extend by xtype
 		$.extend( opt_extended, this.fetchFromObject(this, 'base.' + opt.xtype));
-		//To end Extend obj
+		// To end Extend obj
 		$.extend( opt_extended, opt);
 		delete opt_extended.extend;
 		
-		//Required id if storelink
+		// Required id if storelink
         if (opt.storelink && !opt.id) {
             opt.id = this.autoid(opt.xtype);
         }
 		
-        //Get record data, priority (1 parse record in function, 2 record in definitions, 3 store data definited and field)
+        // Get record data, priority (1 parse record in function, 2 record in definitions, 3 store data definited and field)
         if (!record) {
-            //Get record from opt
+            // Get record from opt
             if (opt.record) {
                 record = opt.record;
             } else {
-                //Get store
+                // Get store
                 if (opt.store) {
                     if (this.module.store[opt.store]) {
                         record = this.module.store[opt.store]['data'];
@@ -2447,10 +2611,10 @@ cb.create = function(opt, record) {
             }
         }
         
-		//If have record
+		// If have record
         if (record) {
             
-            //Get field del store
+            // Get field del store
             if (opt.field) {
                 if (typeof opt.field === 'string') {
                     if (record) {
@@ -2467,24 +2631,24 @@ cb.create = function(opt, record) {
                 {
                     if (record)
                     {
-                        //Recorre los fields
+                        // Recorre los fields
                         for (var o=0; o<opt.field.length; o++)
                         {
-                            //Si el field es un string
+                            // Si el field es un string
                             if (typeof opt.field[o] === 'string')
                             {
-                                //Si existe datos en el store para ese field
+                                // Si existe datos en el store para ese field
                                 if (record[opt.field[o]])
                                 {
-                                    //Si no existen record temporal
+                                    // Si no existen record temporal
                                     if (!temp_record)
                                     {
                                         temp_record = record[opt.field[o]];
                                     }
-                                    //Si el record temporal es un array
+                                    // Si el record temporal es un array
                                     else if ($.isArray(temp_record))
                                     {
-                                        //Si el record actual es un array
+                                        // Si el record actual es un array
                                         for (var o2=0; o2<temp_record.length; o2++)
                                         {
                                             if ($.isPlainObject(temp_record[o2]))
@@ -2496,7 +2660,7 @@ cb.create = function(opt, record) {
                                             }
                                         }
                                     }
-                                    //Si el record temporal es un objeto
+                                    // Si el record temporal es un objeto
                                     else if ($.isPlainObject(temp_record))
                                     {
                                         temp_record[opt.field[o]] = record[opt.field[o]];
@@ -2507,7 +2671,7 @@ cb.create = function(opt, record) {
                                     }
                                 }
                             }
-                            //Si el field es un objecto
+                            // Si el field es un objecto
                             else if ($.isPlainObject(opt.field[o])) {
                                 
                             }
@@ -2521,24 +2685,24 @@ cb.create = function(opt, record) {
                 }
             }
             
-            //Copy of original record data and Alterdata
+            // Copy of original record data and Alterdata
             var raw_record = cb.clone(record);
             if (opt.alterdata) {
                 record = this.alterdata(opt.alterdata, cb.clone(raw_record));
             }
         }
 		
-		//Arreglo para cuando se define items como objeto
+		// Arreglo para cuando se define items como objeto
 		if ($.isPlainObject(opt.items)) {
 			opt.items = [opt.items];
 		}
 		
-		//Si el record contiene un array y no acepta arrays y no es un array de arrays creamos varios elementos
+		// Si el record contiene un array y no acepta arrays y no es un array de arrays creamos varios elementos
 		if ($.isArray(record) && ((cb.eleArrayAcept.indexOf(opt.xtype) < 0) || $.isArray(record[0]))) {
 			ele = [];
 			for (var c=0; c<record.length; c++) {
 				if (record[c]) {
-					//Se borra store y field para que no entre en un bucle infinito
+					// Se borra store y field para que no entre en un bucle infinito
 					delete opt.store;
 					delete opt.field;
 					ele.push(cb.create(cb.cloneObject(opt), record[c]));
@@ -2548,9 +2712,9 @@ cb.create = function(opt, record) {
 		}
 		else
 		{
-			//If record is object
+			// If record is object
 			if ($.isPlainObject(record)) {
-				//Replace {field} to record value
+				// Replace {field} to record value
 				$.each(opt, function(ix, el) {
 					if ($.type(el) === 'string') {						
 						$.each(record, function(ix2, el2) {
@@ -2571,7 +2735,7 @@ cb.create = function(opt, record) {
 				
 			}
 		
-			//Set defaults to child items
+			// Set defaults to child items
 			if (opt.defaults && opt.items)
 			{
 				for (var def in opt.defaults) {
@@ -2579,17 +2743,17 @@ cb.create = function(opt, record) {
 				}
 			}
 			
-			//If is bootstrap component
+			// If is bootstrap component
 			if ($.isFunction(cb.module.bootstrapComponent[opt.xtype]))
 			{
 				var ele = cb.module.bootstrapComponent[opt.xtype](opt, record);
 			}
-			//If is ci-bus component
+			// If is ci-bus component
 			else if ($.isFunction(cb.module.cbComponent[opt.xtype]))
 			{
 				var ele = cb.module.cbComponent[opt.xtype](opt, record);
 			}
-			//If is custom component
+			// If is custom component
 			else if ($.isPlainObject(cb.module.component[opt.xtype]))
 			{
 				var ele = this.create(cb.module.component[opt.xtype], record);
@@ -2599,27 +2763,27 @@ cb.create = function(opt, record) {
 					opt.onRender = cb.module.component[opt.xtype].onRender;
 				}
 			}
-			//By default create xtype element
+			// By default create xtype element
 			else
 			{
 				var ele = document.createElement(opt.xtype);
 				ele = this.common_prop(ele, opt);
 			}
 			
-			//If have record
+			// If have record
 			if (record) {
 				opt_extended.record = raw_record;
-				//If record is string
+				// If record is string
 				if ($.type(record) === 'string' || $.type(record) === 'number') {
 					ele = this.setValue(ele, record);
 				}
-				//If record is dom element
+				// If record is dom element
 				else if (this.isNode(record) || this.isElement(record)) {
 					$(ele).append(record);
 				}
 			}
 			
-			//Storelink /////////
+			// Storelink // // // // /
 			if (opt.storelink) {
 				if (opt.store) {
 					if (!cb.module.storelink[opt.store]) {
@@ -2629,7 +2793,7 @@ cb.create = function(opt, record) {
 				}
 			}
 						
-			//Add child items
+			// Add child items
 			if ($.isArray(opt.items) && !opt.noitems)
 			{
 				for (var a=0; a<opt.items.length; a++)
@@ -2638,7 +2802,7 @@ cb.create = function(opt, record) {
 				}
 			}
 			
-			//Set opt and methods
+			// Set opt and methods
 			ele.opt = {};
 			opt_extended.element = $(ele);
 			var methods = Object.getOwnPropertyNames(opt_extended);
@@ -2650,7 +2814,7 @@ cb.create = function(opt, record) {
 				}
 			}
 
-			//Render element
+			// Render element
 			if (opt.renderTo)
 			{
 				$(opt.renderTo).empty().append(ele);
@@ -2738,7 +2902,7 @@ cb.strpos = function(texto, word) {
 	return false;
 }
 
-////[ General functions ]////
+// // [ General functions ]// // 
 
 cb.enable = function(ele) {
 	$(ele).removeAttr('disabled');

@@ -612,8 +612,21 @@ cb.define({
                 text: 'Filter name Miguel',
                 click: function () {
                     // TODO in process
-                    cb.getCmp('#gridexa').getStore().filter(function (r) {
+                    cb.getCmp('#gridexa').getStore().addFilter(function (r) {
                         if (r.name == 'Miguel') {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }, 'grid');
+                    cb.setValue(this, '<b>Filtering</b>');
+                }
+            }, {
+                text: 'Filter date 2018-05-06',
+                click: function () {
+                    // TODO in process
+                    cb.getCmp('#gridexa').getStore().addFilter(function (r) {
+                        if (r.date == '2018-05-06') {
                             return true;
                         } else {
                             return false;
@@ -624,9 +637,9 @@ cb.define({
             }, {
                 text: 'Remove filters',
                 click: function () {
-                    // TODO in process
-                    //cb.getCmp('#gridexa').getStore().removeFilters();
-                    cb.setValue(cb.getCmp(this).prev(), 'Filter name Miguel');
+                	cb.getCmp('#gridexa').getStore().removeAllFilters('grid');
+                	cb.setValue(cb.getCmp(this).prev(), 'Filter date 2018-05-06');
+                    cb.setValue(cb.getCmp(this).prev().prev(), 'Filter name Miguel');
                 }
             }]
         }]
