@@ -573,7 +573,8 @@ cb.define({
             		xtype: 'button',
             		text: 'Add two rows',
             		click: function () {
-            			cb.getCmp('#gridexa').addRows([{
+            		    var grid = cb.getCmp(this).up('grid');
+                        grid.addRows([{
             				name: 'Antonio',
                         	info: 'User',
                         	date: '2018-05-05'
@@ -582,22 +583,33 @@ cb.define({
                         	info: 'User',
                         	date: '2018-05-06'
                     	}]);
+                        if (grid.getStore().getFilters(grid.getOpt('field'))) {
+                            alert('Alert filtering, remove filters to show changes');
+                        }
             		}
             	}, {
             		xtype: 'button',
             		text: 'Add row first position',
             		click: function () {
-            			cb.getCmp('#gridexa').addRows({
+            		    var grid = cb.getCmp(this).up('grid');
+            		    grid.addRows({
             				name: 'Sergio',
                         	info: 'User',
                         	date: '2018-05-07'
                     	}, 0);
+            			if (grid.getStore().getFilters(grid.getOpt('field'))) {
+            			    alert('Alert filtering, remove filters to show changes');
+            			}
             		}
             	}, {
             		xtype: 'button',
             		text: 'Remove first row',
             		click: function () {
-            			cb.getCmp('#gridexa').removeRow(0);
+            		    var grid = cb.getCmp(this).up('grid');
+                        grid.removeRow(0);
+                        if (grid.getStore().getFilters(grid.getOpt('field'))) {
+                            alert('Alert filtering, remove filters to show changes');
+                        }
             		}
             	}]
         	}

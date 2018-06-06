@@ -83,7 +83,7 @@ cb.define({
 			items: [{
 			    xtype: 'img',
 			    src: './assets/img/cb_logo.png',
-			    width: 48
+			    width: 64
 			}, {
 			    xtype: 'span',
 			    text: ' Ci-bus Framework'

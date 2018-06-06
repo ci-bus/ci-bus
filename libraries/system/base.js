@@ -132,6 +132,7 @@ cb.base.store = {
 	datarestore: null,
 	data: null,
 	filters: [],
+	
 	restore: function(field)
 	{
 		if (typeof field === 'string' && this.getRestoreData(field)) {
@@ -142,6 +143,7 @@ cb.base.store = {
 			cb.deleteToObject(this.datarestore);
 		}
 	},
+	
 	restoreWithoutStorelink: function (field) {
 		if (typeof field === 'string' && this.getRestoreData(field)) {
 			this.data = cb.clone(cb.putToObject(this.data, this.getRestoreData(field), field));
@@ -151,6 +153,7 @@ cb.base.store = {
 			cb.deleteToObject(this.datarestore);
 		}
 	},
+	
 	setRestoreData: function(data, field) {
 		if (typeof field == 'string') {
 			this.datarestore = cb.clone(cb.putToObject(this.datarestore, data, field));
@@ -158,6 +161,7 @@ cb.base.store = {
 		    this.datarestore = cb.clone(data);
 		}
 	},
+	
 	getRestoreData: function(field)
 	{
 		if (typeof field == 'string') {
@@ -166,6 +170,7 @@ cb.base.store = {
 			return this.datarestore;
 		}
 	},
+	
 	getData: function(field)
 	{
 		if (typeof field == 'string') {
@@ -175,6 +180,7 @@ cb.base.store = {
 		}
 		return null;
 	},
+	
 	setData: function(data, field)
 	{
         if (typeof field == 'string') {
@@ -182,16 +188,57 @@ cb.base.store = {
         } else {
             this.data = cb.clone(data);
         }
-        this.storelink();
+        // Do storelinks
+        this.storelink(field);
 	},
+	
+	removeData: function (pos, field) {
+	    if ($.isNumeric(pos)) {
+	        // Get data
+	        if (this.getRestoreData(field)) {
+	            var newData = this.getRestoreData(field);
+	        } else {
+	            var newData = this.getData(field);
+	            // Set restore data
+	            this.setRestoreData(newData, field);
+	        }
+	        
+	        // Remove data
+	        if ($.isArray(newData)) {
+	            newData.splice(pos, 1);
+	        }
+	        
+	        if (this.getFilters(field)) {
+                // Apply filters and set data after
+                this.applyFilters(field);
+            } else {
+                // Set new data
+                this.setData(newData, field);
+            }
+	    }
+	},
+	
 	addData: function (data, field, pos)
 	{
 		if (data !== undefined) {
-	        if (typeof field == 'string') {
-	        	var newData = this.getData(field);
-	        	if (!$.isArray(newData)) {
-	        		newData = [newData];
-	        	}
+		    
+		    // Get data
+	        if (this.getRestoreData(field)) {
+	            var newData = this.getRestoreData(field);
+	        } else {
+	            var newData = this.getData(field);
+	            // Set restore data
+	            this.setRestoreData(newData, field);
+	        }
+	        
+	        // Secure array type
+	        if (!$.isArray(newData)) {
+                newData = [newData];
+            }
+	        
+	        // Add new data
+	        if (typeof field == 'string')
+	        {
 	        	if ($.isNumeric(pos)) {
 	        	    if ($.isArray(data)) {
 	        	        for (var r = data.length; r >= 0; r --) {
@@ -207,19 +254,29 @@ cb.base.store = {
 	        	        newData.push(data);
 	        	    }
 	        	}
-	            this.setData(newData, field);
-	        } else {
-	        	if (!$.isArray(this.data)) {
-	        		this.data = [this.data];
-	        	}
+	        }
+	        else
+	        {
 	        	if ($.isNumeric(pos)) {
-	        		this.data.splice(pos, 0, data);
+	        	    newData.splice(pos, 0, data);
 	        	} else {
-	        		this.data.push(data);
+	        	    newData.push(data);
 	        	}
+	        }
+	        
+	        // Save restore data
+	        this.setRestoreData(newData, field);
+	        
+	        if (this.getFilters(field)) {
+	            // Apply filters and set data after
+	            this.applyFilters(field);
+	        } else {
+	            // Set new data
+	            this.setData(newData, field);
 	        }
 	    }
 	},
+	
 	extendData: function(data, field)
 	{
 	    if (data !== undefined) {
@@ -230,9 +287,10 @@ cb.base.store = {
 	        } else {
 	        	$.extend(this.data, data);
 	        }
-	        this.storelink();
+	        this.storelink(field);
 	    }
 	},
+	
 	mergeData: function(data, field)
 	{
 	    if (data !== undefined) {
@@ -243,28 +301,38 @@ cb.base.store = {
 	        } else {
 	        	$.merge(this.data, data);
 	        }
-	        this.storelink();
+	        this.storelink(field);
 	    }
 	},
-	storelink: function()
+	
+	storelink: function(field)
 	{
 		if ($.isArray(cb.module.storelink[this.name])) {
 			var strlk = cb.module.storelink[this.name];
 			for (var i=0; i<strlk.length; i++) {
 				var ele = cb.getCmp('#'+strlk[i].ele);
-				if (ele.getOpt().field) {
-					var record = cb.fetchFromObject(this.getData(), ele.getOpt().field);
-					ele.setData(record);
-				}else{
-					ele.setData(this.getData());
+				if (!field) {
+				    if (ele.getOpt().field) {
+	                    var record = cb.fetchFromObject(this.getData(), ele.getOpt().field);
+	                    ele.setData(record);
+	                } else {
+	                    ele.setData(this.getData());
+	                }
+				} else {
+				    if (ele.getOpt().field == field) {
+                        var record = cb.fetchFromObject(this.getData(), ele.getOpt().field);
+                        ele.setData(record);
+                    }
 				}
 			}
 		}
 	},
+	
 	getName: function()
 	{
 		return this.name;
 	},
+	
 	sort: function(data, fun)
 	{
 		if ($.isFunction(data))
@@ -319,6 +387,17 @@ cb.base.store = {
 		}
 		this.storelink();
 	},
+	
+	getFilters: function (field) {
+	    var resf = [];
+	    for (var i = 0; i < this.filters.length; i ++) {
+            if (!field || this.filters[i].field == field) {
+                resf.push(this.filters[i]);
+            }
+        }
+	    return resf.length? resf: null;
+	},
+	
 	applyFilters: function (field) {
 		// Get data
 	    if (this.getRestoreData(field)) {
@@ -328,14 +407,17 @@ cb.base.store = {
         	// Set restore data
 	        this.setRestoreData(data, field);
         }
-        for (var i = 0; i < this.filters.length; i ++) {
-        	if (this.filters[i].field == field) {
-        		data = this.filter(data, this.filters[i].fun, this.filters[i].field);
-        	}
-        }
+	    // Apply filters to data
+	    var filters = this.getFilters(field);
+	    if (filters) {
+	        for (var i = 0; i < filters.length; i ++) {
+	            data = this.filter(data, filters[i].fun, filters[i].field);
+	        }
+	    }
         // Set filtered data
 		this.setData(data, field);
 	},
+	
 	filter: function (data, fun, field) {        
 		if ($.isArray(data)) {
 	        // Filter data
@@ -349,6 +431,7 @@ cb.base.store = {
 		}
 		return data;
 	},
+	
 	addFilter: function (fun, field) {
 		// Add filter
 		this.filters.push({
@@ -360,6 +443,7 @@ cb.base.store = {
 		// Return array position
 		return (this.filters.length -1);
 	},
+	
 	removeFilter: function (pos) {
 		if (this.filters[pos]) {
 			// Get field
@@ -370,6 +454,7 @@ cb.base.store = {
 			this.applyFilters(field);
 		}
 	},
+	
 	removeAllFilters: function (field) {
 		if (field) {
 			var i = 0;
@@ -400,14 +485,16 @@ cb.base.element = {
 	getValue: function() {
 		return this.val()? this.val(): this.getRecord();
 	},
-	getOpt: function() {
+	getOpt: function(dt) {
 		if (this.component) {
 			if (this.opt) {
-				return $.extend(this.component, this.opt);
+				var res = $.extend(this.component, this.opt);
 			}else{
-				return this.component
+				var res = this.component
 			}
-		} else return this.opt? this.opt: false;
+		} else var res = this.opt? this.opt: false;
+		
+		return dt? res[dt]: res;
 	},
 	setRecord: function (record) {
 		if (this.opt) {
@@ -746,10 +833,9 @@ cb.base.grid = {
 	
 	removeRow: function (pos) {
 		// Remove record
-		this.getRecord().splice(pos, 1);
 		if (this.getOpt().storelink)
         {
-            this.getStore().setData(this.getRecord(), this.getOpt().field);
+            this.getStore().removeData(pos, this.getOpt().field);
         }
         else
         {
@@ -2201,7 +2287,7 @@ cb.module.bootstrapComponent = {
 		
 		ele.opt = opt;
 		
-		ele.getOpt = function() {
+		ele.getOpt = function(dt) {
 			return this.opt;
 		}
 				
