@@ -564,21 +564,22 @@ cb.base.element = {
 cb.base.polyline = {
 	setData: function(record) {
 		if ($.isArray(record)) {
-			var opt = cb.cloneObject(this.getOpt());
-			if (typeof opt.xspace   === 'undefined') opt.xspace   = parseInt(parseInt(opt.width) / (record.length - 1));
-			if (typeof opt.pointMax === 'undefined') opt.pointMax = Math.max.apply(null, record);
-			if (typeof opt.pointMin === 'undefined') opt.pointMin = Math.min.apply(null, record);
-			var xwrite = 0;
-			var ywrite = 0;
-			var points = "0,"+parseInt(opt.height);
-			for (var i=0; i<record.length; i++) {
-				ywrite = parseInt(opt.height) - parseInt((record[i]-opt.pointMin)*parseInt(opt.height)/opt.pointMax) - opt.pointMin;
-				points += " "+xwrite+","+ywrite;
-				xwrite += opt.xspace;
-			}
-			points += " "+xwrite+","+parseInt(opt.height);
+			var opt = this.getOpt();
+			opt.xspace   = parseInt(opt.width) / (record.length - 1);
+            if (opt.pointMax == undefined) opt.pointMax = Math.max.apply(null, record);
+            if (opt.pointMin == undefined) opt.pointMin = Math.min.apply(null, record);
+            var xwrite = 0;
+            var ywrite = 0;
+            var points = "0,"+parseInt(opt.height);
+            for (var i=0; i<record.length; i++) {
+                ywrite = parseInt(opt.height) - ((record[i]-opt.pointMin) * parseInt(opt.height) / (opt.pointMax-opt.pointMin));
+                points += " "+xwrite+","+ywrite;
+                xwrite = Math.round(xwrite + opt.xspace);
+            }
+            points += " "+parseInt(opt.width)+","+parseInt(opt.height);
 		}
 		this.removeAttr('points').attr({ points: points });
+		opt.record = record;
 	}
 };
 
@@ -2257,19 +2258,18 @@ cb.module.bootstrapComponent = {
 		else if (!opt.stroke) opt.stroke = '#0074d9';
 		if (!opt['stroke-width']) opt['stroke-width'] = 3;
 		if ($.isArray(record)) {
-			if (typeof opt.xspace   === 'undefined') opt.xspace   = parseInt(opt.width) / (record.length - 1);
-			if (typeof opt.pointMax === 'undefined') opt.pointMax = Math.max.apply(null, record);
-			if (typeof opt.pointMin === 'undefined') opt.pointMin = Math.min.apply(null, record);
+			opt.xspace   = parseInt(opt.width) / (record.length - 1);
+			if (opt.pointMax == undefined) opt.pointMax = Math.max.apply(null, record);
+			if (opt.pointMin == undefined) opt.pointMin = Math.min.apply(null, record);
 			var xwrite = 0;
 			var ywrite = 0;
 			var points = "0,"+parseInt(opt.height);
 			for (var i=0; i<record.length; i++) {
-				// ywrite = parseInt(opt.height) - parseInt((record[i]-opt.pointMin)*parseInt(opt.height)/opt.pointMax) - opt.pointMin;
 				ywrite = parseInt(opt.height) - ((record[i]-opt.pointMin) * parseInt(opt.height) / (opt.pointMax-opt.pointMin));
 				points += " "+xwrite+","+ywrite;
-				xwrite += opt.xspace;
+				xwrite = Math.round(xwrite + opt.xspace);
 			}
-			points += " "+xwrite+","+parseInt(opt.height);
+			points += " "+parseInt(opt.width)+","+parseInt(opt.height);
 		}
 		
 		$(ele).attr({
@@ -2287,10 +2287,6 @@ cb.module.bootstrapComponent = {
 		
 		ele.opt = opt;
 		
-		ele.getOpt = function(dt) {
-			return this.opt;
-		}
-				
 		return ele;
 	},
 	'toggle': function (opt, record) {

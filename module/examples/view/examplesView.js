@@ -504,7 +504,7 @@ cb.define({
         	alterdata: {
         		'date': function (date) {
         			var d = new Date(date);
-        			return d.getDate() + '/' + d.getMonth()+1 + '/' + d.getFullYear();
+        			return d.getDate() + '/' + (d.getMonth()+1) + '/' + d.getFullYear();
         		}
         	},
         	columns: [{

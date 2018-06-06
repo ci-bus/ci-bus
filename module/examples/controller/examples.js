@@ -35,7 +35,7 @@ cb.define({
             xtype: 'store',
             name: 'example',
             data: {
-                a: [15,43,87,18,23,15,24,8],
+                a: [15,43,87,18,23,15,24,50],
                 grid: [{
                 	name: 'Miguel',
                 	info: 'Root',
@@ -47,7 +47,7 @@ cb.define({
                 }, {
                 	name: 'Jimena',
                 	info: 'Admin',
-                	date: '2018-05-02'
+                	date: '2018-05-06'
                 }, {
                 	name: 'Daniel',
                 	info: 'User',
