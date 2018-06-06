@@ -159,6 +159,8 @@
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<link rel="icon" type="<?php echo $CB->getConfig('favicon')['type']; ?>" href="<?php echo $CB->getConfig('favicon')['href']; ?>">
 				
 		<script type="text/javascript">
 			

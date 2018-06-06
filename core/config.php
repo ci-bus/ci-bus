@@ -12,6 +12,9 @@
 		"default_controller" => "examples",
 		"charset" => "UTF-8",
 		"title" => "Ci-bus Framework",
+	    "favicon" => array(
+	       "type" => "image/png",
+	       "href" => "./assets/img/cb_logo.png"),
 		"local_ips" => array('127.0.0.1', '::1'),
 		"auto_min_js" => false
 	);

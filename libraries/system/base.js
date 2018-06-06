@@ -193,9 +193,19 @@ cb.base.store = {
 	        		newData = [newData];
 	        	}
 	        	if ($.isNumeric(pos)) {
-	        		newData.splice(pos, 0, data);
+	        	    if ($.isArray(data)) {
+	        	        for (var r = data.length; r >= 0; r --) {
+	        	            newData.splice(pos, 0, data[r]);
+	        	        }
+	        	    } else {
+	        	        newData.splice(pos, 0, data);
+	        	    }
 	        	} else {
-	        		newData.push(data);
+	        	    if ($.isArray(data)) {
+	        	        $.merge(newData, data);
+	        	    } else {
+	        	        newData.push(data);
+	        	    }
 	        	}
 	            this.setData(newData, field);
 	        } else {
@@ -208,7 +218,6 @@ cb.base.store = {
 	        		this.data.push(data);
 	        	}
 	        }
-	        this.storelink();
 	    }
 	},
 	extendData: function(data, field)
@@ -676,69 +685,77 @@ cb.base.grid = {
 	addRows: function (record, pos, noSync) {
 		if (!pos || pos >= 0) {
 			// Save new record
-			if ($.isPlainObject(this.getOpt().record)) {
-				this.getOpt().record = [this.getOpt().record];
-			} else if (!$.isArray(this.getOpt().record)) {
-				this.getOpt().record = [];
-			}
-			if ($.isPlainObject(record)) {
-				if ($.isNumeric(pos)) {
-					this.getOpt().record.splice(pos, 0, record);
-				} else {
-					this.getOpt().record.push(record);
-				}
-			} else if ($.isArray(record)) {
-				if ($.isNumeric(pos) && pos <= this.getOpt().record.length) {
-					for (var f = record.length - 1; f >= 0; f --) {
-						this.getOpt().record.splice(pos, 0, record[f]);
-					}
-				} else {
-					this.getOpt().record = this.getOpt().record.concat(record);
-				}
-			} else {
-				return;
-			}
-			// Sync up store
-			if (noSync !== true) {
-				this.syncStore();
-			}
-			// Add new row to table
-			var opt = cb.cloneObject(this.getOpt()),
-				bodyItems = [];
-			for (var i = 0; i < opt.columns.length; i ++) {
-				delete opt.columns[i].text;
-				bodyItems.push(opt.columns[i]);
-			}
-			if (opt.alterdata) {
-				record = cb.clone(record);
-				cb.alterdata(opt.alterdata, record);
-			}
-			var tbody = cb.module.bootstrapComponent['tbody']({
-				items: bodyItems
-			}, record);
-			if ($.isNumeric(pos)) {
-				if (pos) {
-					if (pos <= this.find('tbody').find('tr').length) {
-						this.find('tbody').find('tr:eq(' + (pos - 1) + ')').after($(tbody).children());
-					} else {
-						this.find('tbody').append($(tbody).children());
-					}
-				} else {
-					this.find('tbody').prepend($(tbody).children());
-				}
-			} else {
-				this.find('tbody').append($(tbody).children());
-			}
+		    if (this.getOpt().storelink && noSync !== true)
+		    {
+		        this.getStore().addData(record, this.getOpt().field, pos);
+		    }
+		    else
+		    {
+		        if ($.isPlainObject(this.getOpt().record)) {
+	                this.getOpt().record = [this.getOpt().record];
+	            } else if (!$.isArray(this.getOpt().record)) {
+	                this.getOpt().record = [];
+	            }
+	            if ($.isPlainObject(record)) {
+	                if ($.isNumeric(pos)) {
+	                    this.getOpt().record.splice(pos, 0, record);
+	                } else {
+	                    this.getOpt().record.push(record);
+	                }
+	            } else if ($.isArray(record)) {
+	                if ($.isNumeric(pos) && pos <= this.getOpt().record.length) {
+	                    for (var f = record.length - 1; f >= 0; f --) {
+	                        this.getOpt().record.splice(pos, 0, record[f]);
+	                    }
+	                } else {
+	                    this.getOpt().record = this.getOpt().record.concat(record);
+	                }
+	            } else {
+	                return;
+	            }
+	            // Add new row to table
+	            var opt = cb.cloneObject(this.getOpt()),
+	                bodyItems = [];
+	            for (var i = 0; i < opt.columns.length; i ++) {
+	                delete opt.columns[i].text;
+	                bodyItems.push(opt.columns[i]);
+	            }
+	            if (opt.alterdata) {
+	                record = cb.clone(record);
+	                cb.alterdata(opt.alterdata, record);
+	            }
+	            var tbody = cb.module.bootstrapComponent['tbody']({
+	                items: bodyItems
+	            }, record);
+	            if ($.isNumeric(pos)) {
+	                if (pos) {
+	                    if (pos <= this.find('tbody').find('tr').length) {
+	                        this.find('tbody').find('tr:eq(' + (pos - 1) + ')').after($(tbody).children());
+	                    } else {
+	                        this.find('tbody').append($(tbody).children());
+	                    }
+	                } else {
+	                    this.find('tbody').prepend($(tbody).children());
+	                }
+	            } else {
+	                this.find('tbody').append($(tbody).children());
+	            }
+		    }
 		}
 	},
 	
 	removeRow: function (pos) {
 		// Remove record
-		delete this.getOpt().record.splice(pos, 1);
-		// Sync up store
-		this.syncStore();
-		// Remove row table
-		this.find('tbody').find('tr:eq(' + pos + ')').remove();
+		this.getRecord().splice(pos, 1);
+		if (this.getOpt().storelink)
+        {
+            this.getStore().setData(this.getRecord(), this.getOpt().field);
+        }
+        else
+        {
+    		// Remove row table
+    		this.find('tbody').find('tr:eq(' + pos + ')').remove();
+        }
 	},
 	
 	removeAllRows: function (noSync) {

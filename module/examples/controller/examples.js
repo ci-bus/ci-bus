@@ -80,7 +80,14 @@ cb.define({
 		}
 		var boton = {
 			xtype: 'button',
-			text: 'Ci-bus Framework'
+			items: [{
+			    xtype: 'img',
+			    src: './assets/img/cb_logo.png',
+			    width: 48
+			}, {
+			    xtype: 'span',
+			    text: ' Ci-bus Framework'
+			}]
 		};
 		var color = cb.rcolor();
 		for (var i = cb.magia; i > 0; i--) {
