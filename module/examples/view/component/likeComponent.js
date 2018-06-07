@@ -2,19 +2,14 @@ cb.define({
 	xtype: 'component',
 	name: 'like',
 	items: [{
-		xtype: 'span',
-		css: {
-			'background-color': 'white',
-			'border-radius': 5,
-			'padding': 5,
-			'margin-left': 10},
+		xtype: 'div',
+		margin: '0px 0px 10px 10px',
 		items: [{
 			xtype: 'glyphicon',
 			type: 'thumbs-down',
 			cursor: 'pointer',
 			cls : '{hand1_color}',
 			margin: 5,
-			attr: {'clicked': '{review_cos}'},
 			listener: {
 				click: function(){
 					cb.ctr('examples','like',this)
@@ -25,19 +20,12 @@ cb.define({
 			type: 'thumbs-up',
 			cls : '{hand2_color}',
 			cursor: 'pointer',
-			attr: {'clicked': '{review_pos}'},
 			margin: 5,
 			listener: {
 				click: function(){
 					cb.ctr('examples','like',this)
 				}
 			}
-		},{
-			xtype: 'span',
-			css: {'margin-right': 5},
-			color: 'black',
-			cls: 'review',
-			field: 'reviews'
 		}]
 	}]
 	

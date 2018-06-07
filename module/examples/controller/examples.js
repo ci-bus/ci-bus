@@ -59,9 +59,7 @@ cb.define({
                 }],
                 like: {
                     hand1_color: 'gray',
-                    hand2_color: 'gray',
-                    review_pos: false,
-                    review_cos: false
+                    hand2_color: 'gray'
                 }
             }
         });
@@ -120,38 +118,27 @@ cb.define({
 	},
 	
 	like: function(bot){
-        if(!$(bot).hasClass('gray'))
+        if($(bot).hasClass('gray'))
         {
-            var type = $(bot).parent().parent().attr('data');
-            var id = $(bot).closest('.panel').attr('data-id');
-            var review = $(bot).parent().find('.review').text();
-            var currentreview = $(bot).parent().attr('currentreview');
-            var val = 0;
-            
+        	// Animate hand icons
+        	$(bot).animate({'zoom': 2, 'scale': 2, 'margin-top': '-10px'}, 'fast');
             if($(bot).hasClass('glyphicon-thumbs-down'))
             {
-                val = -1;
-                review--;
-                if($(bot).parent().find('.glyphicon-thumbs-up').hasClass('gray')){
-                    review--;
-                }
-                $(bot).parent().find('.glyphicon-thumbs-up').addClass('green').removeClass('gray');
+                $(bot).addClass('red').removeClass('gray');
+                cb.getCmp(bot).up('div').down('.glyphicon-thumbs-up').removeClass('green').removeClass('red').addClass('gray');
+                var value = 'unlike';
             }
             else if($(bot).hasClass('glyphicon-thumbs-up'))
             {
-                val = 1;
-                review++;
-                if($(bot).parent().find('.glyphicon-thumbs-down').hasClass('gray')){
-                    review++;
-                }
-                $(bot).parent().find('.glyphicon-thumbs-down').addClass('red').removeClass('gray');
+                $(bot).addClass('green').removeClass('gray');
+                cb.getCmp(bot).up('div').down('.glyphicon-thumbs-down').removeClass('green').removeClass('red').addClass('gray');
+                var value = 'like';
             }
-            $(bot).parent().find('.review').text(review);
-            $(bot).animate({'zoom': 2, 'scale': 2, 'margin-top': '-10px'}, 'fast');
+            $(bot).animate({'zoom': 1, 'scale': 1, 'margin-top': '5px'}, 'fast');
             
-            //cb.load('store', 'examples', 'review', {action: 'send', value: val, type: type, id: id}, function(res){
-                $(bot).removeClass('green').removeClass('red').addClass('gray').animate({'zoom': 1, 'scale': 1, 'margin-top': '5px'}, 'fast');
-            //});
+            // Set value to store
+            cb.getCmp(bot).up('like').getStore().addData({value: value}, 'like');
+            console.log(cb.getStore('example').getData('like'));
         }
     },
 });

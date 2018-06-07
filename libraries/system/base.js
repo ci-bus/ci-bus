@@ -231,37 +231,47 @@ cb.base.store = {
 	            this.setRestoreData(newData, field);
 	        }
 	        
-	        // Secure array type
-	        if (!$.isArray(newData)) {
-                newData = [newData];
-            }
-	        
-	        // Add new data
-	        if (typeof field == 'string')
+	        if ($.isPlainObject(data) && $.isPlainObject(newData))
 	        {
-	        	if ($.isNumeric(pos)) {
-	        	    if ($.isArray(data)) {
-	        	        for (var r = data.length; r >= 0; r --) {
-	        	            newData.splice(pos, 0, data[r]);
-	        	        }
-	        	    } else {
-	        	        newData.splice(pos, 0, data);
-	        	    }
-	        	} else {
-	        	    if ($.isArray(data)) {
-	        	        $.merge(newData, data);
-	        	    } else {
-	        	        newData.push(data);
-	        	    }
-	        	}
+	        	// Add new data
+	        	$.each(data, function (key, val) {
+	        		newData[key] = val;
+	            });
 	        }
 	        else
 	        {
-	        	if ($.isNumeric(pos)) {
-	        	    newData.splice(pos, 0, data);
-	        	} else {
-	        	    newData.push(data);
-	        	}
+	        	// Secure array type
+		        if (!$.isArray(newData)) {
+	                newData = [newData];
+	            }
+		        
+		        // Add new data
+		        if (typeof field == 'string')
+		        {
+		        	if ($.isNumeric(pos)) {
+		        	    if ($.isArray(data)) {
+		        	        for (var r = data.length; r >= 0; r --) {
+		        	            newData.splice(pos, 0, data[r]);
+		        	        }
+		        	    } else {
+		        	        newData.splice(pos, 0, data);
+		        	    }
+		        	} else {
+		        	    if ($.isArray(data)) {
+		        	        $.merge(newData, data);
+		        	    } else {
+		        	        newData.push(data);
+		        	    }
+		        	}
+		        }
+		        else
+		        {
+		        	if ($.isNumeric(pos)) {
+		        	    newData.splice(pos, 0, data);
+		        	} else {
+		        	    newData.push(data);
+		        	}
+		        }
 	        }
 	        
 	        // Save restore data
