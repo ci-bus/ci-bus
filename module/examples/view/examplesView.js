@@ -658,7 +658,7 @@ cb.define({
             xtype: 'h3',
             text: '...Custom component'
         }, {
-            xtype: 'review',
+            xtype: 'like',
             store: 'example',
             field: 'like'
         }]

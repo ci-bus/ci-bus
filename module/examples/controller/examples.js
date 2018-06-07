@@ -58,27 +58,25 @@ cb.define({
                 	date: '2018-05-04'
                 }],
                 like: {
-                    hand1_color: 'green',
+                    hand1_color: 'gray',
                     hand2_color: 'gray',
-                    review_cos: true,
-                    review_pos: false
+                    review_pos: false,
+                    review_cos: false
                 }
             }
         });
 	    
 	    cb.loadAll([
-	        ['component', 'gotorave', 'review']
-	    ]);
-	    
-	    // Load view
-		cb.load('view', 'examples', 'examples', function () 
-		{
-			//Generate header buttons color
-			cb.getController('examples').doMagia();
-			
-			//Do hash change when view is loaded
-			cb.router.hashchange();
-		});
+	        ['component', 'examples', 'like'],
+	        ['view', 'examples', 'examples']
+	    ], function () 
+        {
+            //Generate header buttons color
+            cb.getController('examples').doMagia();
+            
+            //Do hash change when view is loaded
+            cb.router.hashchange();
+        });
 	},
 	
 	doMagia: function () {
@@ -119,7 +117,43 @@ cb.define({
 			    '-webkit-transform': 'translate(-50%, -50%)'    
 			};
 		cb.create(boton);
-	}
+	},
+	
+	like: function(bot){
+        if(!$(bot).hasClass('gray'))
+        {
+            var type = $(bot).parent().parent().attr('data');
+            var id = $(bot).closest('.panel').attr('data-id');
+            var review = $(bot).parent().find('.review').text();
+            var currentreview = $(bot).parent().attr('currentreview');
+            var val = 0;
+            
+            if($(bot).hasClass('glyphicon-thumbs-down'))
+            {
+                val = -1;
+                review--;
+                if($(bot).parent().find('.glyphicon-thumbs-up').hasClass('gray')){
+                    review--;
+                }
+                $(bot).parent().find('.glyphicon-thumbs-up').addClass('green').removeClass('gray');
+            }
+            else if($(bot).hasClass('glyphicon-thumbs-up'))
+            {
+                val = 1;
+                review++;
+                if($(bot).parent().find('.glyphicon-thumbs-down').hasClass('gray')){
+                    review++;
+                }
+                $(bot).parent().find('.glyphicon-thumbs-down').addClass('red').removeClass('gray');
+            }
+            $(bot).parent().find('.review').text(review);
+            $(bot).animate({'zoom': 2, 'scale': 2, 'margin-top': '-10px'}, 'fast');
+            
+            //cb.load('store', 'examples', 'review', {action: 'send', value: val, type: type, id: id}, function(res){
+                $(bot).removeClass('green').removeClass('red').addClass('gray').animate({'zoom': 1, 'scale': 1, 'margin-top': '5px'}, 'fast');
+            //});
+        }
+    },
 });
 
 cb.magia = 10;

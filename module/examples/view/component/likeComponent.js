@@ -1,6 +1,6 @@
 cb.define({
 	xtype: 'component',
-	name: 'review',
+	name: 'like',
 	items: [{
 		xtype: 'span',
 		css: {
@@ -17,7 +17,7 @@ cb.define({
 			attr: {'clicked': '{review_cos}'},
 			listener: {
 				click: function(){
-					cb.ctr('gotorave','musiclike',this)
+					cb.ctr('examples','like',this)
 				}
 			}
 		},{
@@ -29,7 +29,7 @@ cb.define({
 			margin: 5,
 			listener: {
 				click: function(){
-					cb.ctr('gotorave','musiclike',this)
+					cb.ctr('examples','like',this)
 				}
 			}
 		},{
