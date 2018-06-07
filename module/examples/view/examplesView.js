@@ -584,7 +584,7 @@ cb.define({
                         	date: '2018-05-06'
                     	}]);
                         if (grid.getStore().getFilters(grid.getOpt('field'))) {
-                            alert('Alert filtering, remove filters to show changes');
+                            alert('Filtering, remove filters to show changes');
                         }
             		}
             	}, {
@@ -598,7 +598,7 @@ cb.define({
                         	date: '2018-05-07'
                     	}, 0);
             			if (grid.getStore().getFilters(grid.getOpt('field'))) {
-            			    alert('Alert filtering, remove filters to show changes');
+            			    alert('Filtering, remove filters to show changes');
             			}
             		}
             	}, {
@@ -608,7 +608,7 @@ cb.define({
             		    var grid = cb.getCmp(this).up('grid');
                         grid.removeRow(0);
                         if (grid.getStore().getFilters(grid.getOpt('field'))) {
-                            alert('Alert filtering, remove filters to show changes');
+                            alert('Filtering, remove filters to show changes');
                         }
             		}
             	}]
@@ -654,6 +654,13 @@ cb.define({
                     cb.setValue(cb.getCmp(this).prev().prev(), 'Filter name Miguel');
                 }
             }]
+        }, {
+            xtype: 'h3',
+            text: '...Custom component'
+        }, {
+            xtype: 'review',
+            store: 'example',
+            field: 'like'
         }]
 	}]
 });

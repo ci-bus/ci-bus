@@ -56,9 +56,19 @@ cb.define({
                 	name: 'Javier',
                 	info: 'User',
                 	date: '2018-05-04'
-                }]
+                }],
+                like: {
+                    hand1_color: 'green',
+                    hand2_color: 'gray',
+                    review_cos: true,
+                    review_pos: false
+                }
             }
         });
+	    
+	    cb.loadAll([
+	        ['component', 'gotorave', 'review']
+	    ]);
 	    
 	    // Load view
 		cb.load('view', 'examples', 'examples', function () 
