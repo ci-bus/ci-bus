@@ -62,10 +62,15 @@ cb.module.storelink = {};
 cb.config = [];
 cb.elenamed = 0;
 cb.eleids = 0;
+
 // Por defecto cuando un record es un array
 // se crea un elemento por cada valor
 // añadiendo el xtype a este array lo evitamos
-cb.eleArrayAcept = ['polyline', 'tbody', 'grid'];
+cb.eleAceptArrayRecord = ['polyline', 'tbody', 'grid'];
+// Al crear un elemento si tiene field definido
+// pero el store no tiene valor no se crea
+// añadiendo el xtype a este array lo evitamos
+cb.eleCreateWithoutRecord = ['td', 'tr'];
 
 // El route te permine ejecutar una funcion de un controlador visitando un hash #ejemplo
 cb.router = {
@@ -2729,10 +2734,10 @@ cb.create = function(opt, record) {
                     if (record) {
                         if (record[opt.field]) {
                             record = record[opt.field];
-                        }else{
+                        } else if (cb.eleCreateWithoutRecord.indexOf(opt.xtype) < 0) {
                             return;
                         }
-                    }else{
+                    } else if (cb.eleCreateWithoutRecord.indexOf(opt.xtype) < 0) {
                         return;
                     }
                 }
@@ -2807,7 +2812,7 @@ cb.create = function(opt, record) {
 		}
 		
 		// Si el record contiene un array y no acepta arrays y no es un array de arrays creamos varios elementos
-		if ($.isArray(record) && ((cb.eleArrayAcept.indexOf(opt.xtype) < 0) || $.isArray(record[0]))) {
+		if ($.isArray(record) && ((cb.eleAceptArrayRecord.indexOf(opt.xtype) < 0) || $.isArray(record[0]))) {
 			ele = [];
 			for (var c=0; c<record.length; c++) {
 				if (record[c]) {
