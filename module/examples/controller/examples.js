@@ -38,6 +38,7 @@ cb.define({
                 a: [15,43,87,18,23,15,24,50],
                 grid: [{
                 	name: 'Miguel',
+                	lastname: 'Calero',
                 	info: 'Root',
                 	date: '2018-05-01'
                 }, {
@@ -46,6 +47,7 @@ cb.define({
                 	date: '2018-05-06'
                 }, {
                 	name: 'Jimena',
+                	lastname: 'Rincon',
                 	info: 'Admin',
                 	date: '2018-05-06'
                 }, {

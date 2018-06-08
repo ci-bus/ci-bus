@@ -508,13 +508,13 @@ cb.define({
         		}
         	},
         	columns: [{
-        		text: 'Name',
-        		field: 'name'
+        		name: 'Name',
+        		text: '{name} {lastname}'
         	}, {
-        		text: 'Info',
+        	    name: 'Info',
         		field: 'info'
         	}, {
-        		text: 'Date',
+        	    name: 'Date',
         		field: 'date'
         	}],
         	margin: 10,

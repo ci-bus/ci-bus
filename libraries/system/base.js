@@ -824,7 +824,6 @@ cb.base.grid = {
 	            var opt = cb.cloneObject(this.getOpt()),
 	                bodyItems = [];
 	            for (var i = 0; i < opt.columns.length; i ++) {
-	                delete opt.columns[i].text;
 	                bodyItems.push(opt.columns[i]);
 	            }
 	            if (opt.alterdata) {
@@ -2417,9 +2416,8 @@ cb.module.cbComponent = {
 		for (var i = 0; i < opt.columns.length; i ++) {
 			var col = opt.columns[i];
 			headItems.push({
-				text: col.text
+				text: col.name
 			});
-			delete col.text;
 			bodyItems.push(col);
 		}
 		var tableItems = [{
@@ -2867,6 +2865,8 @@ cb.create = function(opt, record) {
 						$.each(record, function(ix2, el2) {
 							opt[ix] = opt[ix].replace(new RegExp('{'+ix2+'}',"g"), el2);
 						});
+						// Clear
+						opt[ix] = opt[ix].replace(/{.+}/, '');
 					}
 					else if ($.isPlainObject(el) && ix !== 'items') {
 						opt[ix] = cb.cloneObject(opt[ix]);
@@ -2875,6 +2875,8 @@ cb.create = function(opt, record) {
 								$.each(record, function(ix2, el2) {
 									opt[ix][ix3] = opt[ix][ix3].replace(new RegExp('{'+ix2+'}',"g"), el2);
 								});
+								// Clear
+		                        opt[ix][ix3] = opt[ix][ix3].replace(/{.+}/, '');
 							}
 						});
 					}
