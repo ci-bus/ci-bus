@@ -531,8 +531,8 @@ cb.define({
 	        		},
 	        		click: function () {
 	        			cb.getCmp('#gridexa').addColumns({
-	                		text: 'Name',
-	                		field: 'name'
+	        			    name: 'Name',
+	                        text: '{name} {lastname}'
 	                	});
 	        		}
 	        	}, {

@@ -754,7 +754,7 @@ cb.base.grid = {
 				if (col.text) {
 					var th = cb.create({
 						xtype: 'th',
-						text: col.text
+						text: col.name
 					});
 					if ($.isNumeric(pos)) {
 						this.find('thead').find('tr').find('th:eq(' + pos + ')').before(th);
@@ -763,13 +763,13 @@ cb.base.grid = {
 					}
 					delete col.name;
 				}
-				if (col.field && record) {
+				if (record) {
 					if (!$.isArray(record)) {
 						record = [record];
 					}
 					col.xtype = 'td';
 					for (var r = 0; r < record.length; r ++) {
-						var td = cb.create(col, record[r]);
+						var td = cb.create(cb.clone(col), record[r]);
 						if ($.isNumeric(pos)) {
 							this.find('tbody').find('tr:eq(' + r + ')').find('th:eq(' + pos + ')').before(td);
 						} else {
