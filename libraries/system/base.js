@@ -924,11 +924,6 @@ cb.base.grid = {
 	}
 };
 
-// Funcion para clonar un array u objeto
-cb.clone = function(data) {
-	return JSON.parse(JSON.stringify(data));
-};
-
 // Funcion para generar un nombre único
 cb.autoname = function(pre) {
 	if (!pre) {
@@ -1449,6 +1444,11 @@ cb.extend = function(opt1, opt2) {
 	}
 	return opt1;
 }
+
+//Funciones para clonar
+cb.clone = function(data) {
+    return JSON.parse(JSON.stringify(data));
+};
 
 cb.cloneObject = function(obj) {
 	return $.extend({}, obj);
@@ -2546,7 +2546,7 @@ cb.props = {
 		$(ele).attr('id', opt.id);
 	},
 	'disable': function(ele, opt) {
-		$(ele).attr('disable', 'disable');
+		if (opt) $(ele).attr('disable', 'disable');
 	},
 	'disabled': function(ele, opt) {
 		$(ele).attr('disabled', 'disabled');
@@ -2649,7 +2649,13 @@ cb.props = {
 	},
 	'mouseout': function(ele, opt) {
 		$(ele).mouseout(opt.mouseout);
-	}
+	},
+	'focus': function(ele, opt) {
+        $(ele).focus(opt.focus);
+    },
+    'blur': function(ele, opt) {
+        $(ele).blur(opt.blur);
+    }
 };
 
 cb.mergeDataStore = function(record) {
