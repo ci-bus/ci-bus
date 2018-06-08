@@ -70,7 +70,7 @@ cb.eleAceptArrayRecord = ['polyline', 'tbody', 'grid'];
 // Al crear un elemento si tiene field definido
 // pero el store no tiene valor no se crea
 // añadiendo el xtype a este array lo evitamos
-cb.eleCreateWithoutRecord = ['td', 'tr'];
+cb.eleCreateWithoutRecord = ['td', 'tr', 'th'];
 
 // El route te permine ejecutar una funcion de un controlador visitando un hash #ejemplo
 cb.router = {
