@@ -1201,7 +1201,9 @@ cb.define = function(obj)
 		
 		if (obj.xtype == 'view')
 		{			
-			this.render(obj);
+			if (obj.renderOnLoad !== false){
+				this.render(obj);
+			}
 		}
 		
 		// OnLoad function
@@ -1384,6 +1386,7 @@ cb.delConfig = function(va, var2) {
 
 cb.render = function(obj, callback)
 {
+	obj = cb.clone(obj);
 	var vw = obj.name;
 	
 	if (obj.renderTo)
@@ -2745,22 +2748,22 @@ cb.create = function(opt, record) {
             opt.id = this.autoid(opt.xtype);
         }
 		
-        // Get record data, priority (1 parse record in function, 2 record in definitions, 3 store data definited and field)
+        // Get record
         if (!record) {
             // Get record from opt
             if (opt.record) {
                 record = opt.record;
-            } else {
-                // Get store
-                if (opt.store) {
-                    if (this.module.store[opt.store]) {
-                        record = this.module.store[opt.store]['data'];
-                    }else{
-                        return;
-                    }
-                }
             }
         }
+        if (opt.store) {
+            if (this.module.store[opt.store]) {
+                record = this.module.store[opt.store]['data'];
+            }else{
+                return;
+            }
+        }
+        
+        if (opt.xtype == 'code') debugger;
         
 		// If have record
         if (record) {

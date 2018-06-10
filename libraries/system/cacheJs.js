@@ -24,9 +24,6 @@ $.cachedScript = function(url,type,options) {
 		   type: "text/css",
 		   href: url
 		}).appendTo("head");
-		options = $.extend( options || {}, {
-			url: 'libraries/system/index.php'
-		});
 	}else{
 		alert('No admitido .'+ext+' en la ruta: '+url);
 	}
