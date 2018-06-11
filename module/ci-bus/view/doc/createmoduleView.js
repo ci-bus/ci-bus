@@ -46,10 +46,11 @@ cb.define({
 				xtype: 'pre',
 				margin: '10px 0px 0px',
 				items: {
-					xtype: 'code',
-					cls: 'javascript',
-					store: 'code',
-					text: '{cd1}'
+				    xtype: 'code',
+                    store: 'code',
+                    field: 'cd1',
+                    cls: '{type}',
+                    text: '{code}'
 				}
 			}]
 		}, {
@@ -69,9 +70,58 @@ cb.define({
                 margin: '10px 0px 0px',
                 items: {
                     xtype: 'code',
-                    cls: 'javascript',
                     store: 'code',
-                    text: '{cd2}'
+                    field: 'cd2',
+                    cls: '{type}',
+                    text: '{code}'
+                }
+            }]
+        }, {
+            xtype: 'h3',
+            field: 'tx12'
+        }, {
+            xtype: 'blockquote',
+            items: [{
+                text: '{tx13}'
+            }, {
+                xtype: 'badge',
+                text: '/module/test/store/'
+            }, {
+                text: '{tx14}'
+            }, {
+                xtype: 'pre',
+                margin: '10px 0px',
+                items: {
+                    xtype: 'code',
+                    store: 'code',
+                    field: 'cd3',
+                    cls: '{type}',
+                    text: '{code}'
+                }
+            }, {
+                field: 'tx15'
+            }]
+        }, {
+            xtype: 'h3',
+            field: 'tx16'
+        }, {
+            xtype: 'blockquote',
+            items: [{
+                text: '{tx17}'
+            }, {
+                xtype: 'badge',
+                text: '/module/test/view/component/'
+            }, {
+                text: '{tx18}'
+            }, {
+                xtype: 'pre',
+                margin: '10px 0px 0px',
+                items: {
+                    xtype: 'code',
+                    store: 'code',
+                    field: 'cd4',
+                    cls: '{type}',
+                    text: '{code}'
                 }
             }]
         }]

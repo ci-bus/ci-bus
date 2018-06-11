@@ -9,7 +9,7 @@
 			"db_prefix" => ""
 		),
 		
-		"default_controller" => "examples",
+		"default_module" => "ci-bus",
 		"charset" => "UTF-8",
 		"title" => "Ci-bus Framework",
 	    "favicon" => array(

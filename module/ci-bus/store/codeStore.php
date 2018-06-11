@@ -12,10 +12,11 @@ $code1 = "cb.define({
     onload: function(){
         console.log('Loaded controller');
         cb.loadAll([
-                ['view', 'common', 'base'],
-                ['view', 'test', 'test']
-            ], function () {
-            console.log('Loaded views')
+            ['store', 'test', 'test', &#123;action: 'get_data'&#125;],
+            ['view', 'common', 'base'],
+            ['view', 'test', 'test']
+        ], function () {
+            console.log('Loaded store and views')
         });
     }
 });";
@@ -26,8 +27,8 @@ $code2 = "cb.define({
     renderTo: '#content',
 
     onRender: function () {
-	    console.log('Rendered view');
-	},
+        console.log('Rendered view');
+    },
 
     items: [{
         xtype: 'button',
@@ -37,7 +38,96 @@ $code2 = "cb.define({
         }
     }]
 });";
-				$CB->parseStore('code', array( 'cd1' => $code1, 'cd2' => $code2 ));
+
+$code3 = "&lt;&#63;php
+    class Test {
+        public function __construct(\$CB, \$data = array())
+        {
+            \$action = \$data['action'];
+            \$this->\$action(\$CB, \$data);
+        }
+    
+        public function get_data()
+        {
+            \$CB->db->select(\"id, field1, field2\");
+            \$CB->db->from(\"test_table\");
+            \$CB->db->orderBy(\"id\", \"ASC\");
+
+            \$this->parseStore('test', \$CB->db->get());
+        }
+
+        public function get_lang_config(\$CB, \$data)
+        {
+            \$CB->parseConfig('lang', 'ES-es');
+        }
+    }
+&#63;&gt;";
+
+$code4 = "cb.define({
+    xtype: 'component',
+    name: 'test',
+    items: [{
+        xtype: 'div',
+        margin: '0px 0px 10px 10px',
+        items: [{
+            xtype: 'glyphicon',
+            type: 'thumbs-down',
+            cursor: 'pointer',
+            margin: 5,
+            listener: {
+            	click: function(){
+                    alert('clicked thumb down');
+            	}
+            }
+        },{
+            xtype: 'glyphicon',
+            type: 'thumbs-up',
+            cursor: 'pointer',
+            margin: 5,
+            listener: {
+            	click: function(){
+                    alert('clicked thumb up');
+            	}
+            }
+        }]
+    }]
+});";
+
+$code5 = "onload: function () {
+    cb.load('view', 'test', 'test', function(){
+        console.log('Loaded View');
+    });
+}";
+
+$code6 = "onload: function () {
+    cb.loadAll([
+        ['store', 'test', 'test'],
+        ['view', 'test']
+    ], function(){
+        console.log('Loaded store and view');
+    });
+}";
+
+                $CB->parseStore('code', array(
+                    'cd1' => array(
+                        'type' => 'javascript',
+                        'code' => $code1),
+                    'cd2' => array(
+                        'type' => 'javascript',
+                        'code' => $code2),
+                    'cd3' => array(
+                        'type' => 'php',
+                        'code' => $code3),
+                    'cd4' => array(
+                        'type' => 'javascript',
+                        'code' => $code4),
+                    'cd5' => array(
+                        'type' => 'javascript',
+                        'code' => $code5),
+                    'cd6' => array(
+                        'type' => 'javascript',
+                        'code' => $code6)
+                ));
 			}
 	}
 	

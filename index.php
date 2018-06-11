@@ -173,7 +173,7 @@
 							if($urlparts[0]){
 								echo "cb.load('controller', '".$urlparts[0]."', ".json_encode($_GET).");";
 							}else{
-								echo "cb.load('controller', '".$CB->getConfig('default_controller')."', ".json_encode($_GET).");";
+								echo "cb.load('controller', '".$CB->getConfig('default_module')."', ".json_encode($_GET).");";
 							}
 						}else{
 							echo "cb.load('controller', '".$urlparts[0]."');";
@@ -181,7 +181,7 @@
 					}
 					else
 					{
-						echo "cb.load('controller', '".$CB->getConfig('default_controller')."');";
+						echo "cb.load('controller', '".$CB->getConfig('default_module')."');";
 					}
 				?> $.cachedScript("bower_components/bootstrap/dist/js/bootstrap.min.js");
 			});

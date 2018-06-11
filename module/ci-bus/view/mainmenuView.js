@@ -39,7 +39,12 @@ cb.define({
 						text: '{tx1}',
 						css: {'font-size': '16px'},
 						href: '#loadview/createmodule'
-					}]
+					}, {
+                        xtype: 'a',
+                        text: '{tx2}',
+                        css: {'font-size': '16px'},
+                        href: '#loadview/controllers'
+                    }]
 				}]
 			}]
 		}]
