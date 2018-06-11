@@ -36,11 +36,16 @@ cb.define({
                 	tx5: ' y la carpeta <em>component</em> en ',
                 	tx6: 'Controller',
                 	tx7: '3. Dentro de la carpeta ',
-                	tx8: ' crea un archivo <em>test.js</em> que será el controlador, éste contendrá todas las funciones javascript necesarias y se ocupará de tareas como cargar vistas, stores, enviar datos de formularios etc'
+                	tx8: ' crea un archivo <em>test.js</em> que será el controlador, éste contendrá todas las funciones javascript necesarias y se ocupará de tareas como cargar vistas, stores, enviar datos de formularios etc',
+                	tx9: 'View',
+                	tx10: '4. Dentro de la carpeta ',
+                	tx11: ' crea un archivo <em>testView.js</em> que será una vista, éste contendrá las definiciones de componentes que al ser renderizada se convertirán en elementos html'
             	}
             }
 		});
 		
+		$.cachedScript("https://fonts.googleapis.com/css?family=Quicksand", "css");
+		$('body').css('font-family', "'Quicksand', Hervetica");
 		$.cachedScript("libraries/highlight/styles/tomorrow.css", "css");
 		$.cachedScript("libraries/highlight/highlight.pack.js", "js").done(function () {
 			cb.loadAll([

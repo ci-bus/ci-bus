@@ -1386,20 +1386,21 @@ cb.delConfig = function(va, var2) {
 
 cb.render = function(obj, callback)
 {
-	obj = cb.clone(obj);
 	var vw = obj.name;
 	
 	if (obj.renderTo)
 	{
 		// TODO No borrar los elementos con reload: false
 		$(obj.renderTo).empty();
-		obj.appendTo = obj.renderTo;
-		delete obj.renderTo;
 	}
 	
 	if (obj.items)
 	{
-		if (obj.appendTo)
+	    if (obj.renderTo)
+	    {
+	        obj.items = this.setMissingDinamicValue(obj.items, 'appendTo', obj.renderTo);
+	    }
+	    else if (obj.appendTo)
 		{
 			obj.items = this.setMissingDinamicValue(obj.items, 'appendTo', obj.appendTo);
 		}
@@ -1430,9 +1431,10 @@ cb.render = function(obj, callback)
 		}
 	}
 	
-	if ($.isFunction(obj.onLoad)) {
-		obj.onLoad();
+	if ($.isFunction(obj.onRender)) {
+		obj.onRender();
 	}
+	
 	if ($.isFunction(callback))
 	{
 		callback();
@@ -2762,8 +2764,6 @@ cb.create = function(opt, record) {
                 return;
             }
         }
-        
-        if (opt.xtype == 'code') debugger;
         
 		// If have record
         if (record) {

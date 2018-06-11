@@ -3,6 +3,7 @@ cb.define({
 	name: 'createmodule',
 	renderTo: '#content',
 	renderOnLoad: false,
+	
 	items: [{
 		xtype: 'container',
 		store: 'texts',
@@ -51,6 +52,28 @@ cb.define({
 					text: '{cd1}'
 				}
 			}]
-		}]
+		}, {
+            xtype: 'h3',
+            field: 'tx9'
+        }, {
+            xtype: 'blockquote',
+            items: [{
+                text: '{tx10}'
+            }, {
+                xtype: 'badge',
+                text: '/module/test/view/'
+            }, {
+                text: '{tx11}'
+            }, {
+                xtype: 'pre',
+                margin: '10px 0px 0px',
+                items: {
+                    xtype: 'code',
+                    cls: 'javascript',
+                    store: 'code',
+                    text: '{cd2}'
+                }
+            }]
+        }]
 	}]
 });
