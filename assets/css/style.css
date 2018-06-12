@@ -113,6 +113,31 @@ a.disabled {
 	border-right: 0px;
 }
 
+.bs-callout {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 17.5px;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius: 3px;
+}
+
+.bs-callout-info {
+    border-left-color: #31708f;
+}
+
+.bs-callout-warning {
+    border-left-color: #8a6d3b;
+}
+
+.bs-callout-danger {
+    border-left-color: #a94442;
+}
+
+.bs-callout-success {
+    border-left-color: #3c763d;
+}
+
 @media only screen and (min-width : 0px) {
 	.cubi-name {
 		max-height: 36px;

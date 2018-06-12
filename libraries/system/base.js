@@ -1819,26 +1819,33 @@ cb.module.bootstrapComponent = {
 			record = [record];
 		}
 		for (var i = 0; i < record.length; i ++) {
-			opt.t_tr = document.createElement('tr');
 		 	if (opt.items)
 		 	{
-			 	for (var h=0;h<opt.items.length;h++)
+		 	    if (opt.items.length && !$.isArray(opt.items[0])) {
+		 	       opt.items = [opt.items];
+		 	    }
+			 	for (var e = 0; e < opt.items.length; e++)
 			 	{
-			 		if (!opt.items[h].xtype || opt.items[h].xtype == 'td' || opt.items[h].xtype == 'th')
-			 		{
-			 			if (!opt.items[h].xtype) opt.items[h].xtype = 'td';
-			 			opt.t_th = cb.create(cb.cloneObject(opt.items[h]), record[i]);
-			 		}
-			 		else
-			 		{
-			 			opt.t_th = document.createElement('td');
-			 			$(opt.t_th).append(cb.create(cb.cloneObject(opt.items[h]), record[i]));
-			 		}
-			 		if (opt.items[h].scope) $(opt.t_th).attr('scope', opt.items[h].scope);
-			 		
-			 		$(opt.t_tr).append(opt.t_th);
+			 	    opt.t_tr = document.createElement('tr');
+			 	    var r_item = opt.items[e];
+			 	    for (var h = 0; h < r_item.length; h++) {
+			 	       if (!r_item[h].xtype || r_item[h].xtype == 'td' || r_item[h].xtype == 'th')
+	                    {
+	                        if (!r_item[h].xtype) r_item[h].xtype = 'td';
+	                        opt.t_th = cb.create(cb.cloneObject(r_item[h]), record[i]);
+	                    }
+	                    else
+	                    {
+	                        opt.t_th = document.createElement('td');
+	                        $(opt.t_th).append(cb.create(cb.cloneObject(r_item[h]), record[i]));
+	                    }
+	                    if (r_item[h].scope) $(opt.t_th).attr('scope', r_item[h].scope);
+	                    
+	                    $(opt.t_tr).append(opt.t_th);
+			 	    }
+			 	    $(ele).append(opt.t_tr);
 			 	}
-			 	$(ele).append(opt.t_tr);
+			 	
 				opt.noitems = true;
 		 	}
 		}
@@ -1922,23 +1929,22 @@ cb.module.bootstrapComponent = {
 		var ele = document.createElement('div');
 		$(ele).addClass('bs-callout');
 		if (opt.type) $(ele).addClass('bs-callout-'+opt.type);
+		delete opt.type;
 		if (opt.title) $(ele).append(cb.create({ xtype: 'h4', text: opt.title }));
-		opt.ele_p = document.createElement('p');
 		if (opt.text || opt.html)
 		{
 			opt.text? opt.ttext = opt.text : opt.ttext = opt.html;
-			$(opt.ele_p).html(opt.ttext);
+			$(ele).html(opt.ttext);
 			opt.notext = true;
 			opt.nohtml = true;
 		}
 		if ($.isArray(opt.items))
 		{
 			for (var a=0;a<opt.items.length;a++)
-				$(opt.ele_p).append(cb.create(cb.cloneObject(opt.items[a]), record));
+				$(ele).append(cb.create(cb.cloneObject(opt.items[a]), record));
 				
 			opt.noitems = true;
 		}
-		$(ele).append(opt.ele_p);
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},

@@ -11,7 +11,7 @@
 		
 		"default_module" => "ci-bus",
 		"charset" => "UTF-8",
-		"title" => "Ci-bus Framework",
+		"title" => "Ci-bus Framework en Español",
 	    "favicon" => array(
 	       "type" => "image/png",
 	       "href" => "./assets/img/cb_logo.png"),

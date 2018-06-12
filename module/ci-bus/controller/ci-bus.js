@@ -20,9 +20,8 @@ cb.define({
 	
 	onload: function () {
 	    
-	    // Load and set font
-		$.cachedScript("https://fonts.googleapis.com/css?family=Quicksand", "css");
-		$('body').css('font-family', "'Quicksand', Hervetica");
+	    // Load font
+		$.cachedScript("assets/css/font-quicksand.css", "css");
 		
 		// Load highlight style and script
 		$.cachedScript("libraries/highlight/styles/tomorrow.css", "css");

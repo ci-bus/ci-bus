@@ -108,6 +108,48 @@ $code6 = "onload: function () {
     });
 }";
 
+$code7 = "cb.define({
+    xtype: 'controller',
+    name: 'test',
+
+    customf1: function(data){
+        console.log('customf1', data);
+    },
+
+    customf2: function(){
+        console.log('customf2');
+    }
+});";
+
+$code8 = "cb.ctr('test', 'customf1', &#123;value: 1&#125;);";
+
+$code9 = "cb.define({
+    xtype: 'controller',
+    name: 'test',
+
+    route: {
+        '#aaa': 'routeTest1',
+        '#aaa/:num': 'routeTest2',
+        '#aaa/:num/:str': 'routeTest3'
+    },
+
+    routeTest1: function(hash){
+        console.log('routeTest1', hash);
+    },
+
+    routeTest2: function(hash){
+        console.log('routeTest2', hash);
+    },
+
+    routeTest3: function(hash){
+        console.log('routeTest3', hash);
+    }
+
+    onload: function () {
+        cb.router.hashchange();
+    }
+});";
+
                 $CB->parseStore('code', array(
                     'cd1' => array(
                         'type' => 'javascript',
@@ -126,7 +168,16 @@ $code6 = "onload: function () {
                         'code' => $code5),
                     'cd6' => array(
                         'type' => 'javascript',
-                        'code' => $code6)
+                        'code' => $code6),
+                    'cd7' => array(
+                        'type' => 'javascript',
+                        'code' => $code7),
+                    'cd8' => array(
+                        'type' => 'javascript',
+                        'code' => $code8),
+                    'cd9' => array(
+                        'type' => 'javascript',
+                        'code' => $code9)
                 ));
 			}
 	}

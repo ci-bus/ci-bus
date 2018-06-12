@@ -14,7 +14,7 @@ cb.define({
             xtype: 'h3',
             field: 'tx2'
         }, {
-            xtype: 'blockquote',
+            xtype: 'callout',
             items: [{
                 text: '{tx6}'
             }, {
@@ -26,7 +26,7 @@ cb.define({
             xtype: 'h3',
             text: '{tx7}'
         }, {
-            xtype: 'blockquote',
+            xtype: 'callout',
             items: [{
                 text: '{tx3}'
             }, {
@@ -39,7 +39,7 @@ cb.define({
             xtype: 'h3',
             text: '{tx8}'
         }, {
-            xtype: 'blockquote',
+            xtype: 'callout',
             items: [{
                 text: '{tx4}'
             }, {
@@ -64,6 +64,93 @@ cb.define({
                     cls: '{type}',
                     text: '{code}'
                 }
+            }, {
+                xtype: 'h3',
+                text: '{tx10}'
+            }, {
+                xtype: 'div',
+                field: 'tx11'
+            }, {
+                xtype: 'div',
+                field: 'tx12'
+            }, {
+                xtype: 'div',
+                field: 'tx13'
+            }, {
+                xtype: 'div',
+                field: 'tx14'
+            }, {
+                field: 'tx15'
+            }]
+        }, {
+            xtype: 'h3',
+            field: 'tx16'
+        }, {
+            xtype: 'callout',
+            items: [{
+                xtype: 'div',
+                field: 'tx17'
+            }, {
+                xtype: 'pre',
+                items: {
+                    xtype: 'code',
+                    store: 'code',
+                    field: 'cd7',
+                    cls: '{type}',
+                    text: '{code}'
+                }
+            }, {
+                field: 'tx18'
+            }, {
+                xtype: 'pre',
+                margin: '10px 0px 0px',
+                items: {
+                    xtype: 'code',
+                    store: 'code',
+                    field: 'cd8',
+                    cls: '{type}',
+                    text: '{code}'
+                }
+            }, {
+                xtype: 'h3',
+                field: 'tx10'
+            }, {
+                xtype: 'div',
+                field: 'tx19'
+            }, {
+                xtype: 'div',
+                field: 'tx20'
+            }, {
+                xtype: 'div',
+                field: 'tx21'
+            }]
+        }, {
+            xtype: 'h3',
+            field: 'tx22'
+        }, {
+            xtype: 'callout',
+            items: [{
+                field: 'tx23'
+            }, {
+                xtype: 'pre',
+                margin: '10px 0px',
+                items: {
+                    xtype: 'code',
+                    store: 'code',
+                    field: 'cd9',
+                    cls: '{type}',
+                    text: '{code}'
+                }
+            }, {
+                xtype: 'div',
+                items: [{
+                    xtype: 'span',
+                    field: 'tx24'
+                }, {
+                    xtype: 'a',
+                    field: 'tx25',
+                    href: './examples#aaa'
+                }]
             }]
         }]
     }]

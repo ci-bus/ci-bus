@@ -14,11 +14,11 @@ cb.define({
 			xtype: 'h3',
 			field: 'tx2'
 		}, {
-			xtype: 'blockquote',
+			xtype: 'callout',
 			text: '{tx3}',
 			badge: '/module/'
 		}, {
-			xtype: 'blockquote',
+			xtype: 'callout',
 			text: '{tx4}',
 			items: [{
 				xtype: 'badge',
@@ -34,7 +34,7 @@ cb.define({
 			xtype: 'h3',
 			field: 'tx6'
 		}, {
-			xtype: 'blockquote',
+			xtype: 'callout',
 			items: [{
 				text: '{tx7}'
 			}, {
@@ -57,7 +57,7 @@ cb.define({
             xtype: 'h3',
             field: 'tx9'
         }, {
-            xtype: 'blockquote',
+            xtype: 'callout',
             items: [{
                 text: '{tx10}'
             }, {
@@ -80,7 +80,7 @@ cb.define({
             xtype: 'h3',
             field: 'tx12'
         }, {
-            xtype: 'blockquote',
+            xtype: 'callout',
             items: [{
                 text: '{tx13}'
             }, {
@@ -105,7 +105,7 @@ cb.define({
             xtype: 'h3',
             field: 'tx16'
         }, {
-            xtype: 'blockquote',
+            xtype: 'callout',
             items: [{
                 text: '{tx17}'
             }, {
