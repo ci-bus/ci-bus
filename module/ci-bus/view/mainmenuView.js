@@ -44,6 +44,16 @@ cb.define({
                         text: '{tx2}',
                         css: {'font-size': '16px'},
                         href: '#loadview/controllers'
+                    }, {
+                        xtype: 'a',
+                        text: '{tx3}',
+                        css: {'font-size': '16px'},
+                        href: '#loadview/views'
+                    }, {
+                        xtype: 'a',
+                        text: '{tx4}',
+                        css: {'font-size': '16px'},
+                        href: '#loadview/items'
                     }]
 				}]
 			}]

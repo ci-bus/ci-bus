@@ -19,7 +19,9 @@ cb.define({
                 text: '{tx6}'
             }, {
                 xtype: 'a',
-                text: 'Crear módulo',
+                store: 'texts',
+                field: 'menu',
+                text: '{tx1}',
                 href: '#loadview/createmodule'
             }]
         }, {

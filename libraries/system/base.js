@@ -1412,14 +1412,10 @@ cb.render = function(obj, callback)
 	
 	if ($.isPlainObject(obj.items))
 	{
-		if (obj.items.reload !== false || !$('#'+obj.items.id).length) {
-			if (obj.items.renderTo) {
-				$(obj.items.renderTo).html('');
-			}
-			this.create(obj.items);
-		}
+	    obj.items = [obj.items];
 	}
-	else if ($.isArray(obj.items))
+	
+	if ($.isArray(obj.items))
 	{
 		for (var j=0; j<obj.items.length; j++) {
 			if (obj.items[j].reload !== false || !$('#'+obj.items[j].id).length) {
@@ -1470,7 +1466,7 @@ cb.module.bootstrapComponent = {
 		if (!opt.type) opt.type = 'default';
 		opt.cls? opt.cls = 'btn btn-'+opt.type+' '+opt.cls : opt.cls = 'btn btn-'+opt.type;
 		if (opt.size) opt.cls += ' btn-'+opt.size;
-		opt.type = 'button';
+		opt.type = null;
 		if (!opt.margin && opt.margin !== 0) opt.margin = '0 5px 0 0';
 		ele = cb.common_prop(ele, opt);
 		return ele;

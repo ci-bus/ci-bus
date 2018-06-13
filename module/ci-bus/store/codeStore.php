@@ -150,6 +150,16 @@ $code9 = "cb.define({
     }
 });";
 
+$code10 = "{
+    xtype: 'button',
+    type: 'primary',
+    size: 'lg',
+    text: 'Test button',
+    click: function(){
+        alert('Clicked!');
+    }
+}";
+
                 $CB->parseStore('code', array(
                     'cd1' => array(
                         'type' => 'javascript',
@@ -177,7 +187,10 @@ $code9 = "cb.define({
                         'code' => $code8),
                     'cd9' => array(
                         'type' => 'javascript',
-                        'code' => $code9)
+                        'code' => $code9),
+                    'cd10' => array(
+                        'type' => 'javascript',
+                        'code' => $code10)
                 ));
 			}
 	}

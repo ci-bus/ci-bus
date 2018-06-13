@@ -39,12 +39,17 @@ cb.define({
             items: {
                 xtype: 'table',
                 width: 'auto',
+                margin: 0,
                 items: [{
                     xtype: 'head',
                     items: [{
                         items: {
                             xtype: 'img',
-                            src: 'assets/img/miguel.png'
+                            src: 'assets/img/miguel.png',
+                            css: {
+                                'border-radius': '50%',
+                                border: '2px solid #DDD'
+                            }
                         }
                     }, {
                         text: 'Miguel Ángel Calero Ponce'
@@ -62,7 +67,14 @@ cb.define({
                     }, {
                         xtype: 'a',
                         text: '+34 722-128-106',
-                        href: 'tlf:+34 722-128-106'
+                        href: 'tel:+34 722-128-106'
+                    }], [{
+                        text: 'Linkedin'
+                    }, {
+                        xtype: 'a',
+                        target: '_blank',
+                        text: 'https://www.linkedin.com/in/miguelangelcaleroponce/',
+                        href: 'https://www.linkedin.com/in/miguelangelcaleroponce/'
                     }]]
                 }]
             }

@@ -34,6 +34,8 @@ cb.define({
 				['view', 'ci-bus', 'mainmenu'],
 				['view', 'ci-bus', 'doc/createmodule'],
 				['view', 'ci-bus', 'doc/controllers'],
+				['view', 'ci-bus', 'doc/views'],
+				['view', 'ci-bus', 'doc/items'],
 				['view', 'ci-bus', 'ci-bus']
 			], function () {
 				cb.router.hashchange();
