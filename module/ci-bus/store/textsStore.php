@@ -6,17 +6,17 @@
 		{
 		    
 		    $CB->parseStore('texts', array(
-		        'general' => array(
+		        'general' => array (
 		            'tx0' => 'Probar código'
 		        ),
-		        'menu' => array(
+		        'menu' => array (
 		            'tx0' => 'Documentación',
 		            'tx1' => 'Crear módulo',
 		            'tx2' => 'Controladores',
 		            'tx3' => 'Vistas',
 		            'tx4' => 'Items'
 			    ),
-		        'home' => array(
+		        'home' => array (
 		            'tx1' => '¿Qué es Ci-bus Framework?',
 		            'tx2' => 'Ci-bus es un cojunto de herramientas javascript y php que te permitirá crear aplicaciones webs de manera fácil e intuitiva con las más novedosas técnicas de programación',
 		            'tx3' => '¿Cuáles han sido mis motivaciones?',
@@ -33,7 +33,7 @@
 		                      .'hacer que los programadores disfruten trabajando haciendo cosas locas de las que te hacen pensar... esto va a explotar... y que funcione',
 		            'tx7' => 'Datos de contacto',
 		            'tx8' => 'Donativos',
-		            'tx9' => 'Si te ha gustado Ci-bus haz click aquí para hacer un donativo de la cantidad que tu quieras apoyando al desarrollo'
+		            'tx9' => 'Si te ha gustado Ci-bus haz click aquí para hacer un donativo apoyando al desarrollo'
 		        ),
 			    'createmodule' => array(
 			        'tx1' => 'Instrucciones para crear un módulo nuevo llamado test',
@@ -57,7 +57,7 @@
 			        'tx18' => ' crea un archivo <em>testComponent.js</em> que será un component, esto nos vale para crear componentes personalizados y reutilizables'
 			            
 			    ),
-			    'controllers' => array(
+			    'controllers' => array (
 			        'tx1' => 'Información general sobre controladores, sus funciones y configuraciones',
 			        'tx2' => 'Controladores',
 			        'tx3' => 'Por defecto se carga el controlador que se llama igual que el módulo, el módulo que se carga por defecto se configura en ',
@@ -85,7 +85,7 @@
 			        'tx24' => 'Puedes provar el funcionamiento en el módulo: ',
 			        'tx25' => 'Ejemplos'
 			    ),
-		        'views' => array(
+		        'views' => array (
 		            'tx1' => 'Información general sobre vistas y sus configuraciones',
 		            'tx2' => 'Vistas',
 		            'tx3' => 'Para ver como crear una vista visita el apartado: ',
@@ -104,7 +104,7 @@
 		            'tx16' => 'Items',
 		            'tx17' => 'La propiedad items acepta un objeto o array de objetos que serán los componentes que al ser renderizados se convertirán en elementos html, para ver todos los items disponibles visita el apartado: '
 		        ),
-		        'items' => array(
+		        'items' => array (
 		            'tx1' => 'Información general sobre items disponibles y ejemplos básicos',
                     'tx2' => 'Items',
 		            'tx3' => 'Existen 3 tipos de items, por un lado están los items de bootstrap que se crearán con los atributos específicos según su documentación y que pueden tener algunas peculiaridades, '
