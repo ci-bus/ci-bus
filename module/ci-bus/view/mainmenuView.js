@@ -29,7 +29,7 @@ cb.define({
 				xtype: 'navbar',
 				type: 'left',
 				items: [{
-					xtype: 'dropdown-menu',
+					xtype: 'navbar-dropdown',
 					glyphicon: 'book',
 					text: ' {tx0}',
 					css: {'font-size': '17px'},

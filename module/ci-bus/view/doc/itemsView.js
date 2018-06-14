@@ -7,12 +7,19 @@ cb.define({
             xtype: 'button',
             store: 'texts',
             field: 'general',
-            text: '{tx0}',
+            text: '{tx1}',
             click: function (e) {
-                var btn = cb.getCmp(this);
-                var code = btn.up('div', 1).down('code').getRecord().code;
-                eval('var item = '+code);
-                $(this).parent().html(cb.create(item));
+                var btn = cb.getCmp(this),
+                    parent = $(this).parent(),
+                    code = btn.up('div', 1).down('code').getRecord().code;
+                eval('var items = '+code);
+                if (!$.isArray(items)) {
+                    items = [items];
+                }
+                $(this).remove();
+                for (var i = 0; i < items.length; i++) {
+                    parent.append(cb.create(items[i]));
+                }
             }
         }
     }
@@ -58,17 +65,171 @@ cb.define({
                 items: [{
                     field: 'tx7'
                 }, {
-                    xtype: 'pre',
+                    xtype: 'callout',
                     margin: '10px 0px',
+                    text: '{tx10}',
                     items: {
-                        xtype: 'code',
-                        store: 'code',
-                        field: 'cd10',
-                        cls: '{type}',
-                        text: '{code}'
+                        xtype: 'table',
+                        margin: 0,
+                        items: [{
+                            xtype: 'head',
+                            items: [{
+                                field: 'tx8'
+                            }, {
+                                field: 'tx9'
+                            }]
+                        }, {
+                            xtype: 'body',
+                            items: [[{
+                                text: 'type'
+                            }, {
+                                text: "'default', 'primary', 'success', 'info', 'warning', 'danger'"
+                            }], [{
+                                text: 'size'
+                            }, {
+                                text: "'lg', 'md', 'sm', 'xs'"
+                            }]]
+                        }]
                     }
                 }, {
-                    xtype: 'totestcode'
+                    xtype: 'callout',
+                    margin: '10px 0px',
+                    text: '{tx12}',
+                    items: [{
+                        xtype: 'pre',
+                        margin: '10px 0px',
+                        items: {
+                            xtype: 'code',
+                            store: 'code',
+                            field: 'cd10',
+                            cls: '{type}',
+                            text: '{code}'
+                        }
+                    }, {
+                        xtype: 'totestcode'
+                    }]
+                }]
+            }]
+        }, {
+            xtype: 'h3',
+            text: 'nav, navbar, navbar-header, navbar-collapse, navbar-text, navbar-a, navbar-dropdown, navbar-button, navbar-form'
+        }, {
+            xtype: 'callout',
+            items: [{
+                xtype: 'div',
+                items: [{
+                    field: 'tx13'
+                }, {
+                    xtype: 'callout',
+                    margin: '10px 0px',
+                    text: '{tx10}',
+                    items: {
+                        xtype: 'table',
+                        margin: 0,
+                        items: [{
+                            xtype: 'head',
+                            items: [{
+                                field: 'tx14'
+                            }, {
+                                field: 'tx8'
+                            }, {
+                                field: 'tx9'
+                            }]
+                        }, {
+                            xtype: 'body',
+                            items: [[{
+                                text: 'nav'
+                            }, {
+                                text: 'type'
+                            }, {
+                                text: 'default, static-top, fixed-top, fixed-bottom, inverse'
+                            }], [{
+                                text: 'a'
+                            }, {
+                                text: 'active'
+                            }, {
+                                text: 'true'
+                            }], [{
+                                text: 'dropdown'
+                            }, {
+                                text: 'caret'
+                            }, {
+                                text: 'false'
+                            }]]
+                        }]
+                    }
+                }, {
+                    xtype: 'callout',
+                    margin: '10px 0px',
+                    text: '{tx12}',
+                    items: [{
+                        xtype: 'pre',
+                        margin: '10px 0px',
+                        items: {
+                            xtype: 'code',
+                            store: 'code',
+                            field: 'cd11',
+                            cls: '{type}',
+                            text: '{code}'
+                        }
+                    }, {
+                        xtype: 'totestcode'
+                    }]
+                }]
+            }]
+        }, {
+            xtype: 'h3',
+            text: 'dropdown, dropup'
+        }, {
+            xtype: 'callout',
+            items: [{
+                xtype: 'div',
+                items: [{
+                    field: 'tx15'
+                }, {
+                    xtype: 'callout',
+                    margin: '10px 0px',
+                    text: '{tx10}',
+                    items: {
+                        xtype: 'table',
+                        margin: 0,
+                        items: [{
+                            xtype: 'head',
+                            items: [{
+                                field: 'tx8'
+                            }, {
+                                field: 'tx9'
+                            }]
+                        }, {
+                            xtype: 'body',
+                            items: [[{
+                                text: 'type'
+                            }, {
+                                text: "'default', 'primary', 'success', 'info', 'warning', 'danger'"
+                            }], [{
+                                text: 'size'
+                            }, {
+                                text: "'lg', 'md', 'sm', 'xs'"
+                            }]]
+                        }]
+                    }
+                }, {
+                    xtype: 'callout',
+                    margin: '10px 0px',
+                    text: '{tx12}',
+                    items: [{
+                        xtype: 'pre',
+                        margin: '10px 0px',
+                        items: {
+                            xtype: 'code',
+                            store: 'code',
+                            field: 'cd12',
+                            cls: '{type}',
+                            text: '{code}'
+                        }
+                    }, {
+                        xtype: 'totestcode'
+                    }]
                 }]
             }]
         }]

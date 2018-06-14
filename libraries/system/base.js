@@ -1488,12 +1488,12 @@ cb.module.bootstrapComponent = {
 		{
 			$(ele).addClass('navbar-default');
 		}
+		ele = cb.common_prop(ele, opt);
 		var conta = document.createElement('div');
 		$(conta).addClass('container-fluid');
-		conta = cb.common_prop(conta, opt);
 		if ($.isArray(opt.items))
 		{
-			for (var a=0;a<opt.items.length;a++)
+			for (var a = 0; a < opt.items.length; a++)
 			{
 				if (opt.items[a].xtype == 'header')
 				{
@@ -1504,7 +1504,17 @@ cb.module.bootstrapComponent = {
 				{
 					opt.items[a].xtype = 'navbar-collapse';
 					opt.items[a].cls = opt.toggle;
+					for (var b = 0; b < opt.items[a].items.length; b++)
+		            {
+					    if (opt.items[a].items[b].xtype == 'form') {
+					        opt.items[a].items[b].xtype = 'navbar-form';
+					    }
+		            }
 				}
+				else if (opt.items[a].xtype == 'form')
+                {
+                    opt.items[a].xtype = 'navbar-form';
+                }
 				$(conta).append(cb.create(cb.cloneObject(opt.items[a]), record));
 			}
 		}
@@ -1543,9 +1553,20 @@ cb.module.bootstrapComponent = {
 				size: 22
 			}]
 		}));
+		if (!$.isArray(opt.items))
+        {
+		    opt.items = [];
+        }
+        for (var a = 0; a < opt.items.length; a++)
+        {
+            if (opt.items[a].xtype == 'brand') {
+                opt.items[a].xtype = 'a';
+                opt.items[a].cls = 'navbar-brand';
+            }
+        }
 		return ele;
 	},
-	'button-menu': function(opt, record) {
+	'navbar-button': function(opt, record) {
 		opt.xtype = 'button';
 		conta = cb.create(cb.cloneObject(opt), record);
 		$(conta).addClass('navbar-btn');
@@ -1553,7 +1574,7 @@ cb.module.bootstrapComponent = {
 		$(ele).append(conta);
 		return ele;
 	},
-	'text-menu': function(opt, record) {
+	'navbar-text': function(opt, record) {
 		conta = document.createElement('p');
 		$(conta).addClass('navbar-text');
 		conta = cb.common_prop(conta, opt);
@@ -1561,6 +1582,41 @@ cb.module.bootstrapComponent = {
 		$(ele).append(conta);
 		return ele;
 	},
+	'navbar-a': function(opt, record) {
+        conta = document.createElement('a');
+        conta = cb.common_prop(conta, opt);
+        ele = document.createElement('li');
+        if (opt.active) {
+            $(ele).addClass('active');
+        }
+        $(ele).append(conta);
+        return ele;
+    },
+    'navbar-form': function(opt, record) {
+        if (!opt.name) opt.name = cb.autoname();
+        var ele = document.createElement('form');
+        if ($.isArray(opt.items))
+        {
+            for (var s=0; s<opt.items.length; s++)
+            {
+                if (opt.items[s].xtype == 'group') opt.items[s].xtype = 'form-group';
+            }
+        }
+        $(ele).addClass('navbar-form');
+        if (opt.type)
+        {
+            var cls = '';
+            var tcls = opt.type.split(' ');
+            for (var i=0; i<tcls.length; i++)
+            {
+                cls = cls + ' navbar-'+tcls[i];
+            }
+            $(ele).addClass(cls);
+            opt.type = null;
+        }
+        ele = cb.common_prop(ele, opt);
+        return ele;
+    },
 	'navbar': function(opt, record) {
 		opt.cls? opt.cls = 'nav navbar-nav '+opt.cls : opt.cls = 'nav navbar-nav';
 		if (opt.type)
@@ -1578,16 +1634,17 @@ cb.module.bootstrapComponent = {
 		{
 			for (var a=0;a<opt.items.length;a++)
 			{
-				if (opt.items[a].xtype == 'dropdown') opt.items[a].xtype = 'dropdown-menu';
-				if (opt.items[a].xtype == 'button') opt.items[a].xtype = 'button-menu';
-				if (opt.items[a].xtype == 'text') opt.items[a].xtype = 'text-menu';
+				if (opt.items[a].xtype == 'dropdown') opt.items[a].xtype = 'navbar-dropdown';
+				if (opt.items[a].xtype == 'button') opt.items[a].xtype = 'navbar-button';
+				if (opt.items[a].xtype == 'text') opt.items[a].xtype = 'navbar-text';
+				if (opt.items[a].xtype == 'a') opt.items[a].xtype = 'navbar-a';
 				$(ele).append(cb.create(cb.cloneObject(opt.items[a]), record));
 			}
 		}
 		opt.noitems = true;
 		return ele;
 	},
-	'dropdown-menu': function(opt, record) {
+	'navbar-dropdown': function(opt, record) {
 		opt.cls? opt.cls = 'dropdown '+opt.cls : opt.cls = 'dropdown';
 		var ele = document.createElement('li');
 		if (!opt.type) opt.type = 'dropdown';
@@ -1617,7 +1674,7 @@ cb.module.bootstrapComponent = {
 		if ($.isArray(opt.items))
 		{
 			var ul = document.createElement('ul');
-			$(ul).addClass('dropdown-menu');
+			$(ul).addClass('navbar-dropdown');
 			if (opt.items)
 			{
 				for (var a=0;a<opt.items.length;a++)
@@ -1719,7 +1776,7 @@ cb.module.bootstrapComponent = {
 		}
 		$(ele).append(but);
 		var ul = document.createElement('ul');
-		$(ul).addClass('dropdown-menu').attr('aria-labelledby',opt.id);
+		$(ul).addClass('navbar-dropdown').attr('aria-labelledby',opt.id);
 		
 		// Add options li
 		ele.afterRender = function (ele) {
@@ -2048,7 +2105,7 @@ cb.module.bootstrapComponent = {
 						}
 						$(opt.t_li).addClass('dropdown');
 						opt.t_ul2 = document.createElement('ul');
-						$(opt.t_ul2).addClass('dropdown-menu');
+						$(opt.t_ul2).addClass('navbar-dropdown');
 						$(opt.t_ul2).attr({ 'aria-labelledby': opt.items[a].id,
 										id: opt.items[a].id+'-contents'
 						});
@@ -2997,10 +3054,9 @@ cb.create = function(opt, record) {
 			}
 			else
 			{
+			    cb.doRenderFunctions(ele);
 				return ele;
 			}
-			
-			// Execute alferRender private function and onRender event
 			cb.doRenderFunctions(ele);
 		}
 	}

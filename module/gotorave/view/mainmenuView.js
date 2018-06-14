@@ -38,7 +38,7 @@ cb.define({
 				xtype: 'navbar',
 				type: 'left',
 				items: [{
-					xtype: 'dropdown-menu',
+					xtype: 'navbar-dropdown',
 					glyphicon: 'calendar',
 					text: ' Eventos ',
 					css: {'font-size': '17px'},
@@ -66,7 +66,7 @@ cb.define({
 						}
 					}]
 				},{
-					xtype: 'dropdown-menu',
+					xtype: 'navbar-dropdown',
 					glyphicon: 'user',
 					text: ' Usuarios ',
 					css: {'font-size': '17px'},
@@ -94,7 +94,7 @@ cb.define({
 						}
 					}]
 				},{
-					xtype: 'dropdown-menu',
+					xtype: 'navbar-dropdown',
 					glyphicon: 'music',
 					text: ' Música ',
 					css: {'font-size': '17px'},
@@ -126,7 +126,7 @@ cb.define({
 				xtype: 'navbar',
 				type: 'right',
 				items: [{
-					xtype: 'dropdown-menu',
+					xtype: 'navbar-dropdown',
 					text: ' Chat ',
 					glyphicon: 'comment',
 					css: {'font-size':'17px'},
@@ -145,7 +145,7 @@ cb.define({
 						}
 					}]
 				},{
-					xtype: 'dropdown-menu',
+					xtype: 'navbar-dropdown',
 					text: ' Más ',
 					id: 'main-menu-mas',
 					glyphicon: 'certificate',
@@ -161,7 +161,7 @@ cb.define({
 						}
 					}]
 				},{
-					xtype: 'dropdown-menu',
+					xtype: 'navbar-dropdown',
 					text: ' '+cb.getConfig('user_data')['name'],
 					glyphicon: 'user',
 					css: { 'font-size': 17 },
@@ -172,7 +172,7 @@ cb.define({
 						}
 					}
 				},{
-					xtype: 'dropdown-menu',
+					xtype: 'navbar-dropdown',
 					glyphicon: 'off',
 					css: { 'font-size': 17 },
 					color: 'RED',

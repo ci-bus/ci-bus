@@ -1,10 +1,10 @@
 <?php 
 
-	class Code {
-			
-			public function __construct($CB, $data = array())
-			{
-			    
+    class Code {
+            
+        public function __construct($CB, $data = array())
+        {
+                
 $code1 = "cb.define({
     xtype: 'controller',
     name: 'test',
@@ -75,19 +75,19 @@ $code4 = "cb.define({
             cursor: 'pointer',
             margin: 5,
             listener: {
-            	click: function(){
+                click: function(){
                     alert('clicked thumb down');
-            	}
+                }
             }
-        },{
+        }, {
             xtype: 'glyphicon',
             type: 'thumbs-up',
             cursor: 'pointer',
             margin: 5,
             listener: {
-            	click: function(){
+                click: function(){
                     alert('clicked thumb up');
-            	}
+                }
             }
         }]
     }]
@@ -160,39 +160,158 @@ $code10 = "{
     }
 }";
 
-                $CB->parseStore('code', array(
-                    'cd1' => array(
-                        'type' => 'javascript',
-                        'code' => $code1),
-                    'cd2' => array(
-                        'type' => 'javascript',
-                        'code' => $code2),
-                    'cd3' => array(
-                        'type' => 'php',
-                        'code' => $code3),
-                    'cd4' => array(
-                        'type' => 'javascript',
-                        'code' => $code4),
-                    'cd5' => array(
-                        'type' => 'javascript',
-                        'code' => $code5),
-                    'cd6' => array(
-                        'type' => 'javascript',
-                        'code' => $code6),
-                    'cd7' => array(
-                        'type' => 'javascript',
-                        'code' => $code7),
-                    'cd8' => array(
-                        'type' => 'javascript',
-                        'code' => $code8),
-                    'cd9' => array(
-                        'type' => 'javascript',
-                        'code' => $code9),
-                    'cd10' => array(
-                        'type' => 'javascript',
-                        'code' => $code10)
-                ));
-			}
-	}
-	
+$code11 = "{
+    xtype: 'nav',
+    type: 'default static-top',
+    margin: 0,
+    items: [{
+        xtype: 'header',
+        items: [{
+            xtype: 'brand',
+            glyphicon: 'home',
+            text: ' Home'
+        }]
+    }, {
+        xtype: 'collapse',
+        items: [{
+            xtype: 'navbar',
+            type: 'left',
+            items: [{
+                xtype: 'a',
+                active: true,
+                text: 'Link'
+            }, {
+                xtype: 'a',
+                text: 'Link'
+            }, {
+                xtype: 'dropdown',
+                text: 'Dropdown ',
+                items: [{
+                    xtype: 'a',
+                    text: 'Action'
+                }, {
+                    xtype: 'a',
+                    text: 'Another action'
+                }, {
+                    xtype: 'divider'
+                }, {
+                    xtype: 'a',
+                    text: 'Separated link'
+                }]
+            }]
+        }, {
+            xtype: 'form',
+            type: 'left',
+            items: [{
+                xtype: 'group',
+                items: [{
+                    xtype: 'input',
+                    placeholder: 'Search'
+                }]
+            }, {
+                xtype: 'button',
+                attr: {
+                    type: 'submit'
+                },
+                text: 'Submit',
+                click: function (e) {
+                    alert(cb.getCmp(this).up()[0].value);
+                }
+            }]
+        }, {
+            xtype: 'navbar',
+            type: 'right',
+            items: [{
+                xtype: 'dropdown',
+                text: ' Dropdown ',
+                glyphicon: 'comment',
+                items: [{
+                    xtype: 'a',
+                    text: 'Action'
+                }, {
+                    xtype: 'a',
+                    text: 'Another action'
+                }, {
+                    xtype: 'divider'
+                }, {
+                    xtype: 'a',
+                    text: 'Separated link'
+                }]
+            }, {
+                xtype: 'a',
+                glyphicon: 'off',
+                color: 'RED'
+            }]
+        }]
+    }]
+}";
+
+$code12 = "[{
+    xtype: 'dropdown',
+    type: 'success',
+    text: 'DropDown ',
+    size: 'md',
+    margin: '0px 10px 0px 0px',
+    items: [{
+        xtype: 'a',
+        text: 'Link 1'
+    }, {
+        xtype: 'a',
+        text: 'Link 2'
+    }]
+}, {
+    xtype: 'dropup',
+    type: 'info',
+    text: 'DropUp ',
+    size: 'xs',
+    items: [{
+        xtype: 'a',
+        text: 'Link 1'
+    }, {
+        xtype: 'a',
+        text: 'Link 2'
+    }]
+}]";
+
+            $CB->parseStore('code', array(
+                'cd1' => array(
+                    'type' => 'javascript',
+                    'code' => $code1),
+                'cd2' => array(
+                    'type' => 'javascript',
+                    'code' => $code2),
+                'cd3' => array(
+                    'type' => 'php',
+                    'code' => $code3),
+                'cd4' => array(
+                    'type' => 'javascript',
+                    'code' => $code4),
+                'cd5' => array(
+                    'type' => 'javascript',
+                    'code' => $code5),
+                'cd6' => array(
+                    'type' => 'javascript',
+                    'code' => $code6),
+                'cd7' => array(
+                    'type' => 'javascript',
+                    'code' => $code7),
+                'cd8' => array(
+                    'type' => 'javascript',
+                    'code' => $code8),
+                'cd9' => array(
+                    'type' => 'javascript',
+                    'code' => $code9),
+                'cd10' => array(
+                    'type' => 'javascript',
+                    'code' => $code10),
+                'cd11' => array(
+                    'type' => 'javascript',
+                    'code' => $code11),
+                'cd12' => array(
+                    'type' => 'javascript',
+                    'code' => $code12)
+            ));
+        }
+    }
+    
 ?>

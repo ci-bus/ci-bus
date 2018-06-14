@@ -297,7 +297,7 @@ cb.define({
 			var user_data = cb.getConfig('user_data');
 			for(var v=0; v<user_data['tags'].length; v++){
 				var temp_name = user_data['tags'][v]['name'];
-				$('#userpanel').find('ul.dropdown-menu').find('li').each(function(){
+				$('#userpanel').find('ul.navbar-dropdown').find('li').each(function(){
 					if($(this).find('a').text() == temp_name){
 						$(this).find('a').click();
 					}

@@ -7,7 +7,7 @@
 		    
 		    $CB->parseStore('texts', array(
 		        'general' => array (
-		            'tx0' => 'Probar código'
+		            'tx1' => 'Probar código'
 		        ),
 		        'menu' => array (
 		            'tx0' => 'Documentación',
@@ -112,7 +112,15 @@
 		            'tx4' => 'Ejemplos',
 		            'tx5' => 'Para ver varios ejemplos de items puedes visitar el módulo: ',
 		            'tx6' => 'examples',
-		            'tx7' => 'Componente botón'
+		            'tx7' => 'Componente botón',
+		            'tx8' => 'Clave',
+		            'tx9' => 'Valor',
+		            'tx10' => 'Peculiaridedas',
+		            'tx11' => 'Opcional',
+		            'tx12' => 'Código de ejemplo',
+		            'tx13' => 'Componentes para la creación de barras de navegación',
+		            'tx14' => 'Tipo',
+		            'tx15' => 'Componente desplegables'
 		        )
 		    ));
 		}

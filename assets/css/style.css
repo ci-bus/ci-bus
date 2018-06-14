@@ -1,3 +1,7 @@
+body {
+	font-size: 16px;
+}
+
 a {
 	-webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -103,7 +107,7 @@ a.disabled {
 	color: #454b49;
 }
 
-.panel-info>.panel-heading, .dropdown-menu>li>a:focus, .dropdown-menu>li>a:hover {
+.panel-info>.panel-heading, .navbar-dropdown>li>a:focus, .navbar-dropdown>li>a:hover {
 	background-color: #454b49;
 	color: white;
 	border-color: #454b49;
@@ -152,7 +156,9 @@ a.disabled {
 	
 }
 @media only screen and (min-width : 768px) {
-	
+	.navbar-form .form-group {
+		margin-right: 5px;
+	}
 }
 @media only screen and (min-width : 992px) {
 	
