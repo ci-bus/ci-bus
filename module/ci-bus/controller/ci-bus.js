@@ -20,8 +20,12 @@ cb.define({
 	
 	onload: function () {
 	    
-	    // Load font
-		$.cachedScript("assets/css/font-quicksand.css", "css");
+		//Load font
+		$.cachedScript("https://fonts.googleapis.com/css?family=Quicksand:300,400", "css");
+		$('body').css({
+			'font-family': 'Quicksand, "Courier New", Courier, monospace',
+			'font-weight': 300
+		});
 		
 		// Load highlight style and script
 		$.cachedScript("libraries/highlight/styles/tomorrow.css", "css");

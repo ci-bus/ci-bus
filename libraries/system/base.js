@@ -1668,7 +1668,7 @@ cb.module.bootstrapComponent = {
 		if ($.isArray(opt.items))
 		{
 			var ul = document.createElement('ul');
-			$(ul).addClass('navbar-dropdown');
+			$(ul).addClass('dropdown-menu');
 			if (opt.items)
 			{
 				for (var a=0;a<opt.items.length;a++)
@@ -1770,7 +1770,7 @@ cb.module.bootstrapComponent = {
 		}
 		$(ele).append(but);
 		var ul = document.createElement('ul');
-		$(ul).addClass('navbar-dropdown').attr('aria-labelledby',opt.id);
+		$(ul).addClass('dropdown-menu').attr('aria-labelledby',opt.id);
 		
 		// Add options li
 		ele.afterRender = function (ele) {
@@ -2099,7 +2099,7 @@ cb.module.bootstrapComponent = {
 						}
 						$(opt.t_li).addClass('dropdown');
 						opt.t_ul2 = document.createElement('ul');
-						$(opt.t_ul2).addClass('navbar-dropdown');
+						$(opt.t_ul2).addClass('dropdown-menu');
 						$(opt.t_ul2).attr({ 'aria-labelledby': opt.items[a].id,
 										id: opt.items[a].id+'-contents'
 						});

@@ -83,11 +83,11 @@ cb.define({
                             items: [[{
                                 text: 'type'
                             }, {
-                                text: "'default', 'primary', 'success', 'info', 'warning', 'danger'"
+                                text: "default, primary, success, info, warning, danger"
                             }], [{
                                 text: 'size'
                             }, {
-                                text: "'lg', 'md', 'sm', 'xs'"
+                                text: "lg, md, sm, xs"
                             }]]
                         }]
                     }
@@ -206,11 +206,11 @@ cb.define({
                             items: [[{
                                 text: 'type'
                             }, {
-                                text: "'default', 'primary', 'success', 'info', 'warning', 'danger'"
+                                text: "default, primary, success, info, warning, danger"
                             }], [{
                                 text: 'size'
                             }, {
-                                text: "'lg', 'md', 'sm', 'xs'"
+                                text: "lg, md, sm, xs"
                             }]]
                         }]
                     }, {
