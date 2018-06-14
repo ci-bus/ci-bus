@@ -646,10 +646,7 @@ cb.base.dropdown = {
 							oli.store = items[a].store;
 							delete items[a].store;
 						}
-						if (items[a].field) {
-							oli.field = items[a].field;
-							delete items[a].field;
-						}
+						
 						oli.items = items[a];
 						li = cb.create(oli, record);
 					}
@@ -704,12 +701,9 @@ cb.base.dropdown = {
 		}
 	    return this;
 	},
-	replaceItems: function (items, record) {
+	replaceItems: function (items, record, event) {
 	    this.removeItems();
-	    this.addItems(items, record, 'changeItems');
-	    if ($.isFunction(this.changeItems)) {
-			this.changeItems();
-		}
+	    this.addItems(items, record, event);
 	    return this;
 	},
 	open: function () {
@@ -2350,56 +2344,6 @@ cb.module.bootstrapComponent = {
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
-	'svg': function(opt, record) {
-		var ele = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-		if (!opt.width) opt.width = 300;
-		if (!opt.height) opt.height = 150;
-		ele = cb.common_prop(ele, opt);
-		return ele;
-	},
-	'graph': function(opt, record) {
-		
-	},
-	'polyline': function(opt, record) {
-		var ele = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
-		if (!opt.fill) opt.fill = 'none';
-		if (typeof opt.width === 'undefined') opt.width = 300;
-		if (typeof opt.height === 'undefined') opt.height = 150;
-		if (!opt.stroke && opt.color) opt.stroke = opt.color;
-		else if (!opt.stroke) opt.stroke = '#0074d9';
-		if (!opt['stroke-width']) opt['stroke-width'] = 3;
-		if ($.isArray(record)) {
-			opt.xspace   = parseInt(opt.width) / (record.length - 1);
-			if (opt.pointMax == undefined) opt.pointMax = Math.max.apply(null, record);
-			if (opt.pointMin == undefined) opt.pointMin = Math.min.apply(null, record);
-			var xwrite = 0;
-			var ywrite = 0;
-			var points = "0,"+parseInt(opt.height);
-			for (var i=0; i<record.length; i++) {
-				ywrite = parseInt(opt.height) - ((record[i]-opt.pointMin) * parseInt(opt.height) / (opt.pointMax-opt.pointMin));
-				points += " "+xwrite+","+ywrite;
-				xwrite = Math.round(xwrite + opt.xspace);
-			}
-			points += " "+parseInt(opt.width)+","+parseInt(opt.height);
-		}
-		
-		$(ele).attr({
-			fill: opt.fill,
-			stroke: opt.stroke,
-			'stroke-width': opt['stroke-width'],
-			points: points
-		});
-		ele = cb.common_prop(ele, opt);
-		
-		ele.clearPoints = function() {
-			var ele = $.isArray(this)? this[0]: this;
-			$(ele).removeAttr('points');
-		};
-		
-		ele.opt = opt;
-		
-		return ele;
-	},
 	'toggle': function (opt, record) {
 	    var ele = document.createElement('input');
 	    $(ele).attr('type', 'checkbox');
@@ -2470,6 +2414,53 @@ cb.module.bootstrapComponent = {
 
 // Para la creación de componentes de cibus
 cb.module.cbComponent = {
+    'svg': function(opt, record) {
+        var ele = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        if (!opt.width) opt.width = 300;
+        if (!opt.height) opt.height = 150;
+        ele = cb.common_prop(ele, opt);
+        return ele;
+    },
+    'polyline': function(opt, record) {
+        var ele = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+        if (!opt.fill) opt.fill = 'none';
+        if (typeof opt.width === 'undefined') opt.width = 300;
+        if (typeof opt.height === 'undefined') opt.height = 150;
+        if (!opt.stroke && opt.color) opt.stroke = opt.color;
+        else if (!opt.stroke) opt.stroke = '#0074d9';
+        if (!opt['stroke-width']) opt['stroke-width'] = 3;
+        if ($.isArray(record)) {
+            opt.xspace   = parseInt(opt.width) / (record.length - 1);
+            if (opt.pointMax == undefined) opt.pointMax = Math.max.apply(null, record);
+            if (opt.pointMin == undefined) opt.pointMin = Math.min.apply(null, record);
+            var xwrite = 0;
+            var ywrite = 0;
+            var points = "0,"+parseInt(opt.height);
+            for (var i=0; i<record.length; i++) {
+                ywrite = parseInt(opt.height) - ((record[i]-opt.pointMin) * parseInt(opt.height) / (opt.pointMax-opt.pointMin));
+                points += " "+xwrite+","+ywrite;
+                xwrite = Math.round(xwrite + opt.xspace);
+            }
+            points += " "+parseInt(opt.width)+","+parseInt(opt.height);
+        }
+        
+        $(ele).attr({
+            fill: opt.fill,
+            stroke: opt.stroke,
+            'stroke-width': opt['stroke-width'],
+            points: points
+        });
+        ele = cb.common_prop(ele, opt);
+        
+        ele.clearPoints = function() {
+            var ele = $.isArray(this)? this[0]: this;
+            $(ele).removeAttr('points');
+        };
+        
+        ele.opt = opt;
+        
+        return ele;
+    },
 	'grid': function (opt, record) {
 		// To no edit original opts
 		opt = cb.cloneObject(opt);
@@ -2928,28 +2919,28 @@ cb.create = function(opt, record) {
 			// If record is object
 			if ($.isPlainObject(record)) {
 				// Replace {field} to record value
-				$.each(opt, function(ix, el) {
-					if ($.type(el) === 'string') {						
-						$.each(record, function(ix2, el2) {
-							opt[ix] = opt[ix].replace(new RegExp('{'+ix2+'}',"g"), el2);
-						});
-						// Clear
-						opt[ix] = opt[ix].replace(/{.+}/, '');
-					}
-					else if ($.isPlainObject(el) && ix !== 'items') {
-						opt[ix] = cb.cloneObject(opt[ix]);
-						$.each(el, function(ix3, el3) {
-							if ($.type(el3) === 'string') {
-								$.each(record, function(ix2, el2) {
-									opt[ix][ix3] = opt[ix][ix3].replace(new RegExp('{'+ix2+'}',"g"), el2);
-								});
-								// Clear
-		                        opt[ix][ix3] = opt[ix][ix3].replace(/{.+}/, '');
-							}
-						});
-					}
-				});
-				
+			    for (ix in opt) {
+			        var el = opt[ix];
+			        if ($.type(el) === 'string') {                       
+                        for (ix2 in record) {
+                            opt[ix] = opt[ix].replace(new RegExp('{'+ix2+'}',"g"), record[ix2]);
+                        }
+                        // Clear missing
+                        opt[ix] = opt[ix].replace(/{.+}/, '');
+                    }
+                    else if ($.isPlainObject(el) && ix !== 'items') {
+                        el = cb.cloneObject(el);
+                        for (ix3 in opt[ix]) {
+                            if (typeof opt[ix][ix3] == 'string') {
+                                for (ix2 in record) {
+                                    opt[ix][ix3] = opt[ix][ix3].replace(new RegExp('{'+ix2+'}',"g"), record[ix2]);
+                                }
+                                // Clear missing
+                                opt[ix][ix3] = opt[ix][ix3].replace(/{.+}/, '');
+                            }
+                        }
+                    }
+			    }
 			}
 		
 			// Set defaults to child items

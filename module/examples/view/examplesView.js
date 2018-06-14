@@ -446,6 +446,7 @@ cb.define({
             }, {
                 text: 'Generate',
                 click: function(){
+                    cb.getStore('example').restore('a');
                     if(!cb.aniline){
                         cb.aniline = setInterval(function(){
                             var ran = Math.floor((Math.random() * 100) + 1);

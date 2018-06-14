@@ -120,7 +120,18 @@
 		            'tx12' => 'Código de ejemplo',
 		            'tx13' => 'Componentes para la creación de barras de navegación',
 		            'tx14' => 'Tipo',
-		            'tx15' => 'Componente desplegables'
+		            'tx15' => 'Componente desplegables',
+		            'tx16' => 'Funciones del componente',
+		            'tx17' => 'Parámetros',
+		            'tx18' => 'Acción',
+		            'tx19' => "1. Items, 2. Record (opcional), 3. Nombre evento callback por defecto 'changeItems' (opcional)",
+		            'tx20' => 'Añade opciones al desplegable',
+		            'tx21' => "1. Array con posiciones de opciones (se permiten números negativos), 2. Nombre evento callback por defecto 'changeItems' (opcional)",
+		            'tx22' => 'Elimina opciones del desplegable',
+		            'tx23' => 'Elimina todas las opciones y después añade las nuevas',
+		            'tx24' => 'Ninguno',
+		            'tx25' => 'Abre las opciones del desplegable',
+		            'tx26' => 'Cierra las opciones del desplegable',
 		        )
 		    ));
 		}

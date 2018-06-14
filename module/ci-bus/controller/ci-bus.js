@@ -41,5 +41,11 @@ cb.define({
 				cb.router.hashchange();
 			});
 		});
+	},
+	
+	formatCode: function (code) {
+	    code = code.replace(new RegExp('{',"g"), '&#123;');
+	    code = code.replace(new RegExp('}',"g"), '&#125;');
+	    return code;
 	}
 });

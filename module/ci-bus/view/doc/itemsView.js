@@ -189,10 +189,11 @@ cb.define({
                 }, {
                     xtype: 'callout',
                     margin: '10px 0px',
-                    text: '{tx10}',
-                    items: {
+                    items: [{
+                        xtype: 'div',
+                        text: '{tx10}'
+                    }, {
                         xtype: 'table',
-                        margin: 0,
                         items: [{
                             xtype: 'head',
                             items: [{
@@ -212,7 +213,120 @@ cb.define({
                                 text: "'lg', 'md', 'sm', 'xs'"
                             }]]
                         }]
-                    }
+                    }, {
+                        xtype: 'div',
+                        text: '{tx16}'
+                    }, {
+                        xtype: 'table',
+                        css: {
+                            'margin-bottom': 10
+                        },
+                        items: [{
+                            xtype: 'head',
+                            items: {
+                                text: 'addItems'
+                            }
+                        }, {
+                            xtype: 'body',
+                            items: [[{
+                                text: '{tx17}'
+                            }, {
+                                text: '{tx19}'
+                            }], [{
+                                text: '{tx18}'
+                            }, {
+                                text: '{tx20}'
+                            }]]
+                        }]
+                    }, {
+                        xtype: 'table',
+                        css: {
+                            'margin-bottom': 10
+                        },
+                        items: [{
+                            xtype: 'head',
+                            items: {
+                                text: 'removeItems'
+                            }
+                        }, {
+                            xtype: 'body',
+                            items: [[{
+                                text: '{tx17}'
+                            }, {
+                                text: '{tx21}'
+                            }], [{
+                                text: '{tx18}'
+                            }, {
+                                text: '{tx22}'
+                            }]]
+                        }]
+                    }, {
+                        xtype: 'table',
+                        css: {
+                            'margin-bottom': 10
+                        },
+                        items: [{
+                            xtype: 'head',
+                            items: {
+                                text: 'replaceItems'
+                            }
+                        }, {
+                            xtype: 'body',
+                            items: [[{
+                                text: '{tx17}'
+                            }, {
+                                text: '{tx19}'
+                            }], [{
+                                text: '{tx18}'
+                            }, {
+                                text: '{tx23}'
+                            }]]
+                        }]
+                    }, {
+                        xtype: 'table',
+                        css: {
+                            'margin-bottom': 10
+                        },
+                        items: [{
+                            xtype: 'head',
+                            items: {
+                                text: 'open'
+                            }
+                        }, {
+                            xtype: 'body',
+                            items: [[{
+                                text: '{tx17}'
+                            }, {
+                                text: '{tx24}'
+                            }], [{
+                                text: '{tx18}'
+                            }, {
+                                text: '{tx25}'
+                            }]]
+                        }]
+                    }, {
+                        xtype: 'table',
+                        css: {
+                            'margin-bottom': 10
+                        },
+                        items: [{
+                            xtype: 'head',
+                            items: {
+                                text: 'close'
+                            }
+                        }, {
+                            xtype: 'body',
+                            items: [[{
+                                text: '{tx17}'
+                            }, {
+                                text: '{tx24}'
+                            }], [{
+                                text: '{tx18}'
+                            }, {
+                                text: '{tx26}'
+                            }]]
+                        }]
+                    }]
                 }, {
                     xtype: 'callout',
                     margin: '10px 0px',
@@ -224,6 +338,12 @@ cb.define({
                             xtype: 'code',
                             store: 'code',
                             field: 'cd12',
+                            alterdata: {
+                                'code': function (v) {
+                                    v = cb.ctr('ci-bus', 'formatCode', v);
+                                    return v;
+                                }
+                            },
                             cls: '{type}',
                             text: '{code}'
                         }

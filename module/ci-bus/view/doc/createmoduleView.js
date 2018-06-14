@@ -49,6 +49,12 @@ cb.define({
 				    xtype: 'code',
                     store: 'code',
                     field: 'cd1',
+                    alterdata: {
+                        'code': function (v) {
+                            v = cb.ctr('ci-bus', 'formatCode', v);
+                            return v;
+                        }
+                    },
                     cls: '{type}',
                     text: '{code}'
 				}

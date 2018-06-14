@@ -12,7 +12,7 @@ $code1 = "cb.define({
     onload: function(){
         console.log('Loaded controller');
         cb.loadAll([
-            ['store', 'test', 'test', &#123;action: 'get_data'&#125;],
+            ['store', 'test', 'test', {action: 'get_data'}],
             ['view', 'common', 'base'],
             ['view', 'test', 'test']
         ], function () {
@@ -264,12 +264,17 @@ $code12 = "[{
     type: 'info',
     text: 'DropUp ',
     size: 'xs',
+    record: {
+        options: [{
+            text: 'Link 1'
+        }, {
+            text: 'Link 2'
+        }]
+    },
     items: [{
         xtype: 'a',
-        text: 'Link 1'
-    }, {
-        xtype: 'a',
-        text: 'Link 2'
+        field: 'options',
+        text: '{text}'
     }]
 }]";
 
