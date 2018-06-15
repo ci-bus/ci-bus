@@ -10,7 +10,7 @@
 		            'tx1' => 'Probar código'
 		        ),
 		        'menu' => array (
-		            'tx0' => 'Documentación',
+		            'tx0' => 'Documentación ',
 		            'tx1' => 'Crear módulo',
 		            'tx2' => 'Controladores',
 		            'tx3' => 'Vistas',
@@ -115,7 +115,7 @@
 		            'tx7' => 'Componente botón',
 		            'tx8' => 'Clave',
 		            'tx9' => 'Valor',
-		            'tx10' => 'Peculiaridedas',
+		            'tx10' => 'Peculiaridades',
 		            'tx11' => 'Opcional',
 		            'tx12' => 'Código de ejemplo',
 		            'tx13' => 'Componentes para la creación de barras de navegación',
