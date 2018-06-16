@@ -67,8 +67,10 @@ cb.define({
                 }, {
                     xtype: 'callout',
                     margin: '10px 0px',
-                    text: '{tx10}',
-                    items: {
+                    items: [{
+                        xtype: 'label',
+                        field: 'tx10'
+                    }, {
                         xtype: 'table',
                         margin: 0,
                         items: [{
@@ -90,12 +92,14 @@ cb.define({
                                 text: "lg, md, sm, xs"
                             }]]
                         }]
-                    }
+                    }]
                 }, {
                     xtype: 'callout',
                     margin: '10px 0px',
-                    text: '{tx12}',
                     items: [{
+                        xtype: 'label',
+                        field: 'tx12'
+                    }, {
                         xtype: 'pre',
                         margin: '10px 0px',
                         items: {
@@ -122,8 +126,10 @@ cb.define({
                 }, {
                     xtype: 'callout',
                     margin: '10px 0px',
-                    text: '{tx10}',
-                    items: {
+                    items: [{
+                        xtype: 'label',
+                        field: 'tx10'
+                    }, {
                         xtype: 'table',
                         margin: 0,
                         items: [{
@@ -157,12 +163,14 @@ cb.define({
                                 text: 'false'
                             }]]
                         }]
-                    }
+                    }]
                 }, {
                     xtype: 'callout',
                     margin: '10px 0px',
-                    text: '{tx12}',
                     items: [{
+                        xtype: 'label',
+                        field: 'tx12'
+                    }, {
                         xtype: 'pre',
                         margin: '10px 0px',
                         items: {
@@ -190,8 +198,8 @@ cb.define({
                     xtype: 'callout',
                     margin: '10px 0px',
                     items: [{
-                        xtype: 'div',
-                        text: '{tx10}'
+                        xtype: 'label',
+                        field: 'tx10'
                     }, {
                         xtype: 'table',
                         items: [{
@@ -213,9 +221,13 @@ cb.define({
                                 text: "lg, md, sm, xs"
                             }]]
                         }]
-                    }, {
-                        xtype: 'div',
-                        text: '{tx16}'
+                    }]
+                }, {
+                    xtype: 'callout',
+                    margin: '10px 0px',
+                    items: [{
+                        xtype: 'label',
+                        field: 'tx16'
                     }, {
                         xtype: 'table',
                         css: {
@@ -223,9 +235,9 @@ cb.define({
                         },
                         items: [{
                             xtype: 'head',
-                            items: {
+                            items: [{
                                 text: 'addItems'
-                            }
+                            }, {}]
                         }, {
                             xtype: 'body',
                             items: [[{
@@ -238,16 +250,16 @@ cb.define({
                                 text: '{tx20}'
                             }]]
                         }]
-                    }, {
+                    },  {
                         xtype: 'table',
                         css: {
                             'margin-bottom': 10
                         },
                         items: [{
                             xtype: 'head',
-                            items: {
+                            items: [{
                                 text: 'removeItems'
-                            }
+                            }, {}]
                         }, {
                             xtype: 'body',
                             items: [[{
@@ -267,9 +279,9 @@ cb.define({
                         },
                         items: [{
                             xtype: 'head',
-                            items: {
+                            items: [{
                                 text: 'replaceItems'
-                            }
+                            }, {}]
                         }, {
                             xtype: 'body',
                             items: [[{
@@ -289,9 +301,9 @@ cb.define({
                         },
                         items: [{
                             xtype: 'head',
-                            items: {
+                            items: [{
                                 text: 'open'
-                            }
+                            }, {}]
                         }, {
                             xtype: 'body',
                             items: [[{
@@ -311,9 +323,9 @@ cb.define({
                         },
                         items: [{
                             xtype: 'head',
-                            items: {
+                            items: [{
                                 text: 'close'
-                            }
+                            }, {}]
                         }, {
                             xtype: 'body',
                             items: [[{
@@ -330,8 +342,10 @@ cb.define({
                 }, {
                     xtype: 'callout',
                     margin: '10px 0px',
-                    text: '{tx12}',
                     items: [{
+                        xtype: 'label',
+                        field: 'tx12'
+                    }, {
                         xtype: 'pre',
                         margin: '10px 0px',
                         items: {
@@ -344,6 +358,116 @@ cb.define({
                                     return v;
                                 }
                             },
+                            cls: '{type}',
+                            text: '{code}'
+                        }
+                    }, {
+                        xtype: 'totestcode'
+                    }]
+                }]
+            }]
+        }, {
+            xtype: 'h3',
+            text: 'container'
+        }, {
+            xtype: 'callout',
+            items: [{
+                xtype: 'div',
+                items: [{
+                    field: 'tx27'
+                }, {
+                    xtype: 'callout',
+                    margin: '10px 0px',
+                    items: [{
+                        xtype: 'label',
+                        field: 'tx10'
+                    }, {
+                        xtype: 'table',
+                        margin: 0,
+                        items: [{
+                            xtype: 'head',
+                            items: [{
+                                field: 'tx8'
+                            }, {
+                                field: 'tx9'
+                            }]
+                        }, {
+                            xtype: 'body',
+                            items: [[{
+                                text: 'type'
+                            }, {
+                                text: 'fluid'
+                            }]]
+                        }]
+                    }]
+                }, {
+                    xtype: 'callout',
+                    margin: '10px 0px',
+                    items: [{
+                        xtype: 'label',
+                        field: 'tx12'
+                    }, {
+                        xtype: 'pre',
+                        margin: '10px 0px',
+                        items: {
+                            xtype: 'code',
+                            store: 'code',
+                            field: 'cd13',
+                            cls: '{type}',
+                            text: '{code}'
+                        }
+                    }, {
+                        xtype: 'totestcode'
+                    }]
+                }]
+            }]
+        }, {
+            xtype: 'h3',
+            text: 'progress, progress-bar'
+        }, {
+            xtype: 'callout',
+            items: [{
+                xtype: 'div',
+                items: [{
+                    field: 'tx27'
+                }, {
+                    xtype: 'callout',
+                    margin: '10px 0px',
+                    items: [{
+                        xtype: 'label',
+                        field: 'tx10'
+                    }, {
+                        xtype: 'table',
+                        margin: 0,
+                        items: [{
+                            xtype: 'head',
+                            items: [{
+                                field: 'tx8'
+                            }, {
+                                field: 'tx9'
+                            }]
+                        }, {
+                            xtype: 'body',
+                            items: [[{
+                                text: 'type'
+                            }, {
+                                text: 'fluid'
+                            }]]
+                        }]
+                    }]
+                }, {
+                    xtype: 'callout',
+                    margin: '10px 0px',
+                    items: [{
+                        xtype: 'label',
+                        field: 'tx12'
+                    }, {
+                        xtype: 'pre',
+                        margin: '10px 0px',
+                        items: {
+                            xtype: 'code',
+                            store: 'code',
+                            field: 'cd14',
                             cls: '{type}',
                             text: '{code}'
                         }

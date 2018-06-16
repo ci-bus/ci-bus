@@ -55,18 +55,6 @@ cb.define({
                     text: '{code}'
                 }
             }, {
-                text: '{tx5}'
-            }, {
-                xtype: 'pre',
-                margin: '10px 0px 0px',
-                items: {
-                    xtype: 'code',
-                    store: 'code',
-                    field: 'cd6',
-                    cls: '{type}',
-                    text: '{code}'
-                }
-            }, {
                 xtype: 'h3',
                 text: '{tx10}'
             }, {
@@ -82,7 +70,22 @@ cb.define({
                 xtype: 'div',
                 field: 'tx14'
             }, {
-                field: 'tx15'
+                xtype: 'div',
+                field: 'tx15',
+                margin: '10px 0px'
+            }, {
+                xtype: 'div',
+                field: 'tx5'
+            }, {
+                xtype: 'pre',
+                margin: '10px 0px 0px',
+                items: {
+                    xtype: 'code',
+                    store: 'code',
+                    field: 'cd6',
+                    cls: '{type}',
+                    text: '{code}'
+                }
             }]
         }, {
             xtype: 'h3',

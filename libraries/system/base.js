@@ -1442,7 +1442,14 @@ cb.extend = function(opt1, opt2) {
 
 //Funciones para clonar
 cb.clone = function(data) {
-    return JSON.parse(JSON.stringify(data));
+    if ($.isPlainObject(data)) {
+        data = this.cloneObject(data);
+    } else if ($.isArray(data)) {
+        data = this.cloneArray(data);
+    } else {
+        data = JSON.parse(JSON.stringify(data));
+    }
+    return data;
 };
 
 cb.cloneObject = function(obj) {
@@ -1668,7 +1675,7 @@ cb.module.bootstrapComponent = {
 		if ($.isArray(opt.items))
 		{
 			var ul = document.createElement('ul');
-			$(ul).addClass('dropdown-menu');
+			$(ul).addClass('navbar-dropdown dropdown-menu');
 			if (opt.items)
 			{
 				for (var a=0;a<opt.items.length;a++)
@@ -1770,7 +1777,7 @@ cb.module.bootstrapComponent = {
 		}
 		$(ele).append(but);
 		var ul = document.createElement('ul');
-		$(ul).addClass('dropdown-menu').attr('aria-labelledby',opt.id);
+		$(ul).addClass('navbar-dropdown dropdown-menu').attr('aria-labelledby',opt.id);
 		
 		// Add options li
 		ele.afterRender = function (ele) {
@@ -1825,6 +1832,15 @@ cb.module.bootstrapComponent = {
 	'table': function(opt, record) {
 		var ele = document.createElement('table');
 		$(ele).addClass('table');
+		if (opt.type)
+        {
+            var tcls = opt.type.split(' ');
+            for (var i=0; i<tcls.length; i++)
+            {
+                if (tcls[i].trim() != '') $(ele).addClass('table-'+tcls[i]);
+            }
+            opt.notype = true;
+        }
 		if ($.isArray(opt.items))
 		{
 			for (var a=0; a<opt.items.length; a++)
@@ -2099,7 +2115,7 @@ cb.module.bootstrapComponent = {
 						}
 						$(opt.t_li).addClass('dropdown');
 						opt.t_ul2 = document.createElement('ul');
-						$(opt.t_ul2).addClass('dropdown-menu');
+						$(opt.t_ul2).addClass('navbar-dropdown dropdown-menu');
 						$(opt.t_ul2).attr({ 'aria-labelledby': opt.items[a].id,
 										id: opt.items[a].id+'-contents'
 						});

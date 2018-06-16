@@ -68,10 +68,10 @@
 			        'tx8' => 'onload',
 			        'tx9' => ' para cargar otro móduclo podemos hacerlo añadiendo a la url <em>/nombre_del_modulo</em>',
 			        'tx10' => 'Parámetros',
-			        'tx11' => "1. Texto 'view', 'controller', 'store' o 'component'",
-			        'tx12' => '2. Nombre del módulo',
-			        'tx13' => '3. Nombre del archivo',
-			        'tx14' => '4. Función callback',
+			        'tx11' => '1. <em>type</em>: view, controller, store o component',
+			        'tx12' => '2. <em>module</em>: Nombre del módulo',
+			        'tx13' => '3. <em>file</em>: Nombre del archivo',
+			        'tx14' => '4. <em>callback</em>: Función callback',
 			        'tx15' => 'Si no se pasa ningún parámetro para el nombre del archivo (Parámetro 3) por defecto toma el nombre del modulo.',
 			        'tx16' => 'Funciones',
 			        'tx17' => 'Dentro del controlador puedes definir todas las funciones que quieras',
@@ -112,13 +112,13 @@
 		            'tx4' => 'Ejemplos',
 		            'tx5' => 'Para ver varios ejemplos de items puedes visitar el módulo: ',
 		            'tx6' => 'examples',
-		            'tx7' => 'Componente botón',
+		            'tx7' => 'Componente botones',
 		            'tx8' => 'Clave',
 		            'tx9' => 'Valor',
 		            'tx10' => 'Peculiaridades',
 		            'tx11' => 'Opcional',
 		            'tx12' => 'Código de ejemplo',
-		            'tx13' => 'Componentes para la creación de barras de navegación',
+		            'tx13' => 'Componentes barras de navegación',
 		            'tx14' => 'Tipo',
 		            'tx15' => 'Componente desplegables',
 		            'tx16' => 'Funciones del componente',
@@ -132,6 +132,7 @@
 		            'tx24' => 'Ninguno',
 		            'tx25' => 'Abre las opciones del desplegable',
 		            'tx26' => 'Cierra las opciones del desplegable',
+		            'tx27' => 'Componente contenedores'
 		        )
 		    ));
 		}

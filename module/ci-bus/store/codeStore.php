@@ -94,9 +94,7 @@ $code4 = "cb.define({
 });";
 
 $code5 = "onload: function () {
-    cb.load('view', 'test', 'test', function(){
-        console.log('Loaded View');
-    });
+    cb.load(type, module, file, callback);
 }";
 
 $code6 = "onload: function () {
@@ -278,6 +276,44 @@ $code12 = "[{
     }]
 }]";
 
+$code13 = "{
+    xtype: 'container',
+    background: 'GRAY',
+    type: 'fluid',
+    text: 'Container 1',
+    color: 'WHITE',
+    items: {
+        xtype: 'container',
+        background: 'YELLOW',
+        type: 'fluid',
+        padding: 10,
+        items: {
+            xtype: 'container',
+            background: 'GREEN',
+            type: 'fluid',
+            text: 'Container 3',
+            color: 'WHITE'
+        }
+    }
+}";
+
+$code14 = "{
+    xtype: 'progress',
+    margin: 10,
+    items: [{
+        striped: true,
+        animated: true,
+        min: 0,
+        max: 100,
+        value: 50
+    }, {
+        type: 'danger',
+        min: 0,
+        max: 100,
+        value: 3
+    }]
+}";
+
             $CB->parseStore('code', array(
                 'cd1' => array(
                     'type' => 'javascript',
@@ -314,7 +350,14 @@ $code12 = "[{
                     'code' => $code11),
                 'cd12' => array(
                     'type' => 'javascript',
-                    'code' => $code12)
+                    'code' => $code12),
+                'cd13' => array(
+                    'type' => 'javascript',
+                    'code' => $code13)
+                ,
+                'cd14' => array(
+                    'type' => 'javascript',
+                    'code' => $code14)
             ));
         }
     }
