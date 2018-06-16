@@ -2964,7 +2964,9 @@ cb.create = function(opt, record) {
 			// If is custom component
 			else if ($.isPlainObject(cb.module.component[opt.xtype]))
 			{
-				var ele = this.create(cb.module.component[opt.xtype], record);
+				var opt2 = cb.module.component[opt.xtype];
+				opt2.xtype = 'component';
+				var ele = this.create(opt2, record);
 				ele = this.common_prop(ele, opt);
 				ele.component = cb.module.component[opt.xtype];
 				if (cb.module.component[opt.xtype].onRender && !opt.onRender) {
@@ -3374,4 +3376,27 @@ cb.scrollTo = function (ele, time) {
 	$('html, body').animate({
         scrollTop: $(ele).offset().top
     }, time);
+}
+
+cb.objectCount = function (obj) {
+	if ($.isArray(obj)) {
+		if ($.isPlainObject(obj[0])) {
+			var c = 0;
+			for (var i = 0; i < obj.length; i ++) {
+				c += this.objectCount(obj[i]);
+			}
+			return c;
+		} else {
+			return obj.length;
+		}
+	} else if ($.isPlainObject(obj)) {
+		var k = Object.keys(obj);
+		var c = 0;
+		for (var i = 0; i < k.length; i ++) {
+			c += this.objectCount(obj[k[i]]);
+		}
+		return c;
+	} else {
+		return 1;
+	}
 }
