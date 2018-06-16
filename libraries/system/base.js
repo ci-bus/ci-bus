@@ -1261,6 +1261,21 @@ cb.deleteToObject = function (obj, prop) {
 	return obj;
 };
 
+cb.mergeTwoObjects = function (obj, obj2, prop) {
+	if (!prop) {
+		prop = '';
+	}
+	if ($.isPlainObject(obj2)) {
+		for (ix in obj2) {
+			obj = this.mergeTwoObjects(obj, obj2[ix], prop == ''? ix: prop + '.' + ix);
+		}
+	}
+	else {
+		obj = this.putToObject(obj, obj2, prop);
+	}
+	return obj;
+};
+
 cb.setMissingDinamicValue = function(obj, attr, value, nivels) {
 	if (!nivels) {
 		nivels=0;
@@ -1453,11 +1468,11 @@ cb.clone = function(data) {
 };
 
 cb.cloneObject = function(obj) {
-	return $.extend({}, obj);
+	return $.extend(true, {}, obj);
 }
 
 cb.cloneArray = function(arr) {
-	return $.extend([], arr);
+	return $.extend(true, [], arr);
 }
 
 // Para la creación de componentes de boostrap
@@ -2783,11 +2798,27 @@ cb.create = function(opt, record) {
 		// Variables temp
 		var store = false;
 		var temp_record = false;
+		
+		// Get opt to custom components
+		if ($.isPlainObject(cb.module.component[opt.xtype]))
+		{
+			opt = this.mergeTwoObjects(cb.clone(cb.module.component[opt.xtype]), opt);
+			opt.xtype = 'component';
+		}
 				
 		// Default extend
 		if ($.isArray(opt.extend)) {
-			opt.extend.unshift('base.element');
-		} else if (typeof opt.extend === 'string') {
+			var be = false;
+			for (var i = 0; i < opt.extend.length; i ++) {
+				if (opt.extend[i] == 'base.element') {
+					be = true;
+				}
+			}
+			if (!be) {
+				opt.extend.unshift('base.element');
+			}
+			if (opt.extend.length > 2) debugger;
+		} else if (typeof opt.extend == 'string' && opt.extend != 'base.element') {
 			opt.extend = ['base.element', opt.extend];
 		} else {
 			opt.extend = 'base.element';
@@ -2932,31 +2963,9 @@ cb.create = function(opt, record) {
 		}
 		else
 		{
-			// If record is object
+			// If record is object replace {field} by record values
 			if ($.isPlainObject(record)) {
-				// Replace {field} to record value
-			    for (ix in opt) {
-			        var el = opt[ix];
-			        if ($.type(el) === 'string') {                       
-                        for (ix2 in record) {
-                            opt[ix] = opt[ix].replace(new RegExp('{'+ix2+'}',"g"), record[ix2]);
-                        }
-                        // Clear missing
-                        opt[ix] = opt[ix].replace(/{.+}/, '');
-                    }
-                    else if ($.isPlainObject(el) && ix !== 'items') {
-                        el = cb.cloneObject(el);
-                        for (ix3 in opt[ix]) {
-                            if (typeof opt[ix][ix3] == 'string') {
-                                for (ix2 in record) {
-                                    opt[ix][ix3] = opt[ix][ix3].replace(new RegExp('{'+ix2+'}',"g"), record[ix2]);
-                                }
-                                // Clear missing
-                                opt[ix][ix3] = opt[ix][ix3].replace(/{.+}/, '');
-                            }
-                        }
-                    }
-			    }
+			    opt = this.setRecordValuesToOpt(opt, record);
 			}
 		
 			// Set defaults to child items
@@ -2976,18 +2985,6 @@ cb.create = function(opt, record) {
 			else if ($.isFunction(cb.module.cbComponent[opt.xtype]))
 			{
 				var ele = cb.module.cbComponent[opt.xtype](opt, record);
-			}
-			// If is custom component
-			else if ($.isPlainObject(cb.module.component[opt.xtype]))
-			{
-				var opt2 = cb.module.component[opt.xtype];
-				opt2.xtype = 'component';
-				var ele = this.create(opt2, record);
-				ele = this.common_prop(ele, opt);
-				ele.component = cb.module.component[opt.xtype];
-				if (cb.module.component[opt.xtype].onRender && !opt.onRender) {
-					opt.onRender = cb.module.component[opt.xtype].onRender;
-				}
 			}
 			// By default create xtype element
 			else
@@ -3070,6 +3067,30 @@ cb.create = function(opt, record) {
 		}
 	}
 }
+
+cb.setRecordValuesToOpt = function (opt, record) {
+	if (typeof opt == 'string' && opt.indexOf('{') >= 0) {
+		for (ix in record) {
+			// Replace {field} to record value
+            opt = opt.replace(new RegExp('{'+ix+'}',"g"), record[ix]);
+        }
+        // Clear missing
+        opt = opt.replace(/{.+}/, '');
+	}
+	else if ($.isPlainObject(opt)) {
+		for (ix in opt) {
+			if (ix != 'extend' && ix != 'items') {
+				opt[ix] = this.setRecordValuesToOpt(opt[ix], record);
+			}
+		}
+	}
+	else if ($.isArray(opt)) {
+		for (var i = 0; i < opt.length; i ++) {
+			opt[i] = this.setRecordValuesToOpt(opt[i], record);
+		}
+	}
+	return opt;
+};
 
 cb.doRenderFunctions = function (ele) {
     if ($.isFunction(ele.afterRender)) {
