@@ -91,7 +91,8 @@ cb.define({
             }]
         }, {
             xtype: 'h3',
-            text: 'nav, navbar, navbar-header, navbar-collapse, navbar-text, navbar-a, navbar-dropdown, navbar-button, navbar-form'
+            text: 'nav, navbar, navbar-header, navbar-collapse, navbar-text, navbar-a, navbar-dropdown, navbar-button, navbar-form',
+            id: 'item-navbar'
         }, {
             xtype: 'callout',
             items: [{
@@ -163,7 +164,8 @@ cb.define({
             }]
         }, {
             xtype: 'h3',
-            text: 'dropdown, dropup'
+            text: 'dropdown, dropup',
+            id: 'item-dropdown'
         }, {
             xtype: 'callout',
             items: [{
@@ -345,7 +347,8 @@ cb.define({
             }]
         }, {
             xtype: 'h3',
-            text: 'container'
+            text: 'container',
+            id: 'item-container'
         }, {
             xtype: 'callout',
             items: [{
@@ -401,13 +404,14 @@ cb.define({
             }]
         }, {
             xtype: 'h3',
-            text: 'progress, progress-bar'
+            text: 'progress, progress-bar',
+            id: 'item-progress'
         }, {
             xtype: 'callout',
             items: [{
                 xtype: 'div',
                 items: [{
-                    field: 'tx27'
+                    field: 'tx31'
                 }, {
                     xtype: 'callout',
                     margin: '10px 0px',

@@ -299,6 +299,7 @@ $code13 = "{
 
 $code14 = "{
     xtype: 'progress',
+    margin: 0,
     defaults: {
         min: 0,
         max: 100

@@ -8,6 +8,7 @@ cb.define({
 	},
 	
 	loadview: function (hash) {
+	    cb.scrollTo(0, 0);
 		if (hash[1] == 'items') {
 			cb.getCmp('#mainmenu-items').show();
 		} else {
@@ -20,6 +21,7 @@ cb.define({
 	},
 	
 	loadhome: function () {
+	    cb.scrollTo(0, 0);
 		cb.render(cb.getView('ci-bus'));
 	},
 	
@@ -48,6 +50,7 @@ cb.define({
 				['view', 'ci-bus', 'doc/items'],
 				['view', 'ci-bus', 'ci-bus']
 			], function () {
+			    $('#content').css('padding-top', 60);
 				cb.router.hashchange();
 			});
 		});

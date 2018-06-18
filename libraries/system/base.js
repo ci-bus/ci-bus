@@ -2723,13 +2723,6 @@ cb.props = {
 	'background': function(ele, opt) {
 		$(ele).css('background', opt.background);
 	},
-	'hidden': function(ele, opt) {
-		if (opt.hidden) {
-			$(ele).hide();
-		} else {
-			$(ele).show();
-		}
-	},
 	'badge': function(ele, opt) {
 		$(ele).append('&nbsp;').append(cb.create({
 			xtype: 'badge',
@@ -3115,16 +3108,12 @@ cb.setRecordValuesToOpt = function (opt, record) {
 };
 
 cb.doRenderFunctions = function (ele) {
-    if ($.isFunction(ele.afterRender)) {
-        ele.afterRender = [ele.afterRender];
+    if (ele.opt && ele.opt.hidden) {
+        $(ele).hide();
     }
-    if ($.isArray(ele.afterRender)) {
-        for (var i = 0; i < ele.afterRender.length; i ++) {
-            if ($.isFunction(ele.afterRender[i])) {
-                ele.afterRender[i](ele);
-            }
-        }
-        ele.afterRender = null;
+    if ($.isFunction(ele.afterRender)) {
+        ele.afterRender(ele);
+        delete ele.afterRender;
     }
     if ($.isFunction(ele.onRender)) {
     	ele.onRender(ele);
@@ -3435,13 +3424,24 @@ cb.isElement = function(o) {
   );
 }
 
-cb.scrollTo = function (ele, time) {
-	if (!time) {
+cb.scrollTo = function (ele, time, margin) {
+	if (!time && time !== 0) {
 		time = 1000;
 	}
-	$('html, body').animate({
-        scrollTop: $(ele).offset().top
-    }, time);
+	if (!margin) {
+	    margin = 0;
+	}
+	if ($.isNumeric(ele)) {
+	    $('html, body').animate({
+            scrollTop: ele - margin
+        }, time);
+	} else {
+	    if (offset = $(ele).offset()) {
+	        $('html, body').animate({
+	            scrollTop: offset.top - margin
+	        }, time);
+	    }
+	}
 }
 
 cb.objectCount = function (obj) {

@@ -16,6 +16,28 @@
 		            'tx3' => 'Vistas',
 		            'tx4' => 'Items'
 			    ),
+		        'menu-items' => array (
+		            array(
+		                'tx' => 'Botones',
+		                'st' => '#item-button'
+		            ),
+		            array(
+		                'tx' => 'Barras de navegación',
+		                'st' => '#item-navbar'
+		            ),
+		            array(
+		                'tx' => 'Desplegables',
+		                'st' => '#item-dropdown'
+		            ),
+		            array(
+		                'tx' => 'Contenedores',
+		                'st' => '#item-container'
+		            ),
+		            array(
+		                'tx' => 'Barras de progreso',
+		                'st' => '#item-progress'
+		            ),
+		        ),
 		        'home' => array (
 		            'tx1' => '¿Qué es Ci-bus Framework?',
 		            'tx2' => 'Ci-bus es un cojunto de herramientas javascript y php que te permitirá crear aplicaciones webs de manera fácil e intuitiva con las más novedosas técnicas de programación',
@@ -121,7 +143,7 @@
 		            'tx13' => 'Componentes barras de navegación',
 		            'tx14' => 'Tipo',
 		            'tx15' => 'Componente desplegables',
-		            'tx16' => 'Funciones del componente',
+		            'tx16' => 'Métodos del componente',
 		            'tx17' => 'Parámetros',
 		            'tx18' => 'Acción',
 		            'tx19' => "1. Items, 2. Record (opcional), 3. Nombre evento callback por defecto 'changeItems' (opcional)",
@@ -135,7 +157,8 @@
 		            'tx27' => 'Componente contenedores',
 		            'tx28' => 'Valor mínimo en número',
 		            'tx29' => 'Valor máximo en número',
-		            'tx30' => 'Valor en número'
+		            'tx30' => 'Valor en número',
+		            'tx31' => 'Componente barras de progreso'
 		        )
 		    ));
 		}

@@ -4,7 +4,7 @@ cb.define({
 	appendTo: 'header',
 	items: [{
 		xtype: 'nav',
-		type: 'default static-top',
+		type: 'default fixed-top',
 		color: '#454b49',
 		store: 'texts',
 		field: 'menu',
@@ -55,22 +55,21 @@ cb.define({
                     }]
 				}, {
 					xtype: 'navbar-dropdown',
-					glyphicon: 'book',
+					glyphicon: 'bookmark',
 					text: ' Items',
 					id: 'mainmenu-items',
+					hidden: true,
 					defaults: {
 						click: function () {
-							$('body').scrollTo($(cb.getCmp(this).getOpt('scrollTo')).offset().top);
+							cb.scrollTo(cb.getCmp(this).getRecord().st, 0, 60);
 						}
 					},
+					store: 'texts',
 					items: [{
 						xtype: 'a',
-						text: 'button',
-						scrollTo: '#item-button'
-					}],
-					onRender: function () {
-					    $(this).hide();
-					}
+						field: 'menu-items',
+						text: '{tx}'
+					}]
 				}]
 			}]
 		}]
