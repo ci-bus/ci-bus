@@ -918,6 +918,41 @@ cb.base.grid = {
 	}
 };
 
+cb.base['progress-bar'] = {
+    setValue: function (val) {
+        if ($.isNumeric(val)) {
+            this.attr({
+                'aria-valuenow': val,
+                value: val
+            }).css('width', val + '%');
+        }
+    },
+    setMax: function (val) {
+        if ($.isNumeric(val)) {
+            this.attr({
+                'aria-valuemax': val
+            });
+        }
+    },
+    setMin: function (val) {
+        if ($.isNumeric(val)) {
+            this.attr({
+                'aria-valuemin': val
+            });
+        }
+    },
+    setText: function (txt) {
+        this.html(txt);
+    },
+    setStriped: function (s) {
+        if (s) {
+            this.addClass('progress-bar-striped');
+        } else {
+            this.removeClass('progress-bar-striped');
+        }
+    }
+};
+
 // Funcion para generar un nombre único
 cb.autoname = function(pre) {
 	if (!pre) {
