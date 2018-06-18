@@ -28,11 +28,13 @@ cb.define({
 			items: [{
 				xtype: 'navbar',
 				type: 'left',
+				defaults: {
+				    css: {'font-size': '17px'}
+				},
 				items: [{
 					xtype: 'navbar-dropdown',
 					glyphicon: 'book',
 					text: ' {tx0}',
-					css: {'font-size': '17px'},
 					id: 'mainmenu-doc',
 					items: [{
 						xtype: 'a',
@@ -55,7 +57,6 @@ cb.define({
 					xtype: 'navbar-dropdown',
 					glyphicon: 'book',
 					text: ' Items',
-					css: {'font-size': '17px'},
 					id: 'mainmenu-items',
 					defaults: {
 						click: function () {
@@ -66,7 +67,10 @@ cb.define({
 						xtype: 'a',
 						text: 'button',
 						scrollTo: '#item-button'
-					}]
+					}],
+					onRender: function () {
+					    $(this).hide();
+					}
 				}]
 			}]
 		}]

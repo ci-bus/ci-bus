@@ -1009,7 +1009,7 @@ cb.getCmp = function(ref, idx) {
             }
         }
     } else {
-        return $.extend($(ref), $(ref)[0]);
+        return $.extend($(ref), $(ref)[0], $(ref));
     }
     return null;
 };
@@ -3116,8 +3116,15 @@ cb.setRecordValuesToOpt = function (opt, record) {
 
 cb.doRenderFunctions = function (ele) {
     if ($.isFunction(ele.afterRender)) {
-        ele.afterRender(ele);
-        delete ele.afterRender;
+        ele.afterRender = [ele.afterRender];
+    }
+    if ($.isArray(ele.afterRender)) {
+        for (var i = 0; i < ele.afterRender.length; i ++) {
+            if ($.isFunction(ele.afterRender[i])) {
+                ele.afterRender[i](ele);
+            }
+        }
+        ele.afterRender = null;
     }
     if ($.isFunction(ele.onRender)) {
     	ele.onRender(ele);

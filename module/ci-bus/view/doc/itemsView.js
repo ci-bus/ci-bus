@@ -69,6 +69,7 @@ cb.define({
                     }]
                 }, {
                     xtype: 'callout',
+                    cls: 'code',
                     margin: '10px 0px',
                     items: [{
                         xtype: 'label',
@@ -140,6 +141,7 @@ cb.define({
                     }]
                 }, {
                     xtype: 'callout',
+                    cls: 'code',
                     margin: '10px 0px',
                     items: [{
                         xtype: 'label',
@@ -315,6 +317,7 @@ cb.define({
                     }]
                 }, {
                     xtype: 'callout',
+                    cls: 'code',
                     margin: '10px 0px',
                     items: [{
                         xtype: 'label',
@@ -376,6 +379,7 @@ cb.define({
                     }]
                 }, {
                     xtype: 'callout',
+                    cls: 'code',
                     margin: '10px 0px',
                     items: [{
                         xtype: 'label',
@@ -451,6 +455,7 @@ cb.define({
                     }]
                 }, {
                     xtype: 'callout',
+                    cls: 'code',
                     margin: '10px 0px',
                     items: [{
                         xtype: 'label',

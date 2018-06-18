@@ -9,7 +9,7 @@ $code1 = "cb.define({
     xtype: 'controller',
     name: 'test',
 
-    onload: function(){
+    onload: function () {
         console.log('Loaded controller');
         cb.loadAll([
             ['store', 'test', 'test', {action: 'get_data'}],
@@ -33,7 +33,7 @@ $code2 = "cb.define({
     items: [{
         xtype: 'button',
         text: 'Test button',
-        click: function(){
+        click: function () {
             alert('Button clicked!');
         }
     }]
@@ -44,7 +44,7 @@ $code3 = "&lt;&#63;php
         public function __construct(\$CB, \$data = array())
         {
             \$action = \$data['action'];
-            \$this->\$action(\$CB, \$data);
+            \$this->\$action (\$CB, \$data);
         }
     
         public function get_data()
@@ -75,7 +75,7 @@ $code4 = "cb.define({
             cursor: 'pointer',
             margin: 5,
             listener: {
-                click: function(){
+                click: function () {
                     alert('clicked thumb down');
                 }
             }
@@ -85,7 +85,7 @@ $code4 = "cb.define({
             cursor: 'pointer',
             margin: 5,
             listener: {
-                click: function(){
+                click: function () {
                     alert('clicked thumb up');
                 }
             }
@@ -101,7 +101,7 @@ $code6 = "onload: function () {
     cb.loadAll([
         ['store', 'test', 'test'],
         ['view', 'test']
-    ], function(){
+    ], function () {
         console.log('Loaded store and view');
     });
 }";
@@ -110,11 +110,11 @@ $code7 = "cb.define({
     xtype: 'controller',
     name: 'test',
 
-    customf1: function(data){
+    customf1: function (data) {
         console.log('customf1', data);
     },
 
-    customf2: function(){
+    customf2: function () {
         console.log('customf2');
     }
 });";
@@ -131,15 +131,15 @@ $code9 = "cb.define({
         '#aaa/:num/:str': 'routeTest3'
     },
 
-    routeTest1: function(hash){
+    routeTest1: function (hash) {
         console.log('routeTest1', hash);
     },
 
-    routeTest2: function(hash){
+    routeTest2: function (hash) {
         console.log('routeTest2', hash);
     },
 
-    routeTest3: function(hash){
+    routeTest3: function (hash) {
         console.log('routeTest3', hash);
     }
 
@@ -153,7 +153,7 @@ $code10 = "{
     type: 'primary',
     size: 'lg',
     text: 'Test button',
-    click: function(){
+    click: function () {
         alert('Clicked!');
     }
 }";

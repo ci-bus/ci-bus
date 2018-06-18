@@ -33,7 +33,7 @@ cb.define({
 		});
 		
 		// Load highlight style and script
-		$.cachedScript("libraries/highlight/styles/tomorrow.css", "css");
+		$.cachedScript("libraries/highlight/styles/custom.css", "css");
 		$.cachedScript("libraries/highlight/highlight.pack.js", "js").done(function () {
 			cb.loadAll([
 			    //['component', 'gotorave', 'review'],
