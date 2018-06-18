@@ -132,7 +132,10 @@
 		            'tx24' => 'Ninguno',
 		            'tx25' => 'Abre las opciones del desplegable',
 		            'tx26' => 'Cierra las opciones del desplegable',
-		            'tx27' => 'Componente contenedores'
+		            'tx27' => 'Componente contenedores',
+		            'tx28' => 'Valor mínimo en número',
+		            'tx29' => 'Valor máximo en número',
+		            'tx30' => 'Valor en número'
 		        )
 		    ));
 		}

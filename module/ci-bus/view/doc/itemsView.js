@@ -1,31 +1,4 @@
 cb.define({
-    xtype: 'component',
-    name: 'totestcode',
-    items: {
-        xtype: 'div',
-        items: {
-            xtype: 'button',
-            store: 'texts',
-            field: 'general',
-            text: '{tx1}',
-            click: function (e) {
-                var btn = cb.getCmp(this),
-                    parent = $(this).parent(),
-                    code = btn.up('div', 1).down('code').getRecord().code;
-                eval('var items = '+code);
-                if (!$.isArray(items)) {
-                    items = [items];
-                }
-                $(this).remove();
-                for (var i = 0; i < items.length; i++) {
-                    parent.append(cb.create(items[i]));
-                }
-            }
-        }
-    }
-});
-
-cb.define({
     xtype: 'view',
     name: 'items',
     renderTo: '#content',
@@ -57,7 +30,8 @@ cb.define({
             }]
         }, {
             xtype: 'h3',
-            text: 'button'
+            text: 'button',
+            id: 'item-button'
         }, {
             xtype: 'callout',
             items: [{
@@ -449,9 +423,29 @@ cb.define({
                         }, {
                             xtype: 'body',
                             items: [[{
+                                text: 'striped'
+                            }, {
+                                text: 'true'
+                            }], [{
+                                text: 'animated'
+                            }, {
+                                text: 'true'
+                            }], [{
                                 text: 'type'
                             }, {
-                                text: 'fluid'
+                                text: 'success, info, warning, danger'
+                            }], [{
+                                text: 'min'
+                            }, {
+                                text: '{tx28}'
+                            }], [{
+                                text: 'max'
+                            }, {
+                                text: '{tx29}'
+                            }], [{
+                                text: 'value'
+                            }, {
+                                text: '{tx30}'
                             }]]
                         }]
                     }]

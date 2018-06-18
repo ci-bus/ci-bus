@@ -390,15 +390,15 @@ cb.define({
             margin: 10,
             on: {
                 type: 'primary',
-                text: 'On'
+                text: 'On',
+                value: 1
             },
             off: {
                 type: 'default',
-                text: 'Off'
+                text: 'Off',
+                value: 0
             },
-            onRender: function (el) {
-            	$(el).bootstrapToggle('on');
-            }
+            value: 1
         }, {
             xtype: 'h3',
             text: '...Polyline with storelink'

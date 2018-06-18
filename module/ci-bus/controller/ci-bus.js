@@ -8,6 +8,11 @@ cb.define({
 	},
 	
 	loadview: function (hash) {
+		if (hash[1] == 'items') {
+			cb.getCmp('#mainmenu-items').show();
+		} else {
+			cb.getCmp('#mainmenu-items').hide();
+		}
 		cb.render(cb.getView(hash[1]));
 		$('pre code').each(function(i, block) {
 		    hljs.highlightBlock(block);
@@ -23,7 +28,7 @@ cb.define({
 		//Load font
 		$.cachedScript("https://fonts.googleapis.com/css?family=Quicksand:300,400", "css");
 		$('body').css({
-			'font-family': 'Quicksand, "Courier New", Courier, monospace',
+			'font-family': 'Quicksand, Verdana, Arial',
 			'font-weight': 300
 		});
 		
@@ -39,6 +44,7 @@ cb.define({
 				['view', 'ci-bus', 'doc/createmodule'],
 				['view', 'ci-bus', 'doc/controllers'],
 				['view', 'ci-bus', 'doc/views'],
+				['component', 'ci-bus', 'totestcode'],
 				['view', 'ci-bus', 'doc/items'],
 				['view', 'ci-bus', 'ci-bus']
 			], function () {

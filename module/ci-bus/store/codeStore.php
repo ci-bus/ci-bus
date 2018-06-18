@@ -299,17 +299,17 @@ $code13 = "{
 
 $code14 = "{
     xtype: 'progress',
-    margin: 10,
+    defaults: {
+        min: 0,
+        max: 100
+    },
     items: [{
         striped: true,
         animated: true,
-        min: 0,
-        max: 100,
-        value: 50
+        value: 50,
+        text: '50% completed'
     }, {
         type: 'danger',
-        min: 0,
-        max: 100,
         value: 3
     }]
 }";

@@ -2381,10 +2381,16 @@ cb.module.bootstrapComponent = {
         $(ele).attr('data-toggle', 'toggle');
         
         if (!opt.on) {
-            opt.on = {text: 'On'};
+            opt.on = {text: 'On', value: 1};
         }
         if (!opt.off) {
-            opt.off = {text: 'Off'};
+            opt.off = {text: 'Off', value : 0};
+        }
+        if (!opt.on.value) {
+            opt.on.value = 1;
+        }
+        if (!opt.off.value) {
+            opt.off.value = 0;
         }
         if (!opt.on.type && opt.type) {
             opt.on.type = opt.type;
@@ -2436,9 +2442,20 @@ cb.module.bootstrapComponent = {
         
         ele.afterRender = function (ele) {
             $(ele).bootstrapToggle();
+            $(ele).change(function() {
+            	if ($(this).prop('checked')) {
+            		var v = this.getOpt('on').value? this.getOpt('on').value: 1;
+            	} else {
+            		var v = this.getOpt('off').value? this.getOpt('off').value: 0;
+            	}
+            	$(this).parent().find('input').val(v);
+            });
+            if(ele.getOpt('value') == ele.getOpt('on').value || ele.getOpt('value') == 'on') {
+            	$(ele).bootstrapToggle('on');
+            }
             cb.common_prop($(ele).parent(), ele.getOpt());
         }
-            
+                
         return ele;
 	}
 };
@@ -3021,7 +3038,7 @@ cb.create = function(opt, record) {
 			{
 				for (var a=0; a<opt.items.length; a++)
 				{
-					$(ele).append(this.create(cb.cloneObject(opt.items[a]), record));
+					$(ele).append(this.create(this.cloneObject(opt.items[a]), record));
 				}
 			}
 			
@@ -3036,7 +3053,12 @@ cb.create = function(opt, record) {
 					ele.opt[methods[i]] = opt_extended[methods[i]];
 				}
 			}
-
+			
+			// Do before render function
+			if (opt.beforeRender && $.isFunction(opt.beforeRender)) {
+				opt.beforeRender(ele);
+			}
+			
 			// Render element
 			if (opt.renderTo)
 			{
@@ -3060,9 +3082,9 @@ cb.create = function(opt, record) {
 			}
 			else
 			{
-			    cb.doRenderFunctions(ele);
 				return ele;
 			}
+			//Do on and after render function to this element and childs
 			cb.doRenderFunctions(ele);
 		}
 	}

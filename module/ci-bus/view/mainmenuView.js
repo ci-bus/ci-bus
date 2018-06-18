@@ -33,28 +33,40 @@ cb.define({
 					glyphicon: 'book',
 					text: ' {tx0}',
 					css: {'font-size': '17px'},
-					id: 'main-event',
+					id: 'mainmenu-doc',
 					items: [{
 						xtype: 'a',
 						text: '{tx1}',
-						css: {'font-size': '16px'},
 						href: '#loadview/createmodule'
 					}, {
                         xtype: 'a',
                         text: '{tx2}',
-                        css: {'font-size': '16px'},
                         href: '#loadview/controllers'
                     }, {
                         xtype: 'a',
                         text: '{tx3}',
-                        css: {'font-size': '16px'},
                         href: '#loadview/views'
                     }, {
                         xtype: 'a',
                         text: '{tx4}',
-                        css: {'font-size': '16px'},
                         href: '#loadview/items'
                     }]
+				}, {
+					xtype: 'navbar-dropdown',
+					glyphicon: 'book',
+					text: ' Items',
+					css: {'font-size': '17px'},
+					id: 'mainmenu-items',
+					defaults: {
+						click: function () {
+							$('body').scrollTo($(cb.getCmp(this).getOpt('scrollTo')).offset().top);
+						}
+					},
+					items: [{
+						xtype: 'a',
+						text: 'button',
+						scrollTo: '#item-button'
+					}]
 				}]
 			}]
 		}]
