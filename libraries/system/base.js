@@ -2799,6 +2799,12 @@ cb.props = {
 	'target': function(ele, opt) {
 		$(ele).attr('target', opt.target);
 	},
+	'colspan': function (ele, opt) {
+	    $(ele).attr('colspan', opt.colspan);
+	},
+	'rowspan': function (ele, opt) {
+	    $(ele).attr('rowspan', opt.rowspan);
+	},
 	'click': function(ele, opt) {
 		$(ele).click(opt.click);
 	},
