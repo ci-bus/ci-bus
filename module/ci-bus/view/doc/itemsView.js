@@ -214,8 +214,9 @@ cb.define({
                         items: [{
                             xtype: 'head',
                             items: [{
-                                text: 'addItems'
-                            }, {}]
+                                text: 'addItems',
+                                colspan: 2
+                            }]
                         }, {
                             xtype: 'body',
                             items: [[{
@@ -236,8 +237,9 @@ cb.define({
                         items: [{
                             xtype: 'head',
                             items: [{
-                                text: 'removeItems'
-                            }, {}]
+                                text: 'removeItems',
+                                colspan: 2
+                            }]
                         }, {
                             xtype: 'body',
                             items: [[{
@@ -258,8 +260,9 @@ cb.define({
                         items: [{
                             xtype: 'head',
                             items: [{
-                                text: 'replaceItems'
-                            }, {}]
+                                text: 'replaceItems',
+                                colspan: 2
+                            }]
                         }, {
                             xtype: 'body',
                             items: [[{
@@ -280,8 +283,9 @@ cb.define({
                         items: [{
                             xtype: 'head',
                             items: [{
-                                text: 'open'
-                            }, {}]
+                                text: 'open',
+                                colspan: 2
+                            }]
                         }, {
                             xtype: 'body',
                             items: [[{
@@ -302,8 +306,9 @@ cb.define({
                         items: [{
                             xtype: 'head',
                             items: [{
-                                text: 'close'
-                            }, {}]
+                                text: 'close',
+                                colspan: 2
+                            }]
                         }, {
                             xtype: 'body',
                             items: [[{
@@ -454,6 +459,82 @@ cb.define({
                                 text: 'value'
                             }, {
                                 text: '{tx30}'
+                            }]]
+                        }]
+                    }]
+                }, {
+                    xtype: 'callout',
+                    margin: '10px 0px',
+                    items: [{
+                        xtype: 'label',
+                        text: '{tx16} progress'
+                    }, {
+                        xtype: 'table',
+                        css: {
+                            'margin-bottom': 10
+                        },
+                        items: [{
+                            xtype: 'head',
+                            items: [{
+                                text: 'getBar',
+                                colspan: 2
+                            }]
+                        }, {
+                            xtype: 'body',
+                            items: [[{
+                                text: '{tx17}'
+                            }, {
+                                text: '{tx32}'
+                            }], [{
+                                text: '{tx18}'
+                            }, {
+                                text: '{tx33}'
+                            }]]
+                        }]
+                    },  {
+                        xtype: 'table',
+                        css: {
+                            'margin-bottom': 10
+                        },
+                        items: [{
+                            xtype: 'head',
+                            items: [{
+                                text: 'addBar',
+                                colspan: 2
+                            }]
+                        }, {
+                            xtype: 'body',
+                            items: [[{
+                                text: '{tx17}'
+                            }, {
+                                text: '{tx34}'
+                            }], [{
+                                text: '{tx18}'
+                            }, {
+                                text: '{tx35}'
+                            }]]
+                        }]
+                    }, {
+                        xtype: 'table',
+                        css: {
+                            'margin-bottom': 10
+                        },
+                        items: [{
+                            xtype: 'head',
+                            items: [{
+                                text: 'removeBar',
+                                colspan: 2
+                            }]
+                        }, {
+                            xtype: 'body',
+                            items: [[{
+                                text: '{tx17}'
+                            }, {
+                                text: '{tx32}'
+                            }], [{
+                                text: '{tx18}'
+                            }, {
+                                text: '{tx36}'
                             }]]
                         }]
                     }]

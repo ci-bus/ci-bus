@@ -158,7 +158,12 @@
 		            'tx28' => 'Valor mínimo en número',
 		            'tx29' => 'Valor máximo en número',
 		            'tx30' => 'Valor en número',
-		            'tx31' => 'Componente barras de progreso'
+		            'tx31' => 'Componente barras de progreso',
+		            'tx32' => '1. Posición de la barra en número',
+		            'tx33' => 'Devuelve componente barra',
+		            'tx34' => '1. Objeto o array de objetos con definiciones de barras',
+		            'tx35' => 'Añade barras al progreso',
+		            'tx36' => 'Elimina una barra',
 		        )
 		    ));
 		}
