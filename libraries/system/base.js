@@ -1,16 +1,15 @@
-/*
- * Este archivo es la base de Ci-bus
- * ---------------------------------
- * Ci-bus es un proyecto personal el cual hace de pegamento entre jQuery y bootstrap
- * creando elementos html en base a definiciones en objetos javascript
- * pero la cosa no queda ahí, también cuenta con todo lo necesatio para crear
- * una página web o applicación con las más novedosas técnicas de programación
- * 
- * Creado por: Miguel Ángel Calero Ponce
- * Email: miguelelinventor@gmail.com
- * Tlf: +34 722-128-106
- * 
- */
+/*\
+|*| Este archivo es la base de Ci-bus
+|*| ---------------------------------
+|*| Ci-bus es un proyecto personal el cual hace de pegamento entre jQuery y bootstrap
+|*| creando elementos html en base a definiciones en objetos javascript
+|*| pero la cosa no queda ahí, también cuenta con todo lo necesatio para crear
+|*| una página web o applicación con las más novedosas técnicas de programación
+|*| 
+|*| Creado por: Miguel Ángel Calero Ponce
+|*| Email: miguelelinventor@gmail.com
+|*| Tlf: +34 722-128-106
+\*/
 
 // Compatibilidad
 if (!Array.prototype.indexOf) {
@@ -918,6 +917,30 @@ cb.base.grid = {
 	}
 };
 
+cb.base.progress = {
+    getBar: function (pos) {
+        return this.down('progress-bar', pos);
+    },
+    addBar: function (obar) {
+        if ($.isPlainObject(obar)) {
+            obar = [obar];
+        }
+        if ($.isArray(obar)) {
+            for (var i = 0; i < obar.length; i ++) {
+                obj = obar[i];
+                if (!obj.xtype) {
+                    obj.xtype = 'progress-bar';
+                }
+                var bar = cb.create(obj);
+                this.append(bar);
+            }
+        }
+    },
+    removeBar: function (pos) {
+        this.down('progress-bar', pos).remove();
+    }
+};
+
 cb.base['progress-bar'] = {
     setValue: function (val) {
         if ($.isNumeric(val)) {
@@ -949,6 +972,13 @@ cb.base['progress-bar'] = {
             this.addClass('progress-bar-striped');
         } else {
             this.removeClass('progress-bar-striped');
+        }
+    },
+    setActive: function (a) {
+        if (a) {
+            this.addClass('active');
+        } else {
+            this.removeClass('active');
         }
     }
 };
