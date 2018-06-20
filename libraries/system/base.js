@@ -630,7 +630,11 @@ cb.base.dropdown = {
 			event = 'changeItems';
 		}
 		if (items) {
-			var eleCmp = cb.getCmp($.isArray(this)? this[0]: this);
+			if (!this.find) {
+			    var eleCmp = cb.getCmp($.isArray(this)? this[0]: this);
+			} else {
+			    var eleCmp = this;
+			}
 			var ul = eleCmp.find('ul:first');
 			if (!record) {
 			    record = false;
@@ -684,7 +688,11 @@ cb.base.dropdown = {
 		if (!event) {
 			event = 'changeItems';
 		}
-	    var eleCmp = cb.getCmp($.isArray(this)? this[0]: this);
+		if (!this.find) {
+            var eleCmp = cb.getCmp($.isArray(this)? this[0]: this);
+        } else {
+            var eleCmp = this;
+        }
         var ul = eleCmp.find('ul:first');
         var lis = ul.children();
 	    if (items) {
@@ -728,7 +736,11 @@ cb.base.dropdown = {
 	    return this;
 	},
 	open: function () {
-		var eleCmp = cb.getCmp($.isArray(this)? this[0]: this);
+	    if (!this.find) {
+            var eleCmp = cb.getCmp($.isArray(this)? this[0]: this);
+        } else {
+            var eleCmp = this;
+        }
         var button = eleCmp.find('button:first');
         if (button.attr('aria-expanded') == 'false') {
         	eleCmp.addClass('open');
@@ -737,7 +749,11 @@ cb.base.dropdown = {
         return this;
 	},
 	close: function () {
-		var eleCmp = cb.getCmp($.isArray(this)? this[0]: this);
+	    if (!this.find) {
+            var eleCmp = cb.getCmp($.isArray(this)? this[0]: this);
+        } else {
+            var eleCmp = this;
+        }
         var button = eleCmp.find('button:first');
         if (button.attr('aria-expanded') == 'true') {
         	eleCmp.removeClass('open');
