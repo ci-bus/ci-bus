@@ -1267,7 +1267,7 @@ cb.define({
                         items: {
                             xtype: 'code',
                             store: 'code',
-                            field: 'cd24',
+                            field: 'cd27',
                             cls: '{type}',
                             text: '{code}'
                         }
@@ -1373,6 +1373,178 @@ cb.define({
                             xtype: 'code',
                             store: 'code',
                             field: 'cd25',
+                            cls: '{type}',
+                            text: '{code}'
+                        }
+                    }, {
+                        xtype: 'totestcode'
+                    }]
+                }]
+            }]
+        }, {
+            xtype: 'h3',
+            text: 'toggle',
+            id: 'item-toggle'
+        }, {
+            xtype: 'callout',
+            items: [{
+                xtype: 'div',
+                items: [{
+                    field: 'tx61'
+                }, {
+                    xtype: 'callout',
+                    margin: '10px 0px',
+                    items: [{
+                        xtype: 'label',
+                        text: '{tx10}'
+                    }, {
+                        xtype: 'table',
+                        margin: 0,
+                        items: [{
+                            xtype: 'head',
+                            items: [{
+                                field: 'tx8'
+                            }, {
+                                field: 'tx9'
+                            }]
+                        }, {
+                            xtype: 'body',
+                            items: [[{
+                                text: 'size'
+                            }, {
+                                text: 'large, normal, small, mini'
+                            }], [{
+                                text: 'on, off'
+                            }, {
+                                text: '{tx62}'
+                            }], [{
+                                text: 'on, off type'
+                            }, {
+                                text: 'default, primary, success, info, warning, danger'
+                            }], [{
+                                text: 'on, off text'
+                            }, {
+                                text: '{tx63}'
+                            }], [{
+                                text: 'on, off value'
+                            }, {
+                                text: '{tx64}'
+                            }]]
+                        }]
+                    }]
+                }, {
+                    xtype: 'callout',
+                    margin: '10px 0px',
+                    items: [{
+                        xtype: 'label',
+                        text: '{tx16} toggle'
+                    }, {
+                        xtype: 'table',
+                        css: {
+                            'margin-bottom': 10
+                        },
+                        items: [{
+                            xtype: 'head',
+                            items: [{
+                                text: 'bootstrapToggle',
+                                colspan: 2
+                            }]
+                        }, {
+                            xtype: 'body',
+                            items: [[{
+                                text: '{tx17}'
+                            }, {
+                                text: 'destroy, on, off, toggle, enable, disable'
+                            }], [{
+                                text: '{tx18}'
+                            }, {
+                                text: '{tx65}'
+                            }]]
+                        }]
+                    }]
+                }, {
+                    xtype: 'callout',
+                    cls: 'code',
+                    margin: '10px 0px',
+                    items: [{
+                        xtype: 'label',
+                        field: 'tx12'
+                    }, {
+                        xtype: 'pre',
+                        margin: '10px 0px',
+                        items: {
+                            xtype: 'code',
+                            store: 'code',
+                            field: 'cd26',
+                            cls: '{type}',
+                            text: '{code}'
+                        }
+                    }, {
+                        xtype: 'totestcode'
+                    }]
+                }]
+            }]
+        }, {
+            xtype: 'h3',
+            text: 'svg, polyline',
+            id: 'item-polyline'
+        }, {
+            xtype: 'callout',
+            items: [{
+                xtype: 'div',
+                items: [{
+                    field: 'tx66'
+                }, {
+                    xtype: 'callout',
+                    margin: '10px 0px',
+                    items: [{
+                        xtype: 'label',
+                        text: '{tx10}'
+                    }, {
+                        xtype: 'table',
+                        margin: 0,
+                        items: [{
+                            xtype: 'head',
+                            items: [{
+                                field: 'tx8'
+                            }, {
+                                field: 'tx9'
+                            }]
+                        }, {
+                            xtype: 'body',
+                            items: [[{
+                                text: 'stroke-width'
+                            }, {
+                                text: '{tx67}'
+                            }], [{
+                                text: 'fill'
+                            }, {
+                                text: '{tx68}'
+                            }], [{
+                                text: 'pointMax, pointMix'
+                            }, {
+                                text: '{tx67}'
+                            }], [{
+                                text: 'storelink'
+                            }, {
+                                text: '{tx69}'
+                            }]]
+                        }]
+                    }]
+                }, {
+                    xtype: 'callout',
+                    cls: 'code',
+                    margin: '10px 0px',
+                    items: [{
+                        xtype: 'label',
+                        field: 'tx12'
+                    }, {
+                        xtype: 'pre',
+                        margin: '10px 0px',
+                        items: {
+                            xtype: 'code',
+                            store: 'code',
+                            field: 'cd28',
                             cls: '{type}',
                             text: '{code}'
                         }

@@ -466,7 +466,7 @@ $code23 = "{
     }]
 }";
 
-$code24 = "{
+$code27 = "{
     xtype: 'tabpanel',
     items: [{
         id: 'home',
@@ -620,6 +620,41 @@ $code25 = "{
     }]
 }";
 
+$code26 = "{
+    xtype: 'toggle',
+    size: 'normal',
+    on: {
+        type: 'primary',
+        text: 'On',
+        value: 1
+    },
+    off: {
+        type: 'default',
+        text: 'Off',
+        value: 0
+    },
+    value: 1
+}";
+
+$code28 = "{
+    xtype: 'svg',
+    width: 300,
+    height: 200,
+    border: '1px solid #AAA',
+    background: 'white',
+    items: [{
+        xtype: 'polyline',
+        record: [15,43,87,18,23,15,24,50],
+        'stroke-width': 1,
+        color: '#AAA',
+        width: 300,
+        height: 200,
+        fill: '#CCC',
+        pointMax: 100,
+        pointMin: 0
+    }]
+}";
+
             $CB->parseStore('code', array(
                 'cd1' => array(
                     'type' => 'javascript',
@@ -695,7 +730,16 @@ $code25 = "{
                     'code' => $code24),
                 'cd25' => array(
                     'type' => 'javascript',
-                    'code' => $code25)
+                    'code' => $code25),
+                'cd26' => array(
+                    'type' => 'javascript',
+                    'code' => $code26),
+                'cd27' => array(
+                    'type' => 'javascript',
+                    'code' => $code27),
+                'cd28' => array(
+                    'type' => 'javascript',
+                    'code' => $code28)
             ));
         }
     }

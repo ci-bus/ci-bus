@@ -84,6 +84,14 @@
 		            array(
 		                'tx' => 'Formularios',
 		                'st' => '#item-form'
+		            ),
+		            array(
+		                'tx' => 'Interruptor',
+		                'st' => '#item-toggle'
+		            ),
+		            array(
+		                'tx' => 'Svg polyline',
+		                'st' => '#item-polyline'
 		            )
 		        ),
 		        'home' => array (
@@ -235,7 +243,16 @@
 		            'tx57' => 'Componente filas y columnas',
 		            'tx58' => 'Número del 1 al 12 u objeto',
 		            'tx59' => 'Número del 1 al 12',
-		            'tx60' => 'Componente formularios'
+		            'tx60' => 'Componente formularios',
+		            'tx61' => 'Componente interruptor',
+		            'tx62' => 'Objeto con propiedades',
+		            'tx63' => 'Texto',
+		            'tx64' => 'Número o texto',
+		            'tx65' => 'Destruir, encender, apagar, cambiar, activar, desactivar',
+		            'tx66' => 'Componente svg polyline',
+		            'tx67' => 'Número',
+		            'tx68' => 'Color',
+		            'tx69' => 'true (necesite tener un store) esto hace que los datos del store siempre estén sincronizados con la vista'
 		        )
 		    ));
 		}

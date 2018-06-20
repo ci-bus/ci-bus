@@ -2562,9 +2562,6 @@ cb.module.bootstrapComponent = {
     		}
         	opt.name = null;
         }
-        if (opt.disabled) {
-        	$(ele).attr('disabled', 'disabled');
-        }
         
         ele.afterRender = function (ele) {
             $(ele).bootstrapToggle();
@@ -2580,6 +2577,9 @@ cb.module.bootstrapComponent = {
             	$(ele).bootstrapToggle('on');
             }
             cb.common_prop($(ele).parent(), ele.getOpt());
+            if (ele.getOpt('disabled')) {
+                $(ele).attr('disabled', 'disabled');
+            }
         }
                 
         return ele;
