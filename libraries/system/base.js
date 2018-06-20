@@ -2657,9 +2657,9 @@ cb.module.cbComponent = {
 			record: record,
 			items: bodyItems
 		}];
-		delete opt.columns;
-		delete opt.store;
-		delete opt.field;
+		$(opt).removeProp('columns');
+		$(opt).removeProp('store');
+		$(opt).removeProp('field');
 		
 		// Create panel
 		opt.xtype = 'panel';
@@ -2668,7 +2668,7 @@ cb.module.cbComponent = {
 		if (opt.head) {
 			opt.head.xtype = 'head';
 			opt.items.push(opt.head);
-			delete opt.head;
+			$(opt).removeProp('head');
 		}
 		// Body panel with table
 		if (opt.body) {
@@ -2720,7 +2720,7 @@ cb.module.cbComponent = {
 			delete opt.body.table;
 			
 			opt.items.push(opt.body);
-			delete opt.body;
+			$(opt).removeProp('body');
 		} else {
 			opt.items.push({
 				xtype: 'body',
@@ -2739,11 +2739,18 @@ cb.module.cbComponent = {
 		if (opt.footer) {
 			opt.footer.xtype = 'footer';
 			opt.items.push(opt.footer);
-			delete opt.footer;
+			$(opt).removeProp('footer');
 		}
 		
-		var ele = cb.create(opt);
+		// Remove innecesary prop
+        $(opt).removeProp('renderTo');
+        $(opt).removeProp('appendTo');
+        $(opt).removeProp('prependTo');
+        $(opt).removeProp('beforeTo');
+        $(opt).removeProp('afterTo');
+		$(opt).removeProp('record');
 		
+		var ele = cb.create(opt);
 		return ele;
 	}
 };
@@ -3251,9 +3258,11 @@ cb.doRenderFunctions = function (ele) {
     	delete ele.onRender;
     }
     var childNodes = ele.childNodes;
-    for (var i = 0; i < childNodes.length; i ++) {
-        if (childNodes[i].nodeType == 1) {
-            cb.doRenderFunctions(childNodes[i]);
+    if (childNodes) {
+        for (var i = 0; i < childNodes.length; i ++) {
+            if (childNodes[i].nodeType == 1) {
+                cb.doRenderFunctions(childNodes[i]);
+            }
         }
     }
 }

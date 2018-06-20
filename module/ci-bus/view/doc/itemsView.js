@@ -1553,6 +1553,38 @@ cb.define({
                     }]
                 }]
             }]
+        }, {
+            xtype: 'h3',
+            text: 'grid',
+            id: 'item-grid'
+        }, {
+            xtype: 'callout',
+            items: [{
+                xtype: 'div',
+                items: [{
+                    field: 'tx70'
+                }, {
+                    xtype: 'callout',
+                    cls: 'code',
+                    margin: '10px 0px',
+                    items: [{
+                        xtype: 'label',
+                        field: 'tx12'
+                    }, {
+                        xtype: 'pre',
+                        margin: '10px 0px',
+                        items: {
+                            xtype: 'code',
+                            store: 'code',
+                            field: 'cd29',
+                            cls: '{type}',
+                            text: '{code}'
+                        }
+                    }, {
+                        xtype: 'totestcode'
+                    }]
+                }]
+            }]
         }]
     }]
 });

@@ -92,6 +92,10 @@
 		            array(
 		                'tx' => 'Svg polyline',
 		                'st' => '#item-polyline'
+		            ),
+		            array(
+		                'tx' => 'Cuadrícula',
+		                'st' => '#item-grid'
 		            )
 		        ),
 		        'home' => array (
@@ -252,7 +256,8 @@
 		            'tx66' => 'Componente svg polyline',
 		            'tx67' => 'Número',
 		            'tx68' => 'Color',
-		            'tx69' => 'true (necesite tener un store) esto hace que los datos del store siempre estén sincronizados con la vista'
+		            'tx69' => 'true (necesite tener un store) esto hace que los datos del store siempre estén sincronizados con la vista',
+		            'tx70' => 'Componente cuadrícula'
 		        )
 		    ));
 		}

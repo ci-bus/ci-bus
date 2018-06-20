@@ -655,6 +655,82 @@ $code28 = "{
     }]
 }";
 
+$code29 = "{
+    xtype: 'grid',
+    type: 'primary',
+
+    record: [{
+    	name: 'Miguel',
+    	lastname: 'Calero',
+    	type: 'Root',
+    	date: '2018-05-01'
+    }, {
+    	name: 'Miguel',
+    	type: 'Root',
+    	date: '2018-05-06'
+    }, {
+    	name: 'Jimena',
+    	lastname: 'Rincon',
+    	type: 'Admin',
+    	date: '2018-05-06'
+    }, {
+    	name: 'Daniel',
+    	type: 'User',
+    	date: '2018-05-03'
+    }, {
+    	name: 'Javier',
+    	type: 'User',
+    	date: '2018-05-04'
+    }],
+    alterdata: {
+        'date': function (date) {
+            var d = new Date(date);
+            return d.getDate() + '/' + (d.getMonth()+1) + '/' + d.getFullYear();
+        }
+    },
+
+    columns: [{
+        name: 'Name',
+        text: '{name} {lastname}'
+    }, {
+        name: 'Type',
+        field: 'type'
+    }, {
+        name: 'Date',
+        field: 'date'
+    }],
+    
+    head: {
+        text: 'Head content'
+    },
+    body: {
+        css: {
+            overflow: 'auto'
+        },
+        table: {
+            css: {
+                'border': '1px solid #DDD',
+                'border-bottom': '1px solid #DDD'
+            },
+            beforeItems: {
+                xtype: 'div',
+                text: 'Item text before',
+                padding: 5,
+                background: '#f2f5f7'
+            },
+            afterItems: {
+                xtype: 'div',
+                text: 'Item text after',
+                padding: 5,
+                background: '#fafafa'
+            }
+        }
+    },
+    footer: {
+        text: 'Footer content'
+    }
+}";
+
             $CB->parseStore('code', array(
                 'cd1' => array(
                     'type' => 'javascript',
@@ -739,7 +815,10 @@ $code28 = "{
                     'code' => $code27),
                 'cd28' => array(
                     'type' => 'javascript',
-                    'code' => $code28)
+                    'code' => $code28),
+                'cd29' => array(
+                    'type' => 'javascript',
+                    'code' => $code29)
             ));
         }
     }
