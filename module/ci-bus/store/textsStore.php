@@ -37,22 +37,70 @@
 		                'tx' => 'Barras de progreso',
 		                'st' => '#item-progress'
 		            ),
+		            array(
+		                'tx' => 'Tablas',
+		                'st' => '#item-table'
+		            ),
+		            array(
+		                'tx' => 'Iconos',
+		                'st' => '#item-icon'
+		            ),
+		            array(
+		                'tx' => 'Miniaturas',
+		                'st' => '#item-thumbnail'
+		            ),
+		            array(
+		                'tx' => 'Alertas',
+		                'st' => '#item-alert'
+		            ),
+		            array(
+		                'tx' => 'Insignias',
+		                'st' => '#item-badge'
+		            ),
+		            array(
+		                'tx' => 'Grupos',
+		                'st' => '#item-group'
+		            ),
+		            array(
+		                'tx' => 'Barra de herramientas',
+		                'st' => '#item-toolbar'
+		            ),
+		            array(
+		                'tx' => 'Textos destacados',
+		                'st' => '#item-callout'
+		            ),
+		            array(
+		                'tx' => 'Paneles',
+		                'st' => '#item-panel'
+		            ),
+		            array(
+		                'tx' => 'Paneles de pestañas',
+		                'st' => '#item-tabpanel'
+		            ),
+		            array(
+		                'tx' => 'Filas y columnas',
+		                'st' => '#item-rowcol'
+		            ),
+		            array(
+		                'tx' => 'Formularios',
+		                'st' => '#item-form'
+		            )
 		        ),
 		        'home' => array (
 		            'tx1' => '¿Qué es Ci-bus Framework?',
 		            'tx2' => 'Ci-bus es un cojunto de herramientas javascript y php que te permitirá crear aplicaciones webs de manera fácil e intuitiva con las más novedosas técnicas de programación',
 		            'tx3' => '¿Cuáles han sido mis motivaciones?',
-		            'tx4' => 'Desarrollando Apps con Extjs para grandes compañias como el banco ING, Volskwagen, Curanum, ICIS+, Lufthansa entre otras pude apreciar grandes cadencias '
+		            'tx4' => 'Desarrollando Apps con Extjs para grandes compañias como el banco ING, Volskwagen, Curanum, ICIS+, Lufthansa entre otras pude apreciar cadencias '
 		                      .'y aspectos del framework que me resultaban odiosos, el peor de todos al igual que Angular es la absurda y desmesurada complejidad a la hora de hacer simples tareas, '
 		                      .'creo firmemente que el \'código minimalista\' es el camino correcto, no me vale eso de... es que es muy potente... cuando un framework va ganando en complejidad '
 		                      .'llegando al punto de dar más trabajo en vez de quitarlo para mi pierde el sentido, existen proyectos como jQuery que han sabido mantenerse en la simplicidad y la flexibilidad.<br>'
 		                      .'Días tras día se me fueron ocurriendo pequeñas ideas y mejores modos de aplicar estilos, listeners, crear elementos, cargar datos... '
                               .'hasta llegar al día en que todo eso se condensó, sabía que usaría jQuery y pensé en bootstrap para los estilos, me puse manos a la obra y como si lo estuviera recreando '
-		                      .'solté más de mil lineas de códigos en a penas unas horas las cuales creaban elementos html en base a definiciones en objetos javascript, ci-bus mi segundo framework daba '
-		                      .'sus primeros coletazos de vida',
+		                      .'solté cerca de mil lineas de códigos en varias horas las cuales creaban elementos html en base a definiciones en objetos javascript, ci-bus mi segundo framework daba '
+		                      .'sus primeros coletazos de vida.',
 		            'tx5' => '¿Cuál es el objetivo?',
 		            'tx6' => 'Dejar constancia de mis capacidades como arquitecto de software creando un framework muy fácil de usar, simplicidad ante todo, versatilidad y ligereza, '
-		                      .'hacer que los programadores disfruten trabajando haciendo cosas locas de las que te hacen pensar... esto va a explotar... y que funcione',
+		                      .'hacer que los programadores disfruten trabajando haciendo cosas locas de las que te hacen pensar... esto va a explotar... y que funcione.',
 		            'tx7' => 'Datos de contacto',
 		            'tx8' => 'Donativos',
 		            'tx9' => 'Si te ha gustado Ci-bus haz click aquí para hacer un donativo apoyando al desarrollo'
@@ -124,7 +172,7 @@
 		            'tx14' => 'Booleano',
 		            'tx15' => 'Función que se ejecuta cuando se carga la vista',
 		            'tx16' => 'Items',
-		            'tx17' => 'La propiedad items acepta un objeto o array de objetos que serán los componentes que al ser renderizados se convertirán en elementos html, para ver todos los items disponibles visita el apartado: '
+		            'tx17' => 'La propiedad items acepta un objeto o array de objetos que serán los componentes, al ser renderizados se convertirán en elementos html, para ver todos los items disponibles visita el apartado: '
 		        ),
 		        'items' => array (
 		            'tx1' => 'Información general sobre items disponibles y ejemplos básicos',
@@ -164,6 +212,30 @@
 		            'tx34' => '1. Objeto o array de objetos con definiciones de barras',
 		            'tx35' => 'Añade barras al progreso',
 		            'tx36' => 'Elimina una barra',
+		            'tx37' => '1. Valor en número',
+		            'tx38' => 'Cambia el valor de la barra, el máximo o el mínimo',
+		            'tx39' => '1. Texto, html plano o elemento',
+		            'tx40' => 'Cambia el texto de una barra',
+		            'tx41' => '1. Booleano true o false',
+		            'tx42' => 'Pone o quita stripe a la barra',
+		            'tx43' => 'Activa o desactiva la animación del stripe',
+		            'tx44' => 'Componente tablas',
+		            'tx45' => 'Componente iconos',
+		            'tx46' => 'Tipo elemento html, por defecto es div',
+		            'tx47' => 'Componente miniaturas',
+		            'tx48' => 'Componente alertas',
+		            'tx49' => 'Componente insignias',
+		            'tx50' => 'Componente barra de herramientas',
+		            'tx51' => 'Texto para el atributo aria-label',
+		            'tx52' => 'Componente grupos',
+		            'tx53' => 'Componente textos destacados',
+		            'tx54' => 'Texto para el título',
+		            'tx55' => 'Componente paneles',
+		            'tx56' => 'Componente paneles de pestañas',
+		            'tx57' => 'Componente filas y columnas',
+		            'tx58' => 'Número del 1 al 12 u objeto',
+		            'tx59' => 'Número del 1 al 12',
+		            'tx60' => 'Componente formularios'
 		        )
 		    ));
 		}

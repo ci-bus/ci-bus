@@ -59,6 +59,8 @@ cb.define({
 	formatCode: function (code) {
 	    code = code.replace(new RegExp('{',"g"), '&#123;');
 	    code = code.replace(new RegExp('}',"g"), '&#125;');
+	    code = code.replace(new RegExp('<',"g"), '&#60;');
+        code = code.replace(new RegExp('>',"g"), '&#62;');
 	    return code;
 	}
 });

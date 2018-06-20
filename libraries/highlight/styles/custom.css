@@ -1,13 +1,3 @@
-.bs-callout.code {
-	background: #f2f5f7;
-}
-
-.bs-callout.code pre {
-	background: #fff;
-	border: 1px solid #eee;
-	border-left: 3px solid #eee;
-}
-
 .hljs-comment,
 .hljs-quote {
   color: #8e908c;
@@ -60,7 +50,6 @@
 .hljs {
   display: block;
   overflow-x: auto;
-  background: #f5f5f5;
   color: #000;
   padding: 0.5em;
 }
@@ -75,4 +64,26 @@
 
 .hljs-strong {
   font-weight: bold;
+}
+
+.bs-callout {
+	background: #fff;
+}
+
+.bs-callout .bs-callout, .bs-callout pre, code.hljs {
+	background: #f8f8f8;
+}
+
+.bs-callout .bs-callout .bs-callout {
+	background: #fff;
+}
+
+.bs-callout.code {
+	background: #f1f1f1;
+}
+
+.bs-callout.code pre {
+	background: #fff;
+	border: 1px solid #eee;
+	border-left: 3px solid #eee;
 }

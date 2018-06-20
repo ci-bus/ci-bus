@@ -497,7 +497,7 @@ cb.base.element = {
 		return this.opt.record? this.opt.record: this.record? this.record: false;
 	},
 	getValue: function() {
-		return this.val()? this.val(): this.getRecord();
+		return this.val()? this.val(): this.getRecord()? this.getRecord(): null;
 	},
 	getOpt: function(dt) {
 		if (this.component) {
@@ -575,6 +575,28 @@ cb.base.element = {
 	        return cb.getCmp(this.parent());
 	    }
         return null;
+	},
+	getNode: function () {
+	    if (cb.isNode(this[0])) {
+	        return this[0];
+	    } else if (cb.isNode(this.getOpt('element')[0])) {
+	        return this.getOpt('element')[0];
+	    }
+	    return null;
+	},
+	selectContent: function () {
+	    var node = this.getNode();
+	    if (window.getSelection) {
+	        selection = window.getSelection();
+	        range = document.createRange();
+	        range.selectNodeContents(node);
+	        selection.removeAllRanges();
+	        selection.addRange(range);
+        } else if (document.body.createTextRange) {
+            range = document.body.createTextRange();
+            range.moveToElementText(node);
+            range.select();
+        }
 	}
 };
 
@@ -1995,15 +2017,32 @@ cb.module.bootstrapComponent = {
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
+	'td': function (opt, record) {
+	    var ele = document.createElement('td');
+	    if (opt.type)
+        {
+            var tcls = opt.type.split(' ');
+            for (var i=0; i<tcls.length; i++)
+            {
+                if (tcls[i].trim() != '') $(ele).addClass(tcls[i]);
+            }
+            opt.notype = true;
+        }
+        ele = cb.common_prop(ele, opt);
+        return ele;
+	},
 	'th': function(opt, record) {
 		var ele = document.createElement('th');
 		if (opt.scope) $(ele).attr('scope', opt.scope);
-		ele = cb.common_prop(ele, opt);
-		return ele;
-	},
-	'ico': function(opt, record) {
-		var ele = document.createElement('span');
-		$(ele).addClass(opt.type).attr({'aria-hidden':'true'});
+		if (opt.type)
+        {
+            var tcls = opt.type.split(' ');
+            for (var i=0; i<tcls.length; i++)
+            {
+                if (tcls[i].trim() != '') $(ele).addClass(tcls[i]);
+            }
+            opt.notype = true;
+        }
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
@@ -2045,7 +2084,7 @@ cb.module.bootstrapComponent = {
 	},
 	'badge': function(opt, record) {
 		var ele = document.createElement('span');
-		opt.cls = 'badge';
+		$(ele).addClass('badge');
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
@@ -2059,12 +2098,25 @@ cb.module.bootstrapComponent = {
 	},
 	'group': function(opt, record) {
 		var ele = document.createElement('div');
-		if (opt.type == 'vertical') $(ele).addClass('btn-group-vertical');
-		else $(ele).addClass('btn-group');
-		if (opt.type == 'justified') $(ele).addClass('btn-group-justified');
+		if (opt.type)
+        {
+            var tcls = opt.type.split(' ');
+            for (var i=0; i<tcls.length; i++)
+            {
+                if (tcls[i].trim() != '') $(ele).addClass('btn-group-' + tcls[i]);
+            }
+            opt.notype = true;
+        } else $(ele).addClass('btn-group');
 		$(ele).attr('role','group');
 		if (opt.label) $(ele).attr('aria-label', opt.label);
 		if (opt.size) $(ele).addClass('btn-group-'+opt.size);
+		if ($.isArray(opt.items)) {
+		    for (var i = 0; i < opt.items.length; i ++) {
+		        if (!opt.items[i].margin) { // Clear margin by defect
+		            opt.items[i].margin = 0;
+		        }
+		    }
+		}
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
@@ -2072,12 +2124,12 @@ cb.module.bootstrapComponent = {
 		var ele = document.createElement('div');
 		$(ele).addClass('bs-callout');
 		if (opt.type) $(ele).addClass('bs-callout-'+opt.type);
-		delete opt.type;
+		opt.notype = true;
 		if (opt.title) $(ele).append(cb.create({ xtype: 'h4', text: opt.title }));
 		if (opt.text || opt.html)
 		{
 			opt.text? opt.ttext = opt.text : opt.ttext = opt.html;
-			$(ele).html(opt.ttext);
+			$(ele).append(opt.ttext);
 			opt.notext = true;
 			opt.nohtml = true;
 		}
@@ -2313,7 +2365,6 @@ cb.module.bootstrapComponent = {
 	'row': function(opt, record) {
 		var ele = document.createElement('div');
 		$(ele).addClass('row');
-		if (opt.margin==null || opt.margin==undefined) opt.margin = '3px';
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
@@ -2344,7 +2395,7 @@ cb.module.bootstrapComponent = {
 				$(ele).addClass('col-xs-offset-'+opt.offset);
 			}
 		}
-		if (!opt.padding && opt.padding!==0)opt.padding = '0px 5px';
+		if (!opt.padding && opt.padding !== 0)opt.padding = '0px 5px';
 		delete opt.size;
 		ele = cb.common_prop(ele, opt);
 		return ele;
@@ -2365,20 +2416,23 @@ cb.module.bootstrapComponent = {
 				}
 			}
 			var input = document.createElement('input');
-			$(input).attr({type: 'file', hidden: 'hidden'});
+			$(input).attr({type: 'file'});
 			if (opt.id) {
 				$(input).attr('id', opt.id);
-				delete opt.type;
 			}
 			if (opt.name) {
 				$(input).attr('name', opt.name);
 				delete opt.name;
 			}
+			if ($.isFunction(opt.change)) {
+			    $(input).change(opt.change);
+			    delete opt.change;
+			}
 			if (opt.listener) {
 				$(input).on(opt.listener);
 				delete opt.listener;
 			}
-			delete opt.type;
+			opt.notype = true;
 			if (!opt.text && !opt.html && !opt.items && opt.name) {
 				opt.text = opt.name;
 			}
@@ -2413,6 +2467,12 @@ cb.module.bootstrapComponent = {
 	'form': function(opt, record) {
 		if (!opt.name) opt.name = cb.autoname();
 		var ele = document.createElement('form');
+		if (opt.method) {
+		    $(ele).attr('method', opt.method);
+		}
+		if (opt.enctype) {
+            $(ele).attr('enctype', opt.enctype);
+        }
 		if ($.isArray(opt.items))
 		{
 			for (var s=0; s<opt.items.length; s++)
@@ -2437,6 +2497,7 @@ cb.module.bootstrapComponent = {
 	'glyphicon': function(opt, record) {
 		var ele = document.createElement('span');
 		$(ele).addClass('glyphicon glyphicon-'+opt.type);
+		opt.notype = true;
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
@@ -2898,7 +2959,6 @@ cb.create = function(opt, record) {
 			if (!be) {
 				opt.extend.unshift('base.element');
 			}
-			if (opt.extend.length > 2) debugger;
 		} else if (typeof opt.extend == 'string' && opt.extend != 'base.element') {
 			opt.extend = ['base.element', opt.extend];
 		} else {
@@ -2929,7 +2989,7 @@ cb.create = function(opt, record) {
         }
 		
         // Get record
-        if (!record) {
+        if (!record || opt.noRecordParsed) {
             // Get record from opt
             if (opt.record) {
                 record = opt.record;
