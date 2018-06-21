@@ -1616,6 +1616,28 @@ cb.define({
                         text: '{tx76}'
                     }]]
                 }]
+            }, {
+                xtype: 'table',
+                css: {
+                    'margin-bottom': 10
+                },
+                items: [{
+                    xtype: 'head',
+                    items: [{
+                        text: 'removeRow'
+                    }, {width: '100%'}]
+                }, {
+                    xtype: 'body',
+                    items: [[{
+                        text: '{tx17}'
+                    }, {
+                        text: '1. {tx72}'
+                    }], [{
+                        text: '{tx18}'
+                    }, {
+                        text: '{tx77}'
+                    }]]
+                }]
             }]
         }, {
             xtype: 'callout',

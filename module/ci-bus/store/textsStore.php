@@ -262,8 +262,9 @@
 		            'tx72' => 'Posición en número',
 		            'tx73' => 'Añade una columna',
 		            'tx74' => 'Elimina una columna',
-		            'tx75' => 'Objeto con datos (record)',
-		            'tx76' => 'Añade una fila'
+		            'tx75' => 'Objeto o array de objetos con datos (record)',
+		            'tx76' => 'Añade una fila',
+		            'tx77' => 'Elimina una fila'
 		        )
 		    ));
 		}
