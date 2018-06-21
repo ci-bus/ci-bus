@@ -259,7 +259,11 @@
 		            'tx69' => 'true (necesite tener un store) esto hace que los datos del store siempre estén sincronizados con la vista',
 		            'tx70' => 'Componente cuadrícula',
 		            'tx71' => 'Objeto columna con las propiedades mínimas name y text o field',
-		            '' => ''
+		            'tx72' => 'Posición en número',
+		            'tx73' => 'Añade una columna',
+		            'tx74' => 'Elimina una columna',
+		            'tx75' => 'Objeto con datos (record)',
+		            'tx76' => 'Añade una fila'
 		        )
 		    ));
 		}

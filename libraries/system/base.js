@@ -2796,7 +2796,7 @@ cb.props = {
 		}
 	},
 	'type': function(ele, opt) {
-		if (!opt.notype) {
+		if (opt.type && !opt.notype) {
 			$(ele).attr('type', opt.type);
 		}
 	},

@@ -214,9 +214,8 @@ cb.define({
                         items: [{
                             xtype: 'head',
                             items: [{
-                                text: 'addItems',
-                                colspan: 2
-                            }]
+                                text: 'addItems'
+                            }, {width: '100%'}]
                         }, {
                             xtype: 'body',
                             items: [[{
@@ -237,9 +236,8 @@ cb.define({
                         items: [{
                             xtype: 'head',
                             items: [{
-                                text: 'removeItems',
-                                colspan: 2
-                            }]
+                                text: 'removeItems'
+                            }, {width: '100%'}]
                         }, {
                             xtype: 'body',
                             items: [[{
@@ -260,9 +258,8 @@ cb.define({
                         items: [{
                             xtype: 'head',
                             items: [{
-                                text: 'replaceItems',
-                                colspan: 2
-                            }]
+                                text: 'replaceItems'
+                            }, {width: '100%'}]
                         }, {
                             xtype: 'body',
                             items: [[{
@@ -283,9 +280,8 @@ cb.define({
                         items: [{
                             xtype: 'head',
                             items: [{
-                                text: 'open',
-                                colspan: 2
-                            }]
+                                text: 'open'
+                            }, {width: '100%'}]
                         }, {
                             xtype: 'body',
                             items: [[{
@@ -306,9 +302,8 @@ cb.define({
                         items: [{
                             xtype: 'head',
                             items: [{
-                                text: 'close',
-                                colspan: 2
-                            }]
+                                text: 'close'
+                            }, {width: '100%'}]
                         }, {
                             xtype: 'body',
                             items: [[{
@@ -476,9 +471,8 @@ cb.define({
                         items: [{
                             xtype: 'head',
                             items: [{
-                                text: 'getBar',
-                                colspan: 2
-                            }]
+                                text: 'getBar'
+                            }, {width: '100%'}]
                         }, {
                             xtype: 'body',
                             items: [[{
@@ -499,9 +493,8 @@ cb.define({
                         items: [{
                             xtype: 'head',
                             items: [{
-                                text: 'addBar',
-                                colspan: 2
-                            }]
+                                text: 'addBar'
+                            }, {width: '100%'}]
                         }, {
                             xtype: 'body',
                             items: [[{
@@ -522,9 +515,8 @@ cb.define({
                         items: [{
                             xtype: 'head',
                             items: [{
-                                text: 'removeBar',
-                                colspan: 2
-                            }]
+                                text: 'removeBar'
+                            }, {width: '100%'}]
                         }, {
                             xtype: 'body',
                             items: [[{
@@ -552,9 +544,8 @@ cb.define({
                         items: [{
                             xtype: 'head',
                             items: [{
-                                text: 'setValue, setMax, setMin', // ----------
-                                colspan: 2
-                            }]
+                                text: 'setValue, setMax, setMin'
+                            }, {width: '100%'}]
                         }, {
                             xtype: 'body',
                             items: [[{
@@ -575,9 +566,8 @@ cb.define({
                         items: [{
                             xtype: 'head',
                             items: [{
-                                text: 'setText', // -----------
-                                colspan: 2
-                            }]
+                                text: 'setText'
+                            }, {width: '100%'}]
                         }, {
                             xtype: 'body',
                             items: [[{
@@ -598,9 +588,8 @@ cb.define({
                         items: [{
                             xtype: 'head',
                             items: [{
-                                text: 'setStriped', // -----------
-                                colspan: 2
-                            }]
+                                text: 'setStriped'
+                            }, {width: '100%'}]
                         }, {
                             xtype: 'body',
                             items: [[{
@@ -621,9 +610,8 @@ cb.define({
                         items: [{
                             xtype: 'head',
                             items: [{
-                                text: 'setActive', // -----------
-                                colspan: 2
-                            }]
+                                text: 'setActive'
+                            }, {width: '100%'}]
                         }, {
                             xtype: 'body',
                             items: [[{
@@ -1446,9 +1434,8 @@ cb.define({
                         items: [{
                             xtype: 'head',
                             items: [{
-                                text: 'bootstrapToggle',
-                                colspan: 2
-                            }]
+                                text: 'bootstrapToggle'
+                            }, {width: '100%'}]
                         }, {
                             xtype: 'body',
                             items: [[{
@@ -1571,19 +1558,62 @@ cb.define({
                 items: [{
                     xtype: 'head',
                     items: [{
-                        text: 'addColumns',
-                        colspan: 2
-                    }]
+                        text: 'addColumns'
+                    }, {width: '100%'}]
                 }, {
                     xtype: 'body',
                     items: [[{
                         text: '{tx17}'
                     }, {
-                        text: 'destroy, on, off, toggle, enable, disable'
+                        text: '1. {tx71}, 2. {tx72}'
                     }], [{
                         text: '{tx18}'
                     }, {
-                        text: '{tx65}'
+                        text: '{tx73}'
+                    }]]
+                }]
+            }, {
+                xtype: 'table',
+                css: {
+                    'margin-bottom': 10
+                },
+                items: [{
+                    xtype: 'head',
+                    items: [{
+                        text: 'removeColumn'
+                    }, {width: '100%'}]
+                }, {
+                    xtype: 'body',
+                    items: [[{
+                        text: '{tx17}'
+                    }, {
+                        text: '1. {tx72}'
+                    }], [{
+                        text: '{tx18}'
+                    }, {
+                        text: '{tx74}'
+                    }]]
+                }]
+            }, {
+                xtype: 'table',
+                css: {
+                    'margin-bottom': 10
+                },
+                items: [{
+                    xtype: 'head',
+                    items: [{
+                        text: 'addRows'
+                    }, {width: '100%'}]
+                }, {
+                    xtype: 'body',
+                    items: [[{
+                        text: '{tx17}'
+                    }, {
+                        text: '1. {tx75}, 2. {tx72}'
+                    }], [{
+                        text: '{tx18}'
+                    }, {
+                        text: '{tx76}'
                     }]]
                 }]
             }]
