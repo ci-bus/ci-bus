@@ -139,7 +139,7 @@ cb.define({
             $(bot).animate({'zoom': 1, 'scale': 1, 'margin-top': '5px'}, 'fast');
             
             // Set value to store
-            cb.getCmp(bot).up('like').getStore().addData({value: value}, 'like');
+            cb.getCmp(bot).up('component').getStore().addData({value: value}, 'like');
             console.log(cb.getStore('example').getData('like'));
         }
     },
