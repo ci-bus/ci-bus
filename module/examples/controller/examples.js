@@ -46,8 +46,8 @@ cb.define({
                 	info: 'Root',
                 	date: '2018-05-06'
                 }, {
-                	name: 'Jimena',
-                	lastname: 'Rincon',
+                	name: 'María',
+                	lastname: 'González',
                 	info: 'Admin',
                 	date: '2018-05-06'
                 }, {

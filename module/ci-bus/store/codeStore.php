@@ -351,7 +351,7 @@ $code15 = "{
             scope: 'row',
             text: '2'
         }, {
-            text: 'Jimena'
+            text: 'María'
         }, {
             text: 'admin'
         }]]
@@ -667,10 +667,11 @@ $code29 = "{
     }, {
     	name: 'Miguel',
     	type: 'Root',
-    	date: '2018-05-06'
+    	date: '2018-05-06',
+        ctype: 'info'
     }, {
-    	name: 'Jimena',
-    	lastname: 'Rincon',
+    	name: 'María',
+    	lastname: 'González',
     	type: 'Admin',
     	date: '2018-05-06'
     }, {
@@ -691,13 +692,16 @@ $code29 = "{
 
     columns: [{
         name: 'Name',
-        text: '{name} {lastname}'
+        text: '{name} {lastname}',
+        type: '{ctype}'
     }, {
         name: 'Type',
-        field: 'type'
+        text: '{type}',
+        type: '{ctype}'
     }, {
         name: 'Date',
-        field: 'date'
+        text: '{date}',
+        type: '{ctype}'
     }],
     
     head: {
@@ -708,10 +712,8 @@ $code29 = "{
             overflow: 'auto'
         },
         table: {
-            css: {
-                'border': '1px solid #DDD',
-                'border-bottom': '1px solid #DDD'
-            },
+            type: 'hover',
+            border: '1px solid #DDD',
             beforeItems: {
                 xtype: 'div',
                 text: 'Item text before',

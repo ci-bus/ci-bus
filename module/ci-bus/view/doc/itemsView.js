@@ -1437,7 +1437,7 @@ cb.define({
                     margin: '10px 0px',
                     items: [{
                         xtype: 'label',
-                        text: '{tx16} toggle'
+                        text: '{tx16}'
                     }, {
                         xtype: 'table',
                         css: {
@@ -1559,6 +1559,36 @@ cb.define({
             id: 'item-grid'
         }, {
             xtype: 'callout',
+            margin: '10px 0px',
+            items: [{
+                xtype: 'label',
+                text: '{tx16}'
+            }, {
+                xtype: 'table',
+                css: {
+                    'margin-bottom': 10
+                },
+                items: [{
+                    xtype: 'head',
+                    items: [{
+                        text: 'addColumns',
+                        colspan: 2
+                    }]
+                }, {
+                    xtype: 'body',
+                    items: [[{
+                        text: '{tx17}'
+                    }, {
+                        text: 'destroy, on, off, toggle, enable, disable'
+                    }], [{
+                        text: '{tx18}'
+                    }, {
+                        text: '{tx65}'
+                    }]]
+                }]
+            }]
+        }, {
+            xtype: 'callout',
             items: [{
                 xtype: 'div',
                 items: [{
@@ -1577,6 +1607,12 @@ cb.define({
                             xtype: 'code',
                             store: 'code',
                             field: 'cd29',
+                            alterdata: {
+                                'code': function (v) {
+                                    v = cb.ctr('ci-bus', 'formatCode', v);
+                                    return v;
+                                }
+                            },
                             cls: '{type}',
                             text: '{code}'
                         }

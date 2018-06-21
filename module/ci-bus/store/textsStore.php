@@ -257,7 +257,9 @@
 		            'tx67' => 'Número',
 		            'tx68' => 'Color',
 		            'tx69' => 'true (necesite tener un store) esto hace que los datos del store siempre estén sincronizados con la vista',
-		            'tx70' => 'Componente cuadrícula'
+		            'tx70' => 'Componente cuadrícula',
+		            'tx71' => 'Objeto columna con las propiedades mínimas name y text o field',
+		            '' => ''
 		        )
 		    ));
 		}
