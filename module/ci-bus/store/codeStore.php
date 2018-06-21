@@ -675,11 +675,11 @@ $code29 = "{
     	type: 'Admin',
     	date: '2018-05-06'
     }, {
-    	name: 'Daniel',
+    	name: 'Agustín',
     	type: 'User',
     	date: '2018-05-03'
     }, {
-    	name: 'Javier',
+    	name: 'Francisca',
     	type: 'User',
     	date: '2018-05-04'
     }],

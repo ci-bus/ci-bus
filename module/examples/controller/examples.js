@@ -51,11 +51,11 @@ cb.define({
                 	info: 'Admin',
                 	date: '2018-05-06'
                 }, {
-                	name: 'Daniel',
+                	name: 'Agustín',
                 	info: 'User',
                 	date: '2018-05-03'
                 }, {
-                	name: 'Javier',
+                	name: 'Francisca',
                 	info: 'User',
                 	date: '2018-05-04'
                 }],
