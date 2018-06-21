@@ -1546,105 +1546,134 @@ cb.define({
             id: 'item-grid'
         }, {
             xtype: 'callout',
-            margin: '10px 0px',
-            items: [{
-                xtype: 'label',
-                text: '{tx16}'
-            }, {
-                xtype: 'table',
-                css: {
-                    'margin-bottom': 10
-                },
-                items: [{
-                    xtype: 'head',
-                    items: [{
-                        text: 'addColumns'
-                    }, {width: '100%'}]
-                }, {
-                    xtype: 'body',
-                    items: [[{
-                        text: '{tx17}'
-                    }, {
-                        text: '1. {tx71}, 2. {tx72}'
-                    }], [{
-                        text: '{tx18}'
-                    }, {
-                        text: '{tx73}'
-                    }]]
-                }]
-            }, {
-                xtype: 'table',
-                css: {
-                    'margin-bottom': 10
-                },
-                items: [{
-                    xtype: 'head',
-                    items: [{
-                        text: 'removeColumn'
-                    }, {width: '100%'}]
-                }, {
-                    xtype: 'body',
-                    items: [[{
-                        text: '{tx17}'
-                    }, {
-                        text: '1. {tx72}'
-                    }], [{
-                        text: '{tx18}'
-                    }, {
-                        text: '{tx74}'
-                    }]]
-                }]
-            }, {
-                xtype: 'table',
-                css: {
-                    'margin-bottom': 10
-                },
-                items: [{
-                    xtype: 'head',
-                    items: [{
-                        text: 'addRows'
-                    }, {width: '100%'}]
-                }, {
-                    xtype: 'body',
-                    items: [[{
-                        text: '{tx17}'
-                    }, {
-                        text: '1. {tx75}, 2. {tx72}'
-                    }], [{
-                        text: '{tx18}'
-                    }, {
-                        text: '{tx76}'
-                    }]]
-                }]
-            }, {
-                xtype: 'table',
-                css: {
-                    'margin-bottom': 10
-                },
-                items: [{
-                    xtype: 'head',
-                    items: [{
-                        text: 'removeRow'
-                    }, {width: '100%'}]
-                }, {
-                    xtype: 'body',
-                    items: [[{
-                        text: '{tx17}'
-                    }, {
-                        text: '1. {tx72}'
-                    }], [{
-                        text: '{tx18}'
-                    }, {
-                        text: '{tx77}'
-                    }]]
-                }]
-            }]
-        }, {
-            xtype: 'callout',
             items: [{
                 xtype: 'div',
                 items: [{
                     field: 'tx70'
+                }, {
+                    xtype: 'callout',
+                    margin: '10px 0px',
+                    items: [{
+                        xtype: 'label',
+                        text: '{tx10}'
+                    }, {
+                        xtype: 'table',
+                        margin: 0,
+                        items: [{
+                            xtype: 'head',
+                            items: [{
+                                field: 'tx8'
+                            }, {
+                                field: 'tx9'
+                            }]
+                        }, {
+                            xtype: 'body',
+                            items: [[{
+                                text: 'type'
+                            }, {
+                                text: 'default, primary, success, info, warning, danger'
+                            }], [{
+                                text: 'storelink'
+                            }, {
+                                text: '{tx69}'
+                            }]]
+                        }]
+                    }]
+                }, {
+                    xtype: 'callout',
+                    margin: '10px 0px',
+                    items: [{
+                        xtype: 'label',
+                        text: '{tx16}'
+                    }, {
+                        xtype: 'table',
+                        css: {
+                            'margin-bottom': 10
+                        },
+                        items: [{
+                            xtype: 'head',
+                            items: [{
+                                text: 'addColumns'
+                            }, {width: '100%'}]
+                        }, {
+                            xtype: 'body',
+                            items: [[{
+                                text: '{tx17}'
+                            }, {
+                                text: '1. {tx71}, 2. {tx72}'
+                            }], [{
+                                text: '{tx18}'
+                            }, {
+                                text: '{tx73}'
+                            }]]
+                        }]
+                    }, {
+                        xtype: 'table',
+                        css: {
+                            'margin-bottom': 10
+                        },
+                        items: [{
+                            xtype: 'head',
+                            items: [{
+                                text: 'removeColumn'
+                            }, {width: '100%'}]
+                        }, {
+                            xtype: 'body',
+                            items: [[{
+                                text: '{tx17}'
+                            }, {
+                                text: '1. {tx72}'
+                            }], [{
+                                text: '{tx18}'
+                            }, {
+                                text: '{tx74}'
+                            }]]
+                        }]
+                    }, {
+                        xtype: 'table',
+                        css: {
+                            'margin-bottom': 10
+                        },
+                        items: [{
+                            xtype: 'head',
+                            items: [{
+                                text: 'addRows'
+                            }, {width: '100%'}]
+                        }, {
+                            xtype: 'body',
+                            items: [[{
+                                text: '{tx17}'
+                            }, {
+                                text: '1. {tx75}, 2. {tx72}'
+                            }], [{
+                                text: '{tx18}'
+                            }, {
+                                text: '{tx76}'
+                            }]]
+                        }]
+                    }, {
+                        xtype: 'table',
+                        css: {
+                            'margin-bottom': 10
+                        },
+                        items: [{
+                            xtype: 'head',
+                            items: [{
+                                text: 'removeRow'
+                            }, {width: '100%'}]
+                        }, {
+                            xtype: 'body',
+                            items: [[{
+                                text: '{tx17}'
+                            }, {
+                                text: '1. {tx72}'
+                            }], [{
+                                text: '{tx18}'
+                            }, {
+                                text: '{tx77}'
+                            }]]
+                        }]
+                    }]
                 }, {
                     xtype: 'callout',
                     cls: 'code',
