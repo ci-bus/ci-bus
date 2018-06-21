@@ -630,11 +630,7 @@ cb.base.dropdown = {
 			event = 'changeItems';
 		}
 		if (items) {
-			if (!this.find) {
-			    var eleCmp = cb.getCmp($.isArray(this)? this[0]: this);
-			} else {
-			    var eleCmp = this;
-			}
+			var eleCmp = cb.getCmp(this);
 			var ul = eleCmp.find('ul:first');
 			if (!record) {
 			    record = false;
@@ -688,11 +684,7 @@ cb.base.dropdown = {
 		if (!event) {
 			event = 'changeItems';
 		}
-		if (!this.find) {
-            var eleCmp = cb.getCmp($.isArray(this)? this[0]: this);
-        } else {
-            var eleCmp = this;
-        }
+		var eleCmp = cb.getCmp(this);
         var ul = eleCmp.find('ul:first');
         var lis = ul.children();
 	    if (items) {
@@ -736,11 +728,7 @@ cb.base.dropdown = {
 	    return this;
 	},
 	open: function () {
-	    if (!this.find) {
-            var eleCmp = cb.getCmp($.isArray(this)? this[0]: this);
-        } else {
-            var eleCmp = this;
-        }
+	    var eleCmp = cb.getCmp(this);
         var button = eleCmp.find('button:first');
         if (button.attr('aria-expanded') == 'false') {
         	eleCmp.addClass('open');
@@ -749,11 +737,7 @@ cb.base.dropdown = {
         return this;
 	},
 	close: function () {
-	    if (!this.find) {
-            var eleCmp = cb.getCmp($.isArray(this)? this[0]: this);
-        } else {
-            var eleCmp = this;
-        }
+	    var eleCmp = cb.getCmp(this);
         var button = eleCmp.find('button:first');
         if (button.attr('aria-expanded') == 'true') {
         	eleCmp.removeClass('open');
@@ -1085,6 +1069,9 @@ cb.getComponent = function(name, field) {
 // Funcion para coger un elemento
 // éste poseerá las funciones base de ci-bus y de jQuery
 cb.getCmp = function(ref, idx) {
+    if (typeof ref == 'object' && typeof ref.find == 'function' && typeof ref.getType == 'function') {
+        return ref;
+    }
     if (!idx) idx = 0;
     if (typeof ref == 'string') {
         // Search by css selector
