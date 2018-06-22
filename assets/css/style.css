@@ -116,10 +116,10 @@ a.disabled {
 .bs-callout {
     padding: 10px 20px;
     margin: 0 0 20px;
-    font-size: 17.5px;
     border: 1px solid #eee;
     border-left-width: 5px;
     border-radius: 3px;
+    background: #fff;
 }
 
 .bs-callout-info {
