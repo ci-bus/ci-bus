@@ -10,26 +10,32 @@ function drag(ev) {
 function drop(ev) {
     ev.preventDefault();
     var id = ev.dataTransfer.getData("id");
-    
-    if (cb.getCmp(ev.target).getType() == 'td') {
-        cb.getCmp(ev.target).append(document.getElementById(id));
-    } else if (cb.getCmp(ev.target).getType() == 'callout') {
-        cb.getCmp(ev.target).after(document.getElementById(id));
-    } else {
-        cb.getCmp(ev.target).up('callout').after(document.getElementById(id));
-    }
-    // TODO change status task
     var callout = cb.getCmp('#' + id);
-    callout.css('opacity', '');
     if (cb.getCmp(ev.target).getType() == 'td') {
         var td = cb.getCmp(ev.target);
     } else {
         var td = cb.getCmp(ev.target).up('td');
     }
-    var new_status = td.getOpt('status');
-    var user_id = td.getRecord().user.id;
-    var task_id = callout.getRecord().id;
-    debugger;
+    
+    if (td.getOpt('status')) {
+        if (cb.getCmp(ev.target).getType() == 'td') {
+            cb.getCmp(ev.target).append(document.getElementById(id));
+        } else if (cb.getCmp(ev.target).getType() == 'callout') {
+            cb.getCmp(ev.target).after(document.getElementById(id));
+        } else {
+            cb.getCmp(ev.target).up('callout').after(document.getElementById(id));
+        }
+        
+        var new_status = td.getOpt('status');
+        var user_id = td.getRecord().user.id;
+        var task_id = callout.getRecord().id;
+        cb.ctr('tasks', 'changeStatus', {
+            'new_step': new_status,
+            'user_id': user_id,
+            'task_id': task_id
+        });
+    }
+    callout.css('opacity', '');
 }
 
 function open_task (record) {
@@ -119,46 +125,6 @@ cb.define({
 });
 
 cb.define({
-    xtype: 'store',
-    name: 'tasks',
-    data: [{
-        user: {
-            id: 1,
-            name: 'Miguel'
-        },
-        todo: [{
-            title: 'Task to-do',
-            project: 'Edeka',
-            type: 'info',
-            id: 1
-        }],
-        inprogress: [{
-            title: 'Task in progress',
-            project: 'Edeka',
-            type: 'warning',
-            id: 2
-        }],
-        inreview: [{
-            title: 'Task in review',
-            project: 'Edeka',
-            type: 'danger',
-            id: 3
-        }],
-        done: [{
-            title: 'Task done',
-            project: 'Edeka',
-            type: 'success',
-            id: 4
-        }, {
-            title: 'Task done 2',
-            project: 'Edeka',
-            type: 'success',
-            id: 5
-        }]
-    }]
-});
-
-cb.define({
     xtype: 'view',
     name: 'dashboard',
     renderTo: 'body',
@@ -166,19 +132,16 @@ cb.define({
         xtype: 'grid',
         type: 'primary',
         store: 'tasks',
+        storelink: true,
         margin: 10,
         
         columns: [{
             name: 'User',
-            attr: {
-                ondrop: 'drop(event)',
-                ondragover: 'allowDrop(event)'
-            },
             field: 'user',
             text: '{name}'
         }, {
             name: 'To-do',
-            status: 'todo',
+            status: 1,
             attr: {
                 ondrop: 'drop(event)',
                 ondragover: 'allowDrop(event)'
@@ -189,7 +152,7 @@ cb.define({
             }
         }, {
             name: 'In progress',
-            status: 'inprogress',
+            status: 2,
             attr: {
                 ondrop: 'drop(event)',
                 ondragover: 'allowDrop(event)'
@@ -200,7 +163,7 @@ cb.define({
             }
         }, {
             name: 'In review',
-            status: 'inreview',
+            status: 3,
             attr: {
                 ondrop: 'drop(event)',
                 ondragover: 'allowDrop(event)'
@@ -211,7 +174,7 @@ cb.define({
             }
         }, {
             name: 'Done',
-            status: 'done',
+            status: 4,
             attr: {
                 ondrop: 'drop(event)',
                 ondragover: 'allowDrop(event)'

@@ -62,53 +62,59 @@
 			return $res;
 		}
 		
+		public function getQuery($table = false){
+		    if($table){
+		        
+		        $this->from($table);
+		    }
+		    
+		    if($this->getPart("select")){
+		        
+		        $query = "SELECT ".$this->getPart("select");
+		    }else{
+		        
+		        $query = "SELECT *";
+		    }
+		    
+		    $query .= " FROM ".$this->getPart("from");
+		    
+		    if($this->getPart("join")){
+		        
+		        $query .= " ".$this->getPart("join");
+		    }
+		    
+		    if($this->getPart("where")){
+		        
+		        $query .= " WHERE ".$this->getPart("where");
+		    }
+		    
+		    if($this->getPart("group_by")){
+		        
+		        $query .= " GROUP BY ".$this->getPart("group_by");
+		    }
+		    
+		    if($this->getPart("order_by")){
+		        
+		        $query .= " ORDER BY ".$this->getPart("order_by");
+		    }
+		    
+		    if($this->getPart("limit")){
+		        
+		        $query .= " LIMIT ".$this->getPart("limit");
+		    }
+		    
+		    return $query;
+		}
+		
 		public function get($table = false){
 			
-			if($table){
-				
-				$this->from($table);
-			}
-			
-			if($this->getPart("select")){
-				
-				$query = "SELECT ".$this->getPart("select");
-			}else{
-				
-				$query = "SELECT *";
-			}
-			
-			$query .= " FROM ".$this->getPart("from");
-			
-			if($this->getPart("join")){
-				
-				$query .= " ".$this->getPart("join");
-			}
-			
-			if($this->getPart("where")){
-				
-				$query .= " WHERE ".$this->getPart("where");
-			}
-			
-			if($this->getPart("group_by")){
-				
-				$query .= " GROUP BY ".$this->getPart("group_by");
-			}
-			
-			if($this->getPart("order_by")){
-				
-				$query .= " ORDER BY ".$this->getPart("order_by");
-			}
-			
-			if($this->getPart("limit")){
-				
-				$query .= " LIMIT ".$this->getPart("limit");
-			}
+			$query = $this->getQuery($table);
 			
 			$this->setConfig("num_rows", 0);
 			$this->setConfig("result", false);
 						
 			$res = $this->query($query);
-			
+						
 			if($this->numRows()){
 				
 				return $this->getResult();
