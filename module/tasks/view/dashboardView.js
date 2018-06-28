@@ -17,7 +17,7 @@ function drop(ev) {
         var td = cb.getCmp(ev.target).up('td');
     }
     
-    if (td.getOpt('status')) {
+    if ($.isNumeric(td.getOpt('status'))) {
         if (cb.getCmp(ev.target).getType() == 'td') {
             cb.getCmp(ev.target).append(document.getElementById(id));
         } else if (cb.getCmp(ev.target).getType() == 'callout') {
@@ -27,7 +27,7 @@ function drop(ev) {
         }
         
         var new_status = td.getOpt('status');
-        var user_id = td.getRecord().user.id;
+        var user_id = td.getRecord().user? td.getRecord().user.id: callout.getRecord().task_user_id;
         var task_id = callout.getRecord().id;
         cb.ctr('tasks', 'changeStatus', {
             'new_step': new_status,
@@ -36,6 +36,11 @@ function drop(ev) {
         });
     }
     callout.css('opacity', '');
+    if (new_status) {
+        callout.removeClass('pull-left').css('margin-right', 0);
+    } else {
+        callout.addClass('pull-left').css('margin-right', 10);
+    }
 }
 
 function open_task (record) {
@@ -196,13 +201,37 @@ cb.define({
             table: {
                 type: 'hover bordered',
                 border: '1px solid #DDD',
-                /*
-                beforeItems: {
-                    xtype: 'div',
-                    text: 'Item text before',
-                    padding: 5,
-                    background: '#f2f5f7'
-                },
+                
+                beforeItems: [{
+                    xtype: 'table',
+                    type: 'hover bordered',
+                    background: '#fff',
+                    margin: 0,
+                    items: [{
+                        xtype: 'head',
+                        items: [{
+                            text: 'Backlog'
+                        }]
+                    }, {
+                        xtype: 'body',
+                        items: [{
+                            status: 0,
+                            attr: {
+                                ondrop: 'drop(event)',
+                                ondragover: 'allowDrop(event)'
+                            },
+                            height: 50,
+                            items: {
+                                store: 'backlog',
+                                xtype: 'task-mini',
+                                items: {
+                                    pull: 'left',
+                                    margin: '0px 10px 10px 0px'
+                                }
+                            }
+                        }]
+                    }]
+                }]/*,
                 afterItems: {
                     xtype: 'div',
                     text: 'Item text after',

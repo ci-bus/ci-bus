@@ -61,7 +61,7 @@
 		    $CB->db->join("task_user", "task_user.id=task.task_user_id");
 		    $CB->db->join("task_project", "task_project.id=task.task_project_id");
 		    $CB->db->orderBy("task_user.id", "ASC");
-		    
+		    		    
 		    if ($data = $CB->db->get_array()) {
 		        
 		        /* Example data
@@ -81,6 +81,7 @@
 		        
 		        foreach ($data AS $d) {
 		            
+		            $step = false;
 		            switch ($d->step) {
 		                case 0:
 		                    array_push($backlog, array(
@@ -88,7 +89,8 @@
     		                    'project' => $d->task_project_name,
     		                    'type' => $d->type,
     		                    'id' => $d->id,
-    		                    'content' => $d->content
+    		                    'content' => $d->content,
+    		                    'task_user_id' => $d->task_user_id
 		                    ));
 		                    break;
 		                case 1: $step = 'todo';
@@ -102,16 +104,18 @@
 		                case 4: $step = 'hidden';
 		                    break;
 		            }
-		            
-		            for ($i = 0; $i < count($tasks); $i ++) {
-		                if ($tasks[$i]['user']['id'] == $d->task_user_id) {
-		                    array_push($tasks[$i][$step], array(
-		                        'project' => $d->task_project_name,
-		                        'title' => $d->title,
-		                        'type' => $d->type,
-		                        'id' => $d->id,
-		                        'content' => $d->content
-		                    ));
+		            if ($step) {
+		                for ($i = 0; $i < count($tasks); $i ++) {
+		                    if ($tasks[$i]['user']['id'] == $d->task_user_id) {
+		                        array_push($tasks[$i][$step], array(
+		                            'project' => $d->task_project_name,
+		                            'title' => $d->title,
+		                            'type' => $d->type,
+		                            'id' => $d->id,
+		                            'content' => $d->content,
+		                            'task_user_id' => $d->task_user_id
+		                        ));
+		                    }
 		                }
 		            }
 		        }

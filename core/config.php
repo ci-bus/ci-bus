@@ -5,7 +5,7 @@
 		"db" => array("db_host" => "localhost",
 			"db_user" => "root",
 			"db_pass" => "",
-			"db_database" => "gotorave",
+			"db_database" => "test",
 			"db_prefix" => ""
 		),
 		
