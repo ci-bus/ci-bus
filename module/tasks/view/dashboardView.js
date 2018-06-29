@@ -1,48 +1,3 @@
-function allowDrop(ev) {
-    ev.preventDefault();
-}
-
-function drag(ev) {
-    ev.dataTransfer.setData("id", ev.target.id);
-    cb.getCmp('#' + ev.target.id).css('opacity', '0.2');
-}
-
-function drop(ev) {
-    ev.preventDefault();
-    var id = ev.dataTransfer.getData("id");
-    var callout = cb.getCmp('#' + id);
-    if (cb.getCmp(ev.target).getType() == 'td') {
-        var td = cb.getCmp(ev.target);
-    } else {
-        var td = cb.getCmp(ev.target).up('td');
-    }
-    
-    if ($.isNumeric(td.getOpt('status'))) {
-        if (cb.getCmp(ev.target).getType() == 'td') {
-            cb.getCmp(ev.target).append(document.getElementById(id));
-        } else if (cb.getCmp(ev.target).getType() == 'callout') {
-            cb.getCmp(ev.target).after(document.getElementById(id));
-        } else {
-            cb.getCmp(ev.target).up('callout').after(document.getElementById(id));
-        }
-        
-        var new_status = td.getOpt('status');
-        var user_id = td.getRecord().user? td.getRecord().user.id: callout.getRecord().task_user_id;
-        var task_id = callout.getRecord().id;
-        cb.ctr('tasks', 'changeStatus', {
-            'new_step': new_status,
-            'user_id': user_id,
-            'task_id': task_id
-        });
-    }
-    callout.css('opacity', '');
-    if (new_status) {
-        callout.removeClass('pull-left').css('margin-right', 0);
-    } else {
-        callout.addClass('pull-left').css('margin-right', 10);
-    }
-}
-
 function open_task (record) {
     cb.popup({
         type: record.type,
@@ -63,7 +18,7 @@ function open_task (record) {
                 glyphicon: 'remove',
                 cls: 'pull-right',
                 css: {
-            cursor: 'pointer',
+                    cursor: 'pointer',
                     'padding-top': 4
                 },
                 listener: {
@@ -102,6 +57,7 @@ function open_task (record) {
 cb.define({
     xtype: 'component',
     name: 'task-mini',
+    id: 'task-{id}',
     items: {
         xtype: 'callout',
         padding: '0px 10px',
@@ -109,9 +65,8 @@ cb.define({
         cursor: 'pointer',
         attr: {
             draggable: 'true',
-            ondragstart: 'drag(event)'
+            ondragstart: "cb.ctr('tasks', 'drag', event)"
         },
-        id: '{id}',
         title: '{title}',
         text: '{project}',
         type: '{type}',
@@ -148,8 +103,8 @@ cb.define({
             name: 'To-do',
             status: 1,
             attr: {
-                ondrop: 'drop(event)',
-                ondragover: 'allowDrop(event)'
+                ondrop: "cb.ctr('tasks', 'changeTask', event)",
+                ondragover: "cb.ctr('tasks', 'allowDrop', event)"
             },
             items: {
                 xtype: 'task-mini',
@@ -159,8 +114,8 @@ cb.define({
             name: 'In progress',
             status: 2,
             attr: {
-                ondrop: 'drop(event)',
-                ondragover: 'allowDrop(event)'
+                ondrop: "cb.ctr('tasks', 'changeTask', event)",
+                ondragover: "cb.ctr('tasks', 'allowDrop', event)"
             },
             items: {
                 xtype: 'task-mini',
@@ -170,8 +125,8 @@ cb.define({
             name: 'In review',
             status: 3,
             attr: {
-                ondrop: 'drop(event)',
-                ondragover: 'allowDrop(event)'
+                ondrop: "cb.ctr('tasks', 'changeTask', event)",
+                ondragover: "cb.ctr('tasks', 'allowDrop', event)"
             },
             items: {
                 xtype: 'task-mini',
@@ -181,8 +136,8 @@ cb.define({
             name: 'Done',
             status: 4,
             attr: {
-                ondrop: 'drop(event)',
-                ondragover: 'allowDrop(event)'
+                ondrop: "cb.ctr('tasks', 'changeTask', event)",
+                ondragover: "cb.ctr('tasks', 'allowDrop', event)"
             },
             items: {
                 xtype: 'task-mini',
@@ -217,8 +172,8 @@ cb.define({
                         items: [{
                             status: 0,
                             attr: {
-                                ondrop: 'drop(event)',
-                                ondragover: 'allowDrop(event)'
+                                ondrop: "cb.ctr('tasks', 'changeTask', event)",
+                                ondragover: "cb.ctr('tasks', 'allowDrop', event)"
                             },
                             height: 50,
                             items: {
