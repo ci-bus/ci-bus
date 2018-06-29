@@ -90,7 +90,8 @@
     		                    'type' => $d->type,
     		                    'id' => $d->id,
     		                    'content' => $d->content,
-    		                    'task_user_id' => $d->task_user_id
+    		                    'task_user_id' => $d->task_user_id,
+    		                    'step' => $d->step
 		                    ));
 		                    break;
 		                case 1: $step = 'todo';
@@ -113,7 +114,8 @@
 		                            'type' => $d->type,
 		                            'id' => $d->id,
 		                            'content' => $d->content,
-		                            'task_user_id' => $d->task_user_id
+		                            'task_user_id' => $d->task_user_id,
+		                            'step' => $d->step
 		                        ));
 		                    }
 		                }
