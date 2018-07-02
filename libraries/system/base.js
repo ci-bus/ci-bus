@@ -498,7 +498,7 @@ cb.base.element = {
 		return this.opt.record? this.opt.record: this.record? this.record: false;
 	},
 	getValue: function() {
-		return this.val()? this.val(): this.getRecord()? this.getRecord(): null;
+		return this.getOpt('value')? this.getOpt('value'): this.val()? this.val(): this.getRecord()? this.getRecord(): null;
 	},
 	getOpt: function(dt) {
 		if (this.component) {
@@ -510,6 +510,13 @@ cb.base.element = {
 		} else var res = this.opt? this.opt: false;
 		
 		return dt? res[dt]: res;
+	},
+	setOpt: function (dt, val) {
+	    if ($.isString(prop)) {
+	        this.getOpt()[dt].val;
+	    } else if (val == null) {
+	        this.getOpt() = dt;
+	    }
 	},
 	setRecord: function (record) {
 		if (this.opt) {
@@ -636,8 +643,7 @@ cb.base.dropdown = {
 			if (!record) {
 			    record = false;
 			}
-			if (!$.isArray(items))
-			{
+			if (!$.isArray(items)) {
 				items = [items];
 			}
 			for (var a=0;a<items.length;a++)
@@ -668,12 +674,30 @@ cb.base.dropdown = {
 							oli.store = items[a].store;
 							delete items[a].store;
 						}
+						if (items[a].field) {
+                            oli.field = items[a].field;
+                            delete items[a].field;
+                        }
+						if (items[a].value) {
+                            oli.value = items[a].value;
+                            delete items[a].value;
+                        }
 						
 						oli.items = items[a];
 						li = cb.create(oli, record);
 					}
 				}
-				$(ul).append(li);
+			    $(li).click(function () {
+			        var a = cb.getCmp(this),
+                    val = a.getValue(),
+                    txt = a.text();
+			        if (val == null) {
+			            val = txt;
+			        }
+			        a.up('.btn-group').down('button').html(txt + ' <span class="caret"></span>');
+			        a.up('.btn-group').getOpt().value = (val || txt);
+			    });
+			    $(ul).append(li);
 			}
 		}
 		if ($.isFunction(this[event])) {
@@ -745,6 +769,9 @@ cb.base.dropdown = {
         	button.attr('aria-expanded', false);
         }
         return this;
+	},
+	getValue: function () {
+	    return this.getOpt('value') != null? this.getOpt('value'): null;
 	}
 };
 cb.base.dropup = cb.base.dropdown;
@@ -1271,7 +1298,7 @@ cb.define = function(obj)
 		{
 			// TODO Refrescar elementos que carguen datos de este store
 			// En planificación
-		    //cb.getStore(obj.name).storelink();
+		    cb.getStore(obj.name).storelink();
 		}
 		
 		if ($.isArray(obj['require'])) {
@@ -1762,14 +1789,16 @@ cb.module.bootstrapComponent = {
 			$(ele).attr('id',opt.id);
 			opt.id = false;
 		}
-		var but = document.createElement('a');
-		but = cb.common_prop(but, {
-			cls:'dropdown-toggle',
-			attr: {
-				'data-toggle':'dropdown',
-				'role':'button',
-				'aria-haspopup':'true',
-				'aria-expanded':'true'}});
+		var but = cb.create({
+		    xtype: 'a',
+		    cls:'dropdown-toggle',
+            attr: {
+                'data-toggle':'dropdown',
+                'role':'button',
+                'aria-haspopup':'true',
+                'aria-expanded':'true'
+            }
+		});
 		but = cb.common_prop(but, opt);
 		if (opt.caret!==false)
 		{
@@ -1814,6 +1843,10 @@ cb.module.bootstrapComponent = {
 								oli.field = opt.items[a].field;
 								delete opt.items[a].field;
 							}
+							if (opt.items[a].value) {
+	                            oli.value = opt.items[a].value;
+	                            delete opt.items[a].value;
+	                        }
 							oli.items = opt.items[a];
 							li = cb.create(oli, record);
 						}
@@ -1843,15 +1876,15 @@ cb.module.bootstrapComponent = {
 		if (opt.group) {
 			ele = cb.common_prop(ele, opt.group);
 		}
-		var but = document.createElement('button');
-		but = cb.common_prop(but, {
-			cls:'btn btn-'+opt.type2+' dropdown-toggle',
-			attr: {
-				'data-toggle': 'dropdown',
-				'aria-haspopup': 'true',
-				'aria-expanded': 'false',
-				'type': 'button'
-			}
+		var but = cb.create({
+		    xtype: 'button',
+		    cls:'btn btn-'+opt.type2+' dropdown-toggle',
+            attr: {
+                'data-toggle': 'dropdown',
+                'aria-haspopup': 'true',
+                'aria-expanded': 'false',
+                'type': 'button'
+            }
 		});
 		opt.id=cb.autoid();
 		if (opt.size) {

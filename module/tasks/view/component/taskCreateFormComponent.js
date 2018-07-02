@@ -26,6 +26,7 @@ cb.define({
                 },
                 listener: {
                     click: function(){
+                        tinymce.EditorManager.execCommand('mceRemoveEditor',true, 'tcf_content');
                         cb.effect($(this).parent().parent().parent(), {
                             type: 'fadeout',
                             fn: function() {
@@ -64,7 +65,7 @@ cb.define({
                     margin: 0,
                     items: [{
                         xtype: 'col',
-                        size: 6,
+                        size: 3,
                         items: {
                             xtype: 'form-group',
                             items: [{
@@ -73,12 +74,16 @@ cb.define({
                                 width: '100%'
                             }, {
                                 xtype: 'dropdown',
-                                value: 0
+                                value: 0,
+                                items: {
+                                    store: 'user',
+                                    text: '{name}'
+                                }
                             }]
                         }
                     }, {
                         xtype: 'col',
-                        size: 6,
+                        size: 3,
                         items: {
                             xtype: 'form-group',
                             items: [{
@@ -89,17 +94,6 @@ cb.define({
                                 xtype: 'dropdown',
                                 text: 'Backlog ',
                                 value: 0,
-                                defaults: {
-                                    click: function () {
-                                        var a = cb.getCmp(this),
-                                            val = a.getOpt('value'),
-                                            txt = a.getOpt('text'),
-                                            id = a.up().up().attr('aria-labelledby');
-                                        
-                                        cb.getCmp('#' + id).html(txt + ' <span class="caret"></span>');
-                                        cb.getCmp("#createtaskform").down('dropdown', 1).getOpt().value = val;
-                                    }
-                                },
                                 items: [{
                                     xtype: 'a',
                                     value: 0,
@@ -123,6 +117,57 @@ cb.define({
                                 }]
                             }]
                         }
+                    }, {
+                        xtype: 'col',
+                        size: 3,
+                        items: {
+                            xtype: 'form-group',
+                            items: [{
+                                xtype: 'label',
+                                text: 'Project',
+                                width: '100%'
+                            }, {
+                                xtype: 'dropdown',
+                                value: 0,
+                                items: {
+                                    store: 'project',
+                                    text: '{name}'
+                                }
+                            }]
+                        }
+                    }, {
+                        xtype: 'col',
+                        size: 3,
+                        items: {
+                            xtype: 'form-group',
+                            items: [{
+                                xtype: 'label',
+                                text: 'Type',
+                                width: '100%'
+                            }, {
+                                xtype: 'dropdown',
+                                value: '',
+                                items: [{
+                                    xtype: 'a',
+                                    text: 'default'
+                                }, {
+                                    xtype: 'a',
+                                    text: 'primary'
+                                }, {
+                                    xtype: 'a',
+                                    text: 'success'
+                                }, {
+                                    xtype: 'a',
+                                    text: 'info'
+                                }, {
+                                    xtype: 'a',
+                                    text: 'warning'
+                                }, {
+                                    xtype: 'a',
+                                    text: 'danger'
+                                }]
+                            }]
+                        }
                     }]
                 }, {
                     items: [{
@@ -132,11 +177,15 @@ cb.define({
                         xtype: 'input',
                         type: 'textarea',
                         height: 280,
-                        name: 'description'
+                        name: 'content',
+                        id: 'tcf_content'
                     }]
                 }, {
                     xtype: 'button',
-                    text: 'Create task'
+                    text: 'Create task',
+                    click: function () {
+                        cb.ctr('tasks', 'createNewTask');
+                    }
                 }]
             }
         }]

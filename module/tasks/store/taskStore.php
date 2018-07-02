@@ -17,12 +17,35 @@
 			}
 		}
 		
-		public function changeStatus($CB, $data) {
+		public function create($CB, $data)
+		{
+		    $ins = $CB->db->insert("task", array(
+		        "id" => "NULL",
+		        "task_user_id" => $data['user'],
+		        "task_project_id" => $data['project'],
+		        "title" => $data['title'],
+		        "type" => $data['type'],
+		        "content" => $data['content'],
+		        "step" => $data['step'],
+		        "date" => date('Y-m-d H:i:s')
+		    ));
+		    
+		    if ($ins) {
+		        $CB->db->reset();
+		        $this->load($CB);
+		    } else {
+		        echo $CB->db->error();
+		        die();
+		    }
+		}
+		
+		public function changeStatus($CB, $data)
+		{
 		    $CB->db->where('id', $data['task_id']);
-		    if(!$CB->db->update('task', array(
+		    if (!$CB->db->update('task', array(
 		        "step" => $data['new_step'],
 		        "task_user_id" => $data['user_id']
-		    ))){
+		    ))) {
 		        echo $CB->db->error();
 		        die();
 		    } else {

@@ -64,7 +64,7 @@ cb.define({
                 ondragover: "cb.ctr('tasks', 'allowDrop', event)"
             },
             items: {
-                xtype: 'taskMini',
+                xtype: 'taskMicro',
                 field: 'done'
             }
         }],

@@ -122,6 +122,10 @@ a.disabled {
     background: #fff;
 }
 
+.bs-callout-primary {
+	border-left-color: #337ab7;
+}
+
 .bs-callout-info {
     border-left-color: #31708f;
 }

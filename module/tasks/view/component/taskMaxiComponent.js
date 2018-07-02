@@ -49,7 +49,12 @@ cb.define({
                 css: {'margin-top': 0},
                 text: '{title}'
             }, {
-                xtype: 'p',
+                alterdata: {
+                    content: function (cnt) {
+                        return $("<span />", {html: cnt}).text();
+                    }
+                },
+                xtype: 'span',
                 text: '{content}'
             }]
         }]

@@ -13,7 +13,10 @@ cb.define({
         // Load all
         cb.loadAll([
             ['store', 'tasks', 'task'],
+            ['store', 'tasks', 'project'],
+            ['store', 'tasks', 'user'],
             ['view', 'common', 'base'],
+            ['component', 'tasks', 'taskMicro'],
             ['component', 'tasks', 'taskMini'],
             ['component', 'tasks', 'taskMaxi'],
             ['component', 'tasks', 'taskCreateForm'],
@@ -77,35 +80,48 @@ cb.define({
     },
     
     openTask: function (record) {
-        var pp = cb.getComponent('taskMaxi','items');
+        var pp = cb.clone(cb.getComponent('taskMaxi', 'items'));
         pp.record = record;
         cb.popup(pp);
     },
     
     openCreateForm: function () {
-        var pp = cb.getComponent('taskCreateForm','items');
+        var pp = cb.clone(cb.getComponent('taskCreateForm', 'items'));
         cb.popup(pp);
-        var tasks = cb.getStore('tasks').getData();
-        for (var i = 0; i < tasks.length; i ++) {
-            cb.getCmp("#createtaskform").down('dropdown').addItems({
-                xtype: 'a',
-                value: tasks[i].user.id,
-                text: tasks[i].user.name,
-                click: function () {
-                    var a = cb.getCmp(this),
-                        val = a.getOpt('value'),
-                        txt = a.getOpt('text'),
-                        id = a.up().up().attr('aria-labelledby');
-                    
-                    cb.getCmp('#' + id).html(txt + ' <span class="caret"></span>');
-                    cb.getCmp("#createtaskform").down('dropdown').getOpt().value = val;
-                }
-            });
-        }
+        
         cb.sto(function () {
             tinymce.init({
                 selector: 'textarea.form-control'
             });
         }, 200);
+    },
+    
+    createNewTask: function () {
+        var panel = cb.getCmp('#createtaskform'),
+            title = panel.down('input').getValue(),
+            user = panel.down('dropdown').getValue(),
+            step = panel.down('dropdown', 1).getValue(),
+            project = panel.down('dropdown', 2).getValue(),
+            type = panel.down('dropdown', 3).getValue(),
+            content = tinyMCE.get('tcf_content').getContent();
+        
+        cb.load('store', 'tasks', 'task', {
+            action: 'create',
+            title: title,
+            user: user.id,
+            step: step,
+            project: project.id,
+            type: type,
+            content: content
+        }, function () {
+            tinymce.EditorManager.execCommand('mceRemoveEditor',true, 'tcf_content');
+            cb.effect('#createtaskform', {
+                type: 'flipout',
+                dire: 'up',
+                fn: function(){
+                    $(this).parent().remove();
+                }
+            });
+        });
     }
 });

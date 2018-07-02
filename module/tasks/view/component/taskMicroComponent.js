@@ -1,6 +1,6 @@
 cb.define({
     xtype: 'component',
-    name: 'taskMini',
+    name: 'taskMicro',
     id: 'task-{id}',
     items: {
         xtype: 'callout',
