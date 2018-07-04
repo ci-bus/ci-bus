@@ -125,11 +125,12 @@
 		                    break;
 		                case 4: $step = 'done';
 		                    break;
-		                case 4: $step = 'hidden';
+		                case 5: $step = 'hidden';
 		                    break;
 		            }
 		            if ($step) {
 		                for ($i = 0; $i < count($tasks); $i ++) {
+		                    // Push task in owner user
 		                    if ($tasks[$i]['user']['id'] == $d->task_user_id) {
 		                        array_push($tasks[$i][$step], array(
 		                            'project' => $d->task_project_name,

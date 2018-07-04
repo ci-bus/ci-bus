@@ -5,11 +5,19 @@ cb.define({
     items: [{
         xtype: 'div',
         padding: '10px 10px 0px 10px',
+        align: 'right',
         items: [{
             xtype: 'button',
             text: 'Create new task',
             click: function () {
                 cb.ctr('tasks', 'openCreateForm');
+            }
+        }, {
+            xtype: 'button',
+            type: 'danger',
+            text: 'logout',
+            click: function () {
+                cb.ctr('tasks', 'logout');
             }
         }]
     },{
@@ -64,7 +72,7 @@ cb.define({
                 ondragover: "cb.ctr('tasks', 'allowDrop', event)"
             },
             items: {
-                xtype: 'taskMicro',
+                xtype: 'taskMini',
                 field: 'done'
             }
         }],

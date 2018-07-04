@@ -1,10 +1,10 @@
 <?php
 	
-class User extends Store {
+class Doc extends Store {
 	
     public function __construct($CB, $data = array())
     {
-    	//if(!$_SESSION['task_user_id']) die("cb.ctr('tasks','logout')");
+    	if(!$_SESSION['task_user_id']) die("cb.ctr('tasks', 'logout')");
     	$data = $CB->minArray($data);
     	$action = $data['action'];
     	if($action)
@@ -13,11 +13,11 @@ class User extends Store {
     	}
     	else
     	{
-    	    $this->load($CB);
+    		$this->load($CB);
     	}
     }
     
-    public function load($CB)
+    public function load($CB, $data)
     {
         // Get users
         $CB->db->select("id, name, email");
@@ -34,19 +34,6 @@ class User extends Store {
         else
         {
             echo $CB->db->error();
-        }
-    }
-    
-    public function login($CB, $data) {
-        
-        $CB->db->select("id, name, email");
-        $CB->db->from("task_user");
-        $CB->db->where("email", $data['email']);
-        $CB->db->where("pass", md5($data['pass']));
-        $user = $CB->db->get();
-        
-        if ($user) {
-            $CB->parseConfig('user', $user);
         }
     }
 }

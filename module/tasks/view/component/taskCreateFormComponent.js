@@ -26,7 +26,7 @@ cb.define({
                 },
                 listener: {
                     click: function(){
-                        tinymce.EditorManager.execCommand('mceRemoveEditor',true, 'tcf_content');
+                        tinymce.EditorManager.execCommand('mceRemoveEditor', true, 'tcf_content');
                         cb.effect($(this).parent().parent().parent(), {
                             type: 'fadeout',
                             fn: function() {

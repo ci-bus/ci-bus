@@ -512,10 +512,12 @@ cb.base.element = {
 		return dt? res[dt]: res;
 	},
 	setOpt: function (dt, val) {
-	    if ($.isString(prop)) {
-	        this.getOpt()[dt].val;
-	    } else if (val == null) {
-	        this.getOpt() = dt;
+	    if (this.opt) {
+	        if (typeof dt == 'string') {
+	            this.opt[dt] = val;
+	        } else if (val == null) {
+	            this.opt = dt;
+	        }
 	    }
 	},
 	setRecord: function (record) {
@@ -605,6 +607,9 @@ cb.base.element = {
             range.moveToElementText(node);
             range.select();
         }
+	},
+	getItems: function () {
+	    return (this.getOpt('items') || null);
 	}
 };
 
@@ -967,6 +972,7 @@ cb.base.grid = {
 	}
 };
 
+// funciones base para progress
 cb.base.progress = {
     getBar: function (pos) {
         return this.down('progress-bar', pos);
@@ -991,6 +997,7 @@ cb.base.progress = {
     }
 };
 
+// Funciones base para barra de progreso
 cb.base['progress-bar'] = {
     setValue: function (val) {
         if ($.isNumeric(val)) {
@@ -1030,6 +1037,16 @@ cb.base['progress-bar'] = {
         } else {
             this.removeClass('active');
         }
+    }
+};
+
+// Funciones base para paneles
+cb.base.panel = {
+    changeType: function (ntype) {
+        var panel = cb.getCmp(this),
+            ctype = (panel.getOpt('type') || 'default');
+        panel.removeClass('panel-' + ctype).addClass('panel-' + ntype);
+        panel.setOpt('type', ntype);
     }
 };
 
@@ -2264,8 +2281,8 @@ cb.module.bootstrapComponent = {
 				
 				if ($.isPlainObject(opt.items[a].tab))
 				{
-					opt.t_a = document.createElement('a');
-					opt.t_li = document.createElement('li');
+					opt.t_a = cb.create({xtype: 'a'});
+					opt.t_li = cb.create({xtype: 'li'});
 					
 					if (opt.items[a].tab.xtype == 'dropdown')
 					{
@@ -2332,16 +2349,15 @@ cb.module.bootstrapComponent = {
 					}
 					else
 					{
-						opt.t_a = cb.common_prop(opt.t_a, {
-						id: opt.items[a].id+'-tab',
+						opt.t_a = cb.common_prop(opt.t_a, cb.mergeTwoObjects({
+						    id: opt.items[a].id+'-tab',
 							attr: {
 								'aria-controls': opt.items[a].id,
 								'role': 'tab',
 								'data-toggle': 'tab'
 							}
-						});
+						}, opt.items[a].tab));
 						$(opt.t_a).attr('href', '#'+opt.items[a].id);
-						$(opt.t_a).append(cb.create(cb.cloneObject(opt.items[a].tab), record));
 					}
 					
 					if (opt.items[a].active) $(opt.t_a).attr('aria-expanded', 'true');
@@ -2532,7 +2548,13 @@ cb.module.bootstrapComponent = {
 		return ele;
 	},
 	'label': function(opt, record) {
-		var ele = document.createElement(opt.xtype);
+		if (typeof opt.type == 'string') {
+		    var ele = document.createElement('span');
+	        $(ele).addClass('label');
+		    $(ele).addClass('label-' + opt.type);
+		} else {
+		    var ele = document.createElement(opt.xtype);
+		}
 		ele = cb.common_prop(ele, opt);
 		return ele;
 	},
@@ -2825,33 +2847,6 @@ cb.props = {
 	'glyphicon': function(ele, opt) {
 		$(ele).prepend(cb.create({xtype:'glyphicon',type:opt.glyphicon}));
 	},
-	'id': function(ele, opt) {
-		$(ele).attr('id', opt.id);
-	},
-	'disable': function(ele, opt) {
-		if (opt) $(ele).attr('disable', 'disable');
-	},
-	'disabled': function(ele, opt) {
-		$(ele).attr('disabled', 'disabled');
-	},
-	'name': function(ele, opt) {
-		if (!opt.noname) {
-			$(ele).attr('name', opt.name);
-		}
-	},
-	'type': function(ele, opt) {
-		if (opt.type && !opt.notype) {
-			$(ele).attr('type', opt.type);
-		}
-	},
-	'href': function(ele, opt) {
-		$(ele).attr('href', opt.href);
-	},
-	'value': function(ele, opt) {
-		if (!opt.novalue) {
-			$(ele).attr('value', opt.value);
-		}
-	},
 	'margin': function(ele, opt) {
 		$(ele).css('margin', opt.margin);
 	},
@@ -2863,9 +2858,6 @@ cb.props = {
 	},
 	'border': function(ele, opt) {
 		$(ele).css('border', opt.border);
-	},
-	'src': function(ele, opt) {
-		$(ele).attr('src', opt.src);
 	},
 	'float': function(ele, opt) {
 		$(ele).css('float', opt.float);
@@ -2882,17 +2874,11 @@ cb.props = {
 	'align': function(ele, opt) {
 		$(ele).css('text-align', opt.align);
 	},
-	'pull': function(ele, opt) {
-		$(ele).addClass('pull-'+opt.pull);
-	},
 	'height': function(ele, opt) {
 		$(ele).css('height', opt.height);
 	},
 	'width': function(ele, opt) {
 		$(ele).css('width', opt.width);
-	},
-	'placeholder': function(ele, opt) {
-		$(ele).attr('placeholder', opt.placeholder);
 	},
 	'display': function(ele, opt) {
 		$(ele).css('display', opt.display);
@@ -2903,11 +2889,54 @@ cb.props = {
 	'background': function(ele, opt) {
 		$(ele).css('background', opt.background);
 	},
-	'badge': function(ele, opt) {
-		$(ele).append('&nbsp;').append(cb.create({
-			xtype: 'badge',
-			text: opt.badge }));
-	},
+	'position': function(ele, opt) {
+        $(ele).css('position', opt.position);
+    },
+    'top': function(ele, opt) {
+        $(ele).css('top', opt.top);
+    },
+    'left': function(ele, opt) {
+        $(ele).css('left', opt.left);
+    },
+    'right': function(ele, opt) {
+        $(ele).css('right', opt.right);
+    },
+    'bottom': function(ele, opt) {
+        $(ele).css('bottom', opt.bottom);
+    },
+	'pull': function(ele, opt) {
+        $(ele).addClass('pull-'+opt.pull);
+    },
+	'id': function(ele, opt) {
+        $(ele).attr('id', opt.id);
+    },
+    'placeholder': function(ele, opt) {
+        $(ele).attr('placeholder', opt.placeholder);
+    },
+    'disable': function(ele, opt) {
+        if (opt) $(ele).attr('disable', 'disable');
+    },
+    'disabled': function(ele, opt) {
+        $(ele).attr('disabled', 'disabled');
+    },
+    'name': function(ele, opt) {
+        if (!opt.noname) {
+            $(ele).attr('name', opt.name);
+        }
+    },
+    'type': function(ele, opt) {
+        if (opt.type && !opt.notype) {
+            $(ele).attr('type', opt.type);
+        }
+    },
+    'href': function(ele, opt) {
+        $(ele).attr('href', opt.href);
+    },
+    'value': function(ele, opt) {
+        if (!opt.novalue) {
+            $(ele).attr('value', opt.value);
+        }
+    },
 	'reload': function(ele, opt) {
 		$(ele).attr('reload', opt.reload);
 	},
@@ -2920,6 +2949,14 @@ cb.props = {
 	'rowspan': function (ele, opt) {
 	    $(ele).attr('rowspan', opt.rowspan);
 	},
+	'src': function(ele, opt) {
+        $(ele).attr('src', opt.src);
+    },
+    'badge': function(ele, opt) {
+        $(ele).append('&nbsp;').append(cb.create({
+            xtype: 'badge',
+            text: opt.badge }));
+    },
 	'click': function(ele, opt) {
 		$(ele).click(opt.click);
 	},
@@ -3367,7 +3404,11 @@ cb.sto = function(fn, to) {
 	setTimeout(fn, to);
 }
 
-cb.popup = function(pp) {
+cb.sit = function(fn, t) {
+    setInterval(fn, t);
+}
+
+cb.popup = function(pp, record) {
 	
 	if ($.isPlainObject(pp))
 	{
@@ -3390,8 +3431,8 @@ cb.popup = function(pp) {
 				'z-index': this.getZIndex()
 			}
 		});
-		var tid = pp.id;
-		var pp_item = this.create(pp);
+		var pp_item = this.create(pp, record);
+		var tid = pp_item.id;
 		pp_item.destroy = function() {
 			$(this).parent().remove();
 		};
