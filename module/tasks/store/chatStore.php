@@ -18,23 +18,27 @@ class Chat extends Store {
     }
     
     public function check($CB, $data) {
-        $CB->db->select("id, task_id, date");
+        
+        $CB->db->select("task_chat.task_id, (SELECT count(*) FROM task_chat_read WHERE task_chat.task_id = task_chat_read.task_id) AS reg, count(task_chat_read.id) AS new_msg, count(task_chat.id) AS all_msg");
         $CB->db->from("task_chat");
-        $CB->db->orderBy("id", "desc");
-        $msgs = $CB->db->get_array();
-        
+        $CB->db->join("task_chat_read", "task_chat_read.task_id = task_chat.task_id AND task_chat_read.date < task_chat.date", "left");
+        $new_msg = $CB->db->get_array();
         $CB->db->reset();
-        $CB->db->select("id, task_id, date");
-        $CB->db->from("task_chat_read");
-        $CB->db->orderBy("id", "desc");
-        $reads = $CB->db->get_array();
+        $CB->parseStore('chat_alert', $new_msg);
         
-        $chat_alert = array();
-        echo '/* ';
-        print_r($msgs);
-        print_r($reads);
-        echo ' */';
-        die();
+        if (is_numeric($data['chat_opened'])) {
+            foreach ($new_msg as $nm) {
+                if ($nm->task_id == $data['chat_opened']) {
+                    if (!$nm->reg || ($nm->reg && $nm->new_msg)) {
+                        $this->load($CB, array(
+                            'task_id' => $data['chat_opened']
+                        ));
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
     }
     
     public function load($CB, $data) {

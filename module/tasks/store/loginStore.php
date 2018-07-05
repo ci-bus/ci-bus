@@ -20,7 +20,7 @@
 				$_SESSION['user'] = $user;
 				unset($user->pass);
 				
-				$CB->parseConfig("user", $user);
+				$CB->parseConfig("user_id", $user->id);
 			}
 		}
 	}

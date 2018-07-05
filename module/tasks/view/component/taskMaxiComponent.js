@@ -115,7 +115,60 @@ cb.define({
                         }, {
                             xtype: 'container',
                             xtype: 'fluid',
-                            id: 'chat-messages' // Chat message container
+                            id: 'chat-messages', // Chat message container
+                            store: 'chat',
+                            storelink: true,
+                            setData: function (data) {
+                                if (data.length) {
+                                    cb.getCmp(this).empty();
+                                    var user_id = cb.getConfig('user_id')
+                                    for (var i = 0; i < data.length; i ++) {
+                                        var dt = data[i];
+                                        if (user_id == dt.task_user_id) {
+                                            var pull = 'right',
+                                                type = 'default';
+                                        } else {
+                                            var pull = 'left',
+                                                type = 'primary';
+                                        }
+                                        cb.create({
+                                            xtype: 'div',
+                                            pull: 'left',
+                                            width: '100%',
+                                            appendTo: '#chat-messages',
+                                            items: {
+                                                xtype: 'callout',
+                                                margin: '10px 0px 0px 0px',
+                                                padding: '0px 10px 10px',
+                                                type: type,
+                                                pull: pull,
+                                                title: '{message}',
+                                                items: {
+                                                    xtype: 'div',
+                                                    pull: 'right',
+                                                    items: [{
+                                                        text: '{name}',
+                                                        css: {
+                                                            'padding-right': 10
+                                                        }
+                                                    }, {
+                                                        alterdata: {
+                                                            'date': function (date) {
+                                                                var parts = date.split(' ');
+                                                                var parts2 = parts[0].split('-');
+                                                                return parts2[2] + '/' + parts2[1] + '/' + parts2[0] + ' ' + parts[1];
+                                                            }
+                                                        },
+                                                        xtype: 'small',
+                                                        color: '#AAA',
+                                                        text: '({date})'
+                                                    }]
+                                                }
+                                            }
+                                        }, dt);
+                                    }
+                                }
+                            }
                         }]
                     }
                 }, {

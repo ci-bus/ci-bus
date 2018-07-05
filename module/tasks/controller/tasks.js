@@ -4,9 +4,9 @@ cb.define({
     name: 'tasks',
     
     onload: function () {
-        if (getCookie('task_user')) {
-            if (!cb.getConfig('user')) {
-                cb.setConfig('user', getCookie('task_user'));
+        if (getCookie('task_user_id')) {
+            if (!cb.getConfig('user_id')) {
+                cb.setConfig('user_id', getCookie('task_user_id'));
             }
             this.loadDashboard();
         } else {
@@ -18,6 +18,7 @@ cb.define({
     },
     
     loadDashboard: function () {
+        var me = this;
         // Tynimce
         $.cachedScript("libraries/tinymce/js/tinymce/tinymce.min.js", "js").done(function () {
             $.cachedScript("libraries/tinymce/js/tinymce/themes/modern/theme.min.js", "js");
@@ -35,19 +36,36 @@ cb.define({
             ['component', 'tasks', 'taskCreateForm'],
             ['view', 'tasks', 'dashboard']
         ], function () {
-            // TODO do after load
-            //alert('loaded dashboard');
+            // Check new chat messages
+            me.checkNewMessage();
+            // Interval
+            cb.sit(function () {
+                me.checkNewMessage();
+            }, 3000);
         });
-        // Check new chat messages
-        cb.sit(function () {
-            var chat_opened = cb.getConfig('chat_opened');
-            if (chat_opened) {
-                cb.load('store', 'tasks', 'chat', {
-                    task_id: chat_opened,
-                    action: 'check'
-                });
+    },
+    
+    checkNewMessage: function () {
+        var chat_opened = cb.getConfig('chat_opened');
+        cb.load('store', 'tasks', 'chat', {
+            task_id: chat_opened,
+            action: 'check',
+            chat_opened: chat_opened
+        }, this.processChatAlerts);
+    },
+    
+    processChatAlerts: function () {
+        var data = cb.getStore('chat_alert').getData();
+        for (var i = 0; i < data.length; i ++) {
+            var dt = data[i];
+            if (cb.getCmp('#task-mini-' + dt.task_id).down) {
+                if (dt.reg == "0" || (dt.reg != "0" && dt.new_msg != "0")) {
+                    cb.getCmp('#task-mini-' + dt.task_id).down('label').html(dt.all_msg).show();
+                } else {
+                    cb.getCmp('#task-mini-' + dt.task_id).down('label').html('').hide();
+                }
             }
-        }, 3000);
+        }
     },
     
     sendChat: function (dt) {
@@ -171,8 +189,8 @@ cb.define({
     doLogin: function () {
         var me = this;
         cb.send('task-login', 'tasks', 'login', function(){
-            if (cb.getConfig('user')) {
-                setCookie('task_user', cb.getConfig('user'));
+            if (cb.getConfig('user_id')) {
+                setCookie('task_user_id', cb.getConfig('user_id'));
                 me.loadDashboard();
             } else {
                 cb.getCmp('panel').changeType('danger');
@@ -184,8 +202,8 @@ cb.define({
     },
     
     logout: function () {
-        cb.setConfig('user', null);
-        delCookie('task_user');
+        cb.setConfig('user_id', null);
+        delCookie('task_user_id');
         location.reload();
     } 
 });

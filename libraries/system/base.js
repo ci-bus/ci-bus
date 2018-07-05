@@ -3089,7 +3089,7 @@ cb.create = function(opt, record) {
         if (opt.store) {
             if (this.module.store[opt.store]) {
                 record = this.module.store[opt.store]['data'];
-            }else{
+            } else if (!opt.storelink){
                 return;
             }
         }
