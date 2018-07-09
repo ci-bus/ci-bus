@@ -59,13 +59,39 @@ cb.define({
         for (var i = 0; i < data.length; i ++) {
             var dt = data[i];
             if (cb.getCmp('#task-mini-' + dt.task_id).down) {
+                var label = cb.getCmp('#task-mini-' + dt.task_id).down('label');
                 if (dt.reg == "0" || (dt.reg != "0" && dt.new_msg != "0")) {
-                    cb.getCmp('#task-mini-' + dt.task_id).down('label').html(dt.all_msg).show();
+                    if (label.css('display') == 'none') {
+                        cb.ctr('tasks', 'showChatNotification', dt.task_id);
+                    }
+                    label.html(dt.all_msg).show();
                 } else {
-                    cb.getCmp('#task-mini-' + dt.task_id).down('label').html('').hide();
+                    label.html('').hide();
                 }
             }
         }
+    },
+    
+    showChatNotification: function (task_id) {
+        if (Notification.permission != "granted") {
+            Notification.requestPermission();
+        }
+        var noti = new Notification('Ci-bus Task managenment', {
+            icon: "https://raw.githubusercontent.com/ci-bus/ci-bus/master/assets/img/cb_logo.png",
+            body: "New chat message"
+        });
+        noti.onclick = function () {
+            noti.close();
+            if (cb.getConfig('chat_opened')) {
+                tinymce.EditorManager.execCommand('mceRemoveEditor', true, 'doc-textarea');
+                cb.getCmp('#task-maxi-' + cb.getConfig('chat_opened')).destroy();
+                cb.setConfig('chat_opened', 0);
+            }
+            $('#task-mini-' + task_id).click();
+        };
+        cb.sto(function () {
+            noti.close();
+        }, 5000)
     },
     
     sendChat: function (dt) {
