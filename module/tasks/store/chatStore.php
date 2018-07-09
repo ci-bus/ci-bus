@@ -52,11 +52,11 @@ class Chat extends Store {
         
         if ($c_data)
         {
-            $CB->parseStore('chat', $c_data);
+            $CB->parseStore('chat', array('msg' => $c_data));
         }
         else
         {
-            $CB->parseStore('chat', array());
+            $CB->parseStore('chat', array('msg' => array()));
             echo $CB->db->error();
         }
         

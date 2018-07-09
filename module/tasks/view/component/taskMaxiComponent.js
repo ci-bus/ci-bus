@@ -119,7 +119,8 @@ cb.define({
                             store: 'chat',
                             storelink: true,
                             setData: function (data) {
-                                if (data.length) {
+                                if (data.msg && data.msg.length) {
+                                    data = data.msg;
                                     cb.getCmp(this).empty();
                                     var user_id = cb.getConfig('user_id')
                                     for (var i = 0; i < data.length; i ++) {

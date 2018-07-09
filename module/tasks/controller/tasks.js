@@ -78,10 +78,11 @@ cb.define({
         }
         var noti = new Notification('Ci-bus Task managenment', {
             icon: "https://raw.githubusercontent.com/ci-bus/ci-bus/master/assets/img/cb_logo.png",
-            body: "New chat message"
+            body: "New chat messages"
         });
         noti.onclick = function () {
             noti.close();
+            window.focus();
             if (cb.getConfig('chat_opened')) {
                 tinymce.EditorManager.execCommand('mceRemoveEditor', true, 'doc-textarea');
                 cb.getCmp('#task-maxi-' + cb.getConfig('chat_opened')).destroy();
@@ -91,7 +92,7 @@ cb.define({
         };
         cb.sto(function () {
             noti.close();
-        }, 5000)
+        }, 5000);
     },
     
     sendChat: function (dt) {

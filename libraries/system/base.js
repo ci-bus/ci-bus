@@ -3244,7 +3244,12 @@ cb.create = function(opt, record) {
 					if (!cb.module.storelink[opt.store]) {
 						cb.module.storelink[opt.store] = [];
 					}
-					cb.module.storelink[opt.store].push({ele: ele.id});
+					for (var i = 0; i < cb.module.storelink[opt.store].length; i ++) {
+					    if (cb.module.storelink[opt.store][i].ele == ele.id) break;
+					}
+					if (i == cb.module.storelink[opt.store].length) {
+					    cb.module.storelink[opt.store].push({ele: ele.id});
+					}
 				}
 			}
 						
