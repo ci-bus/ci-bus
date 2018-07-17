@@ -3379,20 +3379,8 @@ cb.common_prop = function(ele, opt)
 	return ele;
 }
 
-cb.strpos = function(texto, word) {
-	for (var i=0;i<texto.length;i++) {
-		if (texto[i]==word[0]) {
-			for (var r=1;r<=word.length;r++) {
-				if (r==word.length) {
-					return (i-word.length+1);
-				}
-				if (texto[i]!=word[r]) {
-					r = word.length+1;
-				}
-			}
-		}
-	}
-	return false;
+cb.strpos = function(text, word) {
+	return text.indexOf(word) > -1? text.indexOf(word): false;
 }
 
 // // [ General functions ]// // 
