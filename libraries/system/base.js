@@ -2659,6 +2659,14 @@ cb.module.cbComponent = {
         ele = cb.common_prop(ele, opt);
         return ele;
     },
+    'a': function(opt, record) {
+        var ele = document.createElement('a');
+        if (!opt.href && typeof record === 'string') {
+        	$(ele).attr('href', record)
+        }
+        ele = cb.common_prop(ele, opt);
+        return ele;
+    },
     'polyline': function(opt, record) {
         var ele = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
         if (!opt.fill) opt.fill = 'none';

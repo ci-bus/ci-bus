@@ -15,7 +15,8 @@
 		            'tx2' => 'Controladores',
 		            'tx3' => 'Vistas',
 		            'tx4' => 'Items',
-		            'tx5' => 'Funciones JavaScript'
+		            'tx5' => 'Funciones JavaScript',
+		            'tx6' => 'Propiedades items'
 			    ),
 		        'menu-items' => array (
 		            array(
@@ -267,15 +268,112 @@
 		            'tx76' => 'Añade una fila',
 		            'tx77' => 'Elimina una fila'
 		        ),
-		        'funcTxt' => array(
-		            'tx1' => 'Información general sobre las funciones JavaScript de ci-bus',
-		            'tx2' => 'Parámetros',
-		            'tx3' => 'Acción',
-		            'tx4' => 'Return',
-		            'tx5' => 'Ejemplo',
-		            'tx6' => 'Más información',
-		            'tx7' => 'Información'
-                ),
+		        'propTxt' => array(
+		            'tx1' => 'Información general sobre las propiedades disponibles para los items',
+		            'tx2' => 'Propiedades',
+		            'tx3' => 'Similitud'
+		        ),
+	            'funcTxt' => array(
+	                    'tx1' => 'Información general sobre las funciones JavaScript de ci-bus',
+	                    'tx2' => 'Parámetros',
+	                    'tx3' => 'Acción',
+	                    'tx4' => 'Return',
+	                    'tx5' => 'Ejemplo',
+	                    'tx6' => 'Más información',
+	                    'tx7' => 'Información',
+	                    'tx8' => 'Seleccionar'
+	            ),
+		        'properties' => array(
+		            array(
+		                'prop' => 'Propiedades css',
+		                'action' => 'Aplica una propiedades de estilo',
+		                'props' => 'css margin padding color border float shadow size weight align height width display cursor background',
+		                'example' => "css: {
+    color: 'RED',
+    'font-weight': 600,
+    border: '3px double #AAA'
+}",
+		                'simil' => 'https://api.jquery.com/css/'
+		            ),
+	                array(
+	                        'prop' => 'Atributos html',
+	                        'action' => 'Aplica atributos al elemento html principal',
+	                        'props' => 'attr id disable disabled name type href value src placeholder reload target',
+	                        'example' => "attr: {
+    method: 'post',
+    width: '200',
+    custom: '1234'
+}",
+	                        'simil' => 'http://api.jquery.com/attr/'
+	                ),
+		            array(
+		                'prop' => 'Eventos',
+		                'props' => 'click dblclick mouseover mouseout focus blur',
+		                'example' => "click: function () { alert('clicked!'); }",
+		                'simil' => 'https://api.jquery.com/click/ https://api.jquery.com/dblclick/ https://api.jquery.com/mouseover/ https://api.jquery.com/mouseout/ https://api.jquery.com/focus/ https://api.jquery.com/blur/'
+		            ),
+		            array(
+		                'prop' => 'require',
+		                'param' => '1. Objeto con las propiedades xtype, module, name y data (opcional)',
+		                'action' => 'Similar a la función cb.load',
+		                'example' => "require: {xtype: 'store', module: 'test', name: 'test', data: {action: 'dotest'}}"
+		            ),
+		            array(
+		                'prop' => 'cls',
+		                'param' => '1. Las clases en texto plano separadas por espacios',
+		                'action' => 'Aplica las clases al atributo class del elemento',
+		                'example' => "cls: 'form-control'",
+		                'simil' => 'https://api.jquery.com/addClass/'
+		            ),
+		            array(
+		                'prop' => 'html',
+		                'param' => '1. Plain html, Objeto o elemento',
+		                'action' => 'Aplica un html como contenido del elemento',
+		                'example' => "html: '<p>Test</p>'",
+		                'simil' => 'http://api.jquery.com/html/'
+		            ),
+		            array(
+		                'prop' => 'text',
+		                'param' => '1. Plain html, Objeto o elemnto',
+		                'action' => 'Añade un texto plano o html al contenido del elemento',
+		                'example' => "text: 'Plain text'",
+		                'simil' => 'http://api.jquery.com/append/'
+		            ),
+		            array(
+		                'prop' => 'glyphicon',
+		                'param' => '1. Texto nombre del icono',
+		                'action' => 'Añade un icono de bootstrap',
+		                'example' => "glyphicon: 'plus'",
+		                'simil' => 'https://glyphicons.bootstrapcheatsheets.com/'
+		            ),
+		            array(
+		                'prop' => 'hidden',
+		                'param' => '1. true o false',
+		                'action' => 'Oculta o muestra el elemento',
+		                'example' => 'hidden: true',
+		                'simil' => 'http://api.jquery.com/hide/ http://api.jquery.com/show/'
+		            ),
+		            array(
+		                'prop' => 'badge',
+		                'param' => '1. Texto para el badge',
+                        'example' => "hidden: 'texto'",
+		                'action' => 'Añade un badge al elemento con el texto definido'
+		            ),
+		            array(
+		                'prop' => 'pull',
+		                'param' => '1. Texto left o right',
+		                'example' => "pull: 'left'",
+		                'action' => 'Añade la clase pull-left o pull-right al elemento'
+		            ),
+		            array(
+		                'prop' => 'listener',
+		                'param' => '1. Objeto con definiciones de eventos',
+		                'example' => "listener: {
+    click: function () { alert('clicked!'); }
+}",
+		                'simil' => 'http://api.jquery.com/on/'
+		            )
+		        ),
 	            'functions' => array(
 		            array(
 		                'fun' => 'cb.autoname()',
@@ -367,7 +465,7 @@
 	                    'fun' => 'cb.setValue()',
 	                    'param' => "1. Elemento html o puntero, 2. Valor o elemento html",
 	                    'action' => "Si es un input aplica el valor como value sino, lo aplica como html",
-	                    'example' => "cb.storeSet('#id-elemento', 'example');"
+	                    'example' => "cb.storeSet('#id-ele', 'example');"
 	                ),
 	                array(
 	                    'fun' => 'cb.setConfig()',
@@ -411,7 +509,7 @@
 	                    'fun' => 'cb.common_prop()',
 	                    'param' => "1. Elemento html o puntero, 2. Objeto (propiedades)",
 	                    'action' => "Aplica propiedades a un elemento como border, padding, listener etc",
-	                    'example' => "cb.common_prop('#id-elemento', {background: 'red', click: function(){alert('oks');}});",
+	                    'example' => "cb.common_prop('#id-ele', {background: 'red', click: function(){alert('oks');}});",
 	                    'return' => "El elemento o puntero"
 	                    // TODO añadir info con enlace a las propiedades comunes
 	                ),

@@ -76,9 +76,7 @@ cb.define({
                 }, {
                     field: 'example',
                     alterdata: function (val) {
-                        for (var i = 1; i < 10; i ++) {
-                            val = val.replace(' ' + i + '. ', '<br>' + i + '. ');
-                        }
+                    	val = cb.ctr('ci-bus', 'formatCode', val);
                         return cb.create({
                             xtype: 'table',
                             margin: 0,
@@ -98,12 +96,32 @@ cb.define({
                                 }, {
                                     items: {
                                         xtype: 'pre',
-                                        items: {
+                                        position: 'relative',
+                                        items: [{
                                             xtype: 'code',
                                             store: 'code',
                                             field: 'cd11',
                                             cls: 'javascript',
                                             text: val
+                                        }, {
+                                        	xtype: 'button',
+                                        	size: 'xs',
+                                        	store: 'texts',
+                                        	field: 'funcTxt',
+                                        	text: '{tx8}',
+                                        	css: {
+                                        		'line-height': '12px',
+                                        		position: 'absolute',
+                                            	top: -2,
+                                            	right: 0,
+                                            	padding: '2px 5px 0px'
+                                        	},
+                                        	click: function () {
+                                        		cb.getCmp(this).up().down('code').selectContent();
+                                        	}
+                                        }],
+                                        dblclick: function () {
+                                        	cb.getCmp(this).selectContent();
                                         }
                                     }
                                 }]
