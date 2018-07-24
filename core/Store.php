@@ -102,7 +102,7 @@
 			print_r($cod);
 			echo "</pre>";
 		}
-		
+		/*
 		public function extendStore($name, $data)
 		{
 			echo "cb.define({".
@@ -112,7 +112,7 @@
 					"data: ".json_encode($data, true).
 					"}); ";
 		}
-		
+		*/
 		public function parseStore($name, $data)
 		{
 			echo "cb.define({".
@@ -163,15 +163,15 @@
 			}
 		}
 		
-		public function extraerURLs($cadena){
+		public function extractUrls($cadena){
 		    $regex = '/https?\:\/\/[^\" ]+/i';
 		    preg_match_all($regex, $cadena, $partes);
 		    return ($partes[0]);
 		}
 		
-		public function embed_multimedia($txt)
+		public function embedMultimedia($txt)
 		{
-			$urls = $this->extraerURLs($txt);
+			$urls = $this->extractUrls($txt);
 			 
 			foreach($urls as $url){
 				$parse = parse_url($url);

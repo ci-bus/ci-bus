@@ -660,28 +660,28 @@ $code29 = "{
     type: 'primary',
 
     record: [{
-    	name: 'Miguel',
-    	lastname: 'Calero',
-    	type: 'Root',
-    	date: '2018-05-01'
+        name: 'Miguel',
+        lastname: 'Calero',
+        type: 'Root',
+        date: '2018-05-01'
     }, {
-    	name: 'Miguel',
-    	type: 'Root',
-    	date: '2018-05-06',
+        name: 'Miguel',
+        type: 'Root',
+        date: '2018-05-06',
         ctype: 'info'
     }, {
-    	name: 'María',
-    	lastname: 'González',
-    	type: 'Admin',
-    	date: '2018-05-06'
+        name: 'María',
+        lastname: 'González',
+        type: 'Admin',
+        date: '2018-05-06'
     }, {
-    	name: 'Agustín',
-    	type: 'User',
-    	date: '2018-05-03'
+        name: 'Agustín',
+        type: 'User',
+        date: '2018-05-03'
     }, {
-    	name: 'Francisca',
-    	type: 'User',
-    	date: '2018-05-04'
+        name: 'Francisca',
+        type: 'User',
+        date: '2018-05-04'
     }],
     alterdata: {
         'date': function (date) {
@@ -732,6 +732,27 @@ $code29 = "{
         text: 'Footer content'
     }
 }";
+
+$code30 = "<?php
+    
+    class Tags extends Store {
+        
+        public function __construct(\$CB, \$data = array())
+        {
+            \$this->read(\$CB);
+        }
+        
+        public function read(\$CB)
+        {
+            \$CB->db->select(\"id, name, type\");
+            \$CB->db->from(\"tags\");
+            \$CB->db->orderBy(\"id\", \"ASC\");
+            \$res = \$CB->db->get();
+            
+            \$CB->parseStore('tags', \$res);
+        }
+    }
+?>";
 
             $CB->parseStore('code', array(
                 'cd1' => array(
@@ -820,7 +841,10 @@ $code29 = "{
                     'code' => $code28),
                 'cd29' => array(
                     'type' => 'javascript',
-                    'code' => $code29)
+                    'code' => $code29),
+                'cd30' => array(
+                    'type' => 'php',
+                    'code' => $code30)
             ));
         }
     }

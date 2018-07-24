@@ -519,6 +519,7 @@ cb.base.element = {
 	            this.opt = dt;
 	        }
 	    }
+	    return this;
 	},
 	setRecord: function (record) {
 		if (this.opt) {
@@ -607,6 +608,7 @@ cb.base.element = {
             range.moveToElementText(node);
             range.select();
         }
+	    return this;
 	},
 	getItems: function () {
 	    return (this.getOpt('items') || null);
@@ -827,6 +829,7 @@ cb.base.grid = {
 				}
 			}
 		}
+		return this;
 	},
 	
 	removeColumn: function (pos) {
@@ -835,6 +838,7 @@ cb.base.grid = {
 			this.find('table.grid-main-table').find('thead').find('tr').find('th:eq(' + pos + ')').remove();
 			this.find('table.grid-main-table').find('tbody').find('tr').find(':eq(' + pos + ')').remove();
 		}
+		return this;
 	},
 	
 	addRows: function (record, pos, noSync) {
@@ -896,6 +900,7 @@ cb.base.grid = {
 	            }
 		    }
 		}
+		return this;
 	},
 	
 	removeRow: function (pos) {
@@ -909,6 +914,7 @@ cb.base.grid = {
     		// Remove row table
     		this.find('table.grid-main-table').find('tbody').find('tr:eq(' + pos + ')').remove();
         }
+		return this;
 	},
 	
 	removeAllRows: function (noSync) {
@@ -920,6 +926,7 @@ cb.base.grid = {
 		}
 		// Remove rows table
 		this.find('table.grid-main-table').find('tbody').children().remove();
+		return this;
 	},
 	
 	addItems: function (items, place) {
@@ -951,6 +958,7 @@ cb.base.grid = {
 				}
 			}
 		}
+		return this;
 	},
 	
 	setData: function (record) {
@@ -969,6 +977,7 @@ cb.base.grid = {
 				this.getStore().data = record;
 			}
 		}
+		return this;
 	}
 };
 
@@ -991,9 +1000,11 @@ cb.base.progress = {
                 this.append(bar);
             }
         }
+        return this;
     },
     removeBar: function (pos) {
         this.down('progress-bar', pos).remove();
+        return this;
     }
 };
 
@@ -1006,6 +1017,7 @@ cb.base['progress-bar'] = {
                 value: val
             }).css('width', val + '%');
         }
+        return this;
     },
     setMax: function (val) {
         if ($.isNumeric(val)) {
@@ -1013,6 +1025,7 @@ cb.base['progress-bar'] = {
                 'aria-valuemax': val
             });
         }
+        return this;
     },
     setMin: function (val) {
         if ($.isNumeric(val)) {
@@ -1020,9 +1033,11 @@ cb.base['progress-bar'] = {
                 'aria-valuemin': val
             });
         }
+        return this;
     },
     setText: function (txt) {
         this.html(txt);
+        return this;
     },
     setStriped: function (s) {
         if (s) {
@@ -1030,6 +1045,7 @@ cb.base['progress-bar'] = {
         } else {
             this.removeClass('progress-bar-striped');
         }
+        return this;
     },
     setActive: function (a) {
         if (a) {
@@ -1037,6 +1053,7 @@ cb.base['progress-bar'] = {
         } else {
             this.removeClass('active');
         }
+        return this;
     }
 };
 
@@ -1047,6 +1064,7 @@ cb.base.panel = {
             ctype = (panel.getOpt('type') || 'default');
         panel.removeClass('panel-' + ctype).addClass('panel-' + ntype);
         panel.setOpt('type', ntype);
+        return this;
     }
 };
 

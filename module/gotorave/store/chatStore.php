@@ -133,7 +133,7 @@
 							$res[$r]->online = 1;
 						}
 						
-						$res[$r]->msg = $CB->embed_multimedia($res[$r]->msg);
+						$res[$r]->msg = $CB->embedMultimedia($res[$r]->msg);
 					}
 					$CB->parseStore(
 						'chat', array(

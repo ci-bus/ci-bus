@@ -60,6 +60,10 @@ cb.define({
                         xtype: 'a',
                         text: '{tx6}',
                         href: '#loadview/properties'
+                    }, {
+                        xtype: 'a',
+                        text: '{tx7}',
+                        href: '#loadview/stores'
                     }]
 				}, {
 					xtype: 'navbar-dropdown',

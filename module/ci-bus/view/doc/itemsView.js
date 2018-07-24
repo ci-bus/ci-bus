@@ -83,6 +83,9 @@ cb.define({
                             field: 'cd10',
                             cls: '{type}',
                             text: '{code}'
+                        },
+                        dblclick: function () {
+                            cb.getCmp(this).selectContent();
                         }
                     }, {
                         xtype: 'totestcode'
@@ -156,6 +159,9 @@ cb.define({
                             field: 'cd11',
                             cls: '{type}',
                             text: '{code}'
+                        },
+                        dblclick: function () {
+                            cb.getCmp(this).selectContent();
                         }
                     }, {
                         xtype: 'totestcode'
@@ -339,6 +345,9 @@ cb.define({
                             },
                             cls: '{type}',
                             text: '{code}'
+                        },
+                        dblclick: function () {
+                            cb.getCmp(this).selectContent();
                         }
                     }, {
                         xtype: 'totestcode'
@@ -396,6 +405,9 @@ cb.define({
                             field: 'cd13',
                             cls: '{type}',
                             text: '{code}'
+                        },
+                        dblclick: function () {
+                            cb.getCmp(this).selectContent();
                         }
                     }, {
                         xtype: 'totestcode'
@@ -641,6 +653,9 @@ cb.define({
                             field: 'cd14',
                             cls: '{type}',
                             text: '{code}'
+                        },
+                        dblclick: function () {
+                            cb.getCmp(this).selectContent();
                         }
                     }, {
                         xtype: 'totestcode'
@@ -746,6 +761,9 @@ cb.define({
                             field: 'cd15',
                             cls: '{type}',
                             text: '{code}'
+                        },
+                        dblclick: function () {
+                            cb.getCmp(this).selectContent();
                         }
                     }, {
                         xtype: 'totestcode'
@@ -826,6 +844,9 @@ cb.define({
                             field: 'cd16',
                             cls: '{type}',
                             text: '{code}'
+                        },
+                        dblclick: function () {
+                            cb.getCmp(this).selectContent();
                         }
                     }, {
                         xtype: 'totestcode'
@@ -883,6 +904,9 @@ cb.define({
                             field: 'cd17',
                             cls: '{type}',
                             text: '{code}'
+                        },
+                        dblclick: function () {
+                            cb.getCmp(this).selectContent();
                         }
                     }, {
                         xtype: 'totestcode'
@@ -950,6 +974,9 @@ cb.define({
                             },
                             cls: '{type}',
                             text: '{code}'
+                        },
+                        dblclick: function () {
+                            cb.getCmp(this).selectContent();
                         }
                     }, {
                         xtype: 'totestcode'
@@ -982,6 +1009,9 @@ cb.define({
                             field: 'cd19',
                             cls: '{type}',
                             text: '{code}'
+                        },
+                        dblclick: function () {
+                            cb.getCmp(this).selectContent();
                         }
                     }, {
                         xtype: 'totestcode'
@@ -1047,6 +1077,9 @@ cb.define({
                             field: 'cd21',
                             cls: '{type}',
                             text: '{code}'
+                        },
+                        dblclick: function () {
+                            cb.getCmp(this).selectContent();
                         }
                     }, {
                         xtype: 'totestcode'
@@ -1104,6 +1137,9 @@ cb.define({
                             field: 'cd20',
                             cls: '{type}',
                             text: '{code}'
+                        },
+                        dblclick: function () {
+                            cb.getCmp(this).selectContent();
                         }
                     }, {
                         xtype: 'totestcode'
@@ -1165,6 +1201,9 @@ cb.define({
                             field: 'cd22',
                             cls: '{type}',
                             text: '{code}'
+                        },
+                        dblclick: function () {
+                            cb.getCmp(this).selectContent();
                         }
                     }, {
                         xtype: 'totestcode'
@@ -1226,6 +1265,9 @@ cb.define({
                             field: 'cd23',
                             cls: '{type}',
                             text: '{code}'
+                        },
+                        dblclick: function () {
+                            cb.getCmp(this).selectContent();
                         }
                     }, {
                         xtype: 'totestcode'
@@ -1258,6 +1300,9 @@ cb.define({
                             field: 'cd27',
                             cls: '{type}',
                             text: '{code}'
+                        },
+                        dblclick: function () {
+                            cb.getCmp(this).selectContent();
                         }
                     }, {
                         xtype: 'totestcode'
@@ -1331,6 +1376,9 @@ cb.define({
                             field: 'cd24',
                             cls: '{type}',
                             text: '{code}'
+                        },
+                        dblclick: function () {
+                            cb.getCmp(this).selectContent();
                         }
                     }, {
                         xtype: 'totestcode'
@@ -1363,6 +1411,9 @@ cb.define({
                             field: 'cd25',
                             cls: '{type}',
                             text: '{code}'
+                        },
+                        dblclick: function () {
+                            cb.getCmp(this).selectContent();
                         }
                     }, {
                         xtype: 'totestcode'
@@ -1465,6 +1516,9 @@ cb.define({
                             field: 'cd26',
                             cls: '{type}',
                             text: '{code}'
+                        },
+                        dblclick: function () {
+                            cb.getCmp(this).selectContent();
                         }
                     }, {
                         xtype: 'totestcode'
@@ -1534,6 +1588,9 @@ cb.define({
                             field: 'cd28',
                             cls: '{type}',
                             text: '{code}'
+                        },
+                        dblclick: function () {
+                            cb.getCmp(this).selectContent();
                         }
                     }, {
                         xtype: 'totestcode'
@@ -1696,6 +1753,9 @@ cb.define({
                             },
                             cls: '{type}',
                             text: '{code}'
+                        },
+                        dblclick: function () {
+                            cb.getCmp(this).selectContent();
                         }
                     }, {
                         xtype: 'totestcode'

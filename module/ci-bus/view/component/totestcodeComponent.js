@@ -3,7 +3,26 @@ cb.define({
     name: 'totestcode',
     items: {
         xtype: 'div',
-        items: {
+        items: [{
+            xtype: 'button',
+            size: 'xs',
+            store: 'texts',
+            field: 'general',
+            text: '{tx2}',
+            css: {
+                position: 'absolute',
+                top: 48,
+                right: 22,
+                'border-top-left-radius': 0,
+                'border-top-right-radius': 0,
+                'border-top': 0,
+                'border-color': '#ddd',
+                'line-height': '13px'
+            },
+            click: function () {
+                cb.getCmp(this).up('div', 1).down('code').selectContent();
+            }
+        }, {
             xtype: 'button',
             store: 'texts',
             field: 'general',
@@ -23,6 +42,6 @@ cb.define({
                     cb.create(items[i]);
                 }
             }
-        }
+        }]
     }
 });

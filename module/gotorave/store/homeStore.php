@@ -28,7 +28,7 @@
 			{
 				foreach($res as $k => $r0)
 				{
-					$res[$k]->enlace = $CB->embed_multimedia($res[$k]->enlace);
+					$res[$k]->enlace = $CB->embedMultimedia($res[$k]->enlace);
 					
 					$CB->db->reset();
 					$CB->db->select("music_tag.id, music_tag.tag_id, tags.name");

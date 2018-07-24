@@ -7,7 +7,8 @@
 		    
 		    $CB->parseStore('texts', array(
 		        'general' => array (
-		            'tx1' => 'Probar código'
+		            'tx1' => 'Probar código',
+		            'tx2' => 'Seleccionar'
 		        ),
 		        'menu' => array (
 		            'tx0' => 'Documentación ',
@@ -16,7 +17,8 @@
 		            'tx3' => 'Vistas',
 		            'tx4' => 'Items',
 		            'tx5' => 'Funciones JavaScript',
-		            'tx6' => 'Propiedades items'
+		            'tx6' => 'Propiedades items',
+		            'tx7' => 'Store PHP y JavaScript'
 			    ),
 		        'menu-items' => array (
 		            array(
@@ -119,8 +121,15 @@
 		            'tx8' => 'Donativos',
 		            'tx9' => 'Si te ha gustado Ci-bus haz click aquí para hacer un donativo apoyando al desarrollo'
 		        ),
+		        'stores' => array(
+		            'tx1' => 'Información para la creación de stores en PHP y la utilización de stores en JavaScript',
+		            'tx2' => 'PHP Stores',
+		            'tx3' => 'Los stores en PHP se utilizan para hacer consultas a la base de datos y devolver un store JavaScript o una configuración',
+		            'tx4' => 'Ejemplo cogiendo tags de la base de datos',
+		            'tx5' => 'Funciones disponibles class Store'
+		        ),
 			    'createmodule' => array(
-			        'tx1' => 'Instrucciones para crear un módulo nuevo llamado test',
+			        'tx1' => 'Información para crear un módulo nuevo llamado test',
 			        'tx2' => 'Creación de carpetas y archivos',
 			        'tx3' => '1. Crear una carpeta llamada <em>test</em> en ',
 			        'tx4' => '2. Crea las carpetas <em>controller</em>, <em>view</em> y <em>store</em> en ',

@@ -69,7 +69,7 @@
 				if(is_object($res))$res = array($res);
 				foreach($res as $k => $r0)
 				{
-					$res[$k]->description = $CB->embed_multimedia($res[$k]->description);
+					$res[$k]->description = $CB->embedMultimedia($res[$k]->description);
 					$CB->db->reset();
 					$CB->db->select("event_tag.id, event_tag.tag_id, tags.name");
 					$CB->db->from("event_tag");
