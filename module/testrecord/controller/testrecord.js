@@ -103,7 +103,7 @@ cb.define({
 					xtype: 'button',
 					type: 'primary',
 					field: 'tags1',
-					listener: {
+					listeners: {
 						click: function(){
 							console.log(cb.getCmp(this));
 							console.log(cb.getCmp($(this).parent()).getRecord());
@@ -136,7 +136,7 @@ cb.define({
 				xtype: 'button',
 				text: 'Test load store with new data',
 				margin: 10,
-				listener: {
+				listeners: {
 					click: function(){
 						cb.define({
 							xtype: 'store',

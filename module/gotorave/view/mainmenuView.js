@@ -26,7 +26,7 @@ cb.define({
 				cls: 'navbar-brand',
 				glyphicon: 'home',
 				text: ' Inicio',
-				listener: {
+				listeners: {
 					click: function(){
 						cb.ctr('gotorave', 'home');
 					}
@@ -47,7 +47,7 @@ cb.define({
 						xtype: 'a',
 						text: 'Ver todas las fiestas',
 						css: {'font-size': '16px'},
-						listener: {
+						listeners: {
 							'click': function(){
 								cb.ctr('gotorave', 'load_events');
 							}
@@ -59,7 +59,7 @@ cb.define({
 						field: 'event',
 						xtype: 'a',
 						text: '{name}',
-						listener: {
+						listeners: {
 							click: function(){
 								cb.ctr('gotorave', 'load_events', this.getRecord()['id']);
 							}
@@ -75,7 +75,7 @@ cb.define({
 						xtype: 'a',
 						text: 'Ver todos los usuarios',
 						css: {'font-size': '16px'},
-						listener: {
+						listeners: {
 							'click': function(){
 								cb.ctr('gotorave', 'load_users');
 							}
@@ -87,7 +87,7 @@ cb.define({
 						field: 'user',
 						xtype: 'a',
 						text: '{name}',
-						listener: {
+						listeners: {
 							click: function(){
 								cb.ctr('gotorave', 'load_users', this.getRecord()['id']);
 							}
@@ -103,7 +103,7 @@ cb.define({
 						xtype: 'a',
 						text: 'Ver toda la musica',
 						css: {'font-size': '16px'},
-						listener: {
+						listeners: {
 							'click': function(){
 								cb.ctr('gotorave', 'load_music');
 							}
@@ -115,7 +115,7 @@ cb.define({
 						field: 'music',
 						xtype: 'a',
 						text: '{name}',
-						listener: {
+						listeners: {
 							click: function(){
 								cb.ctr('gotorave', 'load_music', this.getRecord()['id']);
 							}
@@ -138,7 +138,7 @@ cb.define({
 							'data-id': '{id}'
 						},
 						text: '{name}',
-						listener: {
+						listeners: {
 							click: function(){
 								cb.ctr('gotorave', 'changesala', this.getRecord());
 							}
@@ -153,7 +153,7 @@ cb.define({
 					items: [{
 						xtype: 'a',
 						text: 'Escribir letra de canción',
-						listener: {
+						listeners: {
 							click: function(){
 								cb.setConfig('no_refresh_chat', true);
 								cb.load('controller', 'maderap');
@@ -166,7 +166,7 @@ cb.define({
 					glyphicon: 'user',
 					css: { 'font-size': 17 },
 					caret: false,
-					listener: {
+					listeners: {
 						click: function(){
 							cb.ctr('gotorave', 'load_user_panel');
 						}
@@ -177,7 +177,7 @@ cb.define({
 					css: { 'font-size': 17 },
 					color: 'RED',
 					caret: false,
-					listener: {
+					listeners: {
 						click: function(){
 							cb.ctr('gotorave', 'logout');
 						}

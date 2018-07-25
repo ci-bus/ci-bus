@@ -52,7 +52,7 @@ cb.define({
 						click: function(){
 							cb.ctr('bioculuspro', 'load_product', $(this).getRecord())
 						},
-						listener: {
+						listeners: {
 							load: function(){
 								cb.ctr('bioculuspro', 'adapt_products');
 							}

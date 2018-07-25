@@ -50,7 +50,7 @@ cb.define({
 				},{
 					xtype: 'form',
 					name: 'search_content',
-					listener: {
+					listeners: {
 						submit: function(e){
 							e.preventDefault();
 							cb.ctr('maderap', 'insert', $('input[name="insert"]').val());
@@ -160,7 +160,7 @@ cb.define({
 					background: '#f2f5f7',
 					css: { overflow: 'auto', 'margin-top': '15px' },
 					padding: '5px 10px',
-					listener: {
+					listeners: {
 						click: function(){
 							$('#keyboardopen').focus();
 							if(!cb.getConfig('editing')){
@@ -198,7 +198,7 @@ cb.define({
 				},{
 					xtype: 'form',
 					name: 'search_content',
-					listener: {
+					listeners: {
 						submit: function(e){
 							e.preventDefault();
 							cb.ctr('maderap', 'search');
@@ -213,7 +213,7 @@ cb.define({
 								xtype: 'input',
 								type: 'text',
 								name: 'search',
-								listener: {
+								listeners: {
 									focus: function(){
 										cb.ctr('maderap', 'cursorOut');
 									}

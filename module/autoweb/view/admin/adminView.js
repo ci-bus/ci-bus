@@ -18,7 +18,7 @@ cb.define({
 				css: {cursor: 'pointer'},
 				cls: 'navbar-brand',
 				glyphicon: 'cog',
-				listener: {
+				listeners: {
 					click: function(){
 						cb.ctr('gotorave', 'home');
 					}

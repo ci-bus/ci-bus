@@ -69,7 +69,7 @@ cb.define({
 							attr: {'colover': '#{color2}', 'colout': '#{color}'},
 							css: {"border": 0},
 							color: '#{color3}',
-							listener: {
+							listeners: {
 								mouseover: function(){
 									$(this).css({
 										'background-color': $(this).attr('colover')

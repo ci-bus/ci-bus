@@ -55,7 +55,7 @@ cb.define({
 									text: ' Enviar ',
 									cls: 'btn-block',
 									
-									listener: {
+									listeners: {
 										click: function(){
 											cb.ctr('gotorave', 'sendchat');
 										}
@@ -127,7 +127,7 @@ cb.define({
 							float: 'right',
 							glyphicon: 'menu-down',
 							css: { cursor: 'pointer' },
-							listener: {
+							listeners: {
 								'click': function(){
 									if($('#media-player').find('iframe, object, embed').width() == 1200){
 										$('#media-player').find('iframe, object, embed').animate({width: 560, height: 315}, 'fast');
@@ -148,7 +148,7 @@ cb.define({
 							glyphicon: 'menu-up',
 							margin: '0 10px 0 0',
 							css: { cursor: 'pointer', opacity: 0 },
-							listener: {
+							listeners: {
 								'click': function(){
 									if($('#media-player').height()<50){
 										$('#media-player').css({overflow: 'initial'}).animate({height: 315}, 'fast', function(){

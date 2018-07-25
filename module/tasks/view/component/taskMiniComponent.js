@@ -13,7 +13,7 @@ cb.define({
         },
         type: '{type}',
         pull: 'left',
-        listener: {
+        listeners: {
             mouseover: function () {
                 $(this).css('border-color', '#888');
             },

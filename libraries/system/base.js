@@ -128,7 +128,7 @@ cb.router = {
 			this.route(top.window.location.hash);
 		}
 	},
-	listener: addEventListener('hashchange', function() { cb.router.hashchange(); }, false)
+	listeners: addEventListener('hashchange', function() { cb.router.hashchange(); }, false)
 };
 
 // Funciones base para los store javascript
@@ -2500,9 +2500,9 @@ cb.module.bootstrapComponent = {
 			    $(input).change(opt.change);
 			    delete opt.change;
 			}
-			if (opt.listener) {
-				$(input).on(opt.listener);
-				delete opt.listener;
+			if (opt.listeners) {
+				$(input).on(opt.listeners);
+				delete opt.listeners;
 			}
 			opt.notype = true;
 			if (!opt.text && !opt.html && !opt.items && opt.name) {
@@ -3398,8 +3398,8 @@ cb.common_prop = function(ele, opt)
 		$(ele).attr(opt.attr);
 	}
 	
-	if (opt.listener) {
-		$(ele).on(opt.listener);
+	if (opt.listeners) {
+		$(ele).on(opt.listeners);
 	}
 	
 	return ele;

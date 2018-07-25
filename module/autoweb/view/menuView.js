@@ -19,7 +19,7 @@ cb.define({
 				xtype: 'col',
 				size: 3,
 				text: 'Columna 1',
-				listener: {
+				listeners: {
 					click: function(){
 						cb.ctr('autoweb', 'adminLoad');
 					}

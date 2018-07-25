@@ -178,7 +178,7 @@ cb.define({
 					},{
 						xtype: 'button',
 						text: 'Aceptar',
-						listener: {
+						listeners: {
 							click: function(){
 								$(this).parent().parent().remove();
 							}
@@ -395,7 +395,7 @@ cb.define({
 					'color': 'red',
 					'cursor': 'pointer'
 				},
-				listener: {
+				listeners: {
 					click: function(){
 						if($('#add-tag').css('display') == 'none'){
 							$('#add-tag').css('display', 'block');
@@ -409,7 +409,7 @@ cb.define({
 									'data-id': val2
 								},
 								text: val,
-								listener: {
+								listeners: {
 									click: function(){
 										cb.ctr('gotorave', 'add_tag', this);
 									}
@@ -456,7 +456,7 @@ cb.define({
 				xtype: 'button',
 				text: 'Ver',
 				margin: '20px 0 0 0',
-				listener: {
+				listeners: {
 					mouseover: function(){
 						$(this).parent().find('input').attr('type', 'text');
 					},
@@ -470,7 +470,7 @@ cb.define({
 				text: 'Cambiar contraseña',
 				pull: 'right',
 				margin: '20px 0 0 10px',
-				listener: {
+				listeners: {
 					click: function(){
 						cb.ctr('gotorave', 'do_change_pass');
 					}
@@ -529,7 +529,7 @@ cb.define({
 						cursor: 'pointer',
 						'padding-top': 4
 					},
-					listener: {
+					listeners: {
 						click: function(){
 							cb.effect('#popupinforeg', {
 								type: 'flipout',
@@ -583,7 +583,7 @@ cb.define({
 						cursor: 'pointer',
 						'padding-top': 4
 					},
-					listener: {
+					listeners: {
 						click: function(){
 							cb.effect($(this).parent().parent(), {
 								type: 'flipout',

@@ -74,7 +74,7 @@ $code4 = "cb.define({
             type: 'thumbs-down',
             cursor: 'pointer',
             margin: 5,
-            listener: {
+            listeners: {
                 click: function () {
                     alert('clicked thumb down');
                 }
@@ -84,7 +84,7 @@ $code4 = "cb.define({
             type: 'thumbs-up',
             cursor: 'pointer',
             margin: 5,
-            listener: {
+            listeners: {
                 click: function () {
                     alert('clicked thumb up');
                 }

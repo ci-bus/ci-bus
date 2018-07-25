@@ -39,7 +39,7 @@ cb.define({
                         xtype: 'input',
                         type: 'password',
                         name: 'pass',
-                        listener: {
+                        listeners: {
                             keyup: function(e) {
                                 if(e.keyCode == 13){
                                     cb.ctr('gotorave', 'login');

@@ -128,7 +128,7 @@ cb.define({
 									cursor: 'pointer',
 									'padding-top': 4
 								},
-								listener: {
+								listeners: {
 									click: function(){
 										cb.effect($(this).parent().parent(), {
 											type: 'flipout',
@@ -426,7 +426,7 @@ comprar: function(record){
 						cursor: 'pointer',
 						'padding-top': 4
 					},
-					listener: {
+					listeners: {
 						click: function(){
 							cb.effect('#popcompra', {
 								type: 'flipout',
@@ -913,7 +913,7 @@ comprar: function(record){
 						cursor: 'pointer',
 						'padding-top': 4
 					},
-					listener: {
+					listeners: {
 						click: function(){
 							cb.effect($(this).parent(), {
 								type: 'flipout',

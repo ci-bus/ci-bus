@@ -24,7 +24,7 @@ cb.define({
                     cursor: 'pointer',
                     'padding-top': 4
                 },
-                listener: {
+                listeners: {
                     click: function () {
                         cb.setConfig('chat_opened', 0);
                         tinymce.EditorManager.execCommand('mceRemoveEditor', true, 'doc-textarea');

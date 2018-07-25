@@ -24,7 +24,7 @@ cb.define({
                     cursor: 'pointer',
                     'padding-top': 4
                 },
-                listener: {
+                listeners: {
                     click: function(){
                         tinymce.EditorManager.execCommand('mceRemoveEditor', true, 'tcf_content');
                         cb.effect($(this).parent().parent().parent(), {

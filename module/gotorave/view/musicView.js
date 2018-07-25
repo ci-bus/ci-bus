@@ -30,7 +30,7 @@ cb.define({
 							text: 'Compartir m&uacute;sica',
 							id: 'share-music-button',
 							css: {'font-size': '23px', cursor: 'pointer'},
-							listener: {
+							listeners: {
 								click: function(){
 									$(this).css({position: 'relative', 'border-bottom': '1px solid white'}).animate({top: '-10px'},'fast');
 									$('#form-music-box').animate({height: '100%'}, 'fast', function(){
@@ -81,7 +81,7 @@ cb.define({
 										cls: 'pull-left',
 										text: 'Cancelar',
 										size: 'small',
-										listener: {
+										listeners: {
 											click: function(){
 												$("textarea[name='enlace']").val('');
 												$("input[name='titulo']").val('');
@@ -117,7 +117,7 @@ cb.define({
 												'data-id': '{id}'
 											},
 											text: '{name}',
-											listener: {
+											listeners: {
 												click: function(){
 													cb.ctr('gotorave', 'add_tag', this);
 												}
@@ -137,7 +137,7 @@ cb.define({
 										cls: 'pull-center',
 										text: 'Compartir',
 										width: '100%',
-										listener: {
+										listeners: {
 											click: function(){
 												cb.ctr('gotorave', 'sharemusic');
 											}

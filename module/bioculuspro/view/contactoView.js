@@ -48,7 +48,7 @@ cb.define({
 				},{
 					xtype: 'input',
 					name: 'email',
-					listener: {
+					listeners: {
 						keyup: function(){
 							var t = $(this).val();
 							var n1 = cb.strpos(t,'@');
@@ -105,7 +105,7 @@ cb.define({
 					css: {'text-align': 'center'},
 					html: '<div class="g-recaptcha" data-sitekey="6Lf8WSMUAAAAAEc5WXOSyLg6zodfwFTGNsQ7ze2-"></div>'
 				},
-				listener: {
+				listeners: {
 					mouseleave: function(){
 						$('#sendbutton').removeAttr('disabled');
 					}

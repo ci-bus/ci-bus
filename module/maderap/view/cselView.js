@@ -5,7 +5,7 @@ cb.define({
 	items: {
 		xtype: 'select',
 		name: 'letra',
-		listener: {
+		listeners: {
 			change: function(){
 				var record = $(this).find('option:selected').getRecord();
 				cb.ctr('maderap', 'reset');

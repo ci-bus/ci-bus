@@ -36,7 +36,7 @@ cb.define({
 					type: 'text',
 					placeholder: 'ejemplo@email.com',
 					name: 'invitemailuser',
-					listener: {
+					listeners: {
 						keyup: function(){
 							var t = $(this).val();
 							var n1 = cb.strpos(t,'@');
@@ -56,7 +56,7 @@ cb.define({
 					text: 'Invitar',
 					margin: '10px 0 0 0',
 					disabled: true,
-					listener: {
+					listeners: {
 						click: function(){
 							cb.ctr('gotorave','inviteuser')
 						}

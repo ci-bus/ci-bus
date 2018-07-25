@@ -10,7 +10,7 @@ cb.define({
 			cursor: 'pointer',
 			cls : '{hand1_color}',
 			margin: 5,
-			listener: {
+			listeners: {
 				click: function(){
 					cb.ctr('examples','like',this)
 				}
@@ -21,7 +21,7 @@ cb.define({
 			cls : '{hand2_color}',
 			cursor: 'pointer',
 			margin: 5,
-			listener: {
+			listeners: {
 				click: function(){
 					cb.ctr('examples','like',this)
 				}

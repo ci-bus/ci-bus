@@ -100,7 +100,7 @@ cb.define({
 							css: {"border": 0},
 							color: '#{color3}',
 							text: "<img style=\"max-height:24px;\" src=\"sistema/{imagen}\"> &nbsp;{texto}",
-							listener: {
+							listeners: {
 								mouseover: function(){
 									$(this).css({
 										'background-color': $(this).attr('colover')

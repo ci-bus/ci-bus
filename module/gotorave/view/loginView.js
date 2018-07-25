@@ -60,7 +60,7 @@ cb.define({
 									xtype: 'input',
 									type: 'password',
 									name: 'pass',
-									listener: {
+									listeners: {
 										keyup: function(e){
 											if(e.keyCode == 13){
 												cb.ctr('gotorave', 'login');
@@ -76,7 +76,7 @@ cb.define({
 									glyphicon: 'link',
 									text: ' Conectar, vamos de fiesta ',
 									css: {'padding-right':'20px'},
-									listener: {
+									listeners: {
 										click: function(){
 											cb.ctr('gotorave', 'login');
 										}
@@ -85,7 +85,7 @@ cb.define({
 							},{
 								xtype: 'a',
 								text: 'Soy nuevo, quiero registrarme',
-								listener: {
+								listeners: {
 									click: function(){
 										cb.ctr('gotorave', 'inforeg');
 									}

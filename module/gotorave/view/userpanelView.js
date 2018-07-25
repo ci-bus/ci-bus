@@ -23,7 +23,7 @@ cb.define({
 						xtype: 'glyphicon',
 						type: 'thumbs-up',
 					}],
-					listener: {
+					listeners: {
 						click: function(){
 							cb.ctr('gotorave', 'load_events', 'like');
 						}
@@ -36,7 +36,7 @@ cb.define({
 						xtype: 'glyphicon',
 						type: 'thumbs-up',
 					}],
-					listener: {
+					listeners: {
 						click: function(){
 							cb.ctr('gotorave', 'load_users', 'like');
 						}
@@ -49,7 +49,7 @@ cb.define({
 						xtype: 'glyphicon',
 						type: 'thumbs-up',
 					}],
-					listener: {
+					listeners: {
 						click: function(){
 							cb.ctr('gotorave', 'load_music', 'like');
 						}
@@ -62,7 +62,7 @@ cb.define({
 					xtype: 'button',
 					css: {'margin-bottom': 10},
 					text: 'Tus eventos',
-					listener: {
+					listeners: {
 						click: function(){
 							cb.ctr('gotorave', 'load_events', 'me');
 						}
@@ -71,7 +71,7 @@ cb.define({
 					xtype: 'button',
 					css: {'margin-bottom': 10},
 					text: 'Tu música',
-					listener: {
+					listeners: {
 						click: function(){
 							cb.ctr('gotorave', 'load_music', 'me');
 						}
@@ -81,7 +81,7 @@ cb.define({
 					css: {'margin-bottom': 10},
 					glyphicon: 'key',
 					text: 'Tu contraseña',
-					listener: {
+					listeners: {
 						click: function(){
 							cb.ctr('gotorave', 'change_pass');
 						}
@@ -135,7 +135,7 @@ cb.define({
 							name: 'userimageinput',
 							text: 'Cambiar imagen',
 							size: 'small',
-							listener: {
+							listeners: {
 								change: function(evt){
 									var file = evt.target.files[0];
 									if(file && file.type && file.type.substr(0, 5)=='image')
@@ -182,7 +182,7 @@ cb.define({
 									'data-id': '{id}'
 								},
 								text: '{name}',
-								listener: {
+								listeners: {
 									click: function(){
 										cb.ctr('gotorave', 'add_tag', this);
 									}
@@ -202,7 +202,7 @@ cb.define({
 							cls: 'pull-center',
 							text: 'Guardar cambios',
 							width: '100%',
-							listener: {
+							listeners: {
 								click: function(){
 									cb.ctr('gotorave', 'saveuserinfo', this);
 								}

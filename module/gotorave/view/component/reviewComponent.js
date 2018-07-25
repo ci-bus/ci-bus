@@ -15,7 +15,7 @@ cb.define({
 			cls : '{hand1_color}',
 			margin: 5,
 			attr: {'clicked': '{review_cos}'},
-			listener: {
+			listeners: {
 				click: function(){
 					cb.ctr('gotorave','musiclike',this)
 				}
@@ -27,7 +27,7 @@ cb.define({
 			cursor: 'pointer',
 			attr: {'clicked': '{review_pos}'},
 			margin: 5,
-			listener: {
+			listeners: {
 				click: function(){
 					cb.ctr('gotorave','musiclike',this)
 				}

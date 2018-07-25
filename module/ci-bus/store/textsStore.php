@@ -365,7 +365,7 @@
 		            array(
 		                'prop' => 'badge',
 		                'param' => '1. Texto para el badge',
-                        'example' => "hidden: 'texto'",
+                        'example' => "badge: 'texto'",
 		                'action' => 'Añade un badge al elemento con el texto definido'
 		            ),
 		            array(
@@ -375,9 +375,9 @@
 		                'action' => 'Añade la clase pull-left o pull-right al elemento'
 		            ),
 		            array(
-		                'prop' => 'listener',
+		                'prop' => 'listeners',
 		                'param' => '1. Objeto con definiciones de eventos',
-		                'example' => "listener: {
+		                'example' => "listeners: {
     click: function () { alert('clicked!'); }
 }",
 		                'simil' => 'http://api.jquery.com/on/'
@@ -517,7 +517,7 @@
 	                array(
 	                    'fun' => 'cb.common_prop()',
 	                    'param' => "1. Elemento html o puntero, 2. Objeto (propiedades)",
-	                    'action' => "Aplica propiedades a un elemento como border, padding, listener etc",
+	                    'action' => "Aplica propiedades a un elemento como border, padding, listeners etc",
 	                    'example' => "cb.common_prop('#id-ele', {background: 'red', click: function(){alert('oks');}});",
 	                    'return' => "El elemento o puntero"
 	                    // TODO añadir info con enlace a las propiedades comunes
@@ -573,7 +573,7 @@
         cursor: 'pointer',
                 'padding-top': 4
             },
-            listener: {
+            listeners: {
                 click: function(){
                     cb.effect($(this).parent().parent(), {
                         type: 'flipout',

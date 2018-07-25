@@ -104,7 +104,7 @@ cb.define({
 			width: '100%',
 			height: 26,
 			text: '&nbsp;',
-			listener: {
+			listeners: {
 				click: function(e){
 					
 					if($(this).attr('id')){
@@ -132,7 +132,7 @@ cb.define({
 			css: {'font-size': '17px'},
 			cursor: 'text',
 			float: 'left',
-			listener: {
+			listeners: {
 				click: function(e){
 					cb.setConfig('writing', false);
 					var x = e.offsetX,
@@ -246,7 +246,7 @@ cb.define({
 						cursor: 'pointer',
 						'padding-top': 4
 					},
-					listener: {
+					listeners: {
 						click: function(){
 							cb.effect($(this).parent().parent(), {
 								type: 'flipout',
