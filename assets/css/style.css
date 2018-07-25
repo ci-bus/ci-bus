@@ -146,6 +146,10 @@ a.disabled {
 	background: #fff;
 }
 
+pre {
+	border-color: #eee;
+}
+
 @media only screen and (min-width : 0px) {
 	.cubi-name {
 		max-height: 36px;
