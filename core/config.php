@@ -18,7 +18,7 @@
 	        "db" => array("db_host" => "localhost",
 	            "db_user" => "root",
 	            "db_pass" => "",
-	            "db_database" => "test",
+	            "db_database" => "gotorave",
 	            "db_prefix" => "",
 	            'charset'  => 'utf8',
 	            'anticode' => true
