@@ -1,6 +1,6 @@
 <?php
 	
-	class Login {
+	class Login extends Store {
 		
 		public function __construct($data = array())
 		{

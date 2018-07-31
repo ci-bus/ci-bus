@@ -1,6 +1,6 @@
 <?php
 	
-	class Chat {
+	class Chat extends Store {
 		
 		public function __construct($data = array())
 		{

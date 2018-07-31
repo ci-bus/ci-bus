@@ -8,8 +8,7 @@
 		{
 			$this->time_exe = microtime(true);
 			$this->getVars();
-			$this->initializeEvents();
-			$this->initializeDB();
+			$this->connect();
 		}
 		
 		public function loadLibrary($file)
@@ -30,11 +29,11 @@
 			if(!empty($_SESSION))$this->setConfig("SESSION", $_SESSION);
 		}
 		
-		private function initializeDB()
-		{
-			//$this->db = new Db(1);
-			//$this->setConfig($this->getConfig('db'));
-		}
+// 		private function initializeDB()
+// 		{
+// 			$this->db = new Db(1);
+// 			$this->setConfig($this->getConfig('db'));
+// 		}
 		
 // 		private function initializeEvents()
 // 		{

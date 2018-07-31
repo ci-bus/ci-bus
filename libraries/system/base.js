@@ -1068,6 +1068,16 @@ cb.base.panel = {
     }
 };
 
+// Funciones base para selects
+cb.base.select = {
+	getOptionSelected: function () {
+		return cb.getCmp(this.find('option:selected'));
+	},
+	getRecordSelected: function () {
+		return this.getOptionSelected().getRecord();
+	}
+};
+
 // Funcion para generar un nombre único
 cb.autoname = function(pre) {
 	if (!pre) {
@@ -1138,14 +1148,10 @@ cb.getCmp = function(ref, idx) {
     if (!idx) idx = 0;
     if (typeof ref == 'string') {
         // Search by css selector
-        if (ref.substr(0, 1) == '#' || ref.substr(0, 1) == '.') {
-            if ($(ref).length > idx) {
-                return $.extend($($(ref)[idx]), $($(ref)[idx])[0]);
-            } else if (idx == 0){
-                return $.extend($(ref), $(ref)[0]);
-            } else {
-                return null;
-            }
+        if ($(ref).length > idx) {
+            return $.extend($($(ref)[idx]), $($(ref)[idx])[0]);
+        } else if (idx == 0){
+            return $.extend($(ref), $(ref)[0]);
         } else { // Search by xtype
             var childs = $('*');
             var count = 0;

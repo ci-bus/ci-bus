@@ -532,18 +532,17 @@ class Db extends Config {
 		
 		public function isAlive()
 		{
-			if( empty($this->link) ){
-				
-				$this->error( "No connected ".$this->link->error );
+			if(empty($this->link))
+			{
 				return false;
-				
-			}else if( !$this->link->ping() ){
-				
-				$this->error( $this->link->error );
+			}
+			else if(!$this->link->ping())
+			{
+				$this->error($this->link->error);
 				return false;
-				
-			}else{
-				
+			}
+			else
+			{
 				return true;
 			}
 		}

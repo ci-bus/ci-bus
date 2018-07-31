@@ -4,6 +4,7 @@
 		
 		public function __construct($data = array())
 		{
+		    parent::__construct();
 			if(!$_SESSION['user_id']) die("cb.ctr('gotorave','logout')");
 			$data = $this->minArray($data);
 			

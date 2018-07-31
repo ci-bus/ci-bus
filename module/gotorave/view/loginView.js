@@ -77,7 +77,8 @@ cb.define({
 									text: ' Conectar, vamos de fiesta ',
 									css: {'padding-right':'20px'},
 									listeners: {
-										click: function(){
+										click: function(e){
+											e.preventDefault();
 											cb.ctr('gotorave', 'login');
 										}
 									}

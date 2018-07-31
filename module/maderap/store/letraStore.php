@@ -1,6 +1,6 @@
 <?php
 	
-	class Letra {
+	class Letra extends Store {
 		
 		public function __construct($data = array())
 		{

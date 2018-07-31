@@ -7,7 +7,7 @@ cb.define({
 		name: 'letra',
 		listeners: {
 			change: function(){
-				var record = $(this).find('option:selected').getRecord();
+				var record = cb.getCmp(this).getRecordSelected();
 				cb.ctr('maderap', 'reset');
 				cb.ctr('maderap', 'insert', record.text);
 			}
