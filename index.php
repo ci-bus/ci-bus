@@ -4,25 +4,16 @@
 	ini_set('display_errors', 1);
 	ini_set('display_startup_errors', 1);
 	
-	include "core/Store.php";
-	include "libraries/jsmin-php-master/jsmin.php";
+	include __DIR__ . "/core/autoload.php";
+	$config = new Config();
 	
-	header('Content-Type: text/html; charset='.$CB->getConfig('charset'));
+	if ($config->getConfig('auto_min_js')) {
+	    include __DIR__ . "libraries/jsmin-php-master/jsmin.php";
+	}
+	
+	header('Content-Type: text/html; charset='.$config->getConfig('charset'));
 
 	$urlparts = false;
-		
-	if(in_array($_SERVER['REMOTE_ADDR'], $CB->getConfig('local_ips')))
-	{
-		if($CB->getConfig('auto_min_js') == 'local'){
-			$CB->setConfig('auto_min_js', true);
-		}
-	}
-	else
-	{
-		if($CB->getConfig('auto_min_js') == 'local'){
-			$CB->setConfig('auto_min_js', false);
-		}
-	}
 	
 	if ($_SERVER['argv']) {
 	    $turi = trim($_SERVER['argv'][0], "/");
@@ -84,7 +75,7 @@
 					}
 					if(file_exists('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.min.js'))
 					{
-						if($CB->getConfig('auto_min_js') === true && file_exists('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.js') && filemtime('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.min.js') != filemtime('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.js')){
+						if($config->getConfig('auto_min_js') === true && file_exists('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.js') && filemtime('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.min.js') != filemtime('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.js')){
 							$codemin = JSMin::minify(file_get_contents('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.js'));
 							$min = fopen('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.min.js', "w+");
 							fwrite($min, $codemin);
@@ -101,7 +92,7 @@
 					}
 					else if(file_exists('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.js'))
 					{
-						if($CB->getConfig('auto_min_js') === true){
+						if($config->getConfig('auto_min_js') === true){
 							$codemin = JSMin::minify(file_get_contents('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.js'));
 							$min = fopen('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.min.js', "w+");
 							fwrite($min, $codemin);
@@ -127,8 +118,7 @@
 							{
 								include 'module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'Store.php';
 							}
-							$CB->db->reset();
-							$store[$temp_class] = new $temp_class($CB, $dt[3]);
+							$store[$temp_class] = new $temp_class($dt[3]);
 						}
 						else
 						{
@@ -145,8 +135,8 @@
 
 <!DOCTYPE html>
 	<head>
-		<title><?php echo $CB->getConfig('title'); ?></title>
-		<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $CB->getConfig('charset'); ?>" />
+		<title><?php echo $config->getConfig('title'); ?></title>
+		<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $config->getConfig('charset'); ?>" />
 		
 		<link rel="stylesheet" type="text/css" href="main.css" />
 
@@ -160,7 +150,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		
-		<link rel="icon" type="<?php echo $CB->getConfig('favicon')['type']; ?>" href="<?php echo $CB->getConfig('favicon')['href']; ?>">
+		<link rel="icon" type="<?php echo $config->getConfig('favicon')['type']; ?>" href="<?php echo $config->getConfig('favicon')['href']; ?>">
 				
 		<script type="text/javascript">
 			
@@ -173,7 +163,7 @@
 							if($urlparts[0]){
 								echo "cb.load('controller', '".$urlparts[0]."', ".json_encode($_GET).");";
 							}else{
-								echo "cb.load('controller', '".$CB->getConfig('default_module')."', ".json_encode($_GET).");";
+								echo "cb.load('controller', '".$config->getConfig('default_module')."', ".json_encode($_GET).");";
 							}
 						}else{
 							echo "cb.load('controller', '".$urlparts[0]."');";
@@ -181,7 +171,7 @@
 					}
 					else
 					{
-						echo "cb.load('controller', '".$CB->getConfig('default_module')."');";
+						echo "cb.load('controller', '".$config->getConfig('default_module')."');";
 					}
 				?> $.cachedScript("bower_components/bootstrap/dist/js/bootstrap.min.js");
 			});

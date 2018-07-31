@@ -2,7 +2,7 @@
 	
 	class Send_mail {
 		
-		public function __construct($CB, $data = array())
+		public function __construct($data = array())
 		{
 			if(!$_SESSION['lang_id']){
 				$_SESSION['lang_id'] = 1;

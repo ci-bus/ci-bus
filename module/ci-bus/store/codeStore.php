@@ -1,8 +1,8 @@
 <?php 
 
-    class Code {
+    class Code extends Store {
             
-        public function __construct($CB, $data = array())
+        public function __construct($data = array())
         {
                 
 $code1 = "cb.define({
@@ -49,16 +49,16 @@ $code3 = "&lt;&#63;php
     
         public function get_data()
         {
-            \$CB->db->select(\"id, field1, field2\");
-            \$CB->db->from(\"test_table\");
-            \$CB->db->orderBy(\"id\", \"ASC\");
+            \$this->select(\"id, field1, field2\");
+            \$this->from(\"test_table\");
+            \$this->orderBy(\"id\", \"ASC\");
 
-            \$this->parseStore('test', \$CB->db->get());
+            \$this->parseStore('test', \$this->get());
         }
 
         public function get_lang_config(\$CB, \$data)
         {
-            \$CB->parseConfig('lang', 'ES-es');
+            \$this->parseConfig('lang', 'ES-es');
         }
     }
 &#63;&gt;";
@@ -744,17 +744,17 @@ $code30 = "<?php
         
         public function read(\$CB)
         {
-            \$CB->db->select(\"id, name, type\");
-            \$CB->db->from(\"tags\");
-            \$CB->db->orderBy(\"id\", \"ASC\");
-            \$res = \$CB->db->get();
+            \$this->select(\"id, name, type\");
+            \$this->from(\"tags\");
+            \$this->orderBy(\"id\", \"ASC\");
+            \$res = \$this->get();
             
-            \$CB->parseStore('tags', \$res);
+            \$this->parseStore('tags', \$res);
         }
     }
 ?>";
 
-            $CB->parseStore('code', array(
+            $this->parseStore('code', array(
                 'cd1' => array(
                     'type' => 'javascript',
                     'code' => $code1),

@@ -1,50 +1,44 @@
 <?php
 
-	include "autoload.php";
-
-	class Store {
+	class Store extends Db {
 		
-		var $config;   //Variables of configs
 		var $time_exe; //Count time execute
-		var $event;    //Events pre/pos Insert | Update | Delete
 
-		function __construct(){
-			
+		function __construct()
+		{
 			$this->time_exe = microtime(true);
-			$this->config = include "config.php";
-			//$this->loadLibrary("autoload.php");
 			$this->getVars();
 			$this->initializeEvents();
 			$this->initializeDB();
 		}
 		
-		public function loadLibrary($file){
-			
-			if(file_exists($file)){
-				
+		public function loadLibrary($file)
+		{
+			if (file_exists($file)) {
 				include $file;
-			}else{
-				
+			} else if (file_exists(__DIR__ . '/../' . $file)) {
+			    include __DIR__ . '/../' . $file;
+			} else {
 				return false;
 			}
 		}
 		
-		private function getVars(){
-			
+		private function getVars()
+		{
 			if(!empty($_GET))$this->setConfig("GET", $_GET);
 			if(!empty($_POST))$this->setConfig("POST", $_POST);
 			if(!empty($_SESSION))$this->setConfig("SESSION", $_SESSION);
 		}
 		
-		private function initializeDB(){
-			
-			$this->db = new Db(1);
-			$this->db->setConfig($this->getConfig('db'));
+		private function initializeDB()
+		{
+			//$this->db = new Db(1);
+			//$this->setConfig($this->getConfig('db'));
 		}
 		
-		private function initializeEvents(){
-			
-			$this->event = new Event();
+// 		private function initializeEvents()
+// 		{
+// 			$this->event = new Event();
 
 			/* Defaults |
 			|*|**********
@@ -55,10 +49,10 @@
 			|*|	->posUpdate
 			|*|	->posDelete
 			\*/
-		}
+// 		}
 		
-		public function getTimeExe($reset = false){
-				
+		public function getTimeExe($reset = false)
+		{
 				$temp_time = microtime(true) - $this->time_exe;
 				if($reset){
 					
@@ -66,35 +60,6 @@
 				}
 				return $temp_time;
 		}
-		
-		
-		public function setConfig($var, $val = false){
-			
-			if(is_array($var)){
-				
-				$this->config = array_merge($this->config, $var);
-			}else{
-				
-				$this->config[$var] = $val;
-			}
-		}
-
-
-		public function getConfig($var, $var2 = false){
-			
-			if(!$var2){
-
-				if( isset( $this->config[$var] )){
-					return $this->config[$var];
-				}
-			}else{
-				
-				if( isset( $this->config[$var][$var2] )){
-					return $this->config[$var][$var2];
-				}
-			}
-		}
-		
 		
 		public function showCode($cod)
 		{
@@ -270,8 +235,4 @@
 		      return true;
 		  }
 	}
-	
-	$CB = new Store();
-	
-	$CB->db->connect();
 ?>

@@ -2,14 +2,14 @@
 	
 	class Task extends Store {
 		
-		public function __construct($CB, $data = array())
+		public function __construct($data = array())
 		{
 			//if(!$_SESSION['task_user_id']) die("cb.ctr('tasks','logout')");
-			$data = $CB->minArray($data);
+			$data = $this->minArray($data);
 			$action = $data['action'];
 			if($action)
 			{
-				$this->$action($CB, $data);
+				$this->$action($data);
 			}
 			else
 			{
@@ -17,9 +17,9 @@
 			}
 		}
 		
-		public function create($CB, $data)
+		public function create($data)
 		{
-		    $ins = $CB->db->insert("task", array(
+		    $ins = $this->insert("task", array(
 		        "id" => "NULL",
 		        "task_user_id" => $data['user'],
 		        "task_project_id" => $data['project'],
@@ -31,25 +31,25 @@
 		    ));
 		    
 		    if ($ins) {
-		        $CB->db->reset();
+		        $this->reset();
 		        $this->load($CB);
 		    } else {
-		        echo $CB->db->error();
+		        echo $this->error();
 		        die();
 		    }
 		}
 		
-		public function changeStatus($CB, $data)
+		public function changeStatus($data)
 		{
-		    $CB->db->where('id', $data['task_id']);
-		    if (!$CB->db->update('task', array(
+		    $this->where('id', $data['task_id']);
+		    if (!$this->update('task', array(
 		        "step" => $data['new_step'],
 		        "task_user_id" => $data['user_id']
 		    ))) {
-		        echo $CB->db->error();
+		        echo $this->error();
 		        die();
 		    } else {
-		        $CB->db->reset();
+		        $this->reset();
 		        $this->load($CB);
 		    }
 		}
@@ -58,11 +58,11 @@
 		public function load($CB)
 		{
 		    // Get users
-		    $CB->db->select("id, name");
-		    $CB->db->from("task_user");
-		    $CB->db->orderBy("task_user.id", "ASC");
+		    $this->select("id, name");
+		    $this->from("task_user");
+		    $this->orderBy("task_user.id", "ASC");
 		    $tasks = array();
-		    if ($u_data = $CB->db->get_array()) {
+		    if ($u_data = $this->get_array()) {
 		        foreach ($u_data as $d) {
 		            array_push($tasks, array(
 		                'user' => array(
@@ -77,15 +77,15 @@
 		            ));
 		        }
 		    }
-		    $CB->db->reset();
+		    $this->reset();
 		    
-		    $CB->db->select("task_project.name AS task_project_name, task.task_user_id, task.task_project_id, task.id, task.title, task.type, task.content, task.step, task.date");
-		    $CB->db->from("task");
-		    $CB->db->join("task_user", "task_user.id=task.task_user_id");
-		    $CB->db->join("task_project", "task_project.id=task.task_project_id");
-		    $CB->db->orderBy("task_user.id", "ASC");
+		    $this->select("task_project.name AS task_project_name, task.task_user_id, task.task_project_id, task.id, task.title, task.type, task.content, task.step, task.date");
+		    $this->from("task");
+		    $this->join("task_user", "task_user.id=task.task_user_id");
+		    $this->join("task_project", "task_project.id=task.task_project_id");
+		    $this->orderBy("task_user.id", "ASC");
 		    		    
-		    if ($data = $CB->db->get_array()) {
+		    if ($data = $this->get_array()) {
 		        
 		        /* Example data
 	              [0] => stdClass Object (
@@ -146,12 +146,12 @@
 		            }
 		        }
 		        
-		        $CB->parseStore('tasks', $tasks);
-		        $CB->parseStore('backlog', $backlog);
+		        $this->parseStore('tasks', $tasks);
+		        $this->parseStore('backlog', $backlog);
 		    }
 		    else
 		    {
-		        echo $CB->db->error();
+		        echo $this->error();
 		    }
 		}
 	}

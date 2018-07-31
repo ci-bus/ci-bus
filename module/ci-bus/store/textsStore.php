@@ -1,11 +1,11 @@
 <?php 
 
-	class Texts {
+	class Texts extends Store {
 			
-		public function __construct($CB, $data = array())
+		public function __construct($data = array())
 		{
 		    
-		    $CB->parseStore('texts', array(
+		    $this->parseStore('texts', array(
 		        'general' => array (
 		            'tx1' => 'Probar código',
 		            'tx2' => 'Seleccionar'
@@ -126,7 +126,8 @@
 		            'tx2' => 'PHP Stores',
 		            'tx3' => 'Los stores en PHP se utilizan para hacer consultas a la base de datos y devolver un store JavaScript o una configuración',
 		            'tx4' => 'Ejemplo cogiendo tags de la base de datos',
-		            'tx5' => 'Funciones disponibles class Store'
+		            'tx5' => 'Funciones disponibles class Store',
+		            'tx6' => '$CB corresponde a la clase Store desde la que se extiende, también accesible por $this, $this->db no es accesible en todas las versiones de PHP, es por esto que se pasa $CB como primer parámetro al constructor' 
 		        ),
 			    'createmodule' => array(
 			        'tx1' => 'Información para crear un módulo nuevo llamado test',
@@ -519,8 +520,8 @@
 	                    'param' => "1. Elemento html o puntero, 2. Objeto (propiedades)",
 	                    'action' => "Aplica propiedades a un elemento como border, padding, listeners etc",
 	                    'example' => "cb.common_prop('#id-ele', {background: 'red', click: function(){alert('oks');}});",
-	                    'return' => "El elemento o puntero"
-	                    // TODO añadir info con enlace a las propiedades comunes
+	                    'return' => "El elemento o puntero",
+	                    'info' => '<a href="#loadview/properties">Haz click para ver las propiedades comunes disponibles</a>'
 	                ),
 	                array(
 	                    'fun' => 'cb.strpos()',

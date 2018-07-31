@@ -2,10 +2,10 @@
 	
 	class Home extends Store {
 		
-		public function __construct($CB, $data)
+		public function __construct($data)
 		{
 			if(!$_SESSION['user_id']) die("cb.ctr('gotorave','logout')");
-			$CB->db->reset();
+			$this->reset();
 			$this->load($CB);
 		}
 		
@@ -18,40 +18,40 @@
 		public function load_music($CB)
 		{
 			
-			$CB->db->select("music.id, titulo, enlace");
+			$this->select("music.id, titulo, enlace");
 			
-			$CB->db->from("music");
-			$CB->db->orderBy("id", "desc");
-			$CB->db->limit(3);
+			$this->from("music");
+			$this->orderBy("id", "desc");
+			$this->limit(3);
 			
-			if($res = $CB->db->get_array())
+			if($res = $this->get_array())
 			{
 				foreach($res as $k => $r0)
 				{
-					$res[$k]->enlace = $CB->embedMultimedia($res[$k]->enlace);
+					$res[$k]->enlace = $this->embedMultimedia($res[$k]->enlace);
 					
-					$CB->db->reset();
-					$CB->db->select("music_tag.id, music_tag.tag_id, tags.name");
-					$CB->db->from("music_tag");
-					$CB->db->join("tags", "tags.id=music_tag.tag_id");
-					$CB->db->where("music_tag.music_id", $r0->id);
+					$this->reset();
+					$this->select("music_tag.id, music_tag.tag_id, tags.name");
+					$this->from("music_tag");
+					$this->join("tags", "tags.id=music_tag.tag_id");
+					$this->where("music_tag.music_id", $r0->id);
 					
-					if($res2 = $CB->db->get_array())
+					if($res2 = $this->get_array())
 					{
 						if(is_array($res2))$res[$k]->tags = $res2;
 					}
 					else
 					{
-						echo $CB->db->error();
+						echo $this->error();
 					}
 					
 					$res2 = false;
 					
-					$CB->db->reset();
-					$CB->db->select("review, id_user");
-					$CB->db->from("review");
-					$CB->db->where("review.tabla", 'music');
-					$CB->db->where("review.id_row", $r0->id);
+					$this->reset();
+					$this->select("review, id_user");
+					$this->from("review");
+					$this->where("review.tabla", 'music');
+					$this->where("review.id_row", $r0->id);
 					
 					$res[$k]->reviews = 0;
 					$res[$k]->user_review = 0;
@@ -61,7 +61,7 @@
 					$res[$k]->hand1_color = "red";
 					$res[$k]->hand2_color = "green";
 					
-					if($res3 = $CB->db->get_array())
+					if($res3 = $this->get_array())
 					{
 						foreach($res3 as $r3)
 						{
@@ -84,7 +84,7 @@
 					}
 					else
 					{
-						echo $CB->db->error();
+						echo $this->error();
 					}
 						
 					$res3 = false;
@@ -92,7 +92,7 @@
 			}
 			else
 			{
-				echo $CB->db->getConfig("error");
+				echo $this->getConfig("error");
 			}
 			
 			if(!$res) $res = array();
@@ -102,24 +102,24 @@
 		
 		public function load_user($CB)
 		{
-			$CB->db->reset();
-			$CB->db->select("user.id, name, image, online");
-			$CB->db->from("user");
-			$CB->db->orderBy("user.id", "desc");
-			$CB->db->limit(3);
+			$this->reset();
+			$this->select("user.id, name, image, online");
+			$this->from("user");
+			$this->orderBy("user.id", "desc");
+			$this->limit(3);
 				
-			if($res = $CB->db->get_array())
+			if($res = $this->get_array())
 			{
 				foreach($res as $k => $r0)
 				{
-					$CB->db->reset();
-					$CB->db->select("user_tag.id, user_tag.tag_id, tags.name");
-					$CB->db->from("user_tag");
-					$CB->db->join("tags", "tags.id=user_tag.tag_id");
-					$CB->db->where("user_tag.user_id", $r0->id);
-					$CB->db->orderBy("user_tag.id", "ASC");
+					$this->reset();
+					$this->select("user_tag.id, user_tag.tag_id, tags.name");
+					$this->from("user_tag");
+					$this->join("tags", "tags.id=user_tag.tag_id");
+					$this->where("user_tag.user_id", $r0->id);
+					$this->orderBy("user_tag.id", "ASC");
 						
-					if($res2 = $CB->db->get_array())
+					if($res2 = $this->get_array())
 					{
 						if(is_array($res2) && !empty($res2)){
 							$res[$k]->tags = $res2;
@@ -127,15 +127,15 @@
 					}
 					else
 					{
-						echo $CB->db->error();
+						echo $this->error();
 					}
 					$res2 = false;
 						
-					$CB->db->reset();
-					$CB->db->select("review, id_user");
-					$CB->db->from("review");
-					$CB->db->where("review.tabla", 'user');
-					$CB->db->where("review.id_row", $r0->id);
+					$this->reset();
+					$this->select("review, id_user");
+					$this->from("review");
+					$this->where("review.tabla", 'user');
+					$this->where("review.id_row", $r0->id);
 		
 					$res[$k]->reviews = 0;
 					$res[$k]->user_review = 0;
@@ -145,7 +145,7 @@
 					$res[$k]->hand1_color = "red";
 					$res[$k]->hand2_color = "green";
 		
-					if($res3 = $CB->db->get_array())
+					if($res3 = $this->get_array())
 					{
 						foreach($res3 as $r3)
 						{
@@ -168,19 +168,19 @@
 					}
 					else
 					{
-						echo $CB->db->error();
+						echo $this->error();
 					}
 						
 					$res3 = false;
 						
-					$CB->db->reset();
-					$CB->db->select("user_id");
-					$CB->db->from("user_follow");
-					$CB->db->where("user_id_followed", $r0->id);
+					$this->reset();
+					$this->select("user_id");
+					$this->from("user_follow");
+					$this->where("user_id_followed", $r0->id);
 					$following = 0;
 					$user_follow = 0;
 						
-					if($res4 = $CB->db->get_array())
+					if($res4 = $this->get_array())
 					{
 						foreach($res4 as $r4)
 						{
@@ -192,7 +192,7 @@
 					}
 					else
 					{
-						echo $CB->db->error();
+						echo $this->error();
 					}
 					$res4 = false;
 				}

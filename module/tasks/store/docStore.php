@@ -2,14 +2,14 @@
 	
 class Doc extends Store {
 	
-    public function __construct($CB, $data = array())
+    public function __construct($data = array())
     {
     	if(!$_SESSION['task_user_id']) die("cb.ctr('tasks', 'logout')");
-    	$data = $CB->minArray($data);
+    	$data = $this->minArray($data);
     	$action = $data['action'];
     	if($action)
     	{
-    		$this->$action($CB, $data);
+    		$this->$action($data);
     	}
     	else
     	{
@@ -17,23 +17,23 @@ class Doc extends Store {
     	}
     }
     
-    public function load($CB, $data)
+    public function load($data)
     {
         // Get users
-        $CB->db->select("id, name, email");
-        $CB->db->from("task_user");
-        $CB->db->orderBy("task_user.name", "ASC");
-        $u_data = $CB->db->get_array();
+        $this->select("id, name, email");
+        $this->from("task_user");
+        $this->orderBy("task_user.name", "ASC");
+        $u_data = $this->get_array();
         
-        $CB->db->reset();
+        $this->reset();
         
         if ($u_data)
         {
-            $CB->parseStore('user', $u_data);
+            $this->parseStore('user', $u_data);
         }
         else
         {
-            echo $CB->db->error();
+            echo $this->error();
         }
     }
 }

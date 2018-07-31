@@ -2,14 +2,14 @@
 	
 class Project extends Store {
 	
-    public function __construct($CB, $data = array())
+    public function __construct($data = array())
     {
     	//if(!$_SESSION['task_user_id']) die("cb.ctr('tasks','logout')");
-    	$data = $CB->minArray($data);
+    	$data = $this->minArray($data);
     	$action = $data['action'];
     	if($action)
     	{
-    		$this->$action($CB, $data);
+    		$this->$action($data);
     	}
     	else
     	{
@@ -20,19 +20,19 @@ class Project extends Store {
     public function load($CB)
     {
         // Get users
-        $CB->db->select("id, name");
-        $CB->db->from("task_project");
-        $CB->db->orderBy("task_project.name", "ASC");
-        $p_data = $CB->db->get_array();
-        $CB->db->reset();
+        $this->select("id, name");
+        $this->from("task_project");
+        $this->orderBy("task_project.name", "ASC");
+        $p_data = $this->get_array();
+        $this->reset();
         
         if ($p_data)
         {
-            $CB->parseStore('project', $p_data);
+            $this->parseStore('project', $p_data);
         }
         else
         {
-            echo $CB->db->error();
+            echo $this->error();
         }
     }
 }

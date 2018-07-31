@@ -2,30 +2,30 @@
 	
 	class Review extends Store {
 		
-		public function __construct($CB, $data = array())
+		public function __construct($data = array())
 		{
 			if(!$_SESSION['user_id']) die("cb.ctr('gotorave','logout')");
-			$data = $CB->minArray($data);
+			$data = $this->minArray($data);
 			$action = $data['action'];
 			if($action)
 			{
-				$this->$action($CB, $data);
+				$this->$action($data);
 			}
 			else
 			{
-				$this->load($CB, $data);
+				$this->load($data);
 			}
 		}
 		
-		public function send($CB, $data)
+		public function send($data)
 		{
 			if($data)
 			{
-				$CB->db->where('tabla', $data['type']);
-				$CB->db->where('id_row', $data['id']);
-				$CB->db->where('id_user', $_SESSION['user_id']);
-				$CB->db->delete('review');
-				$CB->db->reset();
+				$this->where('tabla', $data['type']);
+				$this->where('id_row', $data['id']);
+				$this->where('id_user', $_SESSION['user_id']);
+				$this->delete('review');
+				$this->reset();
 				
 				$data2 = array('id' => 'NULL',
 						'tabla' => $data['type'],
@@ -36,8 +36,8 @@
 				
 				if((int) $data['value'] === 1)
 				{
-					if(!$CB->db->insert('review', $data2)){
-						echo $CB->db->error();
+					if(!$this->insert('review', $data2)){
+						echo $this->error();
 					}else{
 						return true;
 					}
@@ -45,8 +45,8 @@
 				else if((int) $data['value'] === -1)
 				{
 					$data2['review'] = 0;
-					if(!$CB->db->insert('review', $data2)){
-						echo $CB->db->error();
+					if(!$this->insert('review', $data2)){
+						echo $this->error();
 					}else{
 						return true;
 					}

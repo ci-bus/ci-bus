@@ -2,22 +2,22 @@
 	
 	class Search {
 		
-		public function __construct($CB, $data = array())
+		public function __construct($data = array())
 		{
 			if(!$_SESSION['user_id']) die("cb.ctr('gotorave','logout')");
 			
-			$data = $CB->minArray($data);
-			$this->search($CB, $data);
+			$data = $this->minArray($data);
+			$this->search($data);
 		}
 		
-		public function search($CB, $data){
+		public function search($data){
 			
 			$search = $data['search'];
 			
-			$CB->db->select('id, palabra');
-			$CB->db->where('palabra', $search, 'like');
-			$res = $CB->db->get('maderap');
+			$this->select('id, palabra');
+			$this->where('palabra', $search, 'like');
+			$res = $this->get('maderap');
 			if(!$res) $res=array();
-			$CB->parseStore('palabras', array('busqueda' => $res));
+			$this->parseStore('palabras', array('busqueda' => $res));
 		}
 	}

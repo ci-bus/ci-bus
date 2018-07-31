@@ -2,13 +2,13 @@
 	
 	class Search_content {
 		
-		public function __construct($CB, $data = array())
+		public function __construct($data = array())
 		{
-			$data = $CB->minArray($data);
-			$this->search($CB, $data);
+			$data = $this->minArray($data);
+			$this->search($data);
 		}
 		
-		public function search($CB, $data){
+		public function search($data){
 			print_r($data['search']);
 		}
 	}

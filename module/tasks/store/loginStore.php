@@ -2,25 +2,25 @@
 	
 	class Login {
 		
-		public function __construct($CB, $data = array())
+		public function __construct($data = array())
 		{
-			$data = $CB->minArray($data);
-			$this->dologin($CB, $data);
+			$data = $this->minArray($data);
+			$this->dologin($data);
 		}
 		
-		private function dologin($CB, $data)
+		private function dologin($data)
 		{
-			$CB->db->select("*");
-			$CB->db->where('email', $data['email']);
-			$CB->db->where('pass' , md5($data['pass']));
+			$this->select("*");
+			$this->where('email', $data['email']);
+			$this->where('pass' , md5($data['pass']));
 			
-			if($user = $CB->db->get("task_user"))
+			if($user = $this->get("task_user"))
 			{
 				$_SESSION['task_user_id'] = $user->id;
 				$_SESSION['user'] = $user;
 				unset($user->pass);
 				
-				$CB->parseConfig("user_id", $user->id);
+				$this->parseConfig("user_id", $user->id);
 			}
 		}
 	}

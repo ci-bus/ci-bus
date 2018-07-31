@@ -2,7 +2,7 @@
 	
 	class Comprar {
 		
-		public function __construct($CB, $data = array())
+		public function __construct($data = array())
 		{
 			if(!$_SESSION['lang_id']){
 				$_SESSION['lang_id'] = 1;
@@ -52,7 +52,7 @@
 			}
 			
 			if($this->errores != ''){
-				echo $CB->parseVar('pago_res', $this->errores);
+				echo $this->parseVar('pago_res', $this->errores);
 			}else{
 				
 				//Validaciones OKS //////
@@ -67,23 +67,23 @@
 				
 				//Checkea que el usuario no este reenviando el mismo formulario
 				// o hay algun registro en estado 0 (en proceso)
-				$CB->db->select('id');
-				$CB->db->where('dni', $dni);
-				$CB->db->where('estado', 0);
-				$CB->db->where('fecha', date('Y-m-d'));
-				$CB->db->where('id_producto', $this->id_producto);
-				$CB->db->where('id_idioma',$this->lang_id);
-				$CB->db->orderBy('id', 'DESC');
-				$CB->db->limit(1);
-				$user = $CB->db->get('bio_clientes');
-				$CB->db->reset();
+				$this->select('id');
+				$this->where('dni', $dni);
+				$this->where('estado', 0);
+				$this->where('fecha', date('Y-m-d'));
+				$this->where('id_producto', $this->id_producto);
+				$this->where('id_idioma',$this->lang_id);
+				$this->orderBy('id', 'DESC');
+				$this->limit(1);
+				$user = $this->get('bio_clientes');
+				$this->reset();
 				
 				//Si ya existe usuario actualizamos su informacion
 				if($user && is_numeric($user->id)){
 					$user = (array) $user;
 					$this->cliente_id = $user['id'];
-					$CB->db->where('id', $user['id']);
-					$CB->db->update('bio_clientes', array(
+					$this->where('id', $user['id']);
+					$this->update('bio_clientes', array(
 						"id_producto" => $this->id_producto,
 						"nombre" => $Nombre,
 						"apellidos" => $Apellidos,
@@ -97,7 +97,7 @@
 				}
 				//Sino lo creamos
 				else {
-					$inuser = $CB->db->insert('bio_clientes', array(
+					$inuser = $this->insert('bio_clientes', array(
 						"id_producto" => $this->id_producto,
 						"dni" => $dni,
 						"email" => $email,
@@ -112,7 +112,7 @@
 					));
 					
 					if($inuser){
-						$this->cliente_id = $CB->db->getInsertId();
+						$this->cliente_id = $this->getInsertId();
 					}
 				}
 				
@@ -124,13 +124,13 @@
 					
 					if($data['tipo_pago'] == 'redsys'){ //[ REDSYS ]/////////////////////////
 						
-						$CB->db->reset();
-						$CB->db->select('precio');
-						$CB->db->from('bio_productos');
-						$CB->db->where('id', $this->id_producto);
-						$precio = $CB->db->get();
+						$this->reset();
+						$this->select('precio');
+						$this->from('bio_productos');
+						$this->where('id', $this->id_producto);
+						$precio = $this->get();
 						
-						$redsys = $this->get_redsys($CB, $precio->precio);
+						$redsys = $this->get_redsys($precio->precio);
 						if($redsys){
 							$id_redsys = $redsys['id'];
 							$estado_redsys = $redsys['estado'];
@@ -141,33 +141,33 @@
 							if($REDSYS_PRECIO)$precio_fijado_redsys=$REDSYS_PRECIO*1;
 							
 							if($estado_redsys == '0000'){
-								echo $CB->parseVar('pago_res', 'pagado');
+								echo $this->parseVar('pago_res', 'pagado');
 							}else{
 								//Cogemos url final
-								$data_redsys = $this->get_redsys_url($CB, $id_redsys,$precio_fijado_redsys,$precio_pago_redsys);
+								$data_redsys = $this->get_redsys_url($id_redsys,$precio_fijado_redsys,$precio_pago_redsys);
 								if($data_redsys){
-									echo $CB->parseVar('pago_res', $data_redsys);
+									echo $this->parseVar('pago_res', $data_redsys);
 								}
 							}
 						}
 					}
 				}else{
-					echo $CB->parseVar('pago_res', false);
+					echo $this->parseVar('pago_res', false);
 				}
 			}
 		}
 		
-		private function get_redsys($CB, $precio){
+		private function get_redsys($precio){
 			
-			$CB->db->select('id, estado, fecha_pago, hora_pago, precio_pago, precio_fijado');
-			$CB->db->where('id_fila', $this->cliente_id);
-			$CB->db->where('precio_fijado', $precio);
-			$CB->db->where('tabla', 'bio_clientes');
-			$CB->db->where('celda', 'id_redsys');
-			$CB->db->orderBy('id', 'DESC');
-			$CB->db->limit('1');
-			$redsys = (array) $CB->db->get('redsys');
-			$CB->db->reset();
+			$this->select('id, estado, fecha_pago, hora_pago, precio_pago, precio_fijado');
+			$this->where('id_fila', $this->cliente_id);
+			$this->where('precio_fijado', $precio);
+			$this->where('tabla', 'bio_clientes');
+			$this->where('celda', 'id_redsys');
+			$this->orderBy('id', 'DESC');
+			$this->limit('1');
+			$redsys = (array) $this->get('redsys');
+			$this->reset();
 			
 			if($redsys && is_numeric($redsys['id']))
 			{
@@ -175,15 +175,15 @@
 			}
 			else
 			{
-				$inredsys = $CB->db->insert('redsys', array(
+				$inredsys = $this->insert('redsys', array(
 					"id_fila" => $this->cliente_id,
 					"tabla" => "bio_clientes",
 					"celda" => "id_redsys",
 					"precio_fijado" => $precio
 				));
 				if($inredsys){
-					$CB->db->reset();
-					return $this->get_redsys($CB, $precio);
+					$this->reset();
+					return $this->get_redsys($precio);
 				}else{
 					return false;
 				}
@@ -219,12 +219,12 @@
 			else return "Error desconocido";
 		}
 		
-		private function get_redsys_url($CB, $id_redsys,$precio_redsys,$precio_pago_redsys){
+		private function get_redsys_url($id_redsys,$precio_redsys,$precio_pago_redsys){
 			
 			//Sacamos datos de redsys
-			$CB->db->select("value, variable");
-			$CB->db->where("(variable='redsys_nombre' OR variable='redsys_url' OR variable='redsys_terminal' OR variable='redsys_moneda' OR variable='redsys_tipo' OR variable='redsys_codigo' OR variable='redsys_clave') AND id_usuario=0");
-			$data_redsys = $CB->db->get_array("config_value");
+			$this->select("value, variable");
+			$this->where("(variable='redsys_nombre' OR variable='redsys_url' OR variable='redsys_terminal' OR variable='redsys_moneda' OR variable='redsys_tipo' OR variable='redsys_codigo' OR variable='redsys_clave') AND id_usuario=0");
+			$data_redsys = $this->get_array("config_value");
 			$VLRS = array();
 			foreach($data_redsys AS $dts){
 				$VLRS[$dts->variable] = trim($dts->value);

@@ -2,53 +2,53 @@
 	
 	class Chat {
 		
-		public function __construct($CB, $data = array())
+		public function __construct($data = array())
 		{
 			if(!$_SESSION['user_id']) die("cb.ctr('gotorave','logout')");
 			if(!$_SESSION['chat_sala']) $_SESSION['chat_sala'] = 1;
 			if(!$_SESSION['chat_name']) $_SESSION['chat_name'] = "Sala general";
-			$data = $CB->minArray($data);
+			$data = $this->minArray($data);
 			$action = $data['action'];
 			if($action)
 			{
-				$this->$action($CB, $data);
+				$this->$action($data);
 			}
 			else
 			{
-				$this->read($CB, $data);
+				$this->read($data);
 			}
 		}
 		
-		public function salas($CB, $data)
+		public function salas($data)
 		{
-			$CB->db->reset();
-			$CB->db->select("chat.id, chat.name");
-			$CB->db->from("chat");
-			if($res = $CB->db->get_array())
+			$this->reset();
+			$this->select("chat.id, chat.name");
+			$this->from("chat");
+			if($res = $this->get_array())
 			{
-				$CB->parseStore( 'chat', array( 'salas' => $res ));
+				$this->parseStore( 'chat', array( 'salas' => $res ));
 			}else{
-				echo $CB->db->error();
+				echo $this->error();
 			}
 		}
 		
-		public function change($CB, $data)
+		public function change($data)
 		{
 			$_SESSION['chat_sala'] = $data['sala_id'];
-			$CB->db->select("name");
-			$CB->db->from("chat");
-			$CB->db->where("id", $data['sala_id']);
-			$sala = $CB->db->get();
+			$this->select("name");
+			$this->from("chat");
+			$this->where("id", $data['sala_id']);
+			$sala = $this->get();
 			$_SESSION['chat_name'] = $sala->name;
 		}
 		
-		public function send($CB, $data)
+		public function send($data)
 		{
 			if($data)
 			{
 				if($data['msg'])
 				{
-					$ins = $CB->db->insert("chat_msg", array(
+					$ins = $this->insert("chat_msg", array(
 								 "id" => "NULL",
 							"user_id" => $_SESSION['user_id'],
 							"chat_id" => $_SESSION['chat_sala'],
@@ -61,15 +61,15 @@
 			}
 		}
 		
-		public function getfriend($CB, $id_user)
+		public function getfriend($id_user)
 		{
 			$res = array();
-			$CB->db->reset();
-			$CB->db->select("user_id, user_id2");
-			$CB->db->from("user_friend");
-			$CB->db->where("user_id", $_SESSION['user_id']);
-			$CB->db->or_where("user_id2", $_SESSION['user_id']);
-			if($res2 = $CB->db->get())
+			$this->reset();
+			$this->select("user_id, user_id2");
+			$this->from("user_friend");
+			$this->where("user_id", $_SESSION['user_id']);
+			$this->or_where("user_id2", $_SESSION['user_id']);
+			if($res2 = $this->get())
 			{
 				if(is_array($res2))
 				{
@@ -89,28 +89,28 @@
 		}
 		
 		private function reg_online($CB){
-			$CB->db->where( 'user.id', $_SESSION['user_id'] );
-			$CB->db->update('user', array(
+			$this->where( 'user.id', $_SESSION['user_id'] );
+			$this->update('user', array(
 				'online'=> time()
 			));
-			$CB->db->reset();
+			$this->reset();
 		}
 		
-		public function read($CB, $data)
+		public function read($data)
 		{
 			if(empty($data))
 			{
 				$this->reg_online($CB);
-				$CB->db->select( "user.online as online, user.id as user_id, user.name as user, chat_msg.id as id, chat_msg.msg as msg" );
-				$CB->db->from( "chat_msg" );
-				$CB->db->join( 'user', 'chat_msg.user_id = user.id' );
-				$CB->db->where( 'chat_msg.chat_id', $_SESSION['chat_sala'] );
-				$CB->db->groupBy( 'chat_msg.id' );
-				$CB->db->orderBy( 'chat_msg.id', 'DESC' );
-				$CB->db->limit(20);
-				if($res = $CB->db->get_array())
+				$this->select( "user.online as online, user.id as user_id, user.name as user, chat_msg.id as id, chat_msg.msg as msg" );
+				$this->from( "chat_msg" );
+				$this->join( 'user', 'chat_msg.user_id = user.id' );
+				$this->where( 'chat_msg.chat_id', $_SESSION['chat_sala'] );
+				$this->groupBy( 'chat_msg.id' );
+				$this->orderBy( 'chat_msg.id', 'DESC' );
+				$this->limit(20);
+				if($res = $this->get_array())
 				{
-					$friends = $this->getfriend($CB, $_SESSION['user_id']);
+					$friends = $this->getfriend($_SESSION['user_id']);
 					if(is_object($res)) $res = array($res);
 					for($r=0;$r<count($res);$r++)
 					{
@@ -133,9 +133,9 @@
 							$res[$r]->online = 1;
 						}
 						
-						$res[$r]->msg = $CB->embedMultimedia($res[$r]->msg);
+						$res[$r]->msg = $this->embedMultimedia($res[$r]->msg);
 					}
-					$CB->parseStore(
+					$this->parseStore(
 						'chat', array(
 							'name' => $_SESSION['chat_name'],
 							'chat' => $res
@@ -144,7 +144,7 @@
 				}
 				else
 				{
-					$CB->parseStore(
+					$this->parseStore(
 						'chat', array(
 							'name' => $_SESSION['chat_name'],
 							'chat' => array()

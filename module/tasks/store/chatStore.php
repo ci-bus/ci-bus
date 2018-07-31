@@ -2,35 +2,35 @@
 	
 class Chat extends Store {
 	
-    public function __construct($CB, $data = array())
+    public function __construct($data = array())
     {
     	if(!$_SESSION['task_user_id']) die("cb.ctr('tasks', 'logout')");
-    	$data = $CB->minArray($data);
+    	$data = $this->minArray($data);
     	$action = $data['action'];
     	if($action)
     	{
-    		$this->$action($CB, $data);
+    		$this->$action($data);
     	}
     	else
     	{
-    		$this->load($CB, $data);
+    		$this->load($data);
     	}
     }
     
-    public function check($CB, $data) {
+    public function check($data) {
         
-        $CB->db->select("task_chat.task_id, (SELECT count(*) FROM task_chat_read WHERE task_chat.task_id = task_chat_read.task_id) AS reg, count(task_chat_read.id) AS new_msg, count(task_chat.id) AS all_msg");
-        $CB->db->from("task_chat");
-        $CB->db->join("task_chat_read", "task_chat_read.task_id = task_chat.task_id AND task_chat_read.date < task_chat.date", "left");
-        $new_msg = $CB->db->get_array();
-        $CB->db->reset();
-        $CB->parseStore('chat_alert', $new_msg);
+        $this->select("task_chat.task_id, (SELECT count(*) FROM task_chat_read WHERE task_chat.task_id = task_chat_read.task_id) AS reg, count(task_chat_read.id) AS new_msg, count(task_chat.id) AS all_msg");
+        $this->from("task_chat");
+        $this->join("task_chat_read", "task_chat_read.task_id = task_chat.task_id AND task_chat_read.date < task_chat.date", "left");
+        $new_msg = $this->get_array();
+        $this->reset();
+        $this->parseStore('chat_alert', $new_msg);
         
         if (is_numeric($data['chat_opened'])) {
             foreach ($new_msg as $nm) {
                 if ($nm->task_id == $data['chat_opened']) {
                     if (!$nm->reg || ($nm->reg && $nm->new_msg)) {
-                        $this->load($CB, array(
+                        $this->load(array(
                             'task_id' => $data['chat_opened']
                         ));
                     } else {
@@ -41,31 +41,31 @@ class Chat extends Store {
         }
     }
     
-    public function load($CB, $data) {
+    public function load($data) {
         // Get chat messages
-        $CB->db->select("task_chat.*, task_user.name");
-        $CB->db->from("task_chat");
-        $CB->db->join("task_user", "task_user.id=task_chat.task_user_id");
-        $CB->db->where("task_id", $data['task_id']);
-        $CB->db->orderBy("task_chat.id", "DESC");
-        $c_data = $CB->db->get_array();
+        $this->select("task_chat.*, task_user.name");
+        $this->from("task_chat");
+        $this->join("task_user", "task_user.id=task_chat.task_user_id");
+        $this->where("task_id", $data['task_id']);
+        $this->orderBy("task_chat.id", "DESC");
+        $c_data = $this->get_array();
         
         if ($c_data)
         {
-            $CB->parseStore('chat', array('msg' => $c_data));
+            $this->parseStore('chat', array('msg' => $c_data));
         }
         else
         {
-            $CB->parseStore('chat', array('msg' => array()));
-            echo $CB->db->error();
+            $this->parseStore('chat', array('msg' => array()));
+            echo $this->error();
         }
         
-        $CB->db->reset();
+        $this->reset();
     }
     
-    public function  send($CB, $data)
+    public function  send($data)
     {
-        $ins = $CB->db->insert("task_chat", array(
+        $ins = $this->insert("task_chat", array(
             "id" => "NULL",
             "task_user_id" => $_SESSION['task_user_id'],
             "task_id" => $data['task_id'],
@@ -73,10 +73,10 @@ class Chat extends Store {
         ));
         
         if ($ins) {
-            $CB->db->reset();
-            $this->load($CB, $data);
+            $this->reset();
+            $this->load($data);
         } else {
-            echo $CB->db->error();
+            echo $this->error();
             die();
         }
     }

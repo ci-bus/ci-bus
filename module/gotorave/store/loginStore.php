@@ -2,32 +2,32 @@
 	
 	class Login {
 		
-		public function __construct($CB, $data = array())
+		public function __construct($data = array())
 		{
-			$data = $CB->minArray($data);
-			$this->dologin($CB, $data);
+			$data = $this->minArray($data);
+			$this->dologin($data);
 		}
 		
-		private function dologin($CB, $data)
+		private function dologin($data)
 		{
-			$CB->db->select("*");
-			$CB->db->where('email', $data['user']);
-			$CB->db->where('pass' , $data['pass']);
+			$this->select("*");
+			$this->where('email', $data['user']);
+			$this->where('pass' , $data['pass']);
 			
-			if($user = $CB->db->get("user"))
+			if($user = $this->get("user"))
 			{
 				$_SESSION['user_id'] = $user->id;
 				$_SESSION['user'] = $user;
 				unset($user->pass);
 				
-				$CB->db->reset();
-				$CB->db->select("user_tag.tag_id, tags.name");
-				$CB->db->from("user_tag");
-				$CB->db->join("tags", "tags.id=user_tag.tag_id");
-				$CB->db->where("user_tag.user_id", $user->id);
-				$CB->db->orderBy("user_tag.id", "ASC");
+				$this->reset();
+				$this->select("user_tag.tag_id, tags.name");
+				$this->from("user_tag");
+				$this->join("tags", "tags.id=user_tag.tag_id");
+				$this->where("user_tag.user_id", $user->id);
+				$this->orderBy("user_tag.id", "ASC");
 				
-				if($res2 = $CB->db->get_array())
+				if($res2 = $this->get_array())
 				{
 					if(is_array($res2) && !empty($res2)){
 						$user->tags = $res2;
@@ -35,11 +35,11 @@
 				}
 				else
 				{
-					echo $CB->db->error();
+					echo $this->error();
 				}
 				$res2 = false;
 				
-				$CB->parseConfig("user_data", $user);
+				$this->parseConfig("user_data", $user);
 			}
 		}
 	}

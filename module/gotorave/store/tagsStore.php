@@ -2,20 +2,20 @@
 	
 	class Tags extends Store {
 		
-		public function __construct($CB, $data = array())
+		public function __construct($data = array())
 		{
 			if(!$_SESSION['user_id']) die("cb.ctr('gotorave','logout')");
-			$data = $CB->minArray($data);
+			$data = $this->minArray($data);
 			
-			$this->read($CB, $data);
+			$this->read($data);
 		}
 		
-		public function read($CB, $data)
+		public function read($data)
 		{
-			$CB->db->select("id, name, type");
-			$CB->db->from("tags");
-			$CB->db->orderBy("id", "ASC");
-			if($res = $CB->db->get())
+			$this->select("id, name, type");
+			$this->from("tags");
+			$this->orderBy("id", "ASC");
+			if($res = $this->get())
 			{
 				if(is_array($res))
 				{
