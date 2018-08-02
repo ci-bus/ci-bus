@@ -327,13 +327,14 @@ class Db extends Config {
 		
 		public function select($fields = false)
 		{
-			if(!$fields){
-				
+			if (!$fields)
+			{
 				$this->add("select", ", ");
 				$this->add("select", "*", true);
 				
-			}else if(is_array($fields)){
-				
+			}
+			else if (is_array($fields))
+			{
 				foreach($fields as $f){
 					
 					if(strpos($f, ".")){
@@ -342,8 +343,9 @@ class Db extends Config {
 					$this->add("select", ", ");
 					$this->add("select", trim($f), true);
 				}
-			}else{
-				
+			}
+			else
+			{
 				$this->select(explode(",", $fields));
 			}
 			

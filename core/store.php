@@ -29,12 +29,6 @@
 			if(!empty($_SESSION))$this->setConfig("SESSION", $_SESSION);
 		}
 		
-// 		private function initializeDB()
-// 		{
-// 			$this->db = new Db(1);
-// 			$this->setConfig($this->getConfig('db'));
-// 		}
-		
 // 		private function initializeEvents()
 // 		{
 // 			$this->event = new Event();

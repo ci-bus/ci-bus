@@ -58,6 +58,30 @@ cb.define({
                         cb.getCmp(this).selectContent();
                     }
                 }]
+            }, {
+                xtype: 'h3',
+                field: 'tx6'
+            }, {
+                xtype: 'phpmethod',
+                field: 'methods1'
+            }, {
+                xtype: 'h3',
+                field: 'tx7'
+            }, {
+                xtype: 'phpmethod',
+                field: 'methods2'
+            }, {
+                xtype: 'h3',
+                field: 'tx8'
+            }, {
+                xtype: 'phpmethod',
+                field: 'methods3'
+            }, {
+                xtype: 'h3',
+                field: 'tx10'
+            }, {
+                xtype: 'phpmethod',
+                field: 'methods4'
             }]
         }]
     }]

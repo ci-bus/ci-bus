@@ -737,12 +737,13 @@ $code30 = "<?php
     
     class Tags extends Store {
         
-        public function __construct(\$CB, \$data = array())
+        public function __construct(\$data = array())
         {
-            \$this->read(\$CB);
+            parent::__construct();
+            \$this->read();
         }
         
-        public function read(\$CB)
+        public function read()
         {
             \$this->select(\"id, name, type\");
             \$this->from(\"tags\");

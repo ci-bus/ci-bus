@@ -1178,7 +1178,7 @@ cb.getCmp = function(ref, idx) {
 };
 
 // Funcion para enviar un formulario a un store PHP
-cb.send = function(formn,module,store,callback)
+cb.send = function(formn, module, store, callback)
 {
 	$.ajax({
 	  dataType: "script",

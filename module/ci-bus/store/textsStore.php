@@ -127,7 +127,197 @@
 		            'tx3' => 'Los stores en PHP se utilizan para hacer consultas a la base de datos y devolver un store JavaScript o una configuración',
 		            'tx4' => 'Ejemplo cogiendo tags de la base de datos',
 		            'tx5' => 'Funciones disponibles class Store',
-		            'tx6' => '$CB corresponde a la clase Store desde la que se extiende, también accesible por $this, $this->db no es accesible en todas las versiones de PHP, es por esto que se pasa $CB como primer parámetro al constructor' 
+		            'tx6' => 'PHP Métodos de configuración',
+		            'methods1' => array(
+		                array(
+		                    'method' => 'getAllConfigs',
+		                    'action' => 'Devuelve todas las configuraciones',
+		                    'example' => '$configs = $this->getAllConfigs();'
+		                ),
+		                array(
+		                    'method' => 'getConfig',
+		                    'param' => '1. Nombre de la configuración, 2. Nombre de la sub configuración (Opcional)',
+		                    'action' => 'Devuelve el valor de una configuración',
+		                    'example' => '$db_charset = $this->getConfig("db", "charset");'
+		                ),
+		                array(
+		                    'method' => 'setConfig',
+		                    'param' => '1. Nombre configuración, 2. Valor',
+		                    'action' => 'Setea una configuración',
+		                    'example' => '$this->setConfig("custom", "oks");'
+		                ),
+		                array(
+		                    'method' => 'setSubConfig',
+		                    'param' => '1. Nombre configuración, 2. Nombre sub configuración, 3. Valor',
+		                    'action' => 'Setea una sub configuración',
+		                    'example' => '$this->setConfig("db", "db_prefix", "val_");'
+		                )
+		            ),
+		            'tx7' => 'PHP Métodos para JavaScript',
+		            'methods2' => array(
+		                array(
+		                    'method' => 'parseStore',
+    		                'param' => '1. Nombre del store, 2. Valores',
+    		                'action' => 'Crea un store con los valores',
+    		                'example' => '$this->parseStore("letters", array("a", "b", "c"));'
+		                ),
+		                array(
+		                    'method' => 'parseVar',
+		                    'param' => '1. Nombre de la variable, 2. Valor',
+		                    'action' => 'Crea una variable con un valor',
+		                    'example' => '$this->parseVar("numbers", array(1, 2, 3));'
+		                ),
+		                array(
+		                    'method' => 'parseConfig',
+		                    'param' => '1. Nombre de la configuración, 2. Valor',
+		                    'action' => 'Setea una configuración',
+		                    'example' => '$this->parseConfig("time", "08:15");'
+		                )
+		            ),
+		            'tx8' => 'PHP Métodos utilidades',
+		            'methods3' => array(
+		                array(
+		                    'method' => 'getTimeExe',
+		                    'param' => '1. true para resetear el tiempo (Opcional)',
+		                    'action' => 'Devuelve el tiempo de ejecución',
+		                    'example' => '$exe_time = $this->getTimeExe();',
+		                    'info' => 'Es necesario ejecutar <strong>parent::__construct();</strong> en el constructor de nuestra clase para inicializar el tiempo'
+		                ),
+		                array(
+		                    'method' => 'showCode',
+		                    'param' => '1. Cualquier código asumible por <strong>print_r()</strong>',
+		                    'action' => 'Pinta un código entre etiquetas pre',
+		                    'example' => '$this->showCode(array("a" => 1, "b" => 2));'
+		                ),
+		                array(
+		                    'method' => 'utf8_converter',
+		                    'param' => '1. Array de valores',
+		                    'action' => 'Codifica en utf8 un array de valores',
+		                    'example' => '$this->utf8_converter(array("name" => "Miguel Ángel", "address" => "C/Agüero Nº18"));'
+		                ),
+		                array(
+		                    'method' => 'minArray',
+		                    'param' => '1. Array de valores',
+		                    'action' => 'Simplifica los valores de un formulario cogidos con <strong>$(\'form\').serializeArray();</strong> como cuando se envian con <strong>cb.send</strong>',
+		                    'example' => '$values = $this->minArray(array(array("name" => "user", "value" => "admin"), array("name" => "password", "value" => "pass1234")));'
+		                ),
+		                array(
+		                    'method' => 'mergePlusObject',
+		                    'param' => '1. Objeto stdClass, 2. Objeto stdClass',
+		                    'action' => 'Hace merge de dos Objetos',
+		                    'example' => '$merged_obj = $this->mergePlusObject($obj1, $obj2);'
+		                ),
+		                array(
+		                    'method' => 'imageResize',
+		                    'param' => '1. imagen url, 2. Anchura en pixeles, 3. Altura en pixeles (opcional)',
+		                    'action' => 'Redimensiona una imagen',
+		                    'example' => '$this->imageResize("test_img.jpg", 1024);'
+		                ),
+		                array(
+		                    'method' => 'extractUrls',
+		                    'param' => '1. Texto',
+		                    'action' => 'Devuelve las urls de un texto',
+		                    'example' => '$urls = $this->extractUrls("Google: https://www.google.com Youtube: https://www.youtube.com");'
+		                ),
+		                array(
+		                    'method' => 'embedMultimedia',
+		                    'param' => '1. texto',
+		                    'action' => 'Hace enlaces las urls y en caso de youtube inserta una imagen del video',
+		                    'example' => '$this->embedMultimedia("Esto es un enlace a un video https://www.youtube.com/watch?v=iDkeRAx_wqg");'
+		                )
+		            ),
+		            'tx9' => 'Método',
+		            'tx10' => 'PHP Métodos consultas SQL',
+		            'methods4' => array(
+		                array(
+		                    'method' => 'insert',
+		                    'param' => '1. Nombre tabla, 2. Array de valores',
+		                    'action' => 'Inserta datos en una tabla',
+		                    'example' => '$this->insert("user", array("name" => "admin", "password" => "pass1234"));',
+		                    'info' => 'Devuelve true si se ha insertado correctamente'
+		                ),
+		                array(
+		                    'method' => 'select',
+		                    'param' => '1. Fields separados por coma o array (Opcional)',
+		                    'action' => 'Setea los fields que van a ser seleccionados',
+		                    'example' => '$this->select("id, name, password");
+$users = $this->get("user");',
+		                    'info' => 'Si no se pasa nada por defecto selecciona todos los campos con *'
+		                ),
+		                array(
+		                    'method' => 'update',
+		                    'param' => '1. Nombre tabla, 2. Array de valores a modificar',
+		                    'action' => 'Actualiza valores de las filas de una tabla',
+		                    'example' => '$this->where("user.id", 1);
+$this->update("user", array("password" => "new1234"));',
+		                    'info' => 'Devuelve true si se ha actualizado correctamente'
+		                ),
+		                array(
+		                    'method' => 'delete',
+		                    'param' => '1. Nombre tabla',
+		                    'action' => 'Elimina filas de una tabla',
+		                    'example' => '$this->where("review.row_id", 5);
+$this->where("review.user_id", 1);
+$this->delete("review");'
+		                ),
+		                array(
+		                    'method' => 'where',
+		                    'param' => '1. Field o array de valores, 2. Valor (Opcional) por defecto false, 3. Operador (Opcional) por defecto =',
+		                    'action' => 'Aplica un where',
+		                    'example' => '$this->where("name LIKE \'%Miguel%\'");
+$this->where(array("name" => "%Miguel%", false, "LIKE"));
+$this->where("name", "%Miguel%", "LIKE");',
+		                    'info' => 'Los tres ejemplos tendrían el mismo resultado'
+		                ),
+		                array(
+		                    'method' => 'or_where',
+		                    'info' => 'Semejante a where pero aplicando un OR'
+		                ),
+		                array(
+		                    'method' => 'join',
+		                    'param' => '1. Nombre tabla, 2. Condición ON, 3. Tipo de join (Opcional)',
+		                    'action' => 'Une dos tablas para seleccionar datos de ambas',
+		                    'example' => '$this->select("user.*, review.*");
+$this->from("review");
+$this->join("user", "review.user_id = user.id");
+$reviews = $this->get_array();'
+		                ),
+		                array(
+		                    'method' => 'get',
+		                    'param' => '1. Nombre tabla (Opcional)',
+		                    'action' => 'Devuelve datos de una consulta select',
+		                    'example' => '$this->select("id, name, password");
+$users = $this->get("user");'
+		                ),
+		                array(
+		                    'method' => 'get_array',
+		                    'info' => 'Igual que get pero devolviendo los valores siempre en array'
+		                ),
+		                array(
+		                    'method' => 'groupBy',
+		                    'param' => '1. Field',
+		                    'action' => 'Agrupa los registros por un field específico',
+		                    'example' => '$this->groupBy("type");'
+		                ),
+		                array(
+		                    'method' => 'orderBy',
+		                    'param' => '1. Field, 2. Tipo (Opcional) por defecto DESC',
+		                    'action' => 'Ordena los registros en una consulta',
+		                    'example' => '$this->orderBy("date", "ASC");'
+		                ),
+		                array(
+		                    'method' => 'limit',
+		                    'param' => '1. Límite de registros',
+		                    'action' => 'Aplica un límite a la consulta',
+		                    'example' => '$this->limit(10);'
+		                ),
+		                array(
+		                    'method' => 'from',
+		                    'param' => '1. Nombre de la tabla',
+		                    'action' => 'Setea la tabla a la que se le va hacer la consulta',
+		                    'example' => '$this->from("user");'
+		                )
+		            )
 		        ),
 			    'createmodule' => array(
 			        'tx1' => 'Información para crear un módulo nuevo llamado test',
