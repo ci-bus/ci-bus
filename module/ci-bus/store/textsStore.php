@@ -102,6 +102,11 @@
 		                'st' => '#item-grid'
 		            )
 		        ),
+		        'menu-php-methods' => array (
+		            'getAllConfigs', 'getConfig', 'setConfig', 'setSubConfig', 'separator', 'parseStore', 'parseVar', 'parseConfig', 'separator', 'getTimeExe', 'showCode', 'utf8_converter', 'minArray',
+		            'mergePlusObject', 'imageResize', 'extractUrls', 'embedMultimedia', 'separator', 'insert', 'select', 'update', 'delete', 'where', 'or_where', 'join', 'get', 'get_array',
+		            'groupBy', 'orderBy', 'limit', 'from'
+		        ),
 		        'home' => array (
 		            'tx1' => '¿Qué es Ci-bus Framework?',
 		            'tx2' => 'Ci-bus es un cojunto de herramientas javascript y php que te permitirá crear aplicaciones webs de manera fácil e intuitiva con las más novedosas técnicas de programación',
@@ -198,7 +203,7 @@
 		                array(
 		                    'method' => 'minArray',
 		                    'param' => '1. Array de valores',
-		                    'action' => 'Simplifica los valores de un formulario cogidos con <strong>$(\'form\').serializeArray();</strong> como cuando se envian con <strong>cb.send</strong>',
+		                    'action' => 'Simplifica los valores enviados con <strong>cb.send</strong>',
 		                    'example' => '$values = $this->minArray(array(array("name" => "user", "value" => "admin"), array("name" => "password", "value" => "pass1234")));'
 		                ),
 		                array(
@@ -317,7 +322,8 @@ $users = $this->get("user");'
 		                    'action' => 'Setea la tabla a la que se le va hacer la consulta',
 		                    'example' => '$this->from("user");'
 		                )
-		            )
+		            ),
+		            'tx11' => 'PHP Métodos'
 		        ),
 			    'createmodule' => array(
 			        'tx1' => 'Información para crear un módulo nuevo llamado test',
@@ -856,6 +862,12 @@ fun : function(){ alert('end'); }"
 	                    'param' => "1. Objeto, 2. String Propiedades",
 	                    'return' => "Devuelve el objeto con la propiedad eliminada",
 	                    'example' => "cb.deleteToObject({a: {b: {c: 'test'}}}, 'a.b.c');"
+	                ),
+	                array(
+	                    'fun' => 'cb.isURL()',
+	                    'param' => '1. Url',
+	                    'return' => 'Devuelve true si es una url válida o false si no lo es',
+	                    'example' => "cb.isUrl('https://www.ci-bus.com');"
 	                )
 		        )
 		    ));

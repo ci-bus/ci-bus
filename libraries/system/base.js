@@ -535,10 +535,8 @@ cb.base.element = {
 		if (!pos) pos = 0;
 	    if (typeof id == 'string') {
 	        // Search by css selector
-	        if (id.substr(0, 1) == '#' || id.substr(0, 1) == '.') {
-	            if (cb.isNode(this.find(id)[pos])) {
-	                return cb.getCmp(this.find(id)[pos]);
-	            }
+	        if (cb.isNode(this.find(id)[pos])) {
+	            return cb.getCmp(this.find(id)[pos]);
 	        } else { // Search by xtype
 	            var childs = this.find('*');
 	            var count = 0;
@@ -880,7 +878,7 @@ cb.base.grid = {
 	            }
 	            if (opt.alterdata) {
 	                record = cb.clone(record);
-	                cb.alterdata(opt.alterdata, record);
+	                cb.alterdata(opt.alterdata, record, opt);
 	            }
 	            var tbody = cb.module.bootstrapComponent['tbody']({
 	                items: bodyItems
@@ -1148,7 +1146,7 @@ cb.getCmp = function(ref, idx) {
     if (!idx) idx = 0;
     if (typeof ref == 'string') {
         // Search by css selector
-        if (ref.substr(0, 1) == '#' || ref.substr(0, 1) == '.') {
+        if ($(ref).length) {
             if ($(ref).length > idx) {
                 return $.extend($($(ref)[idx]), $($(ref)[idx])[0]);
             } else if (idx == 0){
@@ -1625,7 +1623,7 @@ cb.clone = function(data) {
         data = this.cloneObject(data);
     } else if ($.isArray(data)) {
         data = this.cloneArray(data);
-    } else {
+    } else if (!cb.isNode(data)){
         data = JSON.parse(JSON.stringify(data));
     }
     return data;
@@ -1878,8 +1876,9 @@ cb.module.bootstrapComponent = {
 					{
 						if (opt.items[a].xtype == 'li') {
 							li = cb.create(opt.items[a], record);
-						}else{
+						} else {
 							oli = {xtype: 'li'};
+							/*
 							if (opt.items[a].store) {
 								oli.store = opt.items[a].store;
 								delete opt.items[a].store;
@@ -1892,6 +1891,7 @@ cb.module.bootstrapComponent = {
 	                            oli.value = opt.items[a].value;
 	                            delete opt.items[a].value;
 	                        }
+	                        */
 							oli.items = opt.items[a];
 							li = cb.create(oli, record);
 						}
@@ -2689,8 +2689,8 @@ cb.module.cbComponent = {
     },
     'a': function(opt, record) {
         var ele = document.createElement('a');
-        if (!opt.href && typeof record === 'string') {
-        	$(ele).attr('href', record)
+        if (!opt.href && typeof record === 'string' && cb.isUrl(record)) {
+            $(ele).attr('href', record)
         }
         ele = cb.common_prop(ele, opt);
         return ele;
@@ -3018,20 +3018,20 @@ cb.mergeDataStore = function(record) {
 };
 
 // Funciton alterdata to changes in record data before processing
-cb.alterdata = function (alterdata, record) {
+cb.alterdata = function (alterdata, record, opt) {
 	if ($.type(record) === 'string' || $.type(record) === 'number')
 	{
 		if ($.isFunction(alterdata)) {
-			record = alterdata(record);
+			record = alterdata(record, opt);
 		}else if ($.isPlainObject(alterdata) && opt.field && alterdata[opt.field]) {
-			record = alterdata[opt.field](record);
+			record = alterdata[opt.field](record, opt);
 		}
 	}
 	else if ($.isPlainObject(alterdata) && $.isPlainObject(record))
 	{
 		$.each(record, function(i) {
 			if ($.isFunction(alterdata[i])) {
-				record[i] = alterdata[i](record[i]);
+				record[i] = alterdata[i](record[i], opt);
 			}
 		});
 	}
@@ -3040,7 +3040,7 @@ cb.alterdata = function (alterdata, record) {
 		if ($.isFunction(alterdata))
 		{
 			for (var i = 0; i < record.length; i ++) {
-				record[i] = alterdata(record[i]);
+				record[i] = alterdata(record[i], opt);
 			}
 		}
 		else if ($.isPlainObject(alterdata))
@@ -3048,7 +3048,7 @@ cb.alterdata = function (alterdata, record) {
 			for (var j = 0; j < record.length; j ++) {
 				$.each(record[j], function(i) {
 					if ($.isFunction(alterdata[i])) {
-						record[j][i] = alterdata[i](record[j][i]);
+						record[j][i] = alterdata[i](record[j][i], opt);
 					}
 				});
 			}
@@ -3207,7 +3207,7 @@ cb.create = function(opt, record) {
             // Copy of original record data and Alterdata
             var raw_record = cb.clone(record);
             if (opt.alterdata) {
-                record = this.alterdata(opt.alterdata, cb.clone(raw_record));
+                record = this.alterdata(opt.alterdata, cb.clone(raw_record), opt);
             }
         }
 		
@@ -3727,4 +3727,11 @@ cb.objectCount = function (obj) {
 
 cb.getZIndex = function () {
     return cb.zIndex ++;
+}
+
+cb.isUrl = function (str) {
+    if (cb.strpos(str, '.') || str.substr(0, 1) == '#') {
+        return true;
+    }
+    return false;
 }

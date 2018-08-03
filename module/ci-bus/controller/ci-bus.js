@@ -14,6 +14,11 @@ cb.define({
 		} else {
 			cb.getCmp('#mainmenu-items').hide();
 		}
+		if (hash[1] == 'stores') {
+		    cb.getCmp('#mainmenu-php-methods').show();
+		} else {
+		    cb.getCmp('#mainmenu-php-methods').hide();
+		}
 		cb.render(cb.getView(hash[1]));
 		$('pre code').each(function(i, block) {
 		    hljs.highlightBlock(block);
@@ -22,6 +27,8 @@ cb.define({
 	
 	loadhome: function () {
 	    cb.scrollTo(0, 0);
+	    cb.getCmp('#mainmenu-items').hide();
+	    cb.getCmp('#mainmenu-php-methods').hide();
 		cb.render(cb.getView('ci-bus'));
 	},
 	

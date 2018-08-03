@@ -2,6 +2,17 @@ cb.define({
 	xtype: 'view',
 	name: 'mainmenu',
 	appendTo: 'header',
+	onRender: function () {
+	    // Load google translator
+        $.cachedScript("//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit", "js").done(function () {
+            function googleTranslateElementInit() {
+                new google.translate.TranslateElement({
+                    pageLanguage: 'es',
+                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+                }, 'google_translate_element');
+            }
+        });
+	},
 	items: [{
 		xtype: 'nav',
 		type: 'default fixed-top',
@@ -71,17 +82,108 @@ cb.define({
 					text: ' Items',
 					id: 'mainmenu-items',
 					hidden: true,
-					defaults: {
-						click: function () {
-							cb.scrollTo(cb.getCmp(this).getRecord().st, 0, 60);
-						}
-					},
-					store: 'texts',
-					items: [{
+					click: function () {
+                        var ul = cb.getCmp(this).up().down('ul');
+                        
+                        if (ul.height() > window.innerHeight - 50) {
+                            ul.css({
+                                height: window.innerHeight - 50,
+                                overflow: 'auto'
+                            });
+                        } else {
+                            ul.css({
+                                height: 'auto'
+                            });
+                        }
+                    },
+					items: {
 						xtype: 'a',
+						store: 'texts',
 						field: 'menu-items',
-						text: '{tx}'
-					}]
+						text: '{tx}',
+						click: function () {
+						    var record = cb.getCmp(this).getRecord();
+                            cb.scrollTo(record.st, 0, 60);
+                            cb.sto(function(){
+                                cb.common_prop(record.st, {
+                                    color: 'red',
+                                    css: {
+                                        'font-weight': 600
+                                    }
+                                });
+                            }, 200);
+                            cb.sto(function(){
+                                cb.common_prop(record.st, {
+                                    color: 'black',
+                                    css: {
+                                        'font-weight': 500
+                                    }
+                                });
+                            }, 800);
+                        }
+					}
+				}, {
+				    xtype: 'navbar-dropdown',
+                    glyphicon: 'bookmark',
+                    store: 'texts',
+                    field: 'stores',
+                    text: ' {tx11}',
+                    id: 'mainmenu-php-methods',
+                    hidden: true,
+                    click: function () {
+                        var ul = cb.getCmp(this).up().down('ul');
+                        
+                        if (ul.height() > window.innerHeight - 50) {
+                            ul.css({
+                                height: window.innerHeight - 50,
+                                overflow: 'auto'
+                            });
+                        } else {
+                            ul.css({
+                                height: 'auto'
+                            });
+                        }
+                    },
+                    items: {
+                        xtype: 'li',
+                        store: 'texts',
+                        field: 'menu-php-methods',
+                        alterdata: function (record) {
+                            if (record == 'separator') {
+                                return cb.create({
+                                    xtype: 'li',
+                                    cls: 'divider',
+                                    attr: {'role':'separator'}
+                                });
+                            }
+                            return cb.create({xtype: 'a',
+                                click: function () {
+                                    var record = cb.getCmp(this).getRecord();
+                                    cb.scrollTo($('h4:contains("' + record + '")'), 0, 75);
+                                    cb.sto(function(){
+                                        cb.common_prop('h4:contains("' + record + '")', {
+                                            color: 'red',
+                                            css: {
+                                                'font-weight': 600
+                                            }
+                                        });
+                                    }, 200);
+                                    cb.sto(function(){
+                                        cb.common_prop('h4:contains("' + record + '")', {
+                                            color: 'black',
+                                            css: {
+                                                'font-weight': 500
+                                            }
+                                        });
+                                    }, 800);
+                                }
+                            }, record);
+                        }
+                    }
+				}, {
+			        xtype: 'div',
+				    id: 'google_translate_element',
+				    pull: 'left'
 				}]
 			}]
 		}]
