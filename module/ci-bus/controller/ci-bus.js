@@ -40,22 +40,12 @@ cb.define({
 	    
 		// Create div loading
 		cb.create({
-			xtype: 'div',
-			id: 'loading-mask',
+			xtype: 'img',
+			src: './assets/img/loading.gif',
 			renderTo: 'body',
 			position: 'fixed',
-			top: 0,
-			left: 0,
-			width: '100%',
-			height: '100%',
-			background: 'white',
-			items: {
-				xtype: 'img',
-				src: './assets/img/loading.gif',
-				position: 'absolute',
-				top: 'calc(50% - 64px)',
-				left: 'calc(50% - 64px)'
-			}
+			top: 'calc(50% - 64px)',
+			left: 'calc(50% - 64px)'
 		});
 		
 		// Load highlight style and script
