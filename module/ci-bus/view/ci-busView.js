@@ -20,6 +20,12 @@ cb.define({
 	        xtype: 'callout',
 	        field: 'tx2'
 	    }, {
+	        xtype: 'h3',
+	        field: 'tx10'
+	    }, {
+	        xtype: 'callout',
+	        field: 'tx11'
+	    }, {
             xtype: 'h3',
             field: 'tx3'
         }, {

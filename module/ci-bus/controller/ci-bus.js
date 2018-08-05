@@ -38,35 +38,56 @@ cb.define({
 	
 	onload: function () {
 	    
-		//Load font
-		$.cachedScript("https://fonts.googleapis.com/css?family=Quicksand:300,400", "css");
-		$('body').css({
-			'font-family': 'Quicksand, Verdana, Arial',
-			'font-weight': 300
+		// Create div loading
+		cb.create({
+			xtype: 'div',
+			id: 'loading-mask',
+			renderTo: 'body',
+			position: 'fixed',
+			top: 0,
+			left: 0,
+			width: '100%',
+			height: '100%',
+			background: 'white',
+			items: {
+				xtype: 'img',
+				src: './assets/img/loading.gif',
+				position: 'absolute',
+				top: 'calc(50% - 64px)',
+				left: 'calc(50% - 64px)'
+			}
 		});
 		
 		// Load highlight style and script
 		$.cachedScript("libraries/highlight/styles/custom.css", "css");
-		$.cachedScript("libraries/highlight/highlight.pack.js", "js").done(function () {
-			cb.loadAll([
-			    //['component', 'gotorave', 'review'],
-				['store', 'ci-bus', 'code'],
-				['store', 'ci-bus', 'texts'],
-				['component', 'ci-bus', 'totestcode'],
-				['component', 'ci-bus', 'phpmethod'],
-				['view', 'common', 'base'],
-				['view', 'ci-bus', 'mainmenu'],
-				['view', 'ci-bus', 'doc/createmodule'],
-				['view', 'ci-bus', 'doc/controllers'],
-				['view', 'ci-bus', 'doc/views'],
-				['view', 'ci-bus', 'doc/items'],
-				['view', 'ci-bus', 'doc/functions'],
-				['view', 'ci-bus', 'doc/properties'],
-				['view', 'ci-bus', 'doc/stores'],
-				['view', 'ci-bus', 'ci-bus']
-			], function () {
-			    $('#content').css('padding-top', 60);
-				cb.router.hashchange();
+		
+		// Load font
+		$.cachedScript("https://fonts.googleapis.com/css?family=Quicksand:300,400", "css").done(function () {
+			$('body').css({
+				'font-family': 'Quicksand, Verdana, Arial',
+				'font-weight': 300
+			});
+			$.cachedScript("libraries/highlight/highlight.pack.js", "js").done(function () {
+				cb.loadAll([
+				    //['component', 'gotorave', 'review'],
+					['store', 'ci-bus', 'code'],
+					['store', 'ci-bus', 'texts'],
+					['component', 'ci-bus', 'totestcode'],
+					['component', 'ci-bus', 'phpmethod'],
+					['view', 'common', 'base'],
+					['view', 'ci-bus', 'mainmenu'],
+					['view', 'ci-bus', 'doc/createmodule'],
+					['view', 'ci-bus', 'doc/controllers'],
+					['view', 'ci-bus', 'doc/views'],
+					['view', 'ci-bus', 'doc/items'],
+					['view', 'ci-bus', 'doc/functions'],
+					['view', 'ci-bus', 'doc/properties'],
+					['view', 'ci-bus', 'doc/stores'],
+					['view', 'ci-bus', 'ci-bus']
+				], function () {
+				    $('#content').css('padding-top', 60);
+					cb.router.hashchange();
+				});
 			});
 		});
 	},

@@ -137,9 +137,9 @@
 		                      .'hacer que los programadores disfruten trabajando haciendo cosas de las que te hacen pensar... esto va a explotar... y que funcione.',
 		            'tx7' => 'Datos de contacto',
 		            'tx8' => 'Donativos',
-		            'tx9' => 'Si te ha gustado Ci-bus haz click aquí para hacer un donativo apoyando al desarrollo',
+		            'tx9' => 'Si te gusta Ci-bus haz click aquí para hacer un donativo apoyando al desarrollo',
 		            'tx10' => '¿Dónde puedo conseguirlo?',
-		            'tx11' => 'Puedes descargar Ci-bus desde github <a href="https://github.com/ci-bus/ci-bus">https://github.com/ci-bus/ci-bus</a>'
+		            'tx11' => 'Puedes descargar Ci-bus desde github <a target="_blank" href="https://github.com/ci-bus/ci-bus">https://github.com/ci-bus/ci-bus</a>'
 		        ),
 		        'stores' => array(
 		            'tx1' => 'Información para la creación de stores en PHP y la utilización de stores en JavaScript',
