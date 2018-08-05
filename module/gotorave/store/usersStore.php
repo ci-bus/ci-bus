@@ -27,7 +27,7 @@
 						"review" => "1",
 						"id_user" => $_SESSION['user_id']
 				));
-				if($res4 = $this->get_array('review')){
+				if($res4 = $this->getArray('review')){
 					foreach($res4 as $tid){
 						$wherein .= $tid->id_row.", ";
 					}
@@ -50,7 +50,7 @@
 			$this->from("user");
 			$this->orderBy("user.id", "DESC");
 			
-			if($res = $this->get_array())
+			if($res = $this->getArray())
 			{
 				foreach($res as $k => $r0)
 				{
@@ -61,7 +61,7 @@
 					$this->where("user_tag.user_id", $r0->id);
 					$this->orderBy("user_tag.id", "ASC");
 					
-					if($res2 = $this->get_array())
+					if($res2 = $this->getArray())
 					{
 						if(is_array($res2) && !empty($res2)){
 							$res[$k]->tags = $res2;
@@ -87,7 +87,7 @@
 					$res[$k]->hand1_color = "red";
 					$res[$k]->hand2_color = "green";
 						
-					if($res3 = $this->get_array())
+					if($res3 = $this->getArray())
 					{
 						foreach($res3 as $r3)
 						{
@@ -122,7 +122,7 @@
 					$following = 0;
 					$user_follow = 0;
 					
-					if($res4 = $this->get_array())
+					if($res4 = $this->getArray())
 					{
 						foreach($res4 as $r4)
 						{
@@ -167,7 +167,7 @@
 						$this->where("user_tag.user_id", $user->id);
 						$this->orderBy("user_tag.id", "ASC");
 						
-						if($res2 = $this->get_array())
+						if($res2 = $this->getArray())
 						{
 							if(is_array($res2) && !empty($res2)){
 								$user->tags = $res2;

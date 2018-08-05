@@ -50,7 +50,7 @@ class Db extends Config {
 			$this->add("join", strtoupper($type)." JOIN ".$this->getConfig("db", "prefix").$table." ON ".$where, true);
 		}
 		
-		public function get_array($table = false)
+		public function getArray($table = false)
 		{
 			$res = $this->get($table);
 			if(is_object($res)) return array($res);
@@ -385,7 +385,7 @@ class Db extends Config {
 			}
 		}
 		
-		public function or_where($field, $value = false, $opera = "=")
+		public function orWhere($field, $value = false, $opera = "=")
 		{
 			if( $value !== false )
 			{	

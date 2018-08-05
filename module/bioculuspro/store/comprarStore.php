@@ -224,7 +224,7 @@
 			//Sacamos datos de redsys
 			$this->select("value, variable");
 			$this->where("(variable='redsys_nombre' OR variable='redsys_url' OR variable='redsys_terminal' OR variable='redsys_moneda' OR variable='redsys_tipo' OR variable='redsys_codigo' OR variable='redsys_clave') AND id_usuario=0");
-			$data_redsys = $this->get_array("config_value");
+			$data_redsys = $this->getArray("config_value");
 			$VLRS = array();
 			foreach($data_redsys AS $dts){
 				$VLRS[$dts->variable] = trim($dts->value);

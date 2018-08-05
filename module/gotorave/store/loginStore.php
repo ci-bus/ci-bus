@@ -27,7 +27,7 @@
 				$this->where("user_tag.user_id", $user->id);
 				$this->orderBy("user_tag.id", "ASC");
 				
-				if($res2 = $this->get_array())
+				if($res2 = $this->getArray())
 				{
 					if(is_array($res2) && !empty($res2)){
 						$user->tags = $res2;

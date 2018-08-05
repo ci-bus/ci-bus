@@ -8,7 +8,8 @@
 		    $this->parseStore('texts', array(
 		        'general' => array (
 		            'tx1' => 'Probar código',
-		            'tx2' => 'Seleccionar'
+		            'tx2' => 'Seleccionar',
+		            'tx3' => 'Métodos'
 		        ),
 		        'menu' => array (
 		            'tx0' => 'Documentación ',
@@ -16,7 +17,7 @@
 		            'tx2' => 'Controladores',
 		            'tx3' => 'Vistas',
 		            'tx4' => 'Items',
-		            'tx5' => 'Funciones JavaScript',
+		            'tx5' => 'Ci-bus Métodos',
 		            'tx6' => 'Propiedades items',
 		            'tx7' => 'Store PHP y JavaScript'
 			    ),
@@ -103,13 +104,25 @@
 		            )
 		        ),
 		        'menu-php-methods' => array (
-		            'getAllConfigs', 'getConfig', 'setConfig', 'setSubConfig', 'separator', 'parseStore', 'parseVar', 'parseConfig', 'separator', 'getTimeExe', 'showCode', 'utf8_converter', 'minArray',
-		            'mergePlusObject', 'imageResize', 'extractUrls', 'embedMultimedia', 'separator', 'insert', 'select', 'update', 'delete', 'where', 'or_where', 'join', 'get', 'get_array',
+		            'getAllConfigs', 'getConfig', 'setConfig', 'setSubConfig', 'separator', 'parseStore', 'parseVar', 'parseConfig', 'separator', 'getTimeExe', 'showCode', 'utf8Converter', 'minArray',
+		            'mergePlusObject', 'imageResize', 'extractUrls', 'embedMultimedia', 'separator', 'insert', 'select', 'update', 'delete', 'where', 'orWhere', 'join', 'get', 'getArray',
 		            'groupBy', 'orderBy', 'limit', 'from'
+		        ),
+		        'menu-javascript-methods' => array (
+		            'getStore', 'getData', 'setData', 'removeData', 'addData', 'extendData',
+		            'mergeData', 'getName', 'sort', 'addFilter', 'getFilters', 'removeFilter',
+		            'removeAllFilters'
+		        ),
+		        'menu-ci-bus-methods' => array (
+		            'cb.autoname', 'cb.autoid', 'cb.ctr', 'cb.get', 'cb.getCmp', 'cb.send', 'cb.load', 'cb.loadAll',
+		            'cb.loadLineal', 'cb.define', 'cb.setDinamicValue', 'cb.setMissingDinamicValue', 'cb.setValue', 'cb.setConfig', 'cb.getConfig', 'cb.delConfig',
+		            'cb.render', 'cb.extend', 'cb.clone', 'cb.commonProp', 'cb.strpos', 'cb.enable', 'cb.disable', 'cb.sto',
+		            'cb.popup', 'cb.verticalCenter', 'cb.effect', 'cb.isNode', 'cb.isElement', 'cb.getStore', 'cb.getView', 'cb.getController',
+		            'cb.getComponent', 'cb.fetchFromObject', 'cb.putToObject', 'cb.deleteToObject', 'cb.isURL'
 		        ),
 		        'home' => array (
 		            'tx1' => '¿Qué es Ci-bus Framework?',
-		            'tx2' => 'Ci-bus es un cojunto de herramientas javascript y php que te permitirá crear aplicaciones webs de manera fácil e intuitiva con las más novedosas técnicas de programación',
+		            'tx2' => 'Ci-bus es un cojunto de herramientas JavaScript y php que te permitirá crear aplicaciones webs de manera fácil e intuitiva con las más novedosas técnicas de programación',
 		            'tx3' => '¿Cuáles han sido mis motivaciones?',
 		            'tx4' => 'Desarrollando Apps con Extjs para grandes compañias como el banco ING, Volskwagen, Curanum, ICIS+, Lufthansa entre otras pude apreciar cadencias '
 		                      .'y aspectos del framework que me resultaban molestos, el peor de todos al igual que Angular es la absurda y desmesurada complejidad a la hora de hacer simples tareas, '
@@ -117,19 +130,21 @@
 		                      .'llegando al punto de dar más trabajo en vez de quitarlo para mi pierde el sentido, existen proyectos como jQuery que han sabido mantenerse en la simplicidad y la flexibilidad.<br>'
 		                      .'Días tras día se me fueron ocurriendo pequeñas ideas y mejores modos de hacer cosas como aplicar estilos, listeners, crear elementos, cargar datos... '
                               .'hasta llegar al día en que todo eso se condensó, sabía que usaría jQuery y pensé en bootstrap para los estilos, me puse manos a la obra y como si lo estuviera recreando '
-		                      .'solté varios cientos de lineas de códigos las cuales creaban elementos html en base a definiciones en objetos javascript, ci-bus mi segundo framework daba '
+		                      .'solté varios cientos de lineas de códigos las cuales creaban elementos html en base a definiciones en objetos JavaScript, ci-bus mi segundo framework daba '
 		                      .'sus primeros pasos de vida.',
 		            'tx5' => '¿Cuál es el objetivo?',
 		            'tx6' => 'Dejar constancia de mis capacidades como arquitecto de software creando un framework muy fácil de usar, simplicidad ante todo, versatilidad y ligereza, '
-		                      .'hacer que los programadores disfruten trabajando haciendo cosas locas de las que te hacen pensar... esto va a explotar... y que funcione.',
+		                      .'hacer que los programadores disfruten trabajando haciendo cosas de las que te hacen pensar... esto va a explotar... y que funcione.',
 		            'tx7' => 'Datos de contacto',
 		            'tx8' => 'Donativos',
-		            'tx9' => 'Si te ha gustado Ci-bus haz click aquí para hacer un donativo apoyando al desarrollo'
+		            'tx9' => 'Si te ha gustado Ci-bus haz click aquí para hacer un donativo apoyando al desarrollo',
+		            'tx10' => '¿Dónde puedo conseguirlo?',
+		            'tx11' => 'Puedes descargar Ci-bus desde github <a href="https://github.com/ci-bus/ci-bus">https://github.com/ci-bus/ci-bus</a>'
 		        ),
 		        'stores' => array(
 		            'tx1' => 'Información para la creación de stores en PHP y la utilización de stores en JavaScript',
 		            'tx2' => 'PHP Stores',
-		            'tx3' => 'Los stores en PHP se utilizan para hacer consultas a la base de datos y devolver un store JavaScript o una configuración',
+		            'tx3' => 'Los stores en PHP se utilizan para hacer consultas a la base de datos y devolver un store JavaScript, variable o configuración',
 		            'tx4' => 'Ejemplo cogiendo tags de la base de datos',
 		            'tx5' => 'Funciones disponibles class Store',
 		            'tx6' => 'PHP Métodos de configuración',
@@ -195,10 +210,10 @@
 		                    'example' => '$this->showCode(array("a" => 1, "b" => 2));'
 		                ),
 		                array(
-		                    'method' => 'utf8_converter',
+		                    'method' => 'utf8Converter',
 		                    'param' => '1. Array de valores',
 		                    'action' => 'Codifica en utf8 un array de valores',
-		                    'example' => '$this->utf8_converter(array("name" => "Miguel Ángel", "address" => "C/Agüero Nº18"));'
+		                    'example' => '$this->utf8Converter(array("name" => "Miguel Ángel", "address" => "C/Agüero Nº18"));'
 		                ),
 		                array(
 		                    'method' => 'minArray',
@@ -275,7 +290,7 @@ $this->where("name", "%Miguel%", "LIKE");',
 		                    'info' => 'Los tres ejemplos tendrían el mismo resultado'
 		                ),
 		                array(
-		                    'method' => 'or_where',
+		                    'method' => 'orWhere',
 		                    'info' => 'Semejante a where pero aplicando un OR'
 		                ),
 		                array(
@@ -285,7 +300,7 @@ $this->where("name", "%Miguel%", "LIKE");',
 		                    'example' => '$this->select("user.*, review.*");
 $this->from("review");
 $this->join("user", "review.user_id = user.id");
-$reviews = $this->get_array();'
+$reviews = $this->getArray();'
 		                ),
 		                array(
 		                    'method' => 'get',
@@ -295,7 +310,7 @@ $reviews = $this->get_array();'
 $users = $this->get("user");'
 		                ),
 		                array(
-		                    'method' => 'get_array',
+		                    'method' => 'getArray',
 		                    'info' => 'Igual que get pero devolviendo los valores siempre en array'
 		                ),
 		                array(
@@ -323,7 +338,98 @@ $users = $this->get("user");'
 		                    'example' => '$this->from("user");'
 		                )
 		            ),
-		            'tx11' => 'PHP Métodos'
+		            'tx11' => 'PHP Métodos',
+		            'tx12' => 'JavaScript Stores',
+		            'tx13' => 'Cuando un PHP Store devuelve un JavaScript Store éste se utiliza para alimentar a las vistas',
+		            'tx14' => 'JavaScript Métodos',
+		            'methods5' => array(
+		                array(
+		                    'method' => 'getStore',
+		                    'param' => '1. Nombre del store',
+		                    'action' => 'Devuelve un store en caso de que exista',
+		                    'example' => "var str = cb.getStore('name_store');"
+		                ),
+	                    array(
+                            'method' => 'getData',
+                            'param' => '1. Nombre del field (Opcional)',
+                            'action' => 'Devuelve valores del store',
+                            'example' => "var user_name = cb.getStore('user').getData('name');"
+	                    ),
+	                    array(
+                            'method' => 'setData',
+                            'param' => '1. Datos, 2. Nombre del field (Opcional)',
+                            'action' => 'Setea valores al store',
+                            'example' => "cb.getStore('user').setData('Miguel', 'name');"
+	                    ),
+	                    array(
+                            'method' => 'removeData',
+                            'param' => '1. Posición del dato a borrar, 2. Nombre del field (Opcional)',
+                            'action' => 'Borra un valor en un array de datos',
+                            'example' => "cb.getStore('global').removeData(2, 'tags');"
+	                    ),
+	                    array(
+                            'method' => 'addData',
+                            'param' => '1. Valor a añadir, 2. Nombre del field (Opcional), 3. Posición del array donde se añade (Opcional)',
+                            'action' => 'Añade un valor',
+                            'example' => "cb.getStore('global').addData('Smartphone', 'tags', 2);"
+	                    ),
+	                    array(
+                            'method' => 'extendData',
+                            'param' => '1. Valor a extender, 2. Nombre del field (Opcional)',
+                            'action' => 'Extiende los datos de un store',
+                            'example' => "cb.getStore('global').extendData(['Computer', 'Tablet'], 'tags');"
+	                    ),
+	                    array(
+                            'method' => 'mergeData',
+                            'param' => '1. Valor a mezclar, 2. Nombre del field (Opcional)',
+                            'action' => 'Mezcla los datos de un store',
+                            'example' => "cb.getStore('global').mergeData(['Computer', 'Tablet'], 'tags');"
+	                    ),
+	                    array(
+                            'method' => 'getName',
+                            'action' => 'Devuelve el nombre del store',
+                            'example' => "var name_store = store.getName();"
+	                    ),
+	                    array(
+                            'method' => 'sort',
+                            'param' => '1. Field u objeto con definiciones de orden, 2. Tipo de orden o función para ordenación personalizada (Opcional)',
+                            'action' => 'Ordena los valores de un store',
+                            'example' => "cb.getStore('global').sort('tags', 'desc');            
+cb.getStore('global').sort({data: 'tags', order: 'asc'});
+cb.getStore('global').sort('tags', function(a, b){
+    return a.length - b.length;
+});"
+	                    ),
+	                    array(
+                            'method' => 'addFilter',
+                            'param' => '1. Función que recorre los datos, 2. Nombre del field (Opcional)',
+                            'action' => 'Añade un filtro al store',
+                            'example' => "cb.getStore('global').addFilter(function (r) {
+    if (r.name == 'Miguel') {
+        return true;
+    } else {
+        return false;
+    }
+}, 'users');"
+	                    ),
+	                    array(
+                            'method' => 'getFilters',
+                            'action' => 'Devuelve un array con las configuraciónes de los filtros',
+                            'example' => "var filters = cb.getStore('global').getFilters();"
+	                    ),
+	                    array(
+                            'method' => 'removeFilter',
+                            'param' => '1. Posición del filtro en el array',
+                            'action' => 'Elimina un filtro',
+                            'example' => "cb.getStore('global').removeFilter(0);"
+	                    ),
+	                    array(
+                            'method' => 'removeAllFilters',
+                            'param' => '1. Nombre del field (Opcional)',
+                            'action' => 'Elimina todos los filtros',
+                            'example' => "cb.getStore('global').removeAllFilters('users');"
+	                    )
+		            )
 		        ),
 			    'createmodule' => array(
 			        'tx1' => 'Información para crear un módulo nuevo llamado test',
@@ -333,7 +439,7 @@ $users = $this->get("user");'
 			        'tx5' => ' y la carpeta <em>component</em> en ',
 			        'tx6' => 'Controller',
 			        'tx7' => '3. Dentro de la carpeta ',
-			        'tx8' => ' crea un archivo <em>test.js</em> que será el controlador, éste contendrá todas las funciones javascript necesarias y se ocupará de tareas como cargar '
+			        'tx8' => ' crea un archivo <em>test.js</em> que será el controlador, éste contendrá todas las funciones JavaScript necesarias y se ocupará de tareas como cargar '
 			                 .'vistas, stores, enviar datos de formularios etc, por defecto se carga el controlador que se llama igual al módulo',
 			        'tx9' => 'View',
 			        'tx10' => '4. Dentro de la carpeta ',
@@ -341,7 +447,7 @@ $users = $this->get("user");'
 			        'tx12' => 'Store',
 			        'tx13' => '5. Dentro de la carpeta ',
 			        'tx14' => ' crea un archivo <em>testStore.php</em> que será un store, podrá hacer consultas a la base de datos y devolver los datos para ser leídos por el controlador y las vistas',
-			        'tx15' => 'La función <em>$this->parseStore</em> pinta lo necesario para definir un store en javascript con los datos, la función <em>$this->parseConfig</em> pasa una configuración',
+			        'tx15' => 'La función <em>$this->parseStore</em> pinta lo necesario para definir un store en JavaScript con los datos, la función <em>$this->parseConfig</em> pasa una configuración',
 			        'tx16' => 'Component',
 			        'tx17' => '6. Dentro de la carpeta ',
 			        'tx18' => ' crea un archivo <em>testComponent.js</em> que será un component, esto nos vale para crear componentes personalizados y reutilizables'
@@ -582,47 +688,47 @@ $users = $this->get("user");'
 		        ),
 	            'functions' => array(
 		            array(
-		                'fun' => 'cb.autoname()',
+		                'fun' => 'cb.autoname',
 		                'param' => "1. Prefijo (opcional) por defecto es 'autoname'",
 		                'return' => "Devuelve un string único formado por prefijo, '_' y un número"
 		            ),
 		            array(
-		                'fun' => 'cb.autoid()',
+		                'fun' => 'cb.autoid',
 		                'param' => "1. Prefijo (opcional) por defecto es 'autoid'",
 		                'return' => "Devuelve un string único formado por prefijo, '_' y un número"
 		            ),
 	                array(
-	                    'fun' => 'cb.ctr()',
+	                    'fun' => 'cb.ctr',
 	                    'param' => '1. Nombre del controlador, 2. Nombre de la función, 3. Parámetro',
 	                    'example' => "cb.ctr('test_controller', 'test_function', {a: 1, b: 2, c: 'tres'});"
 	                ),
 	                array(
-	                    'fun' => 'cb.get()',
+	                    'fun' => 'cb.get',
 	                    'param' => "1. Tipo = 'view', 'store', 'controller' o 'component', 2. Nombre, 3. Dato a coger(opcional)",
 	                    'return' => "Puede devolver un objeto, array o función según los parámetros que le pasemos",
 	                    'example' => "cb.get('view', 'test_view', 'items');"
 	                ),
 	                array(
-	                    'fun' => 'cb.getCmp()',
+	                    'fun' => 'cb.getCmp',
 	                    'param' => "1. Puntero, xtype o elemento, 2. index (opcional)",
 	                    'return' => "Devuelve el elemento con las funciones jQuery y las funciones del componente",
 	                    'example' => "cb.getCmp('button');"
 	                ),
 	                array(
-	                    'fun' => 'cb.send()',
+	                    'fun' => 'cb.send',
 	                    'param' => "1. Nombre formulario html, 2. Nombre module, 3. Nombre store, 4. Callback function",
 	                    'action' => "Envía los datos de un formulario a un store",
 	                    'example' => "cb.send('form_name', 'test_module', 'test_store', function(){ alert('Formulario enviado'); })"
 	                ),
 	                array(
-	                    'fun' => 'cb.load()',
+	                    'fun' => 'cb.load',
 	                    'param' => "1. Tipo = 'view', 'store', 'controller' o 'component', 2. Nombre del modulo, 3. Nombre del archivo, 4. Variable para pasarle(opcional), 5. Callback function(opcional)",
 	                    'action' => "Carga un archivo del modulo",
 	                    'example' => "cb.load('store', 'test_module', 'test_filename', {id: 3}, function(){ alert('Archivo cargado') })",
 	                    'more' => "En el nombre del archivo no se pone el subfijo View, Component o Store"
 	                ),
 	                array(
-	                    'fun' => 'cb.loadAll()',
+	                    'fun' => 'cb.loadAll',
 	                    'more' => "El funcionamiento es el mismo que cb.load(), con la diferencia que puedes cargar mas de un archivo en una sola llamada",
 	                    'example' => "cb.loadAll([
     ['store', 'test_module', 'test_filename'],
@@ -630,16 +736,16 @@ $users = $this->get("user");'
 ], function(){ alert('Todo cargado'); });"
 	                ),
 	                array(
-	                    'fun' => 'cb.loadLineal()',
+	                    'fun' => 'cb.loadLineal',
 	                    'info' => "El funcionamiento es el mismo que cb.loadAll(), con la diferencia de que hará una consulta ajax por cada archivo"
 	                ),
 	                array(
-	                    'fun' => 'cb.define()',
+	                    'fun' => 'cb.define',
 	                    'param' => "1. Objeto con definiciones",
 	                    'action' => "Crea un controlador, store, vista o componente de vista"
 	                ),
 	                array(
-	                    'fun' => 'cb.setDinamicValue()',
+	                    'fun' => 'cb.setDinamicValue',
 	                    'param' => "1. Objeto a modificar, 2. Nombre atributo, 3. Valor atributo, 4. Niveles",
 	                    'action' => "Modifica un valor en un objeto, a él y a sus items hasta X niveles definidos",
 	                    'example' => "cb.setDinamicValue({
@@ -664,88 +770,88 @@ $users = $this->get("user");'
 }"
 	                ),
 	                array(
-	                    'fun' => 'cb.setMissingDinamicValue()',
+	                    'fun' => 'cb.setMissingDinamicValue',
 	                    'info' => "Esta función es igual a cb.setDinamicValue() con la diferencia de que no reemplaza valores ya asignados"
 	                ),
 	                array(
-	                    'fun' => 'cb.setValue()',
+	                    'fun' => 'cb.setValue',
 	                    'param' => "1. Elemento html o puntero, 2. Valor o elemento html",
 	                    'action' => "Si es un input aplica el valor como value sino, lo aplica como html",
 	                    'example' => "cb.storeSet('#id-ele', 'example');"
 	                ),
 	                array(
-	                    'fun' => 'cb.setConfig()',
+	                    'fun' => 'cb.setConfig',
 	                    'param' => "1. Nombre config, 2. Valor config",
 	                    'action' => "Guarda un valor de configuración hasta que se recarga la página",
 	                    'example' => "cb.setConfig('lang', {title: 'Español', sg: 'es'});"
 	                ),
 	                array(
-	                    'fun' => 'cb.getConfig()',
+	                    'fun' => 'cb.getConfig',
 	                    'param' => "1. Nombre config, 2. Nombre subconfig (opcional)",
 	                    'action' => "Devuelve un valor de configuración",
 	                    'example' => "cb.getConfig('lang', 'sg');"
 	                ),
 	                array(
-	                    'fun' => 'cb.delConfig()',
+	                    'fun' => 'cb.delConfig',
 	                    'param' => "1. Nombre config, 2. Nombre subconfig (opcional)",
 	                    'action' => "Elimina un valor de configuración",
 	                    'example' => "cb.delConfig('lang');"
 	                ),
 	                array(
-	                    'fun' => 'cb.render()',
+	                    'fun' => 'cb.render',
 	                    'param' => "1. Objeto (view), 2. Callback function",
 	                    'action' => "Renderiza las definiciones de los items y ejecuta la callback function al terminar",
 	                    'example' => "cb.render({items: {renderTo: 'body', text: 'Prueba'}}, function(){ alert('rendered');})"
 	                ),
 	                array(
-	                    'fun' => 'cb.extend()',
+	                    'fun' => 'cb.extend',
 	                    'param' => "1. Objeto , 2. Objeto",
 	                    'action' => "Extiende un objeto a solo 1 nivel",
 	                    'example' => "cb.extend({a: 1, b: 1}, {b: 2});",
 	                    'return' => "{a: 1, b: 2}"
 	                ),
 	                array(
-	                    'fun' => 'cb.clone(), cb.cloneObject(), cb.cloneArray()',
+	                    'fun' => 'cb.clone',
 	                    'param' => "1. Objeto o array",
 	                    'action' => "Clona un objeto o array",
 	                    'example' => "cb.clone({xtype: 'button', text: 'Search'});",
 	                    'return' => "El mismo objeto o array clonado"
 	                ),
 	                array(
-	                    'fun' => 'cb.common_prop()',
+	                    'fun' => 'cb.commonProp',
 	                    'param' => "1. Elemento html o puntero, 2. Objeto (propiedades)",
 	                    'action' => "Aplica propiedades a un elemento como border, padding, listeners etc",
-	                    'example' => "cb.common_prop('#id-ele', {background: 'red', click: function(){alert('oks');}});",
+	                    'example' => "cb.commonProp('#id-ele', {background: 'red', click: function(){alert('oks');}});",
 	                    'return' => "El elemento o puntero",
 	                    'info' => '<a href="#loadview/properties">Haz click para ver las propiedades comunes disponibles</a>'
 	                ),
 	                array(
-	                    'fun' => 'cb.strpos()',
+	                    'fun' => 'cb.strpos',
 	                    'param' => "1. Texto, 2. Palabra",
 	                    'action' => "Busca una palabra en un texto",
 	                    'example' => "cb.strpos('Esto es un texto', 'un');",
 	                    'return' => "Posición de la palabra en el texto o false si no la encuentra"
 	                ),
 	                array(
-	                    'fun' => 'cb.enable()',
+	                    'fun' => 'cb.enable',
 	                    'param' => "1. Elemento html o puntero",
 	                    'action' => "Elimina el attributo disable",
 	                    'example' => "cb.enable('#input-test');"
 	                ),
 	                array(
-	                    'fun' => 'cb.disable()',
+	                    'fun' => 'cb.disable',
 	                    'param' => "1. Elemento html o puntero",
 	                    'action' => "Añade el attributo disable",
 	                    'example' => "cb.enable('#input-test');"
 	                ),
 	                array(
-	                    'fun' => 'cb.sto()',
+	                    'fun' => 'cb.sto',
 	                    'param' => "1. function, 2. time (millisecond)",
 	                    'action' => "setTimeout()",
 	                    'example' => "cb.sto(function(){alert('oks')}, 2000);"
 	                ),
 	                array(
-	                    'fun' => 'cb.popup()',
+	                    'fun' => 'cb.popup',
 	                    'param' => "1. Objeto (Definiciones para el popup)",
 	                    'action' => "Crea un panel como un popup",
 	                    'example' => "cb.popup({
@@ -794,13 +900,13 @@ $users = $this->get("user");'
 });"
 	                ),
 	                array(
-	                    'fun' => 'cb.verticalCenter()',
+	                    'fun' => 'cb.verticalCenter',
 	                    'param' => "1. Elemento html o puntero, 2. Numero Offset",
 	                    'action' => "Aplica un margin-top para que el objeto se muestre centrado verticalmente",
 	                    'example' => "cb.verticalCenter('#id-capa-test', 100);"
 	                ),
 	                array(
-	                    'fun' => 'cb.effect()',
+	                    'fun' => 'cb.effect',
 	                    'param' => "1. Elemento html o puntero, 2. Objeto con configuración",
 	                    'action' => "Aplica un efecto de entrada o salida según la configuración",
 	                    'example' => "cb.effect('#id-capa-a-animar', {
@@ -816,55 +922,55 @@ vel : 'fast', 'slow' o Milisegundos
 fun : function(){ alert('end'); }"
 	                ),
 	                array(
-	                    'fun' => 'cb.isNode()',
+	                    'fun' => 'cb.isNode',
 	                    'param' => "1. Objeto",
 	                    'return' => "True si es un nodo, false si no lo es"
 	                ),
 	                array(
-	                    'fun' => 'cb.isElement()',
+	                    'fun' => 'cb.isElement',
 	                    'param' => "1. Objeto",
 	                    'return' => "True si es un elemento html, false si no lo es"
 	                ),
 	                array(
-	                    'fun' => 'cb.getStore()',
+	                    'fun' => 'cb.getStore',
 	                    'param' => "1. Nombre del store, 2. Nombre del field (opcional)",
 	                    'return' => "Sin field devuelve el store con sus funciones, con field devuelve los datos"
 	                ),
 	                array(
-	                    'fun' => 'cb.getView()',
+	                    'fun' => 'cb.getView',
 	                    'param' => "1. Nombre de la vista, 2. Nombre de la propiedad (opcional)",
 	                    'return' => "Devuelve la vista o su propiedad"
 	                ),
 	                array(
-	                    'fun' => 'cb.getController()',
+	                    'fun' => 'cb.getController',
 	                    'param' => "1. Nombre del controlador, 2. Nombre de la propiedad o función (opcional)",
 	                    'return' => "Devuelve el controlador o su propiedad"
 	                ),
 	                array(
-	                    'fun' => 'cb.getComponent()',
+	                    'fun' => 'cb.getComponent',
 	                    'param' => "1. Nombre del componente personalizado, 2. Nombre de la propiedad (opcional)",
 	                    'return' => "Devuelve el componente o su propiedad"
 	                ),
 	                array(
-	                    'fun' => 'cb.fetchFromObject()',
+	                    'fun' => 'cb.fetchFromObject',
 	                    'param' => "1. Objeto, 2. String Propiedades",
 	                    'return' => "Devuelve la propiedad de un objeto",
 	                    'example' => "cb.fetchFromObject({a: {b: {c: 'test'}}}, 'a.b.c');"
 	                ),
 	                array(
-	                    'fun' => 'cb.putToObject()',
+	                    'fun' => 'cb.putToObject',
 	                    'param' => "1. Objeto, 2. Datos, 3. String Propiedades",
 	                    'return' => "Devuelve el objeto con los datos seteados",
 	                    'example' => "cb.putToObject({a: {b: {c: null}}}, 'test', 'a.b.c');"
 	                ),
 	                array(
-	                    'fun' => 'cb.deleteToObject()',
+	                    'fun' => 'cb.deleteToObject',
 	                    'param' => "1. Objeto, 2. String Propiedades",
 	                    'return' => "Devuelve el objeto con la propiedad eliminada",
 	                    'example' => "cb.deleteToObject({a: {b: {c: 'test'}}}, 'a.b.c');"
 	                ),
 	                array(
-	                    'fun' => 'cb.isURL()',
+	                    'fun' => 'cb.isURL',
 	                    'param' => '1. Url',
 	                    'return' => 'Devuelve true si es una url válida o false si no lo es',
 	                    'example' => "cb.isUrl('https://www.ci-bus.com');"

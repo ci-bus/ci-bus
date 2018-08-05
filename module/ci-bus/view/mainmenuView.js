@@ -53,6 +53,10 @@ cb.define({
 						href: '#loadview/createmodule'
 					}, {
                         xtype: 'a',
+                        text: '{tx5}',
+                        href: '#loadview/functions'
+                    }, {
+                        xtype: 'a',
                         text: '{tx2}',
                         href: '#loadview/controllers'
                     }, {
@@ -63,10 +67,6 @@ cb.define({
                         xtype: 'a',
                         text: '{tx4}',
                         href: '#loadview/items'
-                    }, {
-                        xtype: 'a',
-                        text: '{tx5}',
-                        href: '#loadview/functions'
                     }, {
                         xtype: 'a',
                         text: '{tx6}',
@@ -84,8 +84,11 @@ cb.define({
 					hidden: true,
 					click: function () {
                         var ul = cb.getCmp(this).up().down('ul');
-                        
-                        if (ul.height() > window.innerHeight - 50) {
+                        // Preserve max height
+                        if (!this.ul_height || this.ul_height < ul.height()) {
+                        	this.ul_height = ul.height();
+                        }
+                        if (this.ul_height > window.innerHeight - 50) {
                             ul.css({
                                 height: window.innerHeight - 50,
                                 overflow: 'auto'
@@ -105,7 +108,7 @@ cb.define({
 						    var record = cb.getCmp(this).getRecord();
                             cb.scrollTo(record.st, 0, 60);
                             cb.sto(function(){
-                                cb.common_prop(record.st, {
+                                cb.commonProp(record.st, {
                                     color: 'red',
                                     css: {
                                         'font-weight': 600
@@ -113,7 +116,7 @@ cb.define({
                                 });
                             }, 200);
                             cb.sto(function(){
-                                cb.common_prop(record.st, {
+                                cb.commonProp(record.st, {
                                     color: 'black',
                                     css: {
                                         'font-weight': 500
@@ -132,8 +135,11 @@ cb.define({
                     hidden: true,
                     click: function () {
                         var ul = cb.getCmp(this).up().down('ul');
-                        
-                        if (ul.height() > window.innerHeight - 50) {
+                        // Preserve max height
+                        if (!this.ul_height || this.ul_height < ul.height()) {
+                        	this.ul_height = ul.height();
+                        }
+                        if (this.ul_height > window.innerHeight - 50) {
                             ul.css({
                                 height: window.innerHeight - 50,
                                 overflow: 'auto'
@@ -161,7 +167,7 @@ cb.define({
                                     var record = cb.getCmp(this).getRecord();
                                     cb.scrollTo($('h4:contains("' + record + '")'), 0, 75);
                                     cb.sto(function(){
-                                        cb.common_prop('h4:contains("' + record + '")', {
+                                        cb.commonProp('h4:contains("' + record + '")', {
                                             color: 'red',
                                             css: {
                                                 'font-weight': 600
@@ -169,7 +175,130 @@ cb.define({
                                         });
                                     }, 200);
                                     cb.sto(function(){
-                                        cb.common_prop('h4:contains("' + record + '")', {
+                                        cb.commonProp('h4:contains("' + record + '")', {
+                                            color: 'black',
+                                            css: {
+                                                'font-weight': 500
+                                            }
+                                        });
+                                    }, 800);
+                                }
+                            }, record);
+                        }
+                    }
+				}, {
+				    xtype: 'navbar-dropdown',
+                    glyphicon: 'bookmark',
+                    store: 'texts',
+                    field: 'stores',
+                    text: ' {tx14}',
+                    id: 'mainmenu-javascript-methods',
+                    hidden: true,
+                    click: function () {
+                        var ul = cb.getCmp(this).up().down('ul');
+                        // Preserve max height
+                        if (!this.ul_height || this.ul_height < ul.height()) {
+                        	this.ul_height = ul.height();
+                        }
+                        if (this.ul_height > window.innerHeight - 50) {
+                            ul.css({
+                                height: window.innerHeight - 50,
+                                overflow: 'auto'
+                            });
+                        } else {
+                            ul.css({
+                                height: 'auto'
+                            });
+                        }
+                    },
+                    items: {
+                        xtype: 'li',
+                        store: 'texts',
+                        field: 'menu-javascript-methods',
+                        alterdata: function (record) {
+                            if (record == 'separator') {
+                                return cb.create({
+                                    xtype: 'li',
+                                    cls: 'divider',
+                                    attr: {'role':'separator'}
+                                });
+                            }
+                            return cb.create({xtype: 'a',
+                                click: function () {
+                                    var record = cb.getCmp(this).getRecord();
+                                    cb.scrollTo($('h4:contains("' + record + '")'), 0, 75);
+                                    cb.sto(function(){
+                                        cb.commonProp('h4:contains("' + record + '")', {
+                                            color: 'red',
+                                            css: {
+                                                'font-weight': 600
+                                            }
+                                        });
+                                    }, 200);
+                                    cb.sto(function(){
+                                        cb.commonProp('h4:contains("' + record + '")', {
+                                            color: 'black',
+                                            css: {
+                                                'font-weight': 500
+                                            }
+                                        });
+                                    }, 800);
+                                }
+                            }, record);
+                        }
+                    }
+				}, {
+				    xtype: 'navbar-dropdown',
+                    glyphicon: 'bookmark',
+                    store: 'texts',
+                    field: 'general',
+                    text: ' {tx3}',
+                    id: 'mainmenu-ci-bus-methods',
+                    hidden: true,
+                    click: function () {
+                        var ul = cb.getCmp(this).up().down('ul');
+                        // Preserve max height
+                        if (!this.ul_height || this.ul_height < ul.height()) {
+                        	this.ul_height = ul.height();
+                        }
+                        if (this.ul_height > window.innerHeight - 50) {
+                            ul.css({
+                                height: window.innerHeight - 50,
+                                overflow: 'auto'
+                            });
+                        } else {
+                            ul.css({
+                                height: 'auto'
+                            });
+                        }
+                    },
+                    items: {
+                        xtype: 'li',
+                        store: 'texts',
+                        field: 'menu-ci-bus-methods',
+                        alterdata: function (record) {
+                            if (record == 'separator') {
+                                return cb.create({
+                                    xtype: 'li',
+                                    cls: 'divider',
+                                    attr: {'role':'separator'}
+                                });
+                            }
+                            return cb.create({xtype: 'a',
+                            	href: '#loadview/functions',
+                                click: function () {
+                                    var record = cb.getCmp(this).getRecord();
+                                    cb.scrollTo($('h3:contains("' + record + '")'), 0, 60);
+                                    cb.sto(function(){
+                                        cb.commonProp('h3:contains("' + record + '")', {
+                                            color: 'red',
+                                            css: {
+                                                'font-weight': 600
+                                            }
+                                        });
+                                    }, 200);
+                                    cb.sto(function(){
+                                        cb.commonProp('h3:contains("' + record + '")', {
                                             color: 'black',
                                             css: {
                                                 'font-weight': 500

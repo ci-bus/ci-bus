@@ -23,7 +23,7 @@ class User extends Store {
         $this->select("id, name, email");
         $this->from("task_user");
         $this->orderBy("task_user.name", "ASC");
-        $u_data = $this->get_array();
+        $u_data = $this->getArray();
         
         $this->reset();
         

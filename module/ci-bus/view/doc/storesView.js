@@ -82,6 +82,21 @@ cb.define({
             }, {
                 xtype: 'phpmethod',
                 field: 'methods4'
+            }, {
+            	xtype: 'h3',
+            	field: 'tx12'
+            }, {
+            	xtype: 'callout',
+                items: [{
+                    xtype: 'p',
+                    field: 'tx13'
+                }]
+            }, {
+            	xtype: 'h3',
+            	field: 'tx14'
+            }, {
+                xtype: 'phpmethod',
+                field: 'methods5'
             }]
         }]
     }]

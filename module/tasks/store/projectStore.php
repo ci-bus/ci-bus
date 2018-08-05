@@ -23,7 +23,7 @@ class Project extends Store {
         $this->select("id, name");
         $this->from("task_project");
         $this->orderBy("task_project.name", "ASC");
-        $p_data = $this->get_array();
+        $p_data = $this->getArray();
         $this->reset();
         
         if ($p_data)

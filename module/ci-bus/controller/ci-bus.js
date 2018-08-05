@@ -8,16 +8,14 @@ cb.define({
 	},
 	
 	loadview: function (hash) {
-	    cb.scrollTo(0, 0);
+		this.resetmainmenu();
 		if (hash[1] == 'items') {
 			cb.getCmp('#mainmenu-items').show();
-		} else {
-			cb.getCmp('#mainmenu-items').hide();
-		}
-		if (hash[1] == 'stores') {
+		} else if (hash[1] == 'stores') {
 		    cb.getCmp('#mainmenu-php-methods').show();
-		} else {
-		    cb.getCmp('#mainmenu-php-methods').hide();
+		    cb.getCmp('#mainmenu-javascript-methods').show();
+		} else if (hash[1] == 'functions') {
+			cb.getCmp('#mainmenu-ci-bus-methods').show();
 		}
 		cb.render(cb.getView(hash[1]));
 		$('pre code').each(function(i, block) {
@@ -25,10 +23,16 @@ cb.define({
 		});
 	},
 	
-	loadhome: function () {
-	    cb.scrollTo(0, 0);
-	    cb.getCmp('#mainmenu-items').hide();
+	resetmainmenu: function () {
+		cb.scrollTo(0, 0);
+		cb.getCmp('#mainmenu-items').hide();
 	    cb.getCmp('#mainmenu-php-methods').hide();
+	    cb.getCmp('#mainmenu-javascript-methods').hide();
+	    cb.getCmp('#mainmenu-ci-bus-methods').hide();
+	},
+	
+	loadhome: function () {
+		this.resetmainmenu();
 		cb.render(cb.getView('ci-bus'));
 	},
 	

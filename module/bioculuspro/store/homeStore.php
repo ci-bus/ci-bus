@@ -16,7 +16,7 @@
 				$this->select('titulo, texto, color');
 				$this->where('id_idioma', $this->lang_id);
 				$this->where("url", "%p=".$data['p'], "LIKE");
-				$p = $this->get_array('bio_paginas');
+				$p = $this->getArray('bio_paginas');
 				
 				$this->parseStore('p', $p);
 				
@@ -72,20 +72,20 @@
 						
 			$this->select('id, imagen, color, texto');
 			$this->where('id_idioma', $this->lang_id);
-			$cabezera = $this->get_array('bio_cabezera');
+			$cabezera = $this->getArray('bio_cabezera');
 			if(!$cabezera) $cabezera=array();
 			$this->reset();
 			
 			$this->select('id, imagen, texto, enlace, color, color2, color3');
 			$this->where('id_producto', 0);
 			$this->where('id_idioma', $this->lang_id);
-			$submenu = $this->get_array('bio_submenu');
+			$submenu = $this->getArray('bio_submenu');
 			if(!$submenu) $submenu=array();
 			$this->reset();
 			
 			$this->select('id, texto, imagen, precio, but_menu_text1, but_menu_text2, form_button_paypal, texto_compra_trans, texto_compra_contra, text_compra_realizada');
 			$this->where('id_idioma', $this->lang_id);
-			$productos = $this->get_array('bio_productos');
+			$productos = $this->getArray('bio_productos');
 			for($i=0;$i<count($productos);$i++){
 				$productos[$i]->col = 12/count($productos);
 			}
@@ -95,31 +95,31 @@
 			
 			$this->select('id, texto1, texto2, imagen, texto_cabecera, color');
 			$this->where('id_idioma', $this->lang_id);
-			$quees = $this->get_array('bio_quees');
+			$quees = $this->getArray('bio_quees');
 			if(!$quees) $quees=array();
 			$this->reset();
 			
 			$this->select('id, imagen, color, texto');
 			$this->where('id_idioma', $this->lang_id);
-			$aunmas = $this->get_array('bio_aunmas');
+			$aunmas = $this->getArray('bio_aunmas');
 			if(!$aunmas) $aunmas=array();
 			$this->reset();
 			
 			$this->select('id,texto1, texto2');
 			$this->where('id_producto', 0);
 			$this->where('id_idioma', $this->lang_id);
-			$preguntas = $this->get_array('bio_preguntas');
+			$preguntas = $this->getArray('bio_preguntas');
 			if(!$preguntas) $preguntas=array();
 			$this->reset();
 			
 			$this->select('id, texto, color');
 			$this->where('id_idioma', $this->lang_id);
-			$pie = $this->get_array('bio_piedepagina');
+			$pie = $this->getArray('bio_piedepagina');
 			if(!$pie) $pie=array();
 			$this->reset();
 			
 			$this->select('aunmas_color, preguntas_color,productos_color');
-			$colores = $this->get_array('bio_back_colors');
+			$colores = $this->getArray('bio_back_colors');
 			if(!$colores) $colores=array();
 			$this->reset();
 			

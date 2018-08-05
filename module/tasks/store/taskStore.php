@@ -62,7 +62,7 @@
 		    $this->from("task_user");
 		    $this->orderBy("task_user.id", "ASC");
 		    $tasks = array();
-		    if ($u_data = $this->get_array()) {
+		    if ($u_data = $this->getArray()) {
 		        foreach ($u_data as $d) {
 		            array_push($tasks, array(
 		                'user' => array(
@@ -85,7 +85,7 @@
 		    $this->join("task_project", "task_project.id=task.task_project_id");
 		    $this->orderBy("task_user.id", "ASC");
 		    		    
-		    if ($data = $this->get_array()) {
+		    if ($data = $this->getArray()) {
 		        
 		        /* Example data
 	              [0] => stdClass Object (

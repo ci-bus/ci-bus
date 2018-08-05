@@ -656,15 +656,15 @@ cb.base.dropdown = {
 				var li = document.createElement('li');
 				if (items[a].xtype == 'separator' || items[a].xtype == 'divider')
 				{
-					li = cb.common_prop(li, {
+					li = cb.commonProp(li, {
 						cls: 'divider',
 						attr: {'role':'separator'}});
-					li = cb.common_prop(li, items[a]);
+					li = cb.commonProp(li, items[a]);
 				}
 				else if (items[a].xtype == 'dropdown-header' || items[a].xtype == 'header')
 				{
 					items[a].cls? items[a].cls = 'dropdown-header '+items[a].cls : items[a].cls = 'dropdown-header';
-					li = cb.common_prop(li, items[a]);
+					li = cb.commonProp(li, items[a]);
 				}
 				else
 				{
@@ -1646,7 +1646,7 @@ cb.module.bootstrapComponent = {
 		if (opt.size) opt.cls += ' btn-'+opt.size;
 		opt.type = null;
 		if (!opt.margin && opt.margin !== 0) opt.margin = '0 5px 0 0';
-		ele = cb.common_prop(ele, opt);
+		ele = cb.commonProp(ele, opt);
 		return ele;
 	},
 	'nav': function(opt, record) {
@@ -1666,7 +1666,7 @@ cb.module.bootstrapComponent = {
 		{
 			$(ele).addClass('navbar-default');
 		}
-		ele = cb.common_prop(ele, opt);
+		ele = cb.commonProp(ele, opt);
 		var conta = document.createElement('div');
 		$(conta).addClass('container-fluid');
 		if ($.isArray(opt.items))
@@ -1703,13 +1703,13 @@ cb.module.bootstrapComponent = {
 	'navbar-collapse': function(opt, record) {
 		var ele = document.createElement('div');
 		$(ele).addClass('collapse navbar-collapse');
-		ele = cb.common_prop(ele, opt);
+		ele = cb.commonProp(ele, opt);
 		return ele;
 	},
 	'navbar-header': function(opt, record) {
 		var ele = document.createElement('div');
 		$(ele).addClass('navbar-header');
-		ele = cb.common_prop(ele, opt);
+		ele = cb.commonProp(ele, opt);
 		$(ele).append(cb.create({
 			xtype: 'button',
 			type: 'button',
@@ -1755,14 +1755,14 @@ cb.module.bootstrapComponent = {
 	'navbar-text': function(opt, record) {
 		conta = document.createElement('p');
 		$(conta).addClass('navbar-text');
-		conta = cb.common_prop(conta, opt);
+		conta = cb.commonProp(conta, opt);
 		ele = document.createElement('li');
 		$(ele).append(conta);
 		return ele;
 	},
 	'navbar-a': function(opt, record) {
         conta = document.createElement('a');
-        conta = cb.common_prop(conta, opt);
+        conta = cb.commonProp(conta, opt);
         ele = document.createElement('li');
         if (opt.active) {
             $(ele).addClass('active');
@@ -1792,7 +1792,7 @@ cb.module.bootstrapComponent = {
             $(ele).addClass(cls);
             opt.type = null;
         }
-        ele = cb.common_prop(ele, opt);
+        ele = cb.commonProp(ele, opt);
         return ele;
     },
 	'navbar': function(opt, record) {
@@ -1807,7 +1807,7 @@ cb.module.bootstrapComponent = {
 			opt.notype = true;
 		}
 		var ele = document.createElement('ul');
-		ele = cb.common_prop(ele, opt);
+		ele = cb.commonProp(ele, opt);
 		if ($.isArray(opt.items))
 		{
 			for (var a=0;a<opt.items.length;a++)
@@ -1842,7 +1842,7 @@ cb.module.bootstrapComponent = {
                 'aria-expanded':'true'
             }
 		});
-		but = cb.common_prop(but, opt);
+		but = cb.commonProp(but, opt);
 		if (opt.caret!==false)
 		{
 			$(but).append(cb.create({
@@ -1862,15 +1862,15 @@ cb.module.bootstrapComponent = {
 					var li = document.createElement('li');
 					if (opt.items[a].xtype == 'separator' || opt.items[a].xtype == 'divider')
 					{
-						li = cb.common_prop(li, {
+						li = cb.commonProp(li, {
 							cls: 'divider',
 							attr: {'role':'separator'}});
-						li = cb.common_prop(li, opt.items[a]);
+						li = cb.commonProp(li, opt.items[a]);
 					}
 					else if (opt.items[a].xtype == 'dropdown-header' || opt.items[a].xtype == 'header')
 					{
 						opt.items[a].cls? opt.items[a].cls = 'dropdown-header '+opt.items[a].cls : opt.items[a].cls = 'dropdown-header';
-						li = cb.common_prop(li, opt.items[a]);
+						li = cb.commonProp(li, opt.items[a]);
 					}
 					else
 					{
@@ -1919,7 +1919,7 @@ cb.module.bootstrapComponent = {
 			$(ele).attr('id', cb.autoid(opt.xtype));
 		}
 		if (opt.group) {
-			ele = cb.common_prop(ele, opt.group);
+			ele = cb.commonProp(ele, opt.group);
 		}
 		var but = cb.create({
 		    xtype: 'button',
@@ -1943,7 +1943,7 @@ cb.module.bootstrapComponent = {
 				attr:{'type':'button'},
 				cls:'btn btn-'+opt.type2
 			});
-			but2 = cb.common_prop(but2, opt);
+			but2 = cb.commonProp(but2, opt);
 			$(ele).append(but2);
 			$(but).append(cb.create({xtype:'span',text:'&nbsp;'}));
 			if (opt.caret!==false)
@@ -1954,7 +1954,7 @@ cb.module.bootstrapComponent = {
 		}
 		else
 		{
-			but = cb.common_prop(but, opt);
+			but = cb.commonProp(but, opt);
 			if (opt.caret!==false)
 			{
 				$(but).append(cb.create({xtype:'span', cls:'caret'}));
@@ -1985,7 +1985,7 @@ cb.module.bootstrapComponent = {
 		}else{
 			$(ele).addClass('container');
 		}
-		ele = cb.common_prop(ele, opt);
+		ele = cb.commonProp(ele, opt);
 		return ele;
 	},
 	'progress': function(opt, record) {
@@ -1998,7 +1998,7 @@ cb.module.bootstrapComponent = {
 				if (!opt.items[a].xtype) opt.items[a].xtype = 'progress-bar';
 			}
 		}
-		ele = cb.common_prop(ele, opt);
+		ele = cb.commonProp(ele, opt);
 		return ele;
 	},
 	'progress-bar': function(opt, record) {
@@ -2011,7 +2011,7 @@ cb.module.bootstrapComponent = {
 		if (!opt.max) opt.max = 100;
 		if (opt.value) opt.width = opt.value+'%';
 		$(ele).attr({'aria-valuemin':opt.min, 'aria-valuemax':opt.max, 'aria-valuenow':opt.value});
-		ele = cb.common_prop(ele, opt);
+		ele = cb.commonProp(ele, opt);
 		return ele;
 	},
 	'table': function(opt, record) {
@@ -2036,7 +2036,7 @@ cb.module.bootstrapComponent = {
 					opt.items[a].xtype = 'tbody';
 		 	}
 		 }			 
-		 ele = cb.common_prop(ele, opt);
+		 ele = cb.commonProp(ele, opt);
 		return ele;
 	},
 	'thead': function(opt, record) {
@@ -2058,7 +2058,7 @@ cb.module.bootstrapComponent = {
 	 	}
 	 	$(ele).append(opt.t_tr);
 		opt.noitems = true;
-		ele = cb.common_prop(ele, opt);
+		ele = cb.commonProp(ele, opt);
 		return ele;
 	},
 	'tbody': function(opt, record) {
@@ -2097,7 +2097,7 @@ cb.module.bootstrapComponent = {
 				opt.noitems = true;
 		 	}
 		}
-		ele = cb.common_prop(ele, opt);
+		ele = cb.commonProp(ele, opt);
 		return ele;
 	},
 	'td': function (opt, record) {
@@ -2111,7 +2111,7 @@ cb.module.bootstrapComponent = {
             }
             opt.notype = true;
         }
-        ele = cb.common_prop(ele, opt);
+        ele = cb.commonProp(ele, opt);
         return ele;
 	},
 	'th': function(opt, record) {
@@ -2126,7 +2126,7 @@ cb.module.bootstrapComponent = {
             }
             opt.notype = true;
         }
-		ele = cb.common_prop(ele, opt);
+		ele = cb.commonProp(ele, opt);
 		return ele;
 	},
 	'thumbnail': function(opt, record) {
@@ -2134,7 +2134,7 @@ cb.module.bootstrapComponent = {
 		var ele = document.createElement(opt.type);
 		opt.notype = true;
 		opt.cls? opt.cls = 'thumbnail '+opt.cls : opt.cls = 'thumbnail';
-		ele = cb.common_prop(ele, opt);
+		ele = cb.commonProp(ele, opt);
 		return ele;
 	},
 	'alert': function(opt, record) {
@@ -2145,30 +2145,30 @@ cb.module.bootstrapComponent = {
 		if (opt.dismissible || opt.closable)
 		{
 			var spa = document.createElement('span');
-			spa = cb.common_prop(spa, {
+			spa = cb.commonProp(spa, {
 				attr: {'aria-hidden':'true'},
 				text: '&times;'});
 			var but = document.createElement('button');
-			but = cb.common_prop(but, {
+			but = cb.commonProp(but, {
 				cls:'close',
 				attr:{'data-dismiss':'alert',
 					'aria-label':'Close'}});
 			$(but).append(spa);
 			$(ele).append(but);
 		}
-		ele = cb.common_prop(ele, {
+		ele = cb.commonProp(ele, {
 			cls: 'alert alert-'+opt.type,
 			attr: {'role':'alert'}});
 		opt.notype = true;
 		var spa2 = document.createElement('span');
 		$(ele).append(spa2);
-		ele = cb.common_prop(ele, opt);
+		ele = cb.commonProp(ele, opt);
 		return ele;
 	},
 	'badge': function(opt, record) {
 		var ele = document.createElement('span');
 		$(ele).addClass('badge');
-		ele = cb.common_prop(ele, opt);
+		ele = cb.commonProp(ele, opt);
 		return ele;
 	},
 	'toolbar': function(opt, record) {
@@ -2176,7 +2176,7 @@ cb.module.bootstrapComponent = {
 		$(ele).addClass('btn-toolbar');
 		$(ele).attr('role','toolbar');
 		if (opt.label) $(ele).attr('aria-label', opt.label);
-		ele = cb.common_prop(ele, opt);
+		ele = cb.commonProp(ele, opt);
 		return ele;
 	},
 	'group': function(opt, record) {
@@ -2200,7 +2200,7 @@ cb.module.bootstrapComponent = {
 		        }
 		    }
 		}
-		ele = cb.common_prop(ele, opt);
+		ele = cb.commonProp(ele, opt);
 		return ele;
 	},
 	'callout': function(opt, record) {
@@ -2223,7 +2223,7 @@ cb.module.bootstrapComponent = {
 				
 			opt.noitems = true;
 		}
-		ele = cb.common_prop(ele, opt);
+		ele = cb.commonProp(ele, opt);
 		return ele;
 	},
 	'panel': function(opt, record) {
@@ -2256,7 +2256,7 @@ cb.module.bootstrapComponent = {
 				}
 			}
 		}
-		ele = cb.common_prop(ele, opt);
+		ele = cb.commonProp(ele, opt);
 		return ele;
 	},
 	'panel-heading': function(opt, record) {
@@ -2272,7 +2272,7 @@ cb.module.bootstrapComponent = {
 				}
 			}
 		}
-		ele = cb.common_prop(ele, opt);
+		ele = cb.commonProp(ele, opt);
 		return ele;
 	},
 	'panel-body': function(opt, record) {
@@ -2286,7 +2286,7 @@ cb.module.bootstrapComponent = {
 	'panel-title': function(opt, record) {
 		var ele = document.createElement('h3');
 		$(ele).addClass(opt.xtype);
-		ele = cb.common_prop(ele, opt);
+		ele = cb.commonProp(ele, opt);
 		return ele;
 	},
 	'tabpanel': function(opt, record) {
@@ -2314,7 +2314,7 @@ cb.module.bootstrapComponent = {
 					
 					if (opt.items[a].tab.xtype == 'dropdown')
 					{
-						opt.t_a = cb.common_prop(opt.t_a, {
+						opt.t_a = cb.commonProp(opt.t_a, {
 							cls: 'dropdown-toggle',
 							attr: { 'role': 'dropdown',
 									'aria-controls': opt.items[a].id+'-contents',
@@ -2322,7 +2322,7 @@ cb.module.bootstrapComponent = {
 							id: opt.items[a].id
 						});
 						$(opt.t_a).attr('href', '#');
-						opt.t_a = cb.common_prop(opt.t_a, opt.items[a].tab);
+						opt.t_a = cb.commonProp(opt.t_a, opt.items[a].tab);
 						$(opt.t_a).append('&nbsp;');
 						if (opt.caret!==false)
 						{
@@ -2342,15 +2342,15 @@ cb.module.bootstrapComponent = {
 								if (!opt.items[a].tab.items[k].xtype) opt.items[a].tab.items[k].xtype = "a";
 								if (opt.items[a].tab.items[k].xtype == 'separator' || opt.items[a].tab.items[k].xtype == 'divider')
 								{
-									opt.t_li2 = cb.common_prop(opt.t_li2, {
+									opt.t_li2 = cb.commonProp(opt.t_li2, {
 										cls: 'divider',
 										attr: {'role':'separator'}});
-									opt.t_li2 = cb.common_prop(opt.t_li2, opt.items[a].tab.items[k]);
+									opt.t_li2 = cb.commonProp(opt.t_li2, opt.items[a].tab.items[k]);
 								}
 								else if (opt.items[a].tab.items[k].xtype == 'dropdown-header' || opt.items[a].tab.items[k].xtype == 'header')
 								{
 									opt.items[a].tab.items[k].cls? opt.items[a].tab.items[k].cls = 'dropdown-header '+opt.items[a].tab.items[k].cls : opt.items[a].tab.items[k].cls = 'dropdown-header';
-									opt.t_li2 = cb.common_prop(opt.t_li2, opt.items[a].tab.items[k]);
+									opt.t_li2 = cb.commonProp(opt.t_li2, opt.items[a].tab.items[k]);
 								}
 								else
 								{
@@ -2377,7 +2377,7 @@ cb.module.bootstrapComponent = {
 					}
 					else
 					{
-						opt.t_a = cb.common_prop(opt.t_a, cb.mergeTwoObjects({
+						opt.t_a = cb.commonProp(opt.t_a, cb.mergeTwoObjects({
 						    id: opt.items[a].id+'-tab',
 							attr: {
 								'aria-controls': opt.items[a].id,
@@ -2417,7 +2417,7 @@ cb.module.bootstrapComponent = {
 							if (!opt.items[a].panel[k].id) opt.items[a].panel[k].id = opt.items[a].id;
 							if (!opt.items[a].panel[k].active && opt.items[a].panel.length == 1) opt.items[a].panel[k].active = opt.items[a].active;
 							opt.t_div = document.createElement('div');
-							opt.t_div = cb.common_prop(opt.t_div, {
+							opt.t_div = cb.commonProp(opt.t_div, {
 								cls: 'tab-pane fade',
 								id: opt.items[a].panel[k].id,
 								attr: { 'role': 'tabpanel',
@@ -2438,7 +2438,7 @@ cb.module.bootstrapComponent = {
 		opt.noitems = true;
 		
 		var ele = document.createElement('div');
-		ele = cb.common_prop(ele, opt);
+		ele = cb.commonProp(ele, opt);
 		$(ele).attr('data-example-id', 'togglable-tabs');
 		$(ele).append(opt.t_ul);
 		$(ele).append(opt.t_content);
@@ -2447,7 +2447,7 @@ cb.module.bootstrapComponent = {
 	'row': function(opt, record) {
 		var ele = document.createElement('div');
 		$(ele).addClass('row');
-		ele = cb.common_prop(ele, opt);
+		ele = cb.commonProp(ele, opt);
 		return ele;
 	},
 	'col': function(opt, record) {
@@ -2479,7 +2479,7 @@ cb.module.bootstrapComponent = {
 		}
 		if (!opt.padding && opt.padding !== 0)opt.padding = '0px 5px';
 		delete opt.size;
-		ele = cb.common_prop(ele, opt);
+		ele = cb.commonProp(ele, opt);
 		return ele;
 	},
 	'input': function(opt, record) {
@@ -2518,7 +2518,7 @@ cb.module.bootstrapComponent = {
 			if (!opt.text && !opt.html && !opt.items && opt.name) {
 				opt.text = opt.name;
 			}
-			ele = cb.common_prop(ele, opt);
+			ele = cb.commonProp(ele, opt);
 			$(ele).append(input);
 		}
 		else
@@ -2532,7 +2532,7 @@ cb.module.bootstrapComponent = {
 		    }
 			$(ele).addClass('form-control');
 			
-			ele = cb.common_prop(ele, opt);
+			ele = cb.commonProp(ele, opt);
 		}
 		
 		return ele;
@@ -2547,7 +2547,7 @@ cb.module.bootstrapComponent = {
 				if (!opt.items[s].xtype) opt.items[s].xtype = 'option';
 			}
 		}
-		ele = cb.common_prop(ele, opt);
+		ele = cb.commonProp(ele, opt);
 		return ele;
 	},
 	'form': function(opt, record) {
@@ -2566,13 +2566,13 @@ cb.module.bootstrapComponent = {
 				if (opt.items[s].xtype == 'group') opt.items[s].xtype = 'form-group';
 			}
 		}
-		ele = cb.common_prop(ele, opt);
+		ele = cb.commonProp(ele, opt);
 		return ele;
 	},
 	'form-group': function(opt, record) {
 		var ele = document.createElement('div');
 		$(ele).addClass('form-group');
-		ele = cb.common_prop(ele, opt);
+		ele = cb.commonProp(ele, opt);
 		return ele;
 	},
 	'label': function(opt, record) {
@@ -2583,14 +2583,14 @@ cb.module.bootstrapComponent = {
 		} else {
 		    var ele = document.createElement(opt.xtype);
 		}
-		ele = cb.common_prop(ele, opt);
+		ele = cb.commonProp(ele, opt);
 		return ele;
 	},
 	'glyphicon': function(opt, record) {
 		var ele = document.createElement('span');
 		$(ele).addClass('glyphicon glyphicon-'+opt.type);
 		opt.notype = true;
-		ele = cb.common_prop(ele, opt);
+		ele = cb.commonProp(ele, opt);
 		return ele;
 	},
 	'toggle': function (opt, record) {
@@ -2668,7 +2668,7 @@ cb.module.bootstrapComponent = {
             if(ele.getOpt('value') == ele.getOpt('on').value || ele.getOpt('value') == 'on') {
             	$(ele).bootstrapToggle('on');
             }
-            cb.common_prop($(ele).parent(), ele.getOpt());
+            cb.commonProp($(ele).parent(), ele.getOpt());
             if (ele.getOpt('disabled')) {
                 $(ele).attr('disabled', 'disabled');
             }
@@ -2684,7 +2684,7 @@ cb.module.cbComponent = {
         var ele = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         if (!opt.width) opt.width = 300;
         if (!opt.height) opt.height = 150;
-        ele = cb.common_prop(ele, opt);
+        ele = cb.commonProp(ele, opt);
         return ele;
     },
     'a': function(opt, record) {
@@ -2692,7 +2692,7 @@ cb.module.cbComponent = {
         if (!opt.href && typeof record === 'string' && cb.isUrl(record)) {
             $(ele).attr('href', record)
         }
-        ele = cb.common_prop(ele, opt);
+        ele = cb.commonProp(ele, opt);
         return ele;
     },
     'polyline': function(opt, record) {
@@ -2724,7 +2724,7 @@ cb.module.cbComponent = {
             'stroke-width': opt['stroke-width'],
             points: points
         });
-        ele = cb.common_prop(ele, opt);
+        ele = cb.commonProp(ele, opt);
         
         ele.clearPoints = function() {
             var ele = $.isArray(this)? this[0]: this;
@@ -3258,7 +3258,7 @@ cb.create = function(opt, record) {
 			else
 			{
 				var ele = document.createElement(opt.xtype);
-				ele = this.common_prop(ele, opt);
+				ele = this.commonProp(ele, opt);
 			}
 			
 			// If have record
@@ -3392,7 +3392,7 @@ cb.doRenderFunctions = function (ele) {
     }
 }
 
-cb.common_prop = function(ele, opt)
+cb.commonProp = function(ele, opt)
 {
 	for (var prop in opt) {
 		if (this.props[prop]) {

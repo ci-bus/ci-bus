@@ -24,7 +24,7 @@
 			$this->orderBy("id", "desc");
 			$this->limit(3);
 			
-			if($res = $this->get_array())
+			if($res = $this->getArray())
 			{
 				foreach($res as $k => $r0)
 				{
@@ -36,7 +36,7 @@
 					$this->join("tags", "tags.id=music_tag.tag_id");
 					$this->where("music_tag.music_id", $r0->id);
 					
-					if($res2 = $this->get_array())
+					if($res2 = $this->getArray())
 					{
 						if(is_array($res2))$res[$k]->tags = $res2;
 					}
@@ -61,7 +61,7 @@
 					$res[$k]->hand1_color = "red";
 					$res[$k]->hand2_color = "green";
 					
-					if($res3 = $this->get_array())
+					if($res3 = $this->getArray())
 					{
 						foreach($res3 as $r3)
 						{
@@ -108,7 +108,7 @@
 			$this->orderBy("user.id", "desc");
 			$this->limit(3);
 				
-			if($res = $this->get_array())
+			if($res = $this->getArray())
 			{
 				foreach($res as $k => $r0)
 				{
@@ -119,7 +119,7 @@
 					$this->where("user_tag.user_id", $r0->id);
 					$this->orderBy("user_tag.id", "ASC");
 						
-					if($res2 = $this->get_array())
+					if($res2 = $this->getArray())
 					{
 						if(is_array($res2) && !empty($res2)){
 							$res[$k]->tags = $res2;
@@ -145,7 +145,7 @@
 					$res[$k]->hand1_color = "red";
 					$res[$k]->hand2_color = "green";
 		
-					if($res3 = $this->get_array())
+					if($res3 = $this->getArray())
 					{
 						foreach($res3 as $r3)
 						{
@@ -180,7 +180,7 @@
 					$following = 0;
 					$user_follow = 0;
 						
-					if($res4 = $this->get_array())
+					if($res4 = $this->getArray())
 					{
 						foreach($res4 as $r4)
 						{

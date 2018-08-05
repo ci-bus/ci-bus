@@ -28,7 +28,7 @@
 						"review" => "1",
 						"id_user" => $_SESSION['user_id']
 				));
-				if($res4 = $this->get_array('review')){
+				if($res4 = $this->getArray('review')){
 					foreach($res4 as $tid){
 						$wherein .= $tid->id_row.", ";
 					}
@@ -101,7 +101,7 @@
 					$res[$k]->hand1_color = "red";
 					$res[$k]->hand2_color = "green";
 						
-					if($res3 = $this->get_array())
+					if($res3 = $this->getArray())
 					{
 						foreach($res3 as $r3)
 						{

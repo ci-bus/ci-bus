@@ -22,7 +22,7 @@ class Chat extends Store {
         $this->select("task_chat.task_id, (SELECT count(*) FROM task_chat_read WHERE task_chat.task_id = task_chat_read.task_id) AS reg, count(task_chat_read.id) AS new_msg, count(task_chat.id) AS all_msg");
         $this->from("task_chat");
         $this->join("task_chat_read", "task_chat_read.task_id = task_chat.task_id AND task_chat_read.date < task_chat.date", "left");
-        $new_msg = $this->get_array();
+        $new_msg = $this->getArray();
         $this->reset();
         $this->parseStore('chat_alert', $new_msg);
         
@@ -48,7 +48,7 @@ class Chat extends Store {
         $this->join("task_user", "task_user.id=task_chat.task_user_id");
         $this->where("task_id", $data['task_id']);
         $this->orderBy("task_chat.id", "DESC");
-        $c_data = $this->get_array();
+        $c_data = $this->getArray();
         
         if ($c_data)
         {

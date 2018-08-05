@@ -88,7 +88,7 @@
 			echo "cb.setConfig('".$name."', ".json_encode($data, true)."); ";
 		}
 		
-		public function utf8_converter($ar)
+		public function utf8Converter($ar)
 		{
 			array_walk_recursive($ar, function(&$item, $key)
 			{

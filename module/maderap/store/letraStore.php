@@ -38,7 +38,7 @@
 				$this->where('user_id', $_SESSION['user_id']);
 				$this->select('id, title, text');
 				$this->orderBy('id', 'DESC');
-				$res = $this->get_array('maderap_letra');
+				$res = $this->getArray('maderap_letra');
 				if(!$res) $res=array();
 				$this->parseStore('letras', $res);
 			}

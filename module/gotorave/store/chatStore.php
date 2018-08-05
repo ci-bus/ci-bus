@@ -24,7 +24,7 @@
 			$this->reset();
 			$this->select("chat.id, chat.name");
 			$this->from("chat");
-			if($res = $this->get_array())
+			if($res = $this->getArray())
 			{
 				$this->parseStore( 'chat', array( 'salas' => $res ));
 			}else{
@@ -68,7 +68,7 @@
 			$this->select("user_id, user_id2");
 			$this->from("user_friend");
 			$this->where("user_id", $_SESSION['user_id']);
-			$this->or_where("user_id2", $_SESSION['user_id']);
+			$this->orWhere("user_id2", $_SESSION['user_id']);
 			if($res2 = $this->get())
 			{
 				if(is_array($res2))
@@ -108,7 +108,7 @@
 				$this->groupBy( 'chat_msg.id' );
 				$this->orderBy( 'chat_msg.id', 'DESC' );
 				$this->limit(20);
-				if($res = $this->get_array())
+				if($res = $this->getArray())
 				{
 					$friends = $this->getfriend($_SESSION['user_id']);
 					if(is_object($res)) $res = array($res);
