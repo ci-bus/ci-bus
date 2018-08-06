@@ -114,11 +114,11 @@
 		            'removeAllFilters'
 		        ),
 		        'menu-ci-bus-methods' => array (
-		            'cb.autoname', 'cb.autoid', 'cb.ctr', 'cb.get', 'cb.getCmp', 'cb.send', 'cb.load', 'cb.loadAll',
-		            'cb.loadLineal', 'cb.define', 'cb.setDinamicValue', 'cb.setMissingDinamicValue', 'cb.setValue', 'cb.setConfig', 'cb.getConfig', 'cb.delConfig',
-		            'cb.render', 'cb.extend', 'cb.clone', 'cb.commonProp', 'cb.strpos', 'cb.enable', 'cb.disable', 'cb.sto',
-		            'cb.popup', 'cb.verticalCenter', 'cb.effect', 'cb.isNode', 'cb.isElement', 'cb.getStore', 'cb.getView', 'cb.getController',
-		            'cb.getComponent', 'cb.fetchFromObject', 'cb.putToObject', 'cb.deleteToObject', 'cb.isURL'
+		            'autoname', 'autoid', 'ctr', 'get', 'getCmp', 'send', 'load', 'loadAll',
+		            'loadLineal', 'define', 'setDinamicValue', 'setMissingDinamicValue', 'setValue', 'setConfig', 'getConfig', 'delConfig',
+		            'render', 'extend', 'clone', 'commonProp', 'strpos', 'enable', 'disable', 'sto',
+		            'popup', 'verticalCenter', 'effect', 'isNode', 'isElement', 'getStore', 'getView', 'getController',
+		            'getComponent', 'fetchFromObject', 'putToObject', 'deleteToObject', 'isURL'
 		        ),
 		        'home' => array (
 		            'tx1' => '¿Qué es Ci-bus Framework?',
@@ -688,47 +688,48 @@ cb.getStore('global').sort('tags', function(a, b){
 		        ),
 	            'functions' => array(
 		            array(
-		                'fun' => 'cb.autoname',
+		                'fun' => 'autoname',
 		                'param' => "1. Prefijo (opcional) por defecto es 'autoname'",
 		                'return' => "Devuelve un string único formado por prefijo, '_' y un número"
 		            ),
 		            array(
-		                'fun' => 'cb.autoid',
+		                'fun' => 'autoid',
 		                'param' => "1. Prefijo (opcional) por defecto es 'autoid'",
 		                'return' => "Devuelve un string único formado por prefijo, '_' y un número"
 		            ),
 	                array(
-	                    'fun' => 'cb.ctr',
+	                    'fun' => 'ctr',
+	                    'action' => 'Ejecuta una función de un controlador',
 	                    'param' => '1. Nombre del controlador, 2. Nombre de la función, 3. Parámetro',
 	                    'example' => "cb.ctr('test_controller', 'test_function', {a: 1, b: 2, c: 'tres'});"
 	                ),
 	                array(
-	                    'fun' => 'cb.get',
+	                    'fun' => 'get',
 	                    'param' => "1. Tipo = 'view', 'store', 'controller' o 'component', 2. Nombre, 3. Dato a coger(opcional)",
 	                    'return' => "Puede devolver un objeto, array o función según los parámetros que le pasemos",
 	                    'example' => "cb.get('view', 'test_view', 'items');"
 	                ),
 	                array(
-	                    'fun' => 'cb.getCmp',
+	                    'fun' => 'getCmp',
 	                    'param' => "1. Puntero, xtype o elemento, 2. index (opcional)",
 	                    'return' => "Devuelve el elemento con las funciones jQuery y las funciones del componente",
 	                    'example' => "cb.getCmp('button');"
 	                ),
 	                array(
-	                    'fun' => 'cb.send',
+	                    'fun' => 'send',
 	                    'param' => "1. Nombre formulario html, 2. Nombre module, 3. Nombre store, 4. Callback function",
 	                    'action' => "Envía los datos de un formulario a un store",
 	                    'example' => "cb.send('form_name', 'test_module', 'test_store', function(){ alert('Formulario enviado'); })"
 	                ),
 	                array(
-	                    'fun' => 'cb.load',
+	                    'fun' => 'load',
 	                    'param' => "1. Tipo = 'view', 'store', 'controller' o 'component', 2. Nombre del modulo, 3. Nombre del archivo, 4. Variable para pasarle(opcional), 5. Callback function(opcional)",
 	                    'action' => "Carga un archivo del modulo",
 	                    'example' => "cb.load('store', 'test_module', 'test_filename', {id: 3}, function(){ alert('Archivo cargado') })",
 	                    'more' => "En el nombre del archivo no se pone el subfijo View, Component o Store"
 	                ),
 	                array(
-	                    'fun' => 'cb.loadAll',
+	                    'fun' => 'loadAll',
 	                    'more' => "El funcionamiento es el mismo que cb.load(), con la diferencia que puedes cargar mas de un archivo en una sola llamada",
 	                    'example' => "cb.loadAll([
     ['store', 'test_module', 'test_filename'],
@@ -736,16 +737,16 @@ cb.getStore('global').sort('tags', function(a, b){
 ], function(){ alert('Todo cargado'); });"
 	                ),
 	                array(
-	                    'fun' => 'cb.loadLineal',
+	                    'fun' => 'loadLineal',
 	                    'info' => "El funcionamiento es el mismo que cb.loadAll(), con la diferencia de que hará una consulta ajax por cada archivo"
 	                ),
 	                array(
-	                    'fun' => 'cb.define',
+	                    'fun' => 'define',
 	                    'param' => "1. Objeto con definiciones",
 	                    'action' => "Crea un controlador, store, vista o componente de vista"
 	                ),
 	                array(
-	                    'fun' => 'cb.setDinamicValue',
+	                    'fun' => 'setDinamicValue',
 	                    'param' => "1. Objeto a modificar, 2. Nombre atributo, 3. Valor atributo, 4. Niveles",
 	                    'action' => "Modifica un valor en un objeto, a él y a sus items hasta X niveles definidos",
 	                    'example' => "cb.setDinamicValue({
@@ -770,55 +771,55 @@ cb.getStore('global').sort('tags', function(a, b){
 }"
 	                ),
 	                array(
-	                    'fun' => 'cb.setMissingDinamicValue',
+	                    'fun' => 'setMissingDinamicValue',
 	                    'info' => "Esta función es igual a cb.setDinamicValue() con la diferencia de que no reemplaza valores ya asignados"
 	                ),
 	                array(
-	                    'fun' => 'cb.setValue',
+	                    'fun' => 'setValue',
 	                    'param' => "1. Elemento html o puntero, 2. Valor o elemento html",
 	                    'action' => "Si es un input aplica el valor como value sino, lo aplica como html",
 	                    'example' => "cb.storeSet('#id-ele', 'example');"
 	                ),
 	                array(
-	                    'fun' => 'cb.setConfig',
+	                    'fun' => 'setConfig',
 	                    'param' => "1. Nombre config, 2. Valor config",
 	                    'action' => "Guarda un valor de configuración hasta que se recarga la página",
 	                    'example' => "cb.setConfig('lang', {title: 'Español', sg: 'es'});"
 	                ),
 	                array(
-	                    'fun' => 'cb.getConfig',
+	                    'fun' => 'getConfig',
 	                    'param' => "1. Nombre config, 2. Nombre subconfig (opcional)",
 	                    'action' => "Devuelve un valor de configuración",
 	                    'example' => "cb.getConfig('lang', 'sg');"
 	                ),
 	                array(
-	                    'fun' => 'cb.delConfig',
+	                    'fun' => 'delConfig',
 	                    'param' => "1. Nombre config, 2. Nombre subconfig (opcional)",
 	                    'action' => "Elimina un valor de configuración",
 	                    'example' => "cb.delConfig('lang');"
 	                ),
 	                array(
-	                    'fun' => 'cb.render',
+	                    'fun' => 'render',
 	                    'param' => "1. Objeto (view), 2. Callback function",
 	                    'action' => "Renderiza las definiciones de los items y ejecuta la callback function al terminar",
 	                    'example' => "cb.render({items: {renderTo: 'body', text: 'Prueba'}}, function(){ alert('rendered');})"
 	                ),
 	                array(
-	                    'fun' => 'cb.extend',
+	                    'fun' => 'extend',
 	                    'param' => "1. Objeto , 2. Objeto",
 	                    'action' => "Extiende un objeto a solo 1 nivel",
 	                    'example' => "cb.extend({a: 1, b: 1}, {b: 2});",
 	                    'return' => "{a: 1, b: 2}"
 	                ),
 	                array(
-	                    'fun' => 'cb.clone',
+	                    'fun' => 'clone',
 	                    'param' => "1. Objeto o array",
 	                    'action' => "Clona un objeto o array",
 	                    'example' => "cb.clone({xtype: 'button', text: 'Search'});",
 	                    'return' => "El mismo objeto o array clonado"
 	                ),
 	                array(
-	                    'fun' => 'cb.commonProp',
+	                    'fun' => 'commonProp',
 	                    'param' => "1. Elemento html o puntero, 2. Objeto (propiedades)",
 	                    'action' => "Aplica propiedades a un elemento como border, padding, listeners etc",
 	                    'example' => "cb.commonProp('#id-ele', {background: 'red', click: function(){alert('oks');}});",
@@ -826,32 +827,32 @@ cb.getStore('global').sort('tags', function(a, b){
 	                    'info' => '<a href="#loadview/properties">Haz click para ver las propiedades comunes disponibles</a>'
 	                ),
 	                array(
-	                    'fun' => 'cb.strpos',
+	                    'fun' => 'strpos',
 	                    'param' => "1. Texto, 2. Palabra",
 	                    'action' => "Busca una palabra en un texto",
 	                    'example' => "cb.strpos('Esto es un texto', 'un');",
 	                    'return' => "Posición de la palabra en el texto o false si no la encuentra"
 	                ),
 	                array(
-	                    'fun' => 'cb.enable',
+	                    'fun' => 'enable',
 	                    'param' => "1. Elemento html o puntero",
 	                    'action' => "Elimina el attributo disable",
 	                    'example' => "cb.enable('#input-test');"
 	                ),
 	                array(
-	                    'fun' => 'cb.disable',
+	                    'fun' => 'disable',
 	                    'param' => "1. Elemento html o puntero",
 	                    'action' => "Añade el attributo disable",
 	                    'example' => "cb.enable('#input-test');"
 	                ),
 	                array(
-	                    'fun' => 'cb.sto',
+	                    'fun' => 'sto',
 	                    'param' => "1. function, 2. time (millisecond)",
 	                    'action' => "setTimeout()",
 	                    'example' => "cb.sto(function(){alert('oks')}, 2000);"
 	                ),
 	                array(
-	                    'fun' => 'cb.popup',
+	                    'fun' => 'popup',
 	                    'param' => "1. Objeto (Definiciones para el popup)",
 	                    'action' => "Crea un panel como un popup",
 	                    'example' => "cb.popup({
@@ -900,13 +901,13 @@ cb.getStore('global').sort('tags', function(a, b){
 });"
 	                ),
 	                array(
-	                    'fun' => 'cb.verticalCenter',
+	                    'fun' => 'verticalCenter',
 	                    'param' => "1. Elemento html o puntero, 2. Numero Offset",
 	                    'action' => "Aplica un margin-top para que el objeto se muestre centrado verticalmente",
 	                    'example' => "cb.verticalCenter('#id-capa-test', 100);"
 	                ),
 	                array(
-	                    'fun' => 'cb.effect',
+	                    'fun' => 'effect',
 	                    'param' => "1. Elemento html o puntero, 2. Objeto con configuración",
 	                    'action' => "Aplica un efecto de entrada o salida según la configuración",
 	                    'example' => "cb.effect('#id-capa-a-animar', {
@@ -922,55 +923,55 @@ vel : 'fast', 'slow' o Milisegundos
 fun : function(){ alert('end'); }"
 	                ),
 	                array(
-	                    'fun' => 'cb.isNode',
+	                    'fun' => 'isNode',
 	                    'param' => "1. Objeto",
 	                    'return' => "True si es un nodo, false si no lo es"
 	                ),
 	                array(
-	                    'fun' => 'cb.isElement',
+	                    'fun' => 'isElement',
 	                    'param' => "1. Objeto",
 	                    'return' => "True si es un elemento html, false si no lo es"
 	                ),
 	                array(
-	                    'fun' => 'cb.getStore',
+	                    'fun' => 'getStore',
 	                    'param' => "1. Nombre del store, 2. Nombre del field (opcional)",
 	                    'return' => "Sin field devuelve el store con sus funciones, con field devuelve los datos"
 	                ),
 	                array(
-	                    'fun' => 'cb.getView',
+	                    'fun' => 'getView',
 	                    'param' => "1. Nombre de la vista, 2. Nombre de la propiedad (opcional)",
 	                    'return' => "Devuelve la vista o su propiedad"
 	                ),
 	                array(
-	                    'fun' => 'cb.getController',
+	                    'fun' => 'getController',
 	                    'param' => "1. Nombre del controlador, 2. Nombre de la propiedad o función (opcional)",
 	                    'return' => "Devuelve el controlador o su propiedad"
 	                ),
 	                array(
-	                    'fun' => 'cb.getComponent',
+	                    'fun' => 'getComponent',
 	                    'param' => "1. Nombre del componente personalizado, 2. Nombre de la propiedad (opcional)",
 	                    'return' => "Devuelve el componente o su propiedad"
 	                ),
 	                array(
-	                    'fun' => 'cb.fetchFromObject',
+	                    'fun' => 'fetchFromObject',
 	                    'param' => "1. Objeto, 2. String Propiedades",
 	                    'return' => "Devuelve la propiedad de un objeto",
 	                    'example' => "cb.fetchFromObject({a: {b: {c: 'test'}}}, 'a.b.c');"
 	                ),
 	                array(
-	                    'fun' => 'cb.putToObject',
+	                    'fun' => 'putToObject',
 	                    'param' => "1. Objeto, 2. Datos, 3. String Propiedades",
 	                    'return' => "Devuelve el objeto con los datos seteados",
 	                    'example' => "cb.putToObject({a: {b: {c: null}}}, 'test', 'a.b.c');"
 	                ),
 	                array(
-	                    'fun' => 'cb.deleteToObject',
+	                    'fun' => 'deleteToObject',
 	                    'param' => "1. Objeto, 2. String Propiedades",
 	                    'return' => "Devuelve el objeto con la propiedad eliminada",
 	                    'example' => "cb.deleteToObject({a: {b: {c: 'test'}}}, 'a.b.c');"
 	                ),
 	                array(
-	                    'fun' => 'cb.isURL',
+	                    'fun' => 'isURL',
 	                    'param' => '1. Url',
 	                    'return' => 'Devuelve true si es una url válida o false si no lo es',
 	                    'example' => "cb.isUrl('https://www.ci-bus.com');"

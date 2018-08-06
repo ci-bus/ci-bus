@@ -165,9 +165,9 @@ cb.define({
                             return cb.create({xtype: 'a',
                                 click: function () {
                                     var record = cb.getCmp(this).getRecord();
-                                    cb.scrollTo($('h4:contains("' + record + '")'), 0, 75);
+                                    cb.scrollTo($('h4.method-' + record), 0, 75);
                                     cb.sto(function(){
-                                        cb.commonProp('h4:contains("' + record + '")', {
+                                        cb.commonProp('h4.method-' + record, {
                                             color: 'red',
                                             css: {
                                                 'font-weight': 600
@@ -175,7 +175,7 @@ cb.define({
                                         });
                                     }, 200);
                                     cb.sto(function(){
-                                        cb.commonProp('h4:contains("' + record + '")', {
+                                        cb.commonProp('h4.method-' + record, {
                                             color: 'black',
                                             css: {
                                                 'font-weight': 500
@@ -226,9 +226,9 @@ cb.define({
                             return cb.create({xtype: 'a',
                                 click: function () {
                                     var record = cb.getCmp(this).getRecord();
-                                    cb.scrollTo($('h4:contains("' + record + '")'), 0, 75);
+                                    cb.scrollTo($('h4.method-' + record), 0, 75);
                                     cb.sto(function(){
-                                        cb.commonProp('h4:contains("' + record + '")', {
+                                        cb.commonProp('h4.method-' + record, {
                                             color: 'red',
                                             css: {
                                                 'font-weight': 600
@@ -236,7 +236,7 @@ cb.define({
                                         });
                                     }, 200);
                                     cb.sto(function(){
-                                        cb.commonProp('h4:contains("' + record + '")', {
+                                        cb.commonProp('h4.method-' + record, {
                                             color: 'black',
                                             css: {
                                                 'font-weight': 500
@@ -288,9 +288,9 @@ cb.define({
                             	href: '#loadview/functions',
                                 click: function () {
                                     var record = cb.getCmp(this).getRecord();
-                                    cb.scrollTo($('h3:contains("' + record + '")'), 0, 60);
+                                    cb.scrollTo($('h3.function-' + record), 0, 60);
                                     cb.sto(function(){
-                                        cb.commonProp('h3:contains("' + record + '")', {
+                                        cb.commonProp('h3.function-' + record, {
                                             color: 'red',
                                             css: {
                                                 'font-weight': 600
@@ -298,7 +298,7 @@ cb.define({
                                         });
                                     }, 200);
                                     cb.sto(function(){
-                                        cb.commonProp('h3:contains("' + record + '")', {
+                                        cb.commonProp('h3.function-' + record, {
                                             color: 'black',
                                             css: {
                                                 'font-weight': 500

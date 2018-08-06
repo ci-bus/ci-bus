@@ -14,7 +14,8 @@ cb.define({
             field: 'functions',
             items: [{
                 xtype: 'h3',
-                field: 'fun'
+                text: '{fun}',
+                cls: 'function-{fun}'
             }, {
                 xtype: 'callout',
                 items: [{

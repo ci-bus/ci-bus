@@ -59,7 +59,6 @@ cb.define({
 			});
 			$.cachedScript("libraries/highlight/highlight.pack.js", "js").done(function () {
 				cb.loadAll([
-				    //['component', 'gotorave', 'review'],
 					['store', 'ci-bus', 'code'],
 					['store', 'ci-bus', 'texts'],
 					['component', 'ci-bus', 'totestcode'],

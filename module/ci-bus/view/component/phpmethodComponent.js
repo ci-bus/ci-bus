@@ -28,7 +28,8 @@ cb.define({
                                 items: {
                                     xtype: 'h4',
                                     margin: 0,
-                                    record: val
+                                    record: val,
+                                    cls: 'method-' + val
                                 }
                             }]
                         }
