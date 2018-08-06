@@ -2206,6 +2206,9 @@ cb.module.bootstrapComponent = {
 	'callout': function(opt, record) {
 		var ele = document.createElement('div');
 		$(ele).addClass('bs-callout');
+		if (!opt.overflow) {
+			$(ele).css('overflow', 'auto');
+		}
 		if (opt.type) $(ele).addClass('bs-callout-'+opt.type);
 		opt.notype = true;
 		if (opt.title) $(ele).append(cb.create({ xtype: 'h4', text: opt.title }));
@@ -2939,6 +2942,9 @@ cb.props = {
     },
     'bottom': function(ele, opt) {
         $(ele).css('bottom', opt.bottom);
+    },
+    'overflow': function (ele, opt) {
+    	$(ele).css('overflow', opt.overflow);
     },
 	'pull': function(ele, opt) {
         $(ele).addClass('pull-'+opt.pull);

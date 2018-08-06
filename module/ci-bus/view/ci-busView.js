@@ -42,6 +42,7 @@ cb.define({
             field: 'tx7'
         }, {
             xtype: 'callout',
+            overflow: 'auto',
             items: {
                 xtype: 'table',
                 width: 'auto',
@@ -51,7 +52,7 @@ cb.define({
                     items: [{
                         items: {
                             xtype: 'img',
-                            src: 'assets/img/miguel.png',
+                            src: './assets/img/miguel.png',
                             css: {
                                 'border-radius': '50%',
                                 border: '2px solid #DDD'

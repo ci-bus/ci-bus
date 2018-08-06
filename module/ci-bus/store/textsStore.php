@@ -599,7 +599,7 @@ cb.getStore('global').sort('tags', function(a, b){
 		            array(
 		                'prop' => 'Propiedades css',
 		                'action' => 'Aplica una propiedades de estilo',
-		                'props' => 'css margin padding color border float shadow size weight align height width display cursor background',
+		                'props' => 'css margin padding color border float shadow size weight align height width display cursor background overflow',
 		                'example' => "css: {
     color: 'RED',
     'font-weight': 600,
