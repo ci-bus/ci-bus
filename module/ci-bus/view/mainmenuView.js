@@ -2,17 +2,6 @@ cb.define({
 	xtype: 'view',
 	name: 'mainmenu',
 	appendTo: 'header',
-	onRender: function () {
-	    // Load google translator
-        $.cachedScript("//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit", "js").done(function () {
-            function googleTranslateElementInit() {
-                new google.translate.TranslateElement({
-                    pageLanguage: 'es',
-                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-                }, 'google_translate_element');
-            }
-        });
-	},
 	items: [{
 		xtype: 'nav',
 		type: 'default fixed-top',
@@ -309,10 +298,6 @@ cb.define({
                             }, record);
                         }
                     }
-				}, {
-			        xtype: 'div',
-				    id: 'google_translate_element',
-				    pull: 'left'
 				}]
 			}]
 		}]
