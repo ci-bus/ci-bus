@@ -2207,7 +2207,7 @@ cb.module.bootstrapComponent = {
 		var ele = document.createElement('div');
 		$(ele).addClass('bs-callout');
 		if (!opt.overflow) {
-			$(ele).css('overflow', 'auto');
+			$(ele).css('overflow-x', 'auto');
 		}
 		if (opt.type) $(ele).addClass('bs-callout-'+opt.type);
 		opt.notype = true;
