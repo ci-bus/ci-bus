@@ -2,6 +2,7 @@
 cb.define({
 	xtype: 'view',
 	name: 'base',
+	renderTo: 'body',
 	items: [{
 		xtype: 'header',
 		renderTo: 'body'

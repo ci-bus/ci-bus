@@ -38,6 +38,10 @@ cb.define({
 					id: 'mainmenu-doc',
 					items: [{
 						xtype: 'a',
+						text: '{tx8}',
+						href: '#loadview/install'
+					}, {
+						xtype: 'a',
 						text: '{tx1}',
 						href: '#loadview/createmodule'
 					}, {
@@ -299,6 +303,22 @@ cb.define({
                         }
                     }
 				}]
+			}, {
+				xtype: 'navbar',
+	            type: 'right',
+	            items: [{
+					xtype: 'img',
+					id: 'icolang',
+					src: './assets/img/lang_en.png',
+					margin: '8px 10px 0px 10px',
+					cursor: 'pointer',
+					attr: {
+						lang: 'en'
+					},
+					click: function () {
+						cb.ctr('ci-bus', 'changeLang', cb.getCmp(this).attr('lang'))
+					}
+	            }]
 			}]
 		}]
 	}]

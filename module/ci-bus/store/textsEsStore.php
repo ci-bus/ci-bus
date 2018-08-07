@@ -1,6 +1,6 @@
 <?php 
 
-	class Texts extends Store {
+	class TextsEs extends Store {
 			
 		public function __construct($data = array())
 		{
@@ -12,14 +12,15 @@
 		            'tx3' => 'Métodos'
 		        ),
 		        'menu' => array (
-		            'tx0' => 'Documentación ',
+		            'tx0' => 'Documentación',
 		            'tx1' => 'Crear módulo',
 		            'tx2' => 'Controladores',
 		            'tx3' => 'Vistas',
 		            'tx4' => 'Items',
 		            'tx5' => 'Ci-bus Métodos',
 		            'tx6' => 'Propiedades items',
-		            'tx7' => 'Store PHP y JavaScript'
+		            'tx7' => 'Store PHP y JavaScript',
+		            'tx8' => 'Instalación'
 			    ),
 		        'menu-items' => array (
 		            array(
@@ -119,6 +120,25 @@
 		            'render', 'extend', 'clone', 'commonProp', 'strpos', 'enable', 'disable', 'sto',
 		            'popup', 'verticalCenter', 'effect', 'isNode', 'isElement', 'getStore', 'getView', 'getController',
 		            'getComponent', 'fetchFromObject', 'putToObject', 'deleteToObject', 'isURL'
+		        ),
+		        'install' => array(
+		            'tx1' => 'Instalación del framework',
+		            'tx2' => 'Paso 1',
+		            'tx3' => 'Descargar Ci-bus desde el repositorio <a target="_blank" href="https://github.com/ci-bus/ci-bus">https://github.com/ci-bus/ci-bus</a> o ejecutando en un terminal el comando',
+		            'tx4' => 'git clone https://github.com/ci-bus/ci-bus.git',
+		            'tx5' => 'Si no dispones de git puedes descargarlo desde <a target="_blank" href="https://git-scm.com/downloads">https://git-scm.com/downloads</a>',
+		            'tx6' => 'Paso 2',
+		            'tx7' => 'Coloca los archivos en tu servidor apache web o local',
+		            'tx8' => 'Paso 3',
+		            'tx9' => 'Abre un terminal en la carpeta que hayas puesto los archivos de Ci-bus y ejecuta para instalar jQuery, Bootstrap y otras librerías necesarias',
+		            'tx10' => 'bower install',
+		            'tx11' => 'Si no tienes bower puedes conseguirlo desde <a target="_blank" href="https://bower.io/">https://bower.io/</a>',
+		            'tx12' => 'Paso 4',
+		            'tx13' => 'Si tu carpeta no se llama ci-bus edita el archivo .htacces y cambia la palabra ci-bus por el nombre de tu carpeta en la linea',
+		            'tx14' => 'RewriteRule ^(.*)$ /ci-bus/index.php?/$1 [L]',
+		            'tx15' => 'Paso 5',
+		            'tx16' => 'Si vas a usar una base de datos mysql debes configurar la conexión en el archivo',
+		            'tx17' => 'core/config.php'
 		        ),
 		        'home' => array (
 		            'tx1' => '¿Qué es Ci-bus Framework?',

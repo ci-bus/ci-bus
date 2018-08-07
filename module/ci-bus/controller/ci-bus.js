@@ -60,7 +60,7 @@ cb.define({
 			$.cachedScript("libraries/highlight/highlight.pack.js", "js").done(function () {
 				cb.loadAll([
 					['store', 'ci-bus', 'code'],
-					['store', 'ci-bus', 'texts'],
+					['store', 'ci-bus', 'textsEs'],
 					['component', 'ci-bus', 'totestcode'],
 					['component', 'ci-bus', 'phpmethod'],
 					['view', 'common', 'base'],
@@ -72,9 +72,15 @@ cb.define({
 					['view', 'ci-bus', 'doc/functions'],
 					['view', 'ci-bus', 'doc/properties'],
 					['view', 'ci-bus', 'doc/stores'],
+					['view', 'ci-bus', 'doc/install'],
 					['view', 'ci-bus', 'ci-bus']
 				], function () {
 				    $('#content').css('padding-top', 60);
+				    cb.define({
+						xtype: 'store',
+						name: 'textsEs',
+						data: cb.getStore('texts').getData()
+					});
 					cb.router.hashchange();
 				});
 			});
@@ -87,5 +93,48 @@ cb.define({
 	    code = code.replace(new RegExp('<',"g"), '&#60;');
         code = code.replace(new RegExp('>',"g"), '&#62;');
 	    return code;
+	},
+	
+	changeLang: function (lang) {
+		var ctr = this,
+			lang = cb.getCmp('#icolang').attr('lang'),
+			storeName = 'texts' + lang.charAt(0).toUpperCase() + lang.slice(1);
+		
+		if (!cb.getStore(storeName)) {
+			cb.load('store', 'ci-bus', 'texts' + lang.charAt(0).toUpperCase() + lang.slice(1), function () {
+				cb.define({
+					xtype: 'store',
+					name: storeName,
+					data: cb.getStore('texts').getData()
+				});
+				cb.ctr('ci-bus', 'applyLang', lang);
+			});
+		} else {
+			cb.getStore('texts').setData(cb.getStore(storeName).getData());
+			cb.ctr('ci-bus', 'applyLang', lang);
+		}
+	},
+	
+	applyLang: function (lang) {
+		cb.render(cb.getView('base'));
+		cb.render(cb.getView('mainmenu'));
+		$('#content').css('padding-top', 60);
+		var ico = cb.getCmp('#icolang');
+		if (lang == 'en') {
+			ico.attr({
+				lang: 'es',
+				src: './assets/img/lang_es.png'
+			});
+		} else {
+			ico.attr({
+				lang: 'en',
+				src: './assets/img/lang_en.png'
+			});
+		}
+		if (location.hash) {
+			cb.router.hashchange();
+		} else {
+			ctr.loadhome();
+		}
 	}
 });
