@@ -116,6 +116,7 @@ cb.define({
 	},
 	
 	applyLang: function (lang) {
+	    var ctr = this;
 		cb.render(cb.getView('base'));
 		cb.render(cb.getView('mainmenu'));
 		$('#content').css('padding-top', 60);
