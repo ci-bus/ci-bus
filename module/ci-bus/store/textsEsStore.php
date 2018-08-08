@@ -144,7 +144,7 @@
 		            'tx1' => '¿Qué es Ci-bus Framework?',
 		            'tx2' => 'Ci-bus es un cojunto de herramientas JavaScript y php que te permitirá crear aplicaciones webs de manera fácil e intuitiva con las más novedosas técnicas de programación',
 		            'tx3' => '¿Cuáles han sido mis motivaciones?',
-		            'tx4' => 'Desarrollando Apps con Extjs para grandes compañias como el banco ING, Volskwagen, Curanum, ICIS+, Lufthansa entre otras pude apreciar cadencias '
+		            'tx4' => 'Desarrollando Apps con Extjs para grandes compañias pude apreciar cadencias '
 		                      .'y aspectos del framework que me resultaban molestos, el peor de todos al igual que Angular es la absurda y desmesurada complejidad a la hora de hacer simples tareas, '
 		                      .'creo firmemente que el \'código minimalista\' es el camino correcto, no me vale eso de... es que es muy potente... cuando un framework va ganando en complejidad '
 		                      .'llegando al punto de dar más trabajo en vez de quitarlo para mi pierde el sentido, existen proyectos como jQuery que han sabido mantenerse en la simplicidad y la flexibilidad.<br>'
