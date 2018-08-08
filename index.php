@@ -8,7 +8,7 @@
 	$config = new Config();
 	
 	if ($config->getConfig('auto_min_js')) {
-	    include __DIR__ . "libraries/jsmin-php-master/jsmin.php";
+	    include __DIR__ . "/libraries/jsmin-php-master/jsmin.php";
 	}
 	
 	header('Content-Type: text/html; charset='.$config->getConfig('charset'));
@@ -83,11 +83,9 @@
 							$time_ctr = time();
 							touch('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.min.js', $time_ctr);
 							touch('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.js', $time_ctr);
-							echo $codemin.'
-									';
+							echo $codemin.' ';
 						}else{
-							echo file_get_contents('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.min.js').'
-									';
+							echo file_get_contents('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.min.js').' ';
 						}
 					}
 					else if(file_exists('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.js'))
@@ -100,11 +98,9 @@
 							$time_ctr = time();
 							touch('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.min.js', $time_ctr);
 							touch('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.js', $time_ctr);
-							echo $codemin.'
-									';
+							echo $codemin.' ';
 						}else{
-							echo file_get_contents('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.js').'
-									';
+							echo file_get_contents('module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'.js').' ';
 						}
 					}
 										
@@ -122,7 +118,7 @@
 						}
 						else
 						{
-							echo 'alert(\'No existe el fichero: module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'Store.php\');';
+							echo 'alert(\'No existe el fichero: module/'.$dt[1].'/'.$dt[0].'/'.$dt[2].'Store.php\'); ';
 						}
 					}
 				}
