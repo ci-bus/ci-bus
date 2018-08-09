@@ -24,7 +24,7 @@ cb.define({
 					}
 				}, {
 					xtype: 'button',
-					text: 'Create controller'
+					text: 'Create example files'
 				}]
 			}]
 		}]
