@@ -3433,11 +3433,11 @@ cb.disable = function(ele) {
 }
 
 cb.sto = function(fn, to) {
-	setTimeout(fn, to);
+	return setTimeout(fn, to);
 }
 
 cb.sit = function(fn, t) {
-    setInterval(fn, t);
+    return setInterval(fn, t);
 }
 
 cb.popup = function(pp, record) {
@@ -3475,6 +3475,7 @@ cb.popup = function(pp, record) {
 		if (pp.effect) {
 			this.effect('#'+tid, pp.effect);
 		}
+		return pp_item;
 	}
 }
 
