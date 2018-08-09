@@ -116,6 +116,7 @@ cb.define({
                                     }
                                 });
                             }, 800);
+                            cb.getCmp('.navbar-collapse').removeClass('in');
                         }
 					}
 				}, {
@@ -175,6 +176,7 @@ cb.define({
                                             }
                                         });
                                     }, 800);
+                                    cb.getCmp('.navbar-collapse').removeClass('in');
                                 }
                             }, record);
                         }
@@ -236,6 +238,7 @@ cb.define({
                                             }
                                         });
                                     }, 800);
+                                    cb.getCmp('.navbar-collapse').removeClass('in');
                                 }
                             }, record);
                         }
@@ -298,6 +301,7 @@ cb.define({
                                             }
                                         });
                                     }, 800);
+                                    cb.getCmp('.navbar-collapse').removeClass('in');
                                 }
                             }, record);
                         }

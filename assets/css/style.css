@@ -150,6 +150,10 @@ pre {
 	border-color: #eee;
 }
 
+.btn.btn-button.collapsed.navbar-toggle {
+	margin-right: 10px !important;
+}
+
 @media only screen and (min-width : 0px) {
 	.cubi-name {
 		max-height: 36px;

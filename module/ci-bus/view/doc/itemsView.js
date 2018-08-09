@@ -40,6 +40,7 @@ cb.define({
                     field: 'tx7'
                 }, {
                     xtype: 'callout',
+                    overflow: 'auto',
                     margin: '10px 0px',
                     items: [{
                         xtype: 'label',
@@ -104,6 +105,7 @@ cb.define({
                     field: 'tx13'
                 }, {
                     xtype: 'callout',
+                    overflow: 'auto',
                     margin: '10px 0px',
                     items: [{
                         xtype: 'label',
@@ -180,6 +182,7 @@ cb.define({
                     field: 'tx15'
                 }, {
                     xtype: 'callout',
+                    overflow: 'auto',
                     margin: '10px 0px',
                     items: [{
                         xtype: 'label',
@@ -208,6 +211,7 @@ cb.define({
                     }]
                 }, {
                     xtype: 'callout',
+                    overflow: 'auto',
                     margin: '10px 0px',
                     items: [{
                         xtype: 'label',
@@ -366,6 +370,7 @@ cb.define({
                     field: 'tx27'
                 }, {
                     xtype: 'callout',
+                    overflow: 'auto',
                     margin: '10px 0px',
                     items: [{
                         xtype: 'label',
@@ -426,6 +431,7 @@ cb.define({
                     field: 'tx31'
                 }, {
                     xtype: 'callout',
+                    overflow: 'auto',
                     margin: '10px 0px',
                     items: [{
                         xtype: 'label',
@@ -471,6 +477,7 @@ cb.define({
                     }]
                 }, {
                     xtype: 'callout',
+                    overflow: 'auto',
                     margin: '10px 0px',
                     items: [{
                         xtype: 'label',
@@ -544,6 +551,7 @@ cb.define({
                     }]
                 }, {
                     xtype: 'callout',
+                    overflow: 'auto',
                     margin: '10px 0px',
                     items: [{
                         xtype: 'label',
@@ -674,6 +682,7 @@ cb.define({
                     field: 'tx44'
                 }, {
                     xtype: 'callout',
+                    overflow: 'auto',
                     margin: '10px 0px',
                     items: [{
                         xtype: 'label',
@@ -782,6 +791,7 @@ cb.define({
                     field: 'tx45'
                 }, {
                     xtype: 'callout',
+                    overflow: 'auto',
                     margin: '10px 0px',
                     items: [{
                         xtype: 'label',
@@ -865,6 +875,7 @@ cb.define({
                     field: 'tx47'
                 }, {
                     xtype: 'callout',
+                    overflow: 'auto',
                     margin: '10px 0px',
                     items: [{
                         xtype: 'label',
@@ -925,6 +936,7 @@ cb.define({
                     field: 'tx48'
                 }, {
                     xtype: 'callout',
+                    overflow: 'auto',
                     margin: '10px 0px',
                     items: [{
                         xtype: 'label',
@@ -1030,6 +1042,7 @@ cb.define({
                     field: 'tx52'
                 }, {
                     xtype: 'callout',
+                    overflow: 'auto',
                     margin: '10px 0px',
                     items: [{
                         xtype: 'label',
@@ -1098,6 +1111,7 @@ cb.define({
                     field: 'tx50'
                 }, {
                     xtype: 'callout',
+                    overflow: 'auto',
                     margin: '10px 0px',
                     items: [{
                         xtype: 'label',
@@ -1158,6 +1172,7 @@ cb.define({
                     field: 'tx50'
                 }, {
                     xtype: 'callout',
+                    overflow: 'auto',
                     margin: '10px 0px',
                     items: [{
                         xtype: 'label',
@@ -1222,6 +1237,7 @@ cb.define({
                     field: 'tx55'
                 }, {
                     xtype: 'callout',
+                    overflow: 'auto',
                     margin: '10px 0px',
                     items: [{
                         xtype: 'label',
@@ -1321,6 +1337,7 @@ cb.define({
                     field: 'tx57'
                 }, {
                     xtype: 'callout',
+                    overflow: 'auto',
                     margin: '10px 0px',
                     items: [{
                         xtype: 'label',
@@ -1432,6 +1449,7 @@ cb.define({
                     field: 'tx61'
                 }, {
                     xtype: 'callout',
+                    overflow: 'auto',
                     margin: '10px 0px',
                     items: [{
                         xtype: 'label',
@@ -1473,6 +1491,7 @@ cb.define({
                     }]
                 }, {
                     xtype: 'callout',
+                    overflow: 'auto',
                     margin: '10px 0px',
                     items: [{
                         xtype: 'label',
@@ -1537,6 +1556,7 @@ cb.define({
                     field: 'tx66'
                 }, {
                     xtype: 'callout',
+                    overflow: 'auto',
                     margin: '10px 0px',
                     items: [{
                         xtype: 'label',
@@ -1609,6 +1629,7 @@ cb.define({
                     field: 'tx70'
                 }, {
                     xtype: 'callout',
+                    overflow: 'auto',
                     margin: '10px 0px',
                     items: [{
                         xtype: 'label',
@@ -1638,6 +1659,7 @@ cb.define({
                     }]
                 }, {
                     xtype: 'callout',
+                    overflow: 'auto',
                     margin: '10px 0px',
                     items: [{
                         xtype: 'label',
