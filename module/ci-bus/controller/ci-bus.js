@@ -55,7 +55,7 @@ cb.define({
 		$.cachedScript("https://fonts.googleapis.com/css?family=Quicksand:300,400", "css").done(function () {
 			$('body').css({
 				'font-family': 'Quicksand, Verdana, Arial',
-				'font-weight': 300
+				'font-weight': 500
 			});
 			$.cachedScript("libraries/highlight/highlight.pack.js", "js").done(function () {
 				cb.loadAll([
