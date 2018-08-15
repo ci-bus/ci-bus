@@ -24,8 +24,24 @@ cb.define({
 		}
 	},
 	
+	createFiles: function (nameProject) {
+		if (nameProject) {
+			cb.load('store', 'devtools', 'dev', {
+				action: 'create_files',
+				data: {
+					name: nameProject
+				}
+			});
+		} else {
+			this.alert('Write name project first', 'warning');
+		}
+	},
+	
 	alert: function (msg, type) {
-		if (!type) {
+		if ($.isArray(msg)) {
+			type = msg[1];
+			msg = msg[0];
+		} else if (!type) {
 			type = 'default';
 		}
 		var popup = cb.popup({
@@ -77,6 +93,6 @@ cb.define({
 		
 		this.alert_sto = cb.sto(function () {
 			cb.getCmp(popup).down('.glyphicon-remove').click();
-		}, 2000);
+		}, 3000);
 	} 
 });
