@@ -20,11 +20,14 @@ cb.define({
 					xtype: 'button',
 					text: 'Create folders',
 					click: function () {
-						cb.ctr('devtools', 'createFolders', cb.getCmp(this).up('container').down('input').val())
+						cb.ctr('devtools', 'createFolders', cb.getCmp(this).up('container').down('input').val());
 					}
 				}, {
 					xtype: 'button',
-					text: 'Create example files'
+					text: 'Create example files',
+					click: function () {
+						cb.ctr('devtools', 'createFiles', cb.getCmp(this).up('container').down('input').val());
+					}
 				}]
 			}]
 		}]
