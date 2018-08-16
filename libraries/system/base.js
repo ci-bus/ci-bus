@@ -529,7 +529,7 @@ cb.base.element = {
 		return this;
 	},
 	getStore: function () {
-		return this.getOpt().store? cb.getStore(this.getOpt().store): false;
+		return this.getOpt().store? cb.getStore(this.getOpt().store): null;
 	},
 	down: function (id, pos) {
 		if (!pos) pos = 0;
