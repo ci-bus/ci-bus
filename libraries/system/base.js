@@ -515,7 +515,7 @@ cb.base.element = {
 	    if (this.opt) {
 	        if (typeof dt == 'string') {
 	            this.opt[dt] = val;
-	        } else if (val == null) {
+	        } else if ($.isPlainObject(dt) && val == null) {
 	            this.opt = dt;
 	        }
 	    }
