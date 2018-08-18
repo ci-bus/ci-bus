@@ -3,7 +3,7 @@ cb.define({
     name: 'main',
     renderTo: '#content',
     onRender: function () {
-        alert('Main view rendered!');
+        
     },
     items: [{
         xtype: 'container',

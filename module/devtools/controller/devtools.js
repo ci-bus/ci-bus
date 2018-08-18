@@ -4,6 +4,7 @@ cb.define({
 	
 	onload: function () {
 		cb.loadAll([
+		    ['store', 'devtools', 'dev', {action: 'get_list_modules'}],
 		    ['view', 'common', 'base'],
 		    ['view', 'devtools', 'tools']
 		], function () {
@@ -31,6 +32,17 @@ cb.define({
 				data: {
 					name: nameProject
 				}
+			});
+		} else {
+			this.alert('Write name project first', 'warning');
+		}
+	},
+	
+	createFile: function (data) {
+		if (data.name) {
+			cb.load('store', 'devtools', 'dev', {
+				action: 'create_file',
+				data: data
 			});
 		} else {
 			this.alert('Write name project first', 'warning');

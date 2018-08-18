@@ -4,11 +4,26 @@ cb.define({
 	renderTo: '#content',
 	items: [{
 		xtype: 'container',
+		css: {
+			'margin-top': 20
+		},
+		size: 27,
+		text: 'Dev Tools'
+	}, {
+		xtype: 'container',
+		css: {
+			'margin-top': 10
+		},
+		defaults: {
+			xtype: 'callout',
+			margin: '0 0 20px 0',
+			type: 'info'
+		},
 		items: [{
-			xtype: 'container',
 			items: [{
 				xtype: 'h3',
-				text: 'Create new project'
+				margin: '0 0 15px 0',
+				text: 'Create project'
 			}, {
 				xtype: 'input',
 				type: 'text',
@@ -28,6 +43,96 @@ cb.define({
 					click: function () {
 						cb.ctr('devtools', 'createFiles', cb.getCmp(this).up('container').down('input').val());
 					}
+				}]
+			}]
+		}, {
+			items: [{
+				xtype: 'h3',
+				margin: '0 0 15px 0',
+				text: 'Create file'
+			}, {
+				xtype: 'row',
+				margin: '10px 0 0 0',
+				defaults: {
+					xtype: 'col',
+					size: 3
+				},
+				items: [{
+					items: [{
+						xtype: 'label',
+						text: 'Module'
+					}]
+				}, {
+					items: [{
+						xtype: 'label',
+						text: 'Type'
+					}]
+				}, {
+					items: [{
+						xtype: 'label',
+						text: 'Name file'
+					}]
+				}]
+			}, {
+				xtype: 'row',
+				margin: '10px 0 0 0',
+				defaults: {
+					xtype: 'col',
+					size: 3
+				},
+				items: [{
+					items: [{
+						xtype: 'select',
+						items: {
+							xtype: 'option',
+							store: 'modules',
+							value: '{name}',
+							text: '{name}'
+						}
+					}]
+				}, {
+					items: [{
+						xtype: 'select',
+						items: [{
+							xtype: 'option',
+							value: 'controller',
+							text: 'Controller'
+						}, {
+							xtype: 'option',
+							value: 'store',
+							text: 'Store'
+						}, {
+							xtype: 'option',
+							value: 'view',
+							text: 'View'
+						}, {
+							xtype: 'option',
+							value: 'component',
+							text: 'Component'
+						}]
+					}]
+				}, {
+					items: [{
+						xtype: 'input',
+						type: 'text',
+						placeholder: 'Name file'
+					}]
+				}, {
+					items: [{
+						xtype: 'button',
+						text: 'Create file',
+						click: function () {
+							var row = cb.getCmp(this).up('row'),
+								module = row.down('select', 0).getValue(),
+								type = row.down('select', 1).getValue(),
+								name = row.down('input').getValue();
+							cb.ctr('devtools', 'createFile', {
+								module: module,
+								type: type,
+								name: name
+							});
+						}
+					}]
 				}]
 			}]
 		}]
