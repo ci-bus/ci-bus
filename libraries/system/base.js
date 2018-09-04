@@ -1588,6 +1588,14 @@ cb.render = function(obj, callback)
 	
 	if ($.isArray(obj.items))
 	{
+	    // Set defaults to items
+        if (obj.defaults)
+        {
+            for (var def in obj.defaults) {
+                obj.items = this.setMissingDinamicValue(obj.items, def, obj.defaults[def]);
+            }
+        }
+        // Create items
 		for (var j=0; j<obj.items.length; j++) {
 			if (obj.items[j].reload !== false || !$('#'+obj.items[j].id).length) {
 				if (obj.items[j].renderTo) {
@@ -3077,7 +3085,7 @@ cb.create = function(opt, record) {
 			opt = this.mergeTwoObjects(cb.clone(cb.module.component[opt.xtype]), opt);
 			opt.xtype = 'component';
 		}
-				
+		
 		// Default extend
 		if ($.isArray(opt.extend)) {
 			var be = false;
