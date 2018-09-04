@@ -227,5 +227,18 @@
 		      }
 		      return true;
 		  }
+		  
+		  public function scanFiles($f, $f2) {
+		      $files = array_diff(scandir($f), array('..', '.'));
+		      $res = array();
+		      foreach ($files as $file) {
+		          if (is_dir($f.$file)) {
+		              $res = array_merge($res, $this->scanFiles($f.$file.'/', $f2.$file.'/'));
+		          } else {
+		              array_push($res, $f2.$file);
+		          }
+		      }
+		      return $res;
+		  }
 	}
 ?>
