@@ -23,7 +23,7 @@ cb.define({
 			items: [{
 				xtype: 'h3',
 				margin: '0 0 15px 0',
-				text: 'Create project'
+				text: 'Create module'
 			}, {
 				xtype: 'input',
 				type: 'text',
@@ -55,33 +55,20 @@ cb.define({
 				margin: '10px 0 0 0',
 				defaults: {
 					xtype: 'col',
-					size: 3
+					size: {
+                        lg: 3,
+                        md: 6,
+                        sm: 12
+                    },
+                    css: {
+                        'padding-bottom': 10
+                    }
 				},
 				items: [{
 					items: [{
-						xtype: 'label',
-						text: 'Module'
-					}]
-				}, {
-					items: [{
-						xtype: 'label',
-						text: 'Type'
-					}]
-				}, {
-					items: [{
-						xtype: 'label',
-						text: 'Name file'
-					}]
-				}]
-			}, {
-				xtype: 'row',
-				margin: '10px 0 0 0',
-				defaults: {
-					xtype: 'col',
-					size: 3
-				},
-				items: [{
-					items: [{
+                        xtype: 'label',
+                        text: 'Module'
+                    }, {
 						xtype: 'select',
 						items: {
 							xtype: 'option',
@@ -92,6 +79,9 @@ cb.define({
 					}]
 				}, {
 					items: [{
+                        xtype: 'label',
+                        text: 'Type'
+                    }, {
 						xtype: 'select',
 						items: [{
 							xtype: 'option',
@@ -113,6 +103,9 @@ cb.define({
 					}]
 				}, {
 					items: [{
+                        xtype: 'label',
+                        text: 'Name file'
+                    }, {
 						xtype: 'input',
 						type: 'text',
 						placeholder: 'Name file'
@@ -121,6 +114,9 @@ cb.define({
 					items: [{
 						xtype: 'button',
 						text: 'Create file',
+						css: {
+						    'margin-top': 27
+						},
 						click: function () {
 							var row = cb.getCmp(this).up('row'),
 								module = row.down('select', 0).getValue(),
@@ -135,6 +131,29 @@ cb.define({
 					}]
 				}]
 			}]
+		}, {
+		    items: [{
+	            items: [{
+	                xtype: 'h3',
+	                margin: '0 0 15px 0',
+	                text: 'Open module'
+	            }, {
+	                xtype: 'container',
+	                type: 'fluid',
+	                items: {
+	                    xtype: 'a',
+	                    store: 'modules',
+	                    storelink: true,
+	                    href: '{name}',
+	                    target: '_blank',
+	                    pull: 'left',
+	                    margin: '5px 10px',
+	                    items: {
+	                        field: 'name'
+	                    }
+	                }
+	            }]
+		    }]
 		}]
 	}]
 });

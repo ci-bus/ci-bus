@@ -322,10 +322,12 @@ cb.base.store = {
     
     storelink: function(field)
     {
+        debugger;
         if ($.isArray(cb.module.storelink[this.name])) {
             var strlk = cb.module.storelink[this.name];
             for (var i=0; i<strlk.length; i++) {
                 var ele = cb.getCmp('#'+strlk[i].ele);
+                debugger;
                 if (!field) {
                     if (ele.getOpt().field) {
                         var record = cb.fetchFromObject(this.getData(), ele.getOpt().field);
@@ -3118,104 +3120,101 @@ cb.create = function(opt, record) {
         $.extend( opt_extended, opt);
         delete opt_extended.extend;
         
-        // Required id if storelink
-        if (opt.storelink && !opt.id) {
-            opt.id = this.autoid(opt.xtype);
-        }
-        
-        // Get record
-        if (!record || opt.noRecordParsed) {
-            // Get record from opt
-            if (opt.record) {
-                record = opt.record;
+        if (!opt.in_loop) {
+         // Get record
+            if (!record || opt.noRecordParsed) {
+                // Get record from opt
+                if (opt.record) {
+                    record = opt.record;
+                }
             }
-        }
-        if (opt.store) {
-            if (this.module.store[opt.store]) {
-                record = this.module.store[opt.store]['data'];
-            } else if (!opt.storelink){
-                return;
+            if (opt.store) {
+                if (this.module.store[opt.store]) {
+                    record = this.module.store[opt.store]['data'];
+                } else if (!opt.storelink){
+                    return;
+                }
             }
-        }
-        
-        // If have record
-        if (record) {
             
-            // Get field del store
-            if (opt.field) {
-                if (typeof opt.field === 'string') {
-                    if (record) {
-                        if (record[opt.field]) {
-                            record = record[opt.field];
+            // If have record
+            if (record) {
+                
+                // Get field del store
+                if (opt.field) {
+                    if (typeof opt.field === 'string') {
+                        if (record) {
+                            if (record[opt.field]) {
+                                record = record[opt.field];
+                            } else if (cb.eleCreateWithoutRecord.indexOf(opt.xtype) < 0) {
+                                return;
+                            }
                         } else if (cb.eleCreateWithoutRecord.indexOf(opt.xtype) < 0) {
                             return;
                         }
-                    } else if (cb.eleCreateWithoutRecord.indexOf(opt.xtype) < 0) {
-                        return;
                     }
-                }
-                else if ($.isArray(opt.field))
-                {
-                    if (record)
+                    else if ($.isArray(opt.field))
                     {
-                        // Recorre los fields
-                        for (var o=0; o<opt.field.length; o++)
+                        if (record)
                         {
-                            // Si el field es un string
-                            if (typeof opt.field[o] === 'string')
+                            // Recorre los fields
+                            for (var o=0; o<opt.field.length; o++)
                             {
-                                // Si existe datos en el store para ese field
-                                if (record[opt.field[o]])
+                                // Si el field es un string
+                                if (typeof opt.field[o] === 'string')
                                 {
-                                    // Si no existen record temporal
-                                    if (!temp_record)
+                                    // Si existe datos en el store para ese field
+                                    if (record[opt.field[o]])
                                     {
-                                        temp_record = record[opt.field[o]];
-                                    }
-                                    // Si el record temporal es un array
-                                    else if ($.isArray(temp_record))
-                                    {
-                                        // Si el record actual es un array
-                                        for (var o2=0; o2<temp_record.length; o2++)
+                                        // Si no existen record temporal
+                                        if (!temp_record)
                                         {
-                                            if ($.isPlainObject(temp_record[o2]))
+                                            temp_record = record[opt.field[o]];
+                                        }
+                                        // Si el record temporal es un array
+                                        else if ($.isArray(temp_record))
+                                        {
+                                            // Si el record actual es un array
+                                            for (var o2=0; o2<temp_record.length; o2++)
                                             {
-                                                temp_record[o2][opt.field[o]] = record[opt.field[o]]; 
-                                            }else{
-                                                $.extend(temp_record, record[opt.field[o]]);
-                                                o2 = opt.temp_record.length;
+                                                if ($.isPlainObject(temp_record[o2]))
+                                                {
+                                                    temp_record[o2][opt.field[o]] = record[opt.field[o]]; 
+                                                }else{
+                                                    $.extend(temp_record, record[opt.field[o]]);
+                                                    o2 = opt.temp_record.length;
+                                                }
                                             }
                                         }
-                                    }
-                                    // Si el record temporal es un objeto
-                                    else if ($.isPlainObject(temp_record))
-                                    {
-                                        temp_record[opt.field[o]] = record[opt.field[o]];
-                                    }
-                                    else
-                                    {
-                                        $.extend(temp_record, record[opt.field[o]]);
+                                        // Si el record temporal es un objeto
+                                        else if ($.isPlainObject(temp_record))
+                                        {
+                                            temp_record[opt.field[o]] = record[opt.field[o]];
+                                        }
+                                        else
+                                        {
+                                            $.extend(temp_record, record[opt.field[o]]);
+                                        }
                                     }
                                 }
+                                // Si el field es un objecto
+                                else if ($.isPlainObject(opt.field[o])) {
+                                    
+                                }
                             }
-                            // Si el field es un objecto
-                            else if ($.isPlainObject(opt.field[o])) {
-                                
+                            if (temp_record) {
+                                record = temp_record;
                             }
+                        }else{
+                            return;
                         }
-                        if (temp_record) {
-                            record = temp_record;
-                        }
-                    }else{
-                        return;
                     }
                 }
-            }
-            
-            // Copy of original record data and Alterdata
-            var raw_record = cb.clone(record);
-            if (opt.alterdata) {
-                record = this.alterdata(opt.alterdata, cb.clone(raw_record), opt);
+                
+                // Copy of original record data and Alterdata
+                var raw_record = cb.clone(record);
+                if (opt.alterdata) {
+                    record = this.alterdata(opt.alterdata, cb.clone(raw_record), opt);
+                }
             }
         }
         
@@ -3229,9 +3228,7 @@ cb.create = function(opt, record) {
             ele = [];
             for (var c=0; c<record.length; c++) {
                 if (record[c]) {
-                    // Se borra store y field para que no entre en un bucle infinito
-                    delete opt.store;
-                    delete opt.field;
+                    opt.in_loop = true;
                     ele.push(cb.create(cb.cloneObject(opt), record[c]));
                 }
             }
@@ -3239,6 +3236,11 @@ cb.create = function(opt, record) {
         }
         else
         {
+            // Required id if storelink
+            if (opt.storelink && (!opt.id || opt.in_loop)) {
+                opt.id = this.autoid(opt.xtype);
+            }
+            
             // If record is object replace {field} by record values
             if ($.isPlainObject(record)) {
                 opt = this.setRecordValuesToOpt(opt, record);
