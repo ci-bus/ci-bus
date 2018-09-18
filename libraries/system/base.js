@@ -322,12 +322,10 @@ cb.base.store = {
     
     storelink: function(field)
     {
-        debugger;
         if ($.isArray(cb.module.storelink[this.name])) {
             var strlk = cb.module.storelink[this.name];
             for (var i=0; i<strlk.length; i++) {
                 var ele = cb.getCmp('#'+strlk[i].ele);
-                debugger;
                 if (!field) {
                     if (ele.getOpt().field) {
                         var record = cb.fetchFromObject(this.getData(), ele.getOpt().field);
