@@ -2950,6 +2950,9 @@ cb.props = {
     'overflow': function (ele, opt) {
         $(ele).css('overflow', opt.overflow);
     },
+    'zIndex': function (ele, opt) {
+        $(ele).css('z-index', opt.zIndex);
+    },
     'pull': function(ele, opt) {
         $(ele).addClass('pull-'+opt.pull);
     },
