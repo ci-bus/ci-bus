@@ -66,7 +66,7 @@ cb.zIndex = 2;
 // Por defecto cuando un record es un array
 // se crea un elemento por cada valor
 // añadiendo el xtype a este array lo evitamos
-cb.eleAceptArrayRecord = ['polyline', 'tbody', 'grid'];
+cb.eleAcceptArrayRecord = ['polyline', 'tbody', 'grid'];
 // Al crear un elemento si tiene field definido
 // pero el store no tiene valor no se crea
 // añadiendo el xtype a este array lo evitamos
@@ -3224,8 +3224,13 @@ cb.create = function(opt, record) {
             opt.items = [opt.items];
         }
         
+        // Add accept array data
+        if (opt.acceptArray && opt.name && !this.eleAcceptArrayRecord.push[opt.name]) {
+            this.eleAcceptArrayRecord.push(opt.name);
+        }
+        
         // Si el record contiene un array y no acepta arrays y no es un array de arrays creamos varios elementos
-        if ($.isArray(record) && ((cb.eleAceptArrayRecord.indexOf(opt.xtype) < 0) || $.isArray(record[0]))) {
+        if ($.isArray(record) && ((cb.eleAcceptArrayRecord.indexOf(opt.xtype) < 0 && (!opt.name || cb.eleAcceptArrayRecord.indexOf(opt.name) < 0)) || $.isArray(record[0]))) {
             ele = [];
             for (var c=0; c<record.length; c++) {
                 if (record[c]) {
