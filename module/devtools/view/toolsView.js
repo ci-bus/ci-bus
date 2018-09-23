@@ -73,6 +73,7 @@ cb.define({
 						items: {
 							xtype: 'option',
 							store: 'modules',
+							storelink: true,
 							value: '{name}',
 							text: '{name}'
 						}

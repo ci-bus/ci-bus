@@ -44,6 +44,28 @@ if (!Array.prototype.indexOf) {
         return -1;
     }
 }
+if (!Array.prototype.find) {
+	  Array.prototype.find = function(predicate) {
+	    if (this == null) {
+	      throw new TypeError('Array.prototype.find called on null or undefined');
+	    }
+	    if (typeof predicate !== 'function') {
+	      throw new TypeError('predicate must be a function');
+	    }
+	    var list = Object(this);
+	    var length = list.length >>> 0;
+	    var thisArg = arguments[1];
+	    var value;
+
+	    for (var i = 0; i < length; i++) {
+	      value = list[i];
+	      if (predicate.call(thisArg, value, i, list)) {
+	        return value;
+	      }
+	    }
+	    return undefined;
+	  };
+	}
 
 
 // [ INICIO DE CI-BUS ]// 
@@ -320,27 +342,50 @@ cb.base.store = {
         }
     },
     
+    // TODO create object with global functions storelink
     storelink: function(field)
     {
         if ($.isArray(cb.module.storelink[this.name])) {
             var strlk = cb.module.storelink[this.name];
-            for (var i=0; i<strlk.length; i++) {
-                var ele = cb.getCmp('#'+strlk[i].ele);
-                if (!field) {
-                    if (ele.getOpt().field) {
-                        var record = cb.fetchFromObject(this.getData(), ele.getOpt().field);
-                        ele.setData(record);
-                    } else {
-                        ele.setData(this.getData());
-                    }
-                } else {
-                    if (ele.getOpt().field == field) {
-                        var record = cb.fetchFromObject(this.getData(), ele.getOpt().field);
-                        ele.setData(record);
-                    }
-                }
+            var limit = 0;
+            for (var i = 0; i < strlk.length - limit; i ++) {
+            	if ($.isArray(strlk[i].ele)) { // If record is array and create multiple elements
+            		this.storelinkUpdateElements(strlk[i]);
+            		// Remove current config
+            		strlk.splice(i, 1);
+            		i --;
+            		limit ++;
+        		} else {
+        			var ele = cb.getCmp('#'+strlk[i].ele);
+		        	if (!field) {
+	        			if (ele.getOpt().field) {
+	                        var record = cb.fetchFromObject(this.getData(), ele.getOpt().field);
+	                        if ($.isFunction(ele.setData)) {
+	                        	ele.setData(record);
+	                        }
+	                    } else {
+	                    	if ($.isFunction(ele.setData)) {
+	                        	ele.setData(this.getData());
+	                        }
+	                    }
+		            } else {
+	                    if (ele.getOpt().field == field) {
+	                        var record = cb.fetchFromObject(this.getData(), ele.getOpt().field);
+	                        if ($.isFunction(ele.setData)) {
+	                        	ele.setData(record);
+	                        }
+	                    }
+		            }
+        		}
             }
         }
+    },
+    
+    storelinkUpdateElements: function (strlk) {
+    	for (var t = strlk.ele.length; t > 0; t --) {
+    		$('#'+strlk.ele[t]).remove();
+    	}
+    	$('#'+strlk.ele[0]).replaceWith(cb.create(cb.getCmp('#'+strlk.ele[0]).getOpt()));
     },
     
     getName: function()
@@ -495,7 +540,7 @@ cb.base.element = {
         return this.opt.xtype;
     },
     getRecord: function() {
-        return this.opt.record? this.opt.record: this.record? this.record: false;
+        return this.opt.record? this.opt.record: this.record? this.record: null;
     },
     getValue: function() {
         return this.getOpt('value')? this.getOpt('value'): this.val()? this.val(): this.getRecord()? this.getRecord(): null;
@@ -3122,7 +3167,8 @@ cb.create = function(opt, record) {
         delete opt_extended.extend;
         
         if (!opt.in_loop) {
-         // Get record
+        	
+        	// Get record
             if (!record || opt.noRecordParsed) {
                 // Get record from opt
                 if (opt.record) {
@@ -3210,12 +3256,14 @@ cb.create = function(opt, record) {
                         }
                     }
                 }
-                
-                // Copy of original record data and Alterdata
-                var raw_record = cb.clone(record);
-                if (opt.alterdata) {
-                    record = this.alterdata(opt.alterdata, cb.clone(raw_record), opt);
-                }
+            }
+        }
+        
+        if (record) {
+        	// Copy of original record data and Alterdata
+            var raw_record = cb.clone(record);
+            if (opt.alterdata) {
+                record = this.alterdata(opt.alterdata, cb.clone(raw_record), opt);
             }
         }
         
@@ -3228,7 +3276,7 @@ cb.create = function(opt, record) {
         if (opt.acceptArray && opt.name && !this.eleAcceptArrayRecord.push[opt.name]) {
             this.eleAcceptArrayRecord.push(opt.name);
         }
-        
+                
         // Si el record contiene un array y no acepta arrays y no es un array de arrays creamos varios elementos
         if ($.isArray(record) && ((cb.eleAcceptArrayRecord.indexOf(opt.xtype) < 0 && (!opt.name || cb.eleAcceptArrayRecord.indexOf(opt.name) < 0)) || $.isArray(record[0]))) {
             ele = [];
@@ -3238,6 +3286,18 @@ cb.create = function(opt, record) {
                     ele.push(cb.create(cb.cloneObject(opt), record[c]));
                 }
             }
+            if (opt.storelink) {
+            	if (opt.store) {
+                    if (!cb.module.storelink[opt.store]) {
+                        cb.module.storelink[opt.store] = [];
+                    }
+                    var ele_ids = [];
+                    for (var f = 0; f < ele.length; f ++) {
+                    	ele_ids.push(ele[f].id);
+                    }
+                    cb.module.storelink[opt.store].push({ele: ele_ids});
+                }
+            }
             return ele;
         }
         else
@@ -3245,6 +3305,7 @@ cb.create = function(opt, record) {
             // Required id if storelink
             if (opt.storelink && (!opt.id || opt.in_loop)) {
                 opt.id = this.autoid(opt.xtype);
+                opt_extended.id = opt.id;
             }
             
             // If record is object replace {field} by record values
@@ -3291,16 +3352,13 @@ cb.create = function(opt, record) {
             }
             
             // Storelink // // // // /
-            if (opt.storelink) {
+            if (opt.storelink && !opt.in_loop) {
                 if (opt.store) {
                     if (!cb.module.storelink[opt.store]) {
                         cb.module.storelink[opt.store] = [];
                     }
-                    for (var i = 0; i < cb.module.storelink[opt.store].length; i ++) {
-                        if (cb.module.storelink[opt.store][i].ele == ele.id) break;
-                    }
-                    if (i == cb.module.storelink[opt.store].length) {
-                        cb.module.storelink[opt.store].push({ele: ele.id});
+                    if (!cb.module.storelink[opt.store].find(function (el) {return el.ele == ele.id})) {
+                    	cb.module.storelink[opt.store].push({ele: ele.id});
                     }
                 }
             }
@@ -3321,7 +3379,7 @@ cb.create = function(opt, record) {
             for (var i=0; i<methods.length; i++) {
                 if (typeof opt_extended[methods[i]] === 'function') {
                     ele[methods[i]] = opt_extended[methods[i]];
-                }else{
+                } else if (methods[i] != 'in_loop'){
                     ele.opt[methods[i]] = opt_extended[methods[i]];
                 }
             }
