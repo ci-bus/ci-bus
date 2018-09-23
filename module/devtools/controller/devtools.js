@@ -19,6 +19,8 @@ cb.define({
 				data: {
 					name: nameProject
 				}
+			}, function () {
+				cb.load('store', 'devtools', 'dev', {action: 'get_list_modules'});
 			});
 		} else {
 			this.alert('Write name project first', 'warning');
