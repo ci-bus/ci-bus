@@ -61,6 +61,7 @@ cb.define({
 			
 			items: [{
 				xtype: 'button',
+				storelink: true,
 				field: 'text1'
 			},{
 				xtype: 'button',

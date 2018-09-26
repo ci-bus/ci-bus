@@ -373,6 +373,12 @@ cb.base.store = {
 	                        var record = cb.fetchFromObject(this.getData(), ele.getOpt().field);
 	                        if ($.isFunction(ele.setData)) {
 	                        	ele.setData(record);
+	                        } else { // Replace element
+	                        	var rdata = {};
+	                        	rdata[field] = record;
+	                        	$('#'+strlk[i].ele).replaceWith(cb.create(ele.getOpt(), rdata));
+	                        	strlk.splice(i, 1);
+	                    		i --;
 	                        }
 	                    }
 		            }
@@ -3301,7 +3307,7 @@ cb.create = function(opt, record) {
             return ele;
         }
         else
-        {
+        {        	
             // Required id if storelink
             if (opt.storelink && (!opt.id || opt.in_loop)) {
                 opt.id = this.autoid(opt.xtype);
@@ -3353,12 +3359,13 @@ cb.create = function(opt, record) {
             
             // Storelink // // // // /
             if (opt.storelink && !opt.in_loop) {
-                if (opt.store) {
-                    if (!cb.module.storelink[opt.store]) {
-                        cb.module.storelink[opt.store] = [];
+                if (opt.store || opt.ref_store) {
+                	var temp_store = opt.store? opt.store: opt.ref_store;
+                    if (!cb.module.storelink[temp_store]) {
+                        cb.module.storelink[temp_store] = [];
                     }
-                    if (!cb.module.storelink[opt.store].find(function (el) {return el.ele == ele.id})) {
-                    	cb.module.storelink[opt.store].push({ele: ele.id});
+                    if (!cb.module.storelink[temp_store].find(function (el) {return el.ele == ele.id})) {
+                    	cb.module.storelink[temp_store].push({ele: ele.id});
                     }
                 }
             }
@@ -3368,6 +3375,9 @@ cb.create = function(opt, record) {
             {
                 for (var a=0; a<opt.items.length; a++)
                 {
+                	if (opt.store && !opt.items[a].store) {
+                		opt.items[a].ref_store = opt.store;
+                	}
                     $(ele).append(this.create(this.cloneObject(opt.items[a]), record));
                 }
             }
