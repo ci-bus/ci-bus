@@ -1240,18 +1240,6 @@ cb.send = function(formn, module, store, callback)
     });
 };
 
-cb.require = function(dt, callback)
-{
-    $.ajax({
-        dataType: "script",
-        cache: true,
-        method: 'post',
-        data: {data:JSON.stringify(dt)},
-        url: 'require',
-        success: callback
-    });
-};
-
 // Funciona para cargar varios controladores y vistas en una sola llamada
 cb.loadAll = function(dt, callback)
 {
@@ -1390,13 +1378,7 @@ cb.define = function(obj)
         
         if (obj.xtype == 'store')
         {
-            // TODO Refrescar elementos que carguen datos de este store
-            // En planificación
             cb.getStore(obj.name).storelink();
-        }
-        
-        if ($.isArray(obj['require'])) {
-            this.require(obj['require']);
         }
         
         // Add routes
@@ -2698,10 +2680,6 @@ cb.module.bootstrapComponent = {
         }
         $(ele).attr('id', opt.id);
         opt.id = null;
-        if (opt.require) {
-            cb.require(opt.require);
-            opt.require = null;
-        }
         if (opt.name) {
             $(ele).attr('name', opt.name);
             opt.name = null;
@@ -2920,9 +2898,6 @@ cb.module.cbComponent = {
 
 // Para el seteo de propiedades
 cb.props = {
-    'require': function(ele, opt) {
-        cb.require(opt.require);
-    },
     'cls': function(ele, opt) {
         if (!opt.nocls) {
             $(ele).addClass(opt.cls);

@@ -634,12 +634,6 @@ cb.getStore('global').sort('tags', function(a, b){
 		                'simil' => 'https://api.jquery.com/click/ https://api.jquery.com/dblclick/ https://api.jquery.com/mouseover/ https://api.jquery.com/mouseout/ https://api.jquery.com/focus/ https://api.jquery.com/blur/'
 		            ),
 		            array(
-		                'prop' => 'require',
-		                'param' => '1. Object with the properties xtype, module, name and data (optional)',
-		                'action' => 'Similar to the cb.load function',
-		                'example' => "require: {xtype: 'store', module: 'test', name: 'test', data: {action: 'dotest'}}"
-		            ),
-		            array(
 		                'prop' => 'cls',
 		                'param' => '1. Classes in plain text separated by spaces',
 		                'action' => 'Apply the classes to the class attribute of the element',
