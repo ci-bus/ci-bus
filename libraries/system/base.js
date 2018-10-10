@@ -1669,11 +1669,13 @@ cb.extend = function(opt1, opt2) {
         opt2.forEach(function(ele, idx) {
             opt1[idx] = ele;
         });
+    } else {
+        return $.extend(opt1, opt2);
     }
     return opt1;
 }
 
-//Funciones para clonar
+// Funcions to clone
 cb.clone = function(data) {
     if ($.isPlainObject(data)) {
         data = this.cloneObject(data);
