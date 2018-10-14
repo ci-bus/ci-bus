@@ -48,11 +48,8 @@ cb.define({
 		// cb.get('store', 'test2').sort('b', function(a,b){ return b.a - a.a; })
 
 		cb.create({
-
 			xtype: 'div',
-			
 			renderTo: 'body',
-			
 			store: 'test',
 			
 			defaults: {
@@ -61,23 +58,57 @@ cb.define({
 			
 			items: [{
 				xtype: 'button',
+				field: 'text1',
 				storelink: true,
-				field: 'text1'
-			},{
+				setData: function (record) {
+					cb.getCmp(this).text(record);
+				}
+			}, {
 				xtype: 'button',
-				field: 'text2'
-			},{
+				field: 'text2',
+				storelink: true
+			}, {
 				xtype: 'button',
 				field: 'text3'
-			},{
+			}, {
 				xtype: 'button',
 				field: 'tags1'
-			},{
+			}, {
 				xtype: 'button',
 				field: 'tags2',
 				text: '{name}'
 			}]
 			
+		});
+		
+		cb.create({
+			xtype: 'div',
+			appendTo: 'body',
+			store: 'test',
+			
+			defaults: {
+				margin: '10px 0px 0px 10px'
+			},
+			
+			items: [{
+				text: 'Change store value button aaa with custon setData function'
+			}, {
+				xtype: 'button',
+				text: 'Change store value',
+				click: function () {
+					cb.getStore('test').setData('New value', 'text1');
+				}
+			}, {
+				xtype: 'br'
+			}, {
+				text: 'Change store value button bbb replacing element'
+			}, {
+				xtype: 'button',
+				text: 'Change store value',
+				click: function () {
+					cb.getStore('test').setData('New value 2', 'text2');
+				}
+			}]
 		});
 
 		cb.create({
@@ -98,7 +129,7 @@ cb.define({
 					xtype: 'title',
 					field: 'text1'
 				}]
-			},{
+			}, {
 				xtype: 'body',
 				items: [{
 					xtype: 'button',
@@ -112,7 +143,7 @@ cb.define({
 						}
 					}
 				}]
-			},{
+			}, {
 				xtype: 'footer',
 				items: [{
 					xtype: 'button',
@@ -133,7 +164,7 @@ cb.define({
 						field: 'name'
 					}]
 				}]
-			},{
+			}, {
 				xtype: 'button',
 				text: 'Test load store with new data',
 				margin: 10,
@@ -185,7 +216,7 @@ cb.define({
 						pointMin: 0
 					}]
 				}]
-			},{
+			}, {
 				defaults: {
 					xtype: 'button',
 					margin: '0 0 10px 0'
@@ -198,9 +229,9 @@ cb.define({
 							cb.getStore('test2').sort(fields[l], 'asc');
 						}
 					}
-				},{
+				}, {
 					xtype: 'br'
-				},{
+				}, {
 					text: 'Ordenar DESC',
 					click: function(){
 						var fields = ['a'];
@@ -208,9 +239,9 @@ cb.define({
 							cb.getStore('test2').sort(fields[l], 'desc');
 						}
 					}
-				},{
+				}, {
 					xtype: 'br'
-				},{
+				}, {
 					text: 'Restaurar',
 					click: function(){
 						var fields = ['a'];
@@ -218,9 +249,9 @@ cb.define({
 							cb.getStore('test2').restore(fields[l]);
 						}
 					}
-				},{
+				}, {
 					xtype: 'br'
-				},{
+				}, {
 					text: 'Generar',
 					click: function(){
 						if(!cb.aniline){
@@ -241,9 +272,9 @@ cb.define({
 							}, 50);
 						}
 					}
-				},{
+				}, {
 					xtype: 'br'
-				},{
+				}, {
 					text: 'Parar de generar',
 					click: function(){
 						if(cb.aniline){
