@@ -1399,7 +1399,7 @@ cb.define = function(obj)
         if ($.isFunction(obj['onload'])) {
             if (cb.module.parseData[obj.name]) {
                 obj['onload'](cb.module.parseData[obj.name]);
-            }else{
+            } else {
                 obj['onload']();
             }
         }
