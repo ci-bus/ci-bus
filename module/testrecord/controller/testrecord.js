@@ -44,8 +44,9 @@ cb.define({
 			}
 		});
 		
-		//cb.get('store', 'test2').sort({ data: 'a', order: 'desc'})
-		// cb.get('store', 'test2').sort('b', function(a,b){ return b.a - a.a; })
+		// cb.get('store', 'test2').sort({ data: 'a', order: 'desc'})
+		// cb.get('store', 'test2').sort('a', function(a, b){ return a - b; })
+		// cb.get('store', 'test2').sort('b', function(a, b){ return a.a - b.a; })
 
 		cb.create({
 			xtype: 'div',
@@ -76,7 +77,8 @@ cb.define({
 			}, {
 				xtype: 'button',
 				field: 'tags2',
-				text: '{name}'
+				text: '{name}',
+				storelink: true
 			}]
 			
 		});
@@ -137,9 +139,9 @@ cb.define({
 					field: 'tags1',
 					listeners: {
 						click: function(){
-							console.log(cb.getCmp(this));
-							console.log(cb.getCmp($(this).parent()).getRecord());
-							console.log(cb.getCmp(this).getValue());
+							console.log('Button:', cb.getCmp(this));
+							console.log('Parent record:', cb.getCmp($(this).parent()).getRecord());
+							console.log('Value:', cb.getCmp(this).getValue());
 						}
 					}
 				}]
@@ -179,9 +181,11 @@ cb.define({
 								text3:'lll', 
 								tags1: ['mmm', 'nnn', 'ooo'], 
 								tags2: [{name:'ppp'}, {name:'qqq'}, {name:'rrr'}]
+							},
+							onload: function () {
+							    alert('Store cargado');
 							}
 						});
-						alert('Store cargado');
 					}
 				}
 			}]
