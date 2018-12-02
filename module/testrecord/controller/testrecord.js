@@ -77,7 +77,8 @@ cb.define({
 			}, {
 				xtype: 'button',
 				field: 'tags2',
-				text: '{name}'
+				text: '{name}',
+				storelink: true
 			}]
 			
 		});

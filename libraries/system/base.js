@@ -349,12 +349,18 @@ cb.base.store = {
             var strlk = cb.module.storelink[this.name];
             var limit = 0;
             for (var i = 0; i < strlk.length - limit; i ++) {
-            	if ($.isArray(strlk[i].ele)) { // If record is array and create multiple elements
-            		this.storelinkUpdateElements(strlk[i]);
-            		// Remove current config
-            		strlk.splice(i, 1);
-            		i --;
-            		limit ++;
+                if ($.isArray(strlk[i].ele)) { // If record is array and create multiple elements
+                    var ele = cb.getCmp('#'+strlk[i].ele[0]);
+                    if (ele.getOpt().field == field) {
+                        var record = cb.fetchFromObject(this.getData(), field);
+                        var rdata = {};
+                        rdata[field] = record;
+                        this.storelinkUpdateElements(strlk[i], rdata);
+                        // Remove config
+                        strlk.splice(i, 1);
+                        i --;
+                        limit ++;
+                    }
         		} else {
         			var ele = cb.getCmp('#'+strlk[i].ele);
 		        	if (!field) {
@@ -370,16 +376,19 @@ cb.base.store = {
 	                    }
 		            } else {
 	                    if (ele.getOpt().field == field) {
-	                        var record = cb.fetchFromObject(this.getData(), ele.getOpt().field);
+                            var record = cb.fetchFromObject(this.getData(), ele.getOpt().field);
+                            var rdata = {};
+	                        rdata[field] = record;
 	                        if ($.isFunction(ele.setData)) {
 	                        	ele.setData(record);
-	                        } else { // Replace element
-	                        	var rdata = {};
-	                        	rdata[field] = record;
-	                        	$('#'+strlk[i].ele).replaceWith(cb.create(ele.getOpt(), rdata));
-	                        	strlk.splice(i, 1);
-	                    		i --;
-	                        }
+                            } else {
+                                // Remove config
+                                strlk.splice(i, 1);
+            		            i --;
+                                limit ++;
+                                // Replace element
+                                $('#'+ele.id).replaceWith(cb.create(ele.getOpt(), rdata));
+                            }
 	                    }
 		            }
         		}
@@ -387,11 +396,11 @@ cb.base.store = {
         }
     },
     
-    storelinkUpdateElements: function (strlk) {
-    	for (var t = strlk.ele.length; t > 0; t --) {
+    storelinkUpdateElements: function (strlk, record) {
+    	for (var t = strlk.ele.length - 1; t > 0; t --) {
     		$('#'+strlk.ele[t]).remove();
     	}
-    	$('#'+strlk.ele[0]).replaceWith(cb.create(cb.getCmp('#'+strlk.ele[0]).getOpt()));
+    	$('#'+strlk.ele[0]).replaceWith(cb.create(cb.getCmp('#'+strlk.ele[0]).getOpt(), record));
     },
     
     getName: function()
@@ -3270,15 +3279,16 @@ cb.create = function(opt, record) {
                 }
             }
             if (opt.storelink) {
-            	if (opt.store) {
-                    if (!cb.module.storelink[opt.store]) {
-                        cb.module.storelink[opt.store] = [];
+                var temp_store = opt.store || opt.ref_store;
+            	if (temp_store) {
+                    if (!cb.module.storelink[temp_store]) {
+                        cb.module.storelink[temp_store] = [];
                     }
                     var ele_ids = [];
                     for (var f = 0; f < ele.length; f ++) {
                     	ele_ids.push(ele[f].id);
                     }
-                    cb.module.storelink[opt.store].push({ele: ele_ids});
+                    cb.module.storelink[temp_store].push({ele: ele_ids});
                 }
             }
             return ele;
