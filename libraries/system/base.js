@@ -92,7 +92,11 @@ cb.eleAcceptArrayRecord = ['polyline', 'tbody', 'grid'];
 // Al crear un elemento si tiene field definido
 // pero el store no tiene valor no se crea
 // añadiendo el xtype a este array lo evitamos
+// tambien podemos definir 'always: true'
 cb.eleCreateWithoutRecord = ['td', 'tr', 'th'];
+// Elementos que no propaga el record
+// para evitar definir 'propagateRecord: true'
+cb.noPropagateRecord = ['select'];
 
 // El route te permine ejecutar una funcion de un controlador visitando un hash #ejemplo
 cb.router = {
@@ -1242,7 +1246,7 @@ cb.send = function(formn, module, store, callback)
       dataType: "script",
       cache: true,
       url: module+'/store/'+store,
-      method: 'post',
+      method: 'POST',
       contentType: "application/x-www-form-urlencoded;charset=UTF-8",
       data: $.type(formn) == 'string'? $("form[name='"+formn+"']").serializeArray(): formn,
       success: callback
@@ -2593,7 +2597,12 @@ cb.module.bootstrapComponent = {
         {
             for (var s=0; s<opt.items.length; s++)
             {
-                if (!opt.items[s].xtype) opt.items[s].xtype = 'option';
+                if (!opt.items[s].xtype) {
+                    opt.items[s].xtype = 'option';
+                    if (opt.items[s].value == record) {
+                        opt.items[s].selected=true;
+                    }
+                }
             }
         }
         ele = cb.commonProp(ele, opt);
@@ -3036,6 +3045,11 @@ cb.props = {
     'src': function(ele, opt) {
         $(ele).attr('src', opt.src);
     },
+    'selected': function (ele, opt) {
+        if (opt.selected) {
+            $(ele).attr('selected', 'selected');
+        }
+    },
     'badge': function(ele, opt) {
         $(ele).append('&nbsp;').append(cb.create({
             xtype: 'badge',
@@ -3058,6 +3072,12 @@ cb.props = {
     },
     'blur': function(ele, opt) {
         $(ele).blur(opt.blur);
+    },
+    'keydown': function(ele, opt) {
+        $(ele).keydown(opt.keydown);
+    },
+    'keyup': function(ele, opt) {
+        $(ele).keyup(opt.keyup);
     }
 };
 
@@ -3184,10 +3204,10 @@ cb.create = function(opt, record) {
                         if (record) {
                             if (record[opt.field]) {
                                 record = record[opt.field];
-                            } else if (cb.eleCreateWithoutRecord.indexOf(opt.xtype) < 0) {
+                            } else if (cb.eleCreateWithoutRecord.indexOf(opt.xtype) < 0 && !opt.always) {
                                 return;
                             }
-                        } else if (cb.eleCreateWithoutRecord.indexOf(opt.xtype) < 0) {
+                        } else if (cb.eleCreateWithoutRecord.indexOf(opt.xtype) < 0 && !opt.always) {
                             return;
                         }
                     }
@@ -3360,6 +3380,9 @@ cb.create = function(opt, record) {
             // Add child items
             if ($.isArray(opt.items) && !opt.noitems)
             {
+                if (cb.noPropagateRecord.indexOf(opt.xtype) >= 0 && !opt.propagateRecord) {
+                    record = null;
+                }
                 for (var a=0; a<opt.items.length; a++)
                 {
                 	if (opt.store && !opt.items[a].store) {
