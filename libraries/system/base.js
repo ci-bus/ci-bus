@@ -353,60 +353,47 @@ cb.base.store = {
             var strlk = cb.module.storelink[this.name];
             var limit = 0;
             for (var i = 0; i < strlk.length - limit; i ++) {
-                if ($.isArray(strlk[i].ele)) { // If record is array and create multiple elements
-                    var ele = cb.getCmp('#'+strlk[i].ele[0]);
-                    if (ele.getOpt().field == field) {
-                        var record = cb.fetchFromObject(this.getData(), field);
-                        var rdata = {};
-                        rdata[field] = record;
-                        this.storelinkUpdateElements(strlk[i], rdata);
-                        // Remove config
+                if (!$.isArray(strlk[i].ele)) {
+                    strlk[i].ele = [strlk[i].ele];
+                }
+                var ele = cb.getCmp('#'+strlk[i].ele[0]);
+                // If update a especific field of store
+                // or update all store and element have field defined
+                if (field && ele.getOpt().field == field || (!field && ele.getOpt().field)) {
+                    var record = cb.fetchFromObject(this.getData(), ele.getOpt().field);
+                    var rdata = {};
+                    rdata[ele.getOpt().field] = record;
+                // If get direct store values without field defined
+                } else {
+                    var rdata = this.getData();
+                }
+                // If have setData function defined
+                if ($.isFunction(ele.setData)) {
+                    ele.setData(record);
+                } else {
+                    // Replace elements
+                    this.storelinkUpdateElements(strlk[i], rdata);
+                    // Remove last config
+                    if ($.isArray(rdata)) {
                         strlk.splice(i, 1);
                         i --;
                         limit ++;
                     }
-        		} else {
-        			var ele = cb.getCmp('#'+strlk[i].ele);
-		        	if (!field) {
-	        			if (ele.getOpt().field) {
-	                        var record = cb.fetchFromObject(this.getData(), ele.getOpt().field);
-	                        if ($.isFunction(ele.setData)) {
-	                        	ele.setData(record);
-	                        }
-	                    } else {
-	                    	if ($.isFunction(ele.setData)) {
-	                        	ele.setData(this.getData());
-	                        }
-	                    }
-		            } else {
-	                    if (ele.getOpt().field == field) {
-                            var record = cb.fetchFromObject(this.getData(), ele.getOpt().field);
-                            var rdata = {};
-	                        rdata[field] = record;
-	                        if ($.isFunction(ele.setData)) {
-	                        	ele.setData(record);
-                            } else {
-                                // Remove config
-                                strlk.splice(i, 1);
-            		            i --;
-                                limit ++;
-                                // Replace element
-                                $('#'+ele.id).replaceWith(cb.create(ele.getOpt(), rdata));
-                            }
-	                    }
-		            }
-        		}
+                }
             }
         }
     },
     
     storelinkUpdateElements: function (strlk, record) {
-    	for (var t = strlk.ele.length - 1; t > 0; t --) {
-    		$('#'+strlk.ele[t]).remove();
-    	}
-    	$('#'+strlk.ele[0]).replaceWith(cb.create(cb.getCmp('#'+strlk.ele[0]).getOpt(), record));
+        if (record) {
+            for (var t = strlk.ele.length - 1; t > 0; t --) {
+                $('#'+strlk.ele[t]).remove();
+            }
+            var opt = cb.removeRenderes(cb.getCmp('#'+strlk.ele[0]).getOpt());
+            $('#'+strlk.ele[0]).replaceWith(cb.create(opt, record));
+        }
     },
-    
+
     getName: function()
     {
         return this.name;
@@ -1598,6 +1585,16 @@ cb.delConfig = function(va, var2) {
     }
 }
 
+cb.removeRenderes = function(opt) {
+    $(opt).removeProp('renderTo');
+    $(opt).removeProp('appendTo');
+    $(opt).removeProp('prependTo');
+    $(opt).removeProp('beforeTo');
+    $(opt).removeProp('afterTo');
+    $(opt).removeProp('record');
+    return opt;
+};
+
 cb.render = function(obj, callback)
 {
     var vw = obj.name;
@@ -1621,6 +1618,14 @@ cb.render = function(obj, callback)
         else if (obj.prependTo)
         {
             obj.items = this.setMissingDinamicValue(obj.items, 'prependTo', obj.prependTo);
+        }
+        else if (obj.beforeTo)
+        {
+            obj.items = this.setMissingDinamicValue(obj.items, 'beforeTo', obj.beforeTo);
+        }
+        else if (obj.afterTo)
+        {
+            obj.items = this.setMissingDinamicValue(obj.items, 'afterTo', obj.afterTo);
         }
     }
     
@@ -2902,12 +2907,7 @@ cb.module.cbComponent = {
         }
         
         // Remove innecesary prop
-        $(opt).removeProp('renderTo');
-        $(opt).removeProp('appendTo');
-        $(opt).removeProp('prependTo');
-        $(opt).removeProp('beforeTo');
-        $(opt).removeProp('afterTo');
-        $(opt).removeProp('record');
+        opt = cb.removeRenderes(opt);
         
         var ele = cb.create(opt);
         return ele;
