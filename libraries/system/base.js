@@ -1341,7 +1341,7 @@ cb.define = function(obj)
         {
             for (var fie in this.module[obj.xtype][obj.name].data)
             {
-                if (!obj.data[fie]) {
+                if (obj.data[fie] === null || typeof obj.data[fie] === 'undefined') {
                     obj.data[fie] = this.module[obj.xtype][obj.name].data[fie];
                 }
             }
