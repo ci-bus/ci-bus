@@ -31,6 +31,35 @@
                 $this->get_products();
             }
         }
+
+        function add_list ($id) {
+            $res = $this->insert('compare_shop_list', array(
+                'id_product' => $id
+            ));
+
+            if ($res) {
+                $this->load_list();
+            } else {
+                echo $this->error();
+            }
+        }
+
+        function load_list () {
+            $this->select('compare_shop_list.id as id, product, shop, price, quality');
+            $this->from('compare_shop_list');
+			$this->join('compare_shop', 'compare_shop_list.id_product = compare_shop.id');
+            $this->orderBy('compare_shop_list.id', 'asc');
+            $res = $this->getArray();
+            $this->parseStore('products_list', array('products' => $res));
+        }
+
+        function delete_list ($id) {
+            $this->where('id', $id);
+            if ($this->delete('compare_shop_list')) {
+                $this->reset();
+                $this->load_list();
+            }
+        }
     }
 ?>
             	

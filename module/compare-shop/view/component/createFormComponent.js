@@ -55,6 +55,9 @@ cb.define({
                 field: 'quality',
                 always: true,
                 items: [{
+                    text: '¿ ?',
+                    value: ''
+                }, {
                     text: 'Mala',
                     value: 'Mala'
                 },

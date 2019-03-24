@@ -22,7 +22,7 @@
                 ));
             }
             
-            if($res) {
+            if ($res) {
                 $this->reset();
                 $this->get_products();
             } else {
