@@ -353,6 +353,8 @@ cb.base.store = {
             var strlk = cb.module.storelink[this.name];
             var limit = 0;
             for (var i = 0; i < strlk.length - limit; i ++) {
+                var record = null;
+                var rdata = null;
                 if (!$.isArray(strlk[i].ele)) {
                     strlk[i].ele = [strlk[i].ele];
                 }
@@ -360,24 +362,26 @@ cb.base.store = {
                 // If update a especific field of store
                 // or update all store and element have field defined
                 if (field && ele.getOpt().field == field || (!field && ele.getOpt().field)) {
-                    var record = cb.fetchFromObject(this.getData(), ele.getOpt().field);
-                    var rdata = {};
+                    record = cb.fetchFromObject(this.getData(), ele.getOpt().field);
+                    rdata = {};
                     rdata[ele.getOpt().field] = record;
                 // If get direct store values without field defined
-                } else {
-                    var rdata = this.getData();
+                } else if (!field && !ele.getOpt().field) {
+                    rdata = record = this.getData();
                 }
-                // If have setData function defined
-                if ($.isFunction(ele.setData)) {
-                    ele.setData(record);
-                } else {
-                    // Replace elements
-                    this.storelinkUpdateElements(strlk[i], rdata);
-                    // Remove last config
-                    if ($.isArray(rdata)) {
-                        strlk.splice(i, 1);
-                        i --;
-                        limit ++;
+                if (rdata) {
+                    // If have setData function defined
+                    if ($.isFunction(ele.setData)) {
+                        ele.setData(record);
+                    } else {
+                        // Replace elements
+                        this.storelinkUpdateElements(strlk[i], rdata);
+                        // Remove last config
+                        if ($.isArray(rdata) || $.isArray(record)) {
+                            strlk.splice(i, 1);
+                            i --;
+                            limit ++;
+                        }
                     }
                 }
             }
