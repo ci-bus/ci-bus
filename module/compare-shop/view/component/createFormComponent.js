@@ -8,6 +8,12 @@ cb.define({
         items: [{
             xtype: 'input',
             type: 'hidden',
+            name: 'search',
+            store: 'searching',
+            field: 'text'
+        }, {
+            xtype: 'input',
+            type: 'hidden',
             name: 'id',
             value: '{id}'
         }, {

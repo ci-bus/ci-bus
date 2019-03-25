@@ -98,7 +98,7 @@ cb.define({
                             id: 'search_input',
                             store: 'texts',
                             placeholder: '{search}',
-                            keydown: function (e) {
+                            keyup: function (e) {
                                 if ( e.which == 13 || cb.getCmp(this).val() == '') {
                                     e.preventDefault();
                                     cb.ctr('compare-shop', 'search', cb.getCmp(this).val());

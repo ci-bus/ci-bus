@@ -19,7 +19,7 @@
             }
             $this->orderBy('id', 'desc');
             $this->limit(10);
-			$res = $this->getArray('compare_shop');
+            $res = $this->getArray('compare_shop');
 			if(!$res) $res=array();
             $this->parseStore('products', $res);
         }

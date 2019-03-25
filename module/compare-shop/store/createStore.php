@@ -24,17 +24,21 @@
             
             if ($res) {
                 $this->reset();
-                $this->get_products();
+                $this->get_products($data['search']);
             } else {
                 echo $this->error();
             }
         }
 
-        function get_products () {
-			$this->select('id, product, shop, price, quality');
+        function get_products ($search) {
+            $this->select('id, product, shop, price, quality');
+			if ($search) {
+                $this->where('product COLLATE UTF8_GENERAL_CI', '%'.$search.'%', 'like');
+                $this->orWhere('shop COLLATE UTF8_GENERAL_CI', '%'.$search.'%', 'like');
+            }
             $this->orderBy('id', 'desc');
             $this->limit(10);
-			$res = $this->getArray('compare_shop');
+            $res = $this->getArray('compare_shop');
 			if(!$res) $res=array();
             $this->parseStore('products', $res);
         }

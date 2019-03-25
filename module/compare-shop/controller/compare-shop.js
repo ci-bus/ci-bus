@@ -17,10 +17,16 @@ cb.define({
                 name: 'editing',
                 data: {}
             });
+            cb.define({
+                xtype: 'store',
+                name: 'searching',
+                data: {}
+            });
         });
     },
 
     search: function (text_search) {
+        cb.getStore('searching').setData({text: text_search});
         cb.load('store', 'compare-shop', 'main', {action: 'get_products', data: text_search});
     },
 
