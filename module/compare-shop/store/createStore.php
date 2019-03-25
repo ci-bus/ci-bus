@@ -35,9 +35,10 @@
 			if ($search) {
                 $this->where('product COLLATE UTF8_GENERAL_CI', '%'.$search.'%', 'like');
                 $this->orWhere('shop COLLATE UTF8_GENERAL_CI', '%'.$search.'%', 'like');
+            } else {
+                $this->limit(10);
             }
             $this->orderBy('id', 'desc');
-            $this->limit(10);
             $res = $this->getArray('compare_shop');
 			if(!$res) $res=array();
             $this->parseStore('products', $res);
