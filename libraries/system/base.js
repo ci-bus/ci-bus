@@ -3144,7 +3144,11 @@ cb.create = function(opt, record) {
         if ($.isPlainObject(cb.module.component[opt.xtype]))
         {
             opt = this.mergeTwoObjects(cb.clone(cb.module.component[opt.xtype]), opt);
-            opt.xtype = 'component';
+            if (opt.ctype) {
+                opt.xtype = opt.ctype;
+            } else {
+                delete opt.name;
+            }
         }
         
         // Default extend
