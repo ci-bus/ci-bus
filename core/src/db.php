@@ -7,7 +7,7 @@ class Db extends Config {
 		private $tables;
 		var $sql;
 		/*
-		function __construct($id_usuario){
+		function __construct($id_usuario) {
 		    
 			$this->sql = (object) array();
 			$this->sqlSegura = (object) array();
@@ -18,26 +18,26 @@ class Db extends Config {
 													'config_value'=>'700');
 		}
 		
-		private function asegurar(){
+		private function asegurar() {
 			
 			$this->cogerPermisosTabla();
 			
-			if(!$this->sqlSegura->idUsuarioGrupo){
+			if (!$this->sqlSegura->idUsuarioGrupo) {
 				
 				$this->cogerIdUsuarioGrupo();
 			}
 		}
 		
-		private function cogerPermisosTabla(){
+		private function cogerPermisosTabla() {
 			
-			foreach($this->tables as $t){
+			foreach ($this->tables as $t) {
 				
 				$query = "SELECT permiso FROM ".$this->getConfig("db", "prefix")."permiso_table WHERE tabla='".$t."' AND id_usuario=".$this->sqlSegura->id_usuario." LIMIT 1";
 				$this->sqlSegura->permiso[$t] = $this->query($query);
 			}
 		}
 		
-		private function cogerIdUsuarioGrupo(){
+		private function cogerIdUsuarioGrupo() {
 			include "configbd.php";
 			$query = "SELECT id_usuario FROM ".$this->getConfig("db", "prefix")."usuario WHERE id_grupo_trabajo=".$this->sqlSegura->idGrupoTrabajo." AND tipo='grupo' LIMIT 1";
 			$this->sqlSegura->idUsuarioGrupo = $this->query($query);
@@ -53,48 +53,48 @@ class Db extends Config {
 		public function getArray($table = false)
 		{
 			$res = $this->get($table);
-			if(is_object($res)) return array($res);
+			if (is_object($res)) return array($res);
 			return $res;
 		}
 		
 		public function getQuery($table = false)
 		{
-		    if($table){
+		    if ($table) {
 		        
 		        $this->from($table);
 		    }
 		    
-		    if($this->getPart("select")){
+		    if ($this->getPart("select")) {
 		        
 		        $query = "SELECT ".$this->getPart("select");
-		    }else{
+		    } else {
 		        
 		        $query = "SELECT *";
 		    }
 		    
 		    $query .= " FROM ".$this->getPart("from");
 		    
-		    if($this->getPart("join")){
+		    if ($this->getPart("join")) {
 		        
 		        $query .= " ".$this->getPart("join");
 		    }
 		    
-		    if($this->getPart("where")){
+		    if ($this->getPart("where")) {
 		        
 		        $query .= " WHERE ".$this->getPart("where");
 		    }
 		    
-		    if($this->getPart("group_by")){
+		    if ($this->getPart("group_by")) {
 		        
 		        $query .= " GROUP BY ".$this->getPart("group_by");
 		    }
 		    
-		    if($this->getPart("order_by")){
+		    if ($this->getPart("order_by")) {
 		        
 		        $query .= " ORDER BY ".$this->getPart("order_by");
 		    }
 		    
-		    if($this->getPart("limit")){
+		    if ($this->getPart("limit")) {
 		        
 		        $query .= " LIMIT ".$this->getPart("limit");
 		    }
@@ -111,10 +111,10 @@ class Db extends Config {
 						
 			$res = $this->query($query);
 						
-			if($this->numRows()){
+			if ($this->numRows()) {
 				
 				return $this->getResult();
-			}else{
+			} else {
 				
 				return false;
 			}
@@ -122,7 +122,7 @@ class Db extends Config {
 		
 		public function error($er = false)
 		{
-			if($er)
+			if ($er)
 			{
 				$this->setSubConfig("db", "error", $er);
 			}
@@ -134,12 +134,12 @@ class Db extends Config {
 		
 		public function delete($table = false)
 		{
-			if(!$this->getPart("where")){
+			if (!$this->getPart("where")) {
 				
 				$this->error("WHERE is missing");
 				return false;
 				
-			}else if($table){
+			}else if ($table) {
 				
 				$this->from($table);
 
@@ -148,7 +148,7 @@ class Db extends Config {
 				$query .= " WHERE ".$this->getPart("where");
 				
 				return $this->query($query);
-			}else{
+			} else {
 				
 				return false;
 			}
@@ -156,17 +156,17 @@ class Db extends Config {
 		
 		public function update($table = false, $data = false)
 		{
-			if(!$this->getPart("where")){
+			if (!$this->getPart("where")) {
 				
 				$this->error("WHERE is missing");
 				return false;
 				
-			}else if($table && is_array($data)){
+			}else if ($table && is_array($data)) {
 				
 				$this->tables = array(trim($table));
 				$table = $this->getConfig("db", "prefix").trim($table);
 				
-				foreach($data as $f => $d){
+				foreach ($data as $f => $d) {
 					
 					$this->add("values", ", ");
 					$this->add("values", $f." = ".$this->setQuotes($d), true);
@@ -177,7 +177,7 @@ class Db extends Config {
 				$query .= " WHERE ".$this->getPart("where");
 				
 				return $this->query($query);
-			}else{
+			} else {
 				
 				return false;
 			}
@@ -185,12 +185,12 @@ class Db extends Config {
 		
 		public function insert($table = false, $data = false)
 		{
-			if($table && is_array($data)){
+			if ($table && is_array($data)) {
 				
 				$this->tables = array(trim($table));
 				$table = $this->getConfig("db", "prefix").trim($table);
 				
-				foreach($data as $f => $d){
+				foreach ($data as $f => $d) {
 					
 					$this->add("fields", ", ");
 					$this->add("fields", $f, true);
@@ -202,7 +202,7 @@ class Db extends Config {
 				
 				return $this->query($query);
 								
-			}else{
+			} else {
 				
 				return false;
 			}
@@ -210,12 +210,12 @@ class Db extends Config {
 		
 		public function setQuotes($v = "")
 		{
-			if($v!="" && !is_numeric($v) && $v!="NULL"){
-				while(strpos($v, "\\'")!==false){
+			if ($v!="" && !is_numeric($v) && $v!="NULL") {
+				while(strpos($v, "\\'")!==false) {
 					$v = str_replace("\\'", "'", $v);
 				}
 				$v = str_replace("'", "\\'", $v);
-				if($this->getConfig("db", 'anticode')){
+				if ($this->getConfig("db", 'anticode')) {
 					$v = str_replace("<", "&lt;", $v);
 					$v = str_replace(">", "&gt;", $v);
 				}
@@ -230,22 +230,47 @@ class Db extends Config {
 		
 		public function groupBy($field = false)
 		{
-			if($field){
-				
+			if ($field)
+			{
 				$this->add("group_by", ", ");
-				if(strpos($field, ".")){
+				if (strpos($field, ".")) {
 					$field = $this->getConfig("db", "prefix").trim($field);
 				}
 				$this->add("group_by", $field, true);
 			}
 		}
-		
-		public function orderBy($field = false, $asde = "DESC")
+
+		public function setPrefixToList($list)
 		{
-			if($field){
-				
+			$res = array();
+			$lis = explode(",", $list);
+			foreach ($lis as $l) {
+				if (strpos($l, ".")) {
+					$l = $this->getConfig("db", "prefix").trim($l);
+				}
+				array_push($res, $l);
+			}
+			return implode(", ", $res);
+		}
+		
+		public function orderBy($field = false, $asde = false)
+		{
+			if (!$asde) {
+				if (strpos($field, ",")) {
+					$field = $this->setPrefixToList($field);
+				} else if (!strpos(trim($field), " ")) {
+					$field .= " DESC";
+				}
 				$this->add("order_by", ", ");
-				if(strpos($field, ".")){
+				$this->add("order_by", $field, true);
+			}
+			 else if ($field)
+			{
+				if (!strpos(trim($field), " ")) {
+					$field .= " DESC";
+				}
+				$this->add("order_by", ", ");
+				if (strpos($field, ".")) {
 					$field = $this->getConfig("db", "prefix").trim($field);
 				}
 				$this->add("order_by", $field." ".strtoupper($asde), true);
@@ -254,10 +279,9 @@ class Db extends Config {
 		
 		public function limit($l = 10, $e = false)
 		{
-			if($e){
-				
+			if ($e) {	
 				$this->sql->limit = $l.", ".$e;
-			}else{
+			} else {
 				
 				$this->sql->limit = $l;
 			}
@@ -267,10 +291,9 @@ class Db extends Config {
 		{
 			$prf = $this->getConfig("db", "db_prefix");
 			$va = explode(" ", $var);
-			foreach($va as $v){
-				
-				if(strpos($v, ".")){
-					
+			foreach ($va as $v)
+			{	
+				if (strpos($v, ".")) {
 					$var = str_replace($v, $prf.$v, $var);
 				}
 			}
@@ -281,27 +304,27 @@ class Db extends Config {
 		
 		public function from($table = false)
 		{
-			if($table){
-				
+			if ($table) {
+
 				$this->tables = array();
 				
-				if(is_array($table)){
+				if (is_array($table)) {
 					
-					foreach($table as $t){
+					foreach ($table as $t) {
 						
-						if($t){
+						if ($t) {
 							
 							$this->add("from", ", ");
 							$this->add("from", $this->getConfig("db", "prefix").trim($t), true);
 							$this->tables[] = trim($t);
 						}
 					}
-				}else{
+				} else {
 					
-					if(strpos($table, ",")!==false){
+					if (strpos($table, ",")!==false) {
 						
 						$this->from(explode(",", $table));
-					}else{
+					} else {
 						
 						$this->add("from", ", ");
 						$this->add("from", $this->getConfig("db", "prefix").trim($table), true);
@@ -313,12 +336,12 @@ class Db extends Config {
 		
 		public function getPart($v = false)
 		{
-			if($v){
+			if ($v) {
 				
-				if($this->sql->$v){
+				if ($this->sql->$v) {
 					
 					return $this->sql->$v;
-				}else{
+				} else {
 					
 					return false;
 				}
@@ -335,9 +358,9 @@ class Db extends Config {
 			}
 			else if (is_array($fields))
 			{
-				foreach($fields as $f){
+				foreach ($fields as $f) {
 					
-					if(strpos($f, ".")){
+					if (strpos($f, ".")) {
 						$f = $this->getConfig("db", "prefix").trim($f);
 					}
 					$this->add("select", ", ");
@@ -353,30 +376,30 @@ class Db extends Config {
 		
 		public function where($field, $value = false, $opera = "=")
 		{
-			if( $value !== false ){
+			if ( $value !== false ) {
 				
 				$this->add("where", " AND ");
 				$field = $this->setPrefix($field);
-				if(!is_numeric($value))
+				if (!is_numeric($value))
 				{
 					$value = "'".$value."'";
 				}
 				$this->add("where", $field." ".$opera." ".$value, true);
-			}else{
+			} else {
 				
-				if(is_array( $field )){
+				if (is_array( $field )) {
 					
-					foreach($field as $f => $v){
+					foreach ($field as $f => $v) {
 						
 						$this->add("where", " AND ");
 						$f = $this->setPrefix($f);
-						if(!is_numeric($v))
+						if (!is_numeric($v))
 						{
 							$v = "'".$v."'";
 						}
 						$this->add("where", $f." ".$opera." ".$v, true);
 					}
-				}else{
+				} else {
 					
 					$this->add("where", " AND ");
 					$field = $this->setPrefix($field);
@@ -387,11 +410,11 @@ class Db extends Config {
 		
 		public function orWhere($field, $value = false, $opera = "=")
 		{
-			if( $value !== false )
+			if ( $value !== false )
 			{	
 				$this->add("where", " OR ");
 				$field = $this->setPrefix($field);
-				if(!is_numeric($value))
+				if (!is_numeric($value))
 				{
 					$value = "'".$value."'";
 				}
@@ -399,19 +422,19 @@ class Db extends Config {
 			}
 			else
 			{	
-				if(is_array( $field )){
+				if (is_array( $field )) {
 					
-					foreach($field as $f => $v)
+					foreach ($field as $f => $v)
 					{
 						$this->add("where", " OR ");
 						$f = $this->setPrefix($f);
-						if(!is_numeric($v))
+						if (!is_numeric($v))
 						{
 							$v = "'".$v."'";
 						}
 						$this->add("where", $f." ".$opera." ".$v, true);
 					}
-				}else{
+				} else {
 					
 					$this->add("where", " OR ");
 					$field = $this->setPrefix($field);
@@ -422,7 +445,7 @@ class Db extends Config {
 		
 		private function add($v, $a = " AND ", $force = false)
 		{
-			if(($this->sql->$v || $force) && !is_array($a)){
+			if (($this->sql->$v || $force) && !is_array($a)) {
 				
 				$this->sql->$v .= $a;
 			}
@@ -442,18 +465,18 @@ class Db extends Config {
 		        $this->getConfig("db", "db_pass"),
 		        $this->getConfig("db", "db_database"));
 			
-			if( $charset = $this->getConfig("db", 'charset') )
+			if ( $charset = $this->getConfig("db", 'charset') )
 			{
 				mysqli_set_charset($this->link, $charset);
 				$this->link->set_charset($charset);
 			}
 			
-			if( $this->link->connect_errno ){
+			if ( $this->link->connect_errno ) {
 				
 				$this->setSubConfig("db", "connect_errno", $this->link->connect_errno );
 				return false;
 				
-			}else{
+			} else {
 				
 				return $this->link;
 			}
@@ -463,17 +486,17 @@ class Db extends Config {
 		{
 			$this->setSubConfig("db", "last_sql", $query);
 			
-			if($this->isAlive())
+			if ($this->isAlive())
 			{	
-				if( $result = $this->link->query($query) )
+				if ( $result = $this->link->query($query) )
 				{	
-					if($result->num_rows)
+					if ($result->num_rows)
 					{	
 						$data = array();
-						while ($row = $result->fetch_object()){
+						while ($row = $result->fetch_object()) {
 					        $data[] = $row;
 					    }
-					    if(count($data) == 1){
+					    if (count($data) == 1) {
 					    	$data = $data[0];
 					    }
 						$this->setSubConfig("db", "result", $data );
@@ -486,7 +509,7 @@ class Db extends Config {
 					}
 				}
 				
-				if($this->link->affected_rows)
+				if ($this->link->affected_rows)
 				{	
 					$this->setSubConfig("db", "affected_rows", $this->link->affected_rows );
 				}
@@ -495,7 +518,7 @@ class Db extends Config {
 					$this->setSubConfig("db", "affected_rows", 0 );
 				}
 				
-				if($this->link->insert_id)
+				if ($this->link->insert_id)
 				{
 					$this->setSubConfig("db", "insert_id", $this->link->insert_id );
 				}
@@ -504,7 +527,7 @@ class Db extends Config {
 					$this->setSubConfig("db", "insert_id", 0 );
 				}
 				
-				if($this->link->error)
+				if ($this->link->error)
 				{	
 					$this->error($this->link->error);
 					return false;
@@ -531,14 +554,18 @@ class Db extends Config {
 			$result = $this->getConfig("db", "result" );
 		    return $result;
 		}
+
+		public function tableExists($table) {
+			return $this->query("SELECT 1 FROM `".$table."` LIMIT 1");
+		}
 		
 		public function isAlive()
 		{
-			if(empty($this->link))
+			if (empty($this->link))
 			{
 				return false;
 			}
-			else if(!$this->link->ping())
+			else if (!$this->link->ping())
 			{
 				$this->error($this->link->error);
 				return false;
@@ -584,11 +611,11 @@ class Db extends Config {
 		
 		public function numRows()
 		{
-			if( empty($this->getConfig("db", "num_rows" )) ){
+			if ( empty($this->getConfig("db", "num_rows" )) ) {
 				
 				return 0;
 				
-			}else{
+			} else {
 			
 				return 	$this->getConfig("db", "num_rows" );
 			}

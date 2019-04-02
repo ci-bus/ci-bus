@@ -359,28 +359,34 @@ cb.base.store = {
                     strlk[i].ele = [strlk[i].ele];
                 }
                 var ele = cb.getCmp('#'+strlk[i].ele[0]);
-                // If update a especific field of store
-                // or update all store and element have field defined
-                if (field && ele.getOpt().field == field || (!field && ele.getOpt().field)) {
-                    record = cb.fetchFromObject(this.getData(), ele.getOpt().field);
-                    rdata = {};
-                    rdata[ele.getOpt().field] = record;
-                // If get direct store values without field defined
-                } else if (!field && !ele.getOpt().field) {
-                    rdata = record = this.getData();
-                }
-                if (rdata) {
-                    // If have setData function defined
-                    if ($.isFunction(ele.setData)) {
-                        ele.setData(record);
-                    } else {
-                        // Replace elements
-                        this.storelinkUpdateElements(strlk[i], rdata);
-                        // Remove last config
-                        if ($.isArray(rdata) || $.isArray(record)) {
-                            strlk.splice(i, 1);
-                            i --;
-                            limit ++;
+                if (!ele) {
+                    strlk.splice(i, 1);
+                    i --;
+                    limit ++;
+                } else {
+                    // If update a especific field of store
+                    // or update all store and element have field defined
+                    if (field && ele.getOpt().field == field || (!field && ele.getOpt().field)) {
+                        record = cb.fetchFromObject(this.getData(), ele.getOpt().field);
+                        rdata = {};
+                        rdata[ele.getOpt().field] = record;
+                    // If get direct store values without field defined
+                    } else if (!field && !ele.getOpt().field) {
+                        rdata = record = this.getData();
+                    }
+                    if (rdata) {
+                        // If have setData function defined
+                        if ($.isFunction(ele.setData)) {
+                            ele.setData(record);
+                        } else {
+                            // Replace elements
+                            this.storelinkUpdateElements(strlk[i], rdata);
+                            // Remove last config
+                            if ($.isArray(rdata) || $.isArray(record)) {
+                                strlk.splice(i, 1);
+                                i --;
+                                limit ++;
+                            }
                         }
                     }
                 }
@@ -2084,7 +2090,7 @@ cb.module.bootstrapComponent = {
             var tcls = opt.type.split(' ');
             for (var i=0; i<tcls.length; i++)
             {
-                if (tcls[i].trim() != '') $(ele).addClass('table-'+tcls[i]);
+                if (tcls[i].trim() != '') $(ele).addClass('table-'+tcls[i].trim());
             }
             opt.notype = true;
         }
@@ -2092,10 +2098,16 @@ cb.module.bootstrapComponent = {
         {
             for (var a=0; a<opt.items.length; a++)
             {
-                if (opt.items[a].xtype == 'head')
+                if (opt.items[a].xtype == 'head') {
                     opt.items[a].xtype = 'thead';
-                if (opt.items[a].xtype == 'body')
+                }
+                if (opt.items[a].xtype == 'body') {
                     opt.items[a].xtype = 'tbody';
+                }
+                if (opt.items[a].xtype == 'tbody') {
+                    opt.items[a].type = opt.type;
+                    opt.items[a].trListeners = opt.trListeners;
+                }
             }
          }           
          ele = cb.commonProp(ele, opt);
@@ -2136,7 +2148,11 @@ cb.module.bootstrapComponent = {
                 }
                 for (var e = 0; e < opt.items.length; e++)
                 {
-                    opt.t_tr = document.createElement('tr');
+                    opt.t_tr = cb.create({
+                        xtype: 'tr',
+                        cursor: opt.type && opt.type.indexOf('hover') > -1? 'pointer': 'default',
+                        listeners: opt.trListeners
+                    }, record[i]);
                     var r_item = opt.items[e];
                     for (var h = 0; h < r_item.length; h++) {
                        if (!r_item[h].xtype || r_item[h].xtype == 'td' || r_item[h].xtype == 'th')
@@ -3327,6 +3343,12 @@ cb.create = function(opt, record) {
             if (opt.storelink && (!opt.id || opt.in_loop)) {
                 opt.id = this.autoid(opt.xtype);
                 opt_extended.id = opt.id;
+            }
+
+            // Pre create function to modify opt values
+            if ($.isFunction(opt.preCreate)) {
+                opt = opt.preCreate(opt, record);
+                delete opt.preCreate;
             }
             
             // If record is object replace {field} by record values
