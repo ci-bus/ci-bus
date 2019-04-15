@@ -45,7 +45,7 @@ if (!Array.prototype.indexOf) {
     }
 }
 if (!Array.prototype.find) {
-	  Array.prototype.find = function(predicate) {
+	Array.prototype.find = function(predicate) {
 	    if (this == null) {
 	      throw new TypeError('Array.prototype.find called on null or undefined');
 	    }
@@ -64,8 +64,49 @@ if (!Array.prototype.find) {
 	      }
 	    }
 	    return undefined;
-	  };
-	}
+	};
+}
+if (!Object.prototype.watch) {
+	Object.defineProperty(Object.prototype, "watch", {
+		  enumerable: false
+		, configurable: true
+		, writable: false
+		, value: function (prop, handler) {
+			var
+			  oldval = this[prop]
+			, newval = oldval
+			, getter = function () {
+				return newval;
+			}
+			, setter = function (val) {
+				oldval = newval;
+				return newval = handler.call(this, prop, oldval, val);
+			}
+			;
+			
+			if (delete this[prop]) { // can't watch constants
+				Object.defineProperty(this, prop, {
+					  get: getter
+					, set: setter
+					, enumerable: true
+					, configurable: true
+				});
+			}
+		}
+	});
+}
+if (!Object.prototype.unwatch) {
+	Object.defineProperty(Object.prototype, "unwatch", {
+		  enumerable: false
+		, configurable: true
+		, writable: false
+		, value: function (prop) {
+			var val = this[prop];
+			delete this[prop]; // remove accessors
+			this[prop] = val;
+		}
+	});
+}
 
 
 // [ INICIO DE CI-BUS ]// 
@@ -97,6 +138,74 @@ cb.eleCreateWithoutRecord = ['td', 'tr', 'th'];
 // Elementos que no propaga el record
 // para evitar definir 'propagateRecord: true'
 cb.noPropagateRecord = ['select'];
+
+// Watch escucha los cambios en los objetos y permite ocultar y mostrar componentes con
+// el atributo if y una condicion entre comillas ejemplo, if: 'nombre_modulo.var1.var2 === true'
+
+cb.watchObject = {
+    watching: {},
+    doWatch: function (val, vnew) {
+        var elems = this.watching[val],
+            changedVal = val,
+            newVal = vnew;
+        if ($.isArray(elems)) {
+            elems.forEach(function (ele) {
+                var el = cb.getCmp(ele);
+                if (el && el.getOpt('if')) {
+                    var _if = el.getOpt('if'),
+                        vals = cb.getVarsFromIfString(_if);
+                    vals.forEach(function (val2) {
+                        if (changedVal == val2) {
+                            var rval = newVal;
+                        } else {
+                            var rval = 'cb.module.controller.' + val2;
+                        }
+                        _if = _if.replace(val2, rval);
+                    });
+                    if (!vals.length) {
+                        _if = _if.replace(changedVal, newVal);
+                    }
+                    var opt = el.getOpt();
+                    if (eval(_if)) {
+                        opt.noIf = true;
+                        $(ele).replaceWith(cb.create(opt));
+                    } else {
+                        var emptyEl = cb.create({ id: el.id });
+                        emptyEl.setOpt(opt);
+                        $(ele).replaceWith(emptyEl);
+                    }
+                }
+            });
+        }
+    },
+    doWatchEle: function (el) {
+        if (el && el.getOpt('if')) {
+            var _if = el.getOpt('if'),
+                vals = cb.getVarsFromIfString(_if);
+            vals.forEach(function (val2) {
+                _if = _if.replace(val2, 'cb.module.controller.' + val2);
+            });
+            if (eval(_if)) {
+                return el;
+            } else {
+                var opt = el.getOpt(),
+                    emptyEl = cb.create({ id: el.id });
+                emptyEl.setOpt(opt);
+                return emptyEl;
+            }
+        }
+    },
+    addWatch: function (val, ele) {
+        if (!this.watching[val]) {
+            this.watching[val] = [];
+        } else {
+            if (this.watching[val].indexOf(ele) >= 0) {
+                return;
+            }
+        }
+        this.watching[val].push(ele);
+    }
+};
 
 // El route te permine ejecutar una funcion de un controlador visitando un hash #ejemplo
 cb.router = {
@@ -373,6 +482,13 @@ cb.base.store = {
                     // If get direct store values without field defined
                     } else if (!field && !ele.getOpt().field) {
                         rdata = record = this.getData();
+                    } else if (!ele.getOpt().field) {
+                        var topt = ele.getOpt();
+                        delete topt.element;
+                        delete topt.record;
+                        if (JSON.stringify(topt).indexOf('{' + field + '}')) {
+                            rdata = this.getData();
+                        }
                     }
                     if (rdata) {
                         // If have setData function defined
@@ -1551,46 +1667,56 @@ cb.setValue = function(ele, value)
 }
 
 // Funciona para setear valores de configuracion que necesitemos
-cb.setConfig = function(va, val) {
-            
-    if ($.isArray(va) || $.isPlainObject(va))
-    {   
-        this.config = $.extend(this.config, va);
-    }
-    else
-    {
-        this.config[va] = val;
-    }
+cb.setConfig = function(va, val)
+{
+    window.localStorage.setItem(va, JSON.stringify(val));
 }
 // Funcion para coger valores de configuracion
-cb.getConfig = function(va, var2) {
-            
-    if (!var2)
+cb.getConfig = function(va, va2, def)
+{
+    if (!va2)
     {
-        return this.config[va];
+        if (window.localStorage.getItem(va)) {
+            return JSON.parse(window.localStorage.getItem(va));
+        } else if (def !== undefined) {
+            this.setConfig(va, def);
+            return def;
+        }
     }
     else
     {
-        if (this.config[va])
+        if (window.localStorage.getItem(va) && JSON.parse(window.localStorage.getItem(va))[va2])
         {
-            return this.config[va][var2];
+            return JSON.parse(window.localStorage.getItem(va))[va2];
+        }
+        else if (def !== undefined)
+        {
+            var t_val = JSON.parse(window.localStorage.getItem(va));
+            if ($.isPlainObject(t_val)) {
+                t_val[va2] = def
+            } else {
+                t_val = {};
+                t_val[va2] = def;
+            }
+            this.setConfig(va, t_val);
+            return def;
         }
     }
 }
 // Funcion para borrar valores de configuracion
-cb.delConfig = function(va, var2) {
-    if (!var2) {
-        if (this.config[va])
+cb.delConfig = function(va, va2)
+{
+    if (!va2) {
+        if (JSON.parse(window.localStorage.getItem(va)))
         {
-            delete this.config[va];
+            window.localStorage.removeItem(va);
         }
     }else{
-        if (this.config[va])
+        if ($.isPlainObject(JSON.parse(window.localStorage.getItem(va))))
         {
-            if (this.config[va][var2])
-            {
-                delete this.config[va][var2];
-            }
+            var t_val = JSON.parse(window.localStorage.getItem(va));
+            delete t_val[va2];
+            this.setConfig(va, t_val);
         }
     }
 }
@@ -2524,7 +2650,12 @@ cb.module.bootstrapComponent = {
     },
     'row': function(opt, record) {
         var ele = document.createElement('div');
-        $(ele).addClass('row');
+        if (opt.type == 'fluid') {
+            $(ele).addClass('row-fluid');
+            opt.notype = true;
+        } else {
+            $(ele).addClass('row');
+        }
         ele = cb.commonProp(ele, opt);
         return ele;
     },
@@ -2609,7 +2740,9 @@ cb.module.bootstrapComponent = {
                 if (!opt.type)opt.type = "text";
             }
             $(ele).addClass('form-control');
-            
+            if (opt.size) {
+                $(ele).addClass('input-' + opt.size);
+            }
             ele = cb.commonProp(ele, opt);
         }
         
@@ -3340,7 +3473,7 @@ cb.create = function(opt, record) {
         else
         {        	
             // Required id if storelink
-            if (opt.storelink && (!opt.id || opt.in_loop)) {
+            if ((opt.storelink || opt.if) && (!opt.id || opt.in_loop)) {
                 opt.id = this.autoid(opt.xtype);
                 opt_extended.id = opt.id;
             }
@@ -3406,6 +3539,20 @@ cb.create = function(opt, record) {
                     }
                 }
             }
+            
+            // Watching to if //
+            if (opt.if && !opt.in_loop) {
+                var vals = this.getVarsFromIfString(opt.if);
+                vals.forEach(function (val) {
+                    var part1 = val.substr(0, val.lastIndexOf('.'));
+                    var part2 = val.substr(val.lastIndexOf('.') + 1);
+                    cb.watchObject.addWatch(val, '#' + opt.id);
+                    cb.fetchFromObject(cb.module.controller, part1).watch(part2, function (id, vlast, vnew) {
+                        cb.watchObject.doWatch(val, vnew);
+                        return vnew;
+                    });
+                });
+            }
                         
             // Add child items
             if ($.isArray(opt.items) && !opt.noitems)
@@ -3439,6 +3586,13 @@ cb.create = function(opt, record) {
                 opt.beforeRender(ele);
             }
             
+            // Replace ele by empty ele if
+            if (opt.if && opt.id && !opt.noIf) {
+                ele = cb.watchObject.doWatchEle(ele);
+            } else {
+                delete opt.noIf;
+            }
+            
             // Render element
             if (opt.renderTo)
             {
@@ -3468,6 +3622,17 @@ cb.create = function(opt, record) {
             cb.doRenderFunctions(ele);
         }
     }
+}
+
+cb.getVarsFromIfString = function (ifString) {
+    pIfString = ifString.trim().split(/[\s\+\-\=]+/);
+    var res = [];
+    pIfString.forEach(function (part) {
+        if (part.indexOf('.') > 0 && part.indexOf('"') < 0 && part.indexOf("'") < 0) {
+            res.push(part);
+        }
+    });
+    return res;
 }
 
 cb.setRecordValuesToOpt = function (opt, record) {
