@@ -74,6 +74,7 @@ cb.define({
 					['view', 'ci-bus', 'doc/stores'],
 					['view', 'ci-bus', 'doc/install'],
 					['view', 'ci-bus', 'ci-bus']
+					
 				], function () {
 				    $('#content').css('padding-top', 60);
 				    cb.define({

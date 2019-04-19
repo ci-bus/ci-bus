@@ -142,6 +142,16 @@ cb.noPropagateRecord = ['select'];
 // Watch escucha los cambios en los objetos y permite ocultar y mostrar componentes con
 // el atributo if y una condicion entre comillas ejemplo, if: 'nombre_modulo.var1.var2 === true'
 
+cb.listenChangesinArray = function (arr, callback) {
+    ['pop','push','reverse','shift','unshift','splice','sort'].forEach(function (m) {
+        arr[m] = function(){
+             var res = Array.prototype[m].apply(arr, arguments);
+             callback.apply(arr, arguments);
+             return res;
+         }
+    });
+};
+
 cb.watchObject = {
     watching: {},
     doWatch: function (val, vnew) {
@@ -155,7 +165,7 @@ cb.watchObject = {
                     var _if = el.getOpt('if'),
                         vals = cb.getVarsFromIfString(_if);
                     vals.forEach(function (val2) {
-                        if (changedVal == val2) {
+                        if (changedVal == val2 && !$.isArray(newVal)) {
                             var rval = newVal;
                         } else {
                             var rval = 'cb.module.controller.' + val2;
@@ -1500,35 +1510,40 @@ cb.define = function(obj)
             }
         }
         // To end Extend obj
-        $.extend( this.module[obj.xtype][obj.name], obj);
+        if ($.isFunction(this.module[obj.xtype][obj.name])) {
+            console.error('Invalid name "' + obj.name + '" to ' + obj.xtype);
+        } else {
+            $.extend( this.module[obj.xtype][obj.name], obj);
         
-        if (obj.xtype == 'store')
-        {
-            cb.getStore(obj.name).storelink();
-        }
-        
-        // Add routes
-        if (obj.xtype == 'controller' && $.isPlainObject(obj.route)) {
-            $.each(obj.route, function(hash, fun) {
-                cb.router.set(hash, obj.name, fun);
-            });
-        }
-        
-        if (obj.xtype == 'view')
-        {           
-            if (obj.renderOnLoad !== false){
-                this.render(obj);
+            if (obj.xtype == 'store')
+            {
+                cb.getStore(obj.name).storelink();
+            }
+            
+            // Add routes
+            if (obj.xtype == 'controller' && $.isPlainObject(obj.route)) {
+                $.each(obj.route, function(hash, fun) {
+                    cb.router.set(hash, obj.name, fun);
+                });
+            }
+            
+            if (obj.xtype == 'view')
+            {           
+                if (obj.renderOnLoad !== false){
+                    this.render(obj);
+                }
+            }
+            
+            // OnLoad function
+            if ($.isFunction(obj['onload'])) {
+                if (cb.module.parseData[obj.name]) {
+                    obj['onload'](cb.module.parseData[obj.name]);
+                } else {
+                    obj['onload']();
+                }
             }
         }
         
-        // OnLoad function
-        if ($.isFunction(obj['onload'])) {
-            if (cb.module.parseData[obj.name]) {
-                obj['onload'](cb.module.parseData[obj.name]);
-            } else {
-                obj['onload']();
-            }
-        }
     }
 };
 
@@ -3541,16 +3556,29 @@ cb.create = function(opt, record) {
             }
             
             // Watching to if //
-            if (opt.if && !opt.in_loop) {
+            if (opt.if && !opt.in_loop && !opt.noIf) {
                 var vals = this.getVarsFromIfString(opt.if);
                 vals.forEach(function (val) {
-                    var part1 = val.substr(0, val.lastIndexOf('.'));
-                    var part2 = val.substr(val.lastIndexOf('.') + 1);
+                    var val = val,
+                        part1 = val.substr(0, val.lastIndexOf('.')),
+                        part2 = val.substr(val.lastIndexOf('.') + 1);
                     cb.watchObject.addWatch(val, '#' + opt.id);
-                    cb.fetchFromObject(cb.module.controller, part1).watch(part2, function (id, vlast, vnew) {
-                        cb.watchObject.doWatch(val, vnew);
-                        return vnew;
-                    });
+                    if ($.isArray(cb.fetchFromObject(cb.module.controller, val))) {
+                        cb.listenChangesinArray(cb.fetchFromObject(cb.module.controller, val), function () {
+                            cb.watchObject.doWatch(val, this);
+                        });
+                    } else if ($.isArray(cb.fetchFromObject(cb.module.controller, part1))) {
+                        cb.listenChangesinArray(cb.fetchFromObject(cb.module.controller, part1), function () {
+                            cb.watchObject.doWatch(val, this);
+                        });
+                    } else if ($.isPlainObject(cb.fetchFromObject(cb.module.controller, part1))){
+                        cb.fetchFromObject(cb.module.controller, part1).watch(part2, function (id, vlast, vnew) {
+                            cb.watchObject.doWatch(val, vnew);
+                            return vnew;
+                        });
+                    } else {
+                        console.error('Invalid variable: "' + val + '" in \nif condition: "' + opt.if + '"');
+                    }
                 });
             }
                         
@@ -3625,7 +3653,7 @@ cb.create = function(opt, record) {
 }
 
 cb.getVarsFromIfString = function (ifString) {
-    pIfString = ifString.trim().split(/[\s\+\-\=]+/);
+    pIfString = ifString.trim().split(/[\s\+\-\=\(\)\,\;]+/);
     var res = [];
     pIfString.forEach(function (part) {
         if (part.indexOf('.') > 0 && part.indexOf('"') < 0 && part.indexOf("'") < 0) {

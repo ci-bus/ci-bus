@@ -20,7 +20,7 @@
 		            'tx5' => 'Ci-bus Métodos',
 		            'tx6' => 'Propiedades items',
 		            'tx7' => 'Store PHP y JavaScript',
-		            'tx8' => 'Instalación'
+					'tx8' => 'Instalación'
 			    ),
 		        'menu-items' => array (
 		            array(
@@ -619,7 +619,7 @@ cb.getStore('global').sort('tags', function(a, b){
 		            array(
 		                'prop' => 'Propiedades css',
 		                'action' => 'Aplica una propiedades de estilo',
-		                'props' => 'css margin padding color border float shadow size weight align height width display cursor background overflow',
+		                'props' => 'css margin padding color border float shadow size weight align height width display cursor background overflow position top right bottom left zIndex ',
 		                'example' => "css: {
     color: 'RED',
     'font-weight': 600,
@@ -630,7 +630,7 @@ cb.getStore('global').sort('tags', function(a, b){
 	                array(
 	                        'prop' => 'Atributos html',
 	                        'action' => 'Aplica atributos al elemento html principal',
-	                        'props' => 'attr id disable disabled name type href value src placeholder reload target',
+	                        'props' => 'attr id disable disabled name type href value src placeholder reload target selected colspan rowspan',
 	                        'example' => "attr: {
     method: 'post',
     width: '200',
@@ -640,9 +640,9 @@ cb.getStore('global').sort('tags', function(a, b){
 	                ),
 		            array(
 		                'prop' => 'Eventos',
-		                'props' => 'click dblclick mouseover mouseout focus blur',
+		                'props' => 'click dblclick mouseover mouseout focus blur keydown keyup',
 		                'example' => "click: function () { alert('clicked!'); }",
-		                'simil' => 'https://api.jquery.com/click/ https://api.jquery.com/dblclick/ https://api.jquery.com/mouseover/ https://api.jquery.com/mouseout/ https://api.jquery.com/focus/ https://api.jquery.com/blur/'
+		                'simil' => 'https://api.jquery.com/click/ https://api.jquery.com/dblclick/ https://api.jquery.com/mouseover/ https://api.jquery.com/mouseout/ https://api.jquery.com/focus/ https://api.jquery.com/blur/ https://api.jquery.com/keydown/ https://api.jquery.com/keyup/'
 		            ),
 		            array(
 		                'prop' => 'cls',
@@ -698,6 +698,20 @@ cb.getStore('global').sort('tags', function(a, b){
     click: function () { alert('clicked!'); }
 }",
 		                'simil' => 'http://api.jquery.com/on/'
+					),
+		            array(
+		                'prop' => 'if',
+		                'param' => '1. String con condiciones',
+		                'example' => 'if: "nombre_modulo.str_var == \'abc\' || nombre_modulo.arr_var.length > 1"',
+		                'action' => 'Renderiza un componente o no según la condición definida'
+		            ),
+		            array(
+		                'prop' => 'storelink',
+		                'param' => '1. true',
+						'example' => "store: 'nombre_store',
+field: 'nombre_campo',
+storelink: true",
+		                'action' => 'Mantiene sincronizado un componente con el valor de un store'
 		            )
 		        ),
 	            'functions' => array(
