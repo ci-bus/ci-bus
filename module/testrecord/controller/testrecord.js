@@ -8,6 +8,16 @@ cb.define({
 		'#aaa/:num': 'test2',
 		'#aaa/:num/:str': 'test3'
 	},
+
+	testRecord: [{
+		text: 'a'
+	}, {
+		text: 'b'
+	}, {
+		text: 'c'
+	}],
+
+	textFor2: ['d', 'e', 'f'],
 	
 	test1: function(hash){
 		console.log('test1', hash);
@@ -114,17 +124,11 @@ cb.define({
 		});
 
 		cb.create({
-
 			xtype: 'panel',
-			
 			type: 'primary',
-			
 			appendTo: 'body',
-			
 			store: 'test',
-			
 			margin: 10,
-			
 			items: [{
 				xtype: 'head',
 				items: [{
@@ -194,7 +198,8 @@ cb.define({
 		
 		cb.create({
 			appendTo: 'body',
-			xtype: 'row',
+			xtype: 'container',
+			type: 'fluid',
 			defaults: {
 				xtype: 'col',
 				size: 6
@@ -203,7 +208,7 @@ cb.define({
 				items: [{
 					store: 'test2',
 					xtype: 'svg',
-					width: 600,
+					width: '100%',
 					height: 400,
 					border: '1px solid green',
 					items: [{
@@ -288,6 +293,37 @@ cb.define({
 					}
 				}]
 			}]
-		});	
+		});
+
+		cb.create({
+			xtype: 'container',
+			appendTo: 'body',
+			items: {
+				xtype: 'container',
+				items: [{
+					xtype: 'h3',
+					text: 'For tests...'
+				}, {
+					xtype: 'button',
+					record: 'testrecord.testRecord',
+					text: '{text}'
+				}, {
+					record: {name: 'miguel', date: '2019-01-01', badge: 'verificado'},
+					alterdata: {
+						name: function (name) {
+							return name.charAt(0).toUpperCase() + name.slice(1);
+						},
+						date: function (date) {
+							var d = new Date(date);
+							return '<strong>' + d.getDate() + '/' + (d.getMonth()+1) + '/' + d.getFullYear() + '</strong>';
+						},
+						badge: function (badge) {
+							if (badge) return cb.create({xtype: 'badge', text: badge});
+						}
+					},
+					text: '{name} {date} {badge}'
+				}]
+			}
+		});
 	}
 });

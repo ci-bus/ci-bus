@@ -700,6 +700,16 @@ cb.getStore('global').sort('tags', function(a, b){
 		                'simil' => 'http://api.jquery.com/on/'
 					),
 		            array(
+		                'prop' => 'record',
+		                'param' => '1. Cualquier valor o un string \'nombre_modulo.nombre_variable\'',
+						'example' => "xtype: 'button',
+text: '{v}',
+record: {v: 'a'}, // or
+record: [{v: 'a'}, {v: 'b'}], // or
+record: 'test_modulo.datos'",
+		                'action' => 'Define los valores para un elemento'
+		            ),
+		            array(
 		                'prop' => 'if',
 		                'param' => '1. String con condiciones',
 		                'example' => 'if: "nombre_modulo.str_var == \'abc\' || nombre_modulo.arr_var.length > 1"',
@@ -712,6 +722,25 @@ cb.getStore('global').sort('tags', function(a, b){
 field: 'nombre_campo',
 storelink: true",
 		                'action' => 'Mantiene sincronizado un componente con el valor de un store'
+		            ),
+		            array(
+		                'prop' => 'alterdata',
+		                'param' => '1. Objeto con propiedad: funcion',
+						'example' => "record: {name: 'miguel', date: '2019-01-01', badge: 'verificado'},
+alterdata: {
+	name: function (name) {
+		return name.charAt(0).toUpperCase() + name.slice(1);
+	},
+	date: function (date) {
+		var d = new Date(date);
+		return '<strong>' + d.getDate() + '/' + (d.getMonth()+1) + '/' + d.getFullYear() + '</strong>';
+	},
+	badge: function (badge) {
+		if (badge) return cb.create({xtype: 'badge', text: badge});
+	}
+},
+text: '{name} {date} {badge}'",
+		                'action' => 'Modifica los valores del record'
 		            )
 		        ),
 	            'functions' => array(

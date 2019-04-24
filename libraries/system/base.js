@@ -1284,10 +1284,11 @@ cb.autoid = function(pre) {
 };
 
 // Funcion para ejecutar un método de un controlador
-cb.ctr = function(ctr, fun, vals)
+cb.ctr = function(ctr, fun)
 {
+    var vals = Array.prototype.slice.call(arguments, 2);
     if (cb.module.controller[ctr] && $.type(cb.module.controller[ctr][fun]) == 'function') {
-        return cb.module.controller[ctr][fun](vals);
+        return cb.module.controller[ctr][fun](vals.length === 1? vals[0]: vals);
     }
 };
 
@@ -1543,7 +1544,6 @@ cb.define = function(obj)
                 }
             }
         }
-        
     }
 };
 
@@ -3213,6 +3213,12 @@ cb.props = {
     'src': function(ele, opt) {
         $(ele).attr('src', opt.src);
     },
+    'title': function(ele, opt) {
+        $(ele).attr('title', opt.title);
+    },
+    'maxlength': function(ele, opt) {
+        $(ele).attr('maxlength', opt.maxlength);
+    },
     'selected': function (ele, opt) {
         if (opt.selected) {
             $(ele).attr('selected', 'selected');
@@ -3301,7 +3307,6 @@ cb.create = function(opt, record) {
     if ($.type(opt.xtype) == 'string')
     {
         // Variables temp
-        var store = false;
         var temp_record = false;
         
         // Get opt to custom components
@@ -3369,6 +3374,13 @@ cb.create = function(opt, record) {
             
             // If have record
             if (record) {
+
+                // Get value from controller
+                if ($.type(record) === 'string' && record.indexOf('.')) {
+                    if (cb.fetchFromObject(cb.module.controller, record)) {
+                        record = cb.fetchFromObject(cb.module.controller, record);
+                    }
+                }
                 
                 // Get field del store
                 if (opt.field) {
@@ -3666,6 +3678,10 @@ cb.getVarsFromIfString = function (ifString) {
 cb.setRecordValuesToOpt = function (opt, record) {
     if (typeof opt == 'string' && opt.indexOf('{') >= 0) {
         for (ix in record) {
+            // Convert DOM element to HTML string
+            if (cb.isElement(record[ix])) {
+                record[ix] = $("<span></span>").append(record[ix]).html();
+            }
             // Replace {field} to record value
             opt = opt.replace(new RegExp('{'+ix+'}',"g"), record[ix]);
         }

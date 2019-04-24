@@ -689,6 +689,16 @@ cb.getStore('global').sort('tags', function(a, b){
 		                'simil' => 'http://api.jquery.com/on/'
 		            ),
 		            array(
+		                'prop' => 'record',
+		                'param' => '1. Any value or string \'module_name.var_name\'',
+						'example' => "xtype: 'button',
+text: '{v}',
+record: {v: 'a'}, // or
+record: [{v: 'a'}, {v: 'b'}], // or
+record: 'test_module.data'",
+		                'action' => 'Parse the values to element'
+		            ),
+		            array(
 		                'prop' => 'if',
 		                'param' => '1. String with conditions',
 		                'example' => 'if: "module_name.str_var == \'abc\' || module_name.arr_var.length > 1"',
@@ -701,6 +711,25 @@ cb.getStore('global').sort('tags', function(a, b){
 field: 'field_name',
 storelink: true",
 		                'action' => 'It keeps a component synchronized with the value of a store'
+		            ),
+		            array(
+		                'prop' => 'alterdata',
+		                'param' => '1. Object with property: function',
+						'example' => "record: {name: 'miguel', date: '2019-01-01', badge: 'verified'},
+alterdata: {
+	name: function (name) {
+		return name.charAt(0).toUpperCase() + name.slice(1);
+	},
+	date: function (date) {
+		var d = new Date(date);
+		return '<strong>' + d.getDate() + '/' + (d.getMonth()+1) + '/' + d.getFullYear() + '</strong>';
+	},
+	badge: function (badge) {
+		if (badge) return cb.create({xtype: 'badge', text: badge});
+	}
+},
+text: '{name} {date} {badge}'",
+		                'action' => 'Modify record values'
 		            )
 		        ),
 	            'functions' => array(
