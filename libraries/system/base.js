@@ -152,40 +152,66 @@ cb.listenChangesinArray = function (arr, callback) {
     });
 };
 
+// Funcion para eliminar circulares en objetos 
+cb.getCircularReplacer = function () {
+    var seen = new WeakSet();
+    return (k, v) => {
+      if (typeof v === "object" && v !== null) {
+        if (seen.has(v)) {
+          return;
+        }
+        seen.add(v);
+      }
+      return v;
+    };
+};
+
 cb.watchObject = {
     watching: {},
     doWatch: function (val, vnew) {
         var elems = this.watching[val],
+            elems_found = [],
             changedVal = val,
             newVal = vnew;
         if ($.isArray(elems)) {
             elems.forEach(function (ele) {
-                var el = cb.getCmp(ele);
+                var el = document.getElementById(ele);
                 if (el && el.getOpt('if')) {
                     var _if = el.getOpt('if'),
                         vals = cb.getVarsFromIfString(_if);
                     vals.forEach(function (val2) {
-                        if (changedVal == val2 && !$.isArray(newVal)) {
-                            var rval = newVal;
+                        if (changedVal == val2) {
+                            if ($.isArray(newVal) || $.isPlainObject(newVal)) {
+                                var rval = '(' + JSON.stringify(newVal, cb.getCircularReplacer) + ')';
+                            } else {
+                                var rval = cb.clone(newVal);
+                            }
                         } else {
-                            var rval = 'cb.module.controller.' + val2;
+                            var rval = val2.substr(0, val2.search(/[a-z]/gi)) + 'cb.module.controller.' + val2.substr(val2.search(/[a-z]/gi));
                         }
                         _if = _if.replace(val2, rval);
                     });
                     if (!vals.length) {
-                        _if = _if.replace(changedVal, newVal);
+                        if ($.isArray(newVal) || $.isPlainObject(newVal)) {
+                            var rval = '(' + JSON.stringify(newVal, cb.getCircularReplacer) + ')';
+                        } else {
+                            var rval = cb.clone(newVal);
+                        }
+                        _if = _if.replace(changedVal, rval);
                     }
                     var opt = el.getOpt();
                     if (eval(_if)) {
                         opt.noIf = true;
-                        $(ele).replaceWith(cb.create(opt));
+                        $('#' + ele).replaceWith(cb.create(opt));
                     } else {
-                        var emptyEl = cb.create({ id: el.id });
+                        var emptyEl = cb.create({ id: ele });
                         emptyEl.setOpt(opt);
-                        $(ele).replaceWith(emptyEl);
+                        $('#' + ele).replaceWith(emptyEl);
                     }
+                    elems_found.push(ele);
                 }
             });
+            this.watching[val] = elems_found;
         }
     },
     doWatchEle: function (el) {
@@ -193,6 +219,7 @@ cb.watchObject = {
             var _if = el.getOpt('if'),
                 vals = cb.getVarsFromIfString(_if);
             vals.forEach(function (val2) {
+                val2 = val2.substr(val2.search(/[a-z]/gi));
                 _if = _if.replace(val2, 'cb.module.controller.' + val2);
             });
             if (eval(_if)) {
@@ -455,11 +482,10 @@ cb.base.store = {
     {
         if (data !== undefined) {
             if (typeof field == 'string') {
-                var newData = this.getData(field);
-                $.merge(newData, data);
+                var newData = cb.merge(this.getData(field), data);
                 this.setData(newData, field);
             } else {
-                $.merge(this.data, data);
+                cb.merge(this.data, data);
             }
             this.storelink(field);
         }
@@ -481,7 +507,6 @@ cb.base.store = {
                 if (!ele) {
                     strlk.splice(i, 1);
                     i --;
-                    limit ++;
                 } else {
                     // If update a especific field of store
                     // or update all store and element have field defined
@@ -1288,7 +1313,9 @@ cb.ctr = function(ctr, fun)
 {
     var vals = Array.prototype.slice.call(arguments, 2);
     if (cb.module.controller[ctr] && $.type(cb.module.controller[ctr][fun]) == 'function') {
-        return cb.module.controller[ctr][fun](vals.length === 1? vals[0]: vals);
+        return cb.module.controller[ctr][fun](vals.length === 1? vals[0]: vals.length? vals: undefined);
+    } else {
+        console.error('Undefined funcion \'' + fun + '\' in controller \'' + ctr + '\'');
     }
 };
 
@@ -1478,6 +1505,9 @@ cb.define = function(obj)
         {
             for (var fie in this.module[obj.xtype][obj.name].data)
             {
+                if (!obj.data) {
+                    obj.data = [];
+                }
                 if (obj.data[fie] === null || typeof obj.data[fie] === 'undefined') {
                     obj.data[fie] = this.module[obj.xtype][obj.name].data[fie];
                 }
@@ -1536,11 +1566,11 @@ cb.define = function(obj)
             }
             
             // OnLoad function
-            if ($.isFunction(obj['onload'])) {
+            if ($.isFunction(cb.module[obj.xtype][obj.name]['onload'])) {
                 if (cb.module.parseData[obj.name]) {
-                    obj['onload'](cb.module.parseData[obj.name]);
+                    cb.module[obj.xtype][obj.name]['onload'](cb.module.parseData[obj.name]);
                 } else {
-                    obj['onload']();
+                    cb.module[obj.xtype][obj.name]['onload']();
                 }
             }
         }
@@ -1595,6 +1625,16 @@ cb.deleteToObject = function (obj, prop) {
     }
     
     return obj;
+};
+
+cb.merge = function (data1, data2) {
+    if ($.isPlainObject(data1) && $.isPlainObject(data2)) {
+        return cb.mergeTwoObjects(data1, data2);
+    } else if ($.isArray(data1) && $.isArray(data2)) {
+        return data1.concat(data2);
+    } else {
+        return [data1, data2];
+    }
 };
 
 cb.mergeTwoObjects = function (obj, obj2, prop) {
@@ -2528,12 +2568,12 @@ cb.module.bootstrapComponent = {
                 
                 if ($.isPlainObject(opt.items[a].tab))
                 {
-                    opt.t_a = cb.create({xtype: 'a'});
                     opt.t_li = cb.create({xtype: 'li'});
                     
                     if (opt.items[a].tab.xtype == 'dropdown')
                     {
-                        opt.t_a = cb.commonProp(opt.t_a, {
+                        opt.t_a = cb.create({
+                            xtype: 'a',
                             cls: 'dropdown-toggle',
                             attr: { 'role': 'dropdown',
                                     'aria-controls': opt.items[a].id+'-contents',
@@ -2596,14 +2636,28 @@ cb.module.bootstrapComponent = {
                     }
                     else
                     {
-                        opt.t_a = cb.commonProp(opt.t_a, cb.mergeTwoObjects({
-                            id: opt.items[a].id+'-tab',
-                            attr: {
-                                'aria-controls': opt.items[a].id,
-                                'role': 'tab',
-                                'data-toggle': 'tab'
-                            }
-                        }, opt.items[a].tab));
+                        if (!opt.items[a].tab.xtype || opt.items[a].tab.xtype == 'a') {
+                            opt.items[a].tab.xtype = 'a';
+                            opt.t_a = cb.create(cb.mergeTwoObjects({
+                                id: opt.items[a].id+'-tab',
+                                attr: {
+                                    'aria-controls': opt.items[a].id,
+                                    'role': 'tab',
+                                    'data-toggle': 'tab'
+                                }
+                            }, opt.items[a].tab));
+                        } else {
+                            opt.t_a = cb.create({
+                                xtype: 'a',
+                                id: opt.items[a].id+'-tab',
+                                attr: {
+                                    'aria-controls': opt.items[a].id,
+                                    'role': 'tab',
+                                    'data-toggle': 'tab'
+                                }
+                            });
+                            $(opt.t_a).append(cb.create(opt.items[a].tab));
+                        }
                         $(opt.t_a).attr('href', '#'+opt.items[a].id);
                     }
                     
@@ -2887,19 +2941,36 @@ cb.module.bootstrapComponent = {
             $(ele).change(function() {
                 if ($(this).prop('checked')) {
                     var v = this.getOpt('on').value? this.getOpt('on').value: 1;
+                    if (this.getOpt('listeners') && $.isFunction(this.getOpt('listeners').on)) {
+                        this.getOpt('listeners').on(v);
+                    }
+                    if ($.isFunction(this.getOpt('on').fun)) {
+                        this.getOpt('on').fun(v);
+                    }
                 } else {
                     var v = this.getOpt('off').value? this.getOpt('off').value: 0;
+                    if (this.getOpt('listeners') && $.isFunction(this.getOpt('listeners').off)) {
+                        this.getOpt('listeners').off(v);
+                    }
+                    if ($.isFunction(this.getOpt('off').fun)) {
+                        this.getOpt('off').fun(v);
+                    }
                 }
                 $(this).parent().find('input').val(v);
+                if (this.getOpt('listeners') && $.isFunction(this.getOpt('listeners').change)) {
+                    this.getOpt('listeners').change(v, $(this).parent().find('input'));
+                }
             });
-            if(ele.getOpt('value') == ele.getOpt('on').value || ele.getOpt('value') == 'on') {
+            var opt = ele.getOpt();
+            opt = cb.setRecordValuesToOpt(opt, ele.getRecord());
+            if (opt.value == ele.getOpt('on').value || ele.getOpt('value') == 'on') {
                 $(ele).bootstrapToggle('on');
             }
             cb.commonProp($(ele).parent(), ele.getOpt());
             if (ele.getOpt('disabled')) {
                 $(ele).attr('disabled', 'disabled');
             }
-        }
+        };
                 
         return ele;
     }
@@ -3492,6 +3563,17 @@ cb.create = function(opt, record) {
                     for (var f = 0; f < ele.length; f ++) {
                     	ele_ids.push(ele[f].id);
                     }
+                    // If missing elems and have storelink
+                    if (!ele_ids.length) {
+                        // Create span to reference of elems with storelink
+                        ele = cb.create({
+                            xtype: 'span',
+                            id: cb.autoid(),
+                            display: 'none'
+                        })
+                        ele.opt = opt;
+                        ele_ids.push(ele.id);
+                    }
                     cb.module.storelink[temp_store].push({ele: ele_ids});
                 }
             }
@@ -3561,6 +3643,18 @@ cb.create = function(opt, record) {
                     if (!cb.module.storelink[temp_store]) {
                         cb.module.storelink[temp_store] = [];
                     }
+                    if (!record && record !== 0) {
+                        // Create span to reference of elems with storelink
+                        ele = cb.create({
+                            xtype: 'span',
+                            id: cb.autoid(),
+                            display: 'none'
+                        })
+                        ele.opt = cb.clone(opt);
+                        opt.noitems = true;
+                        opt.noIf = true;
+                        delete opt.beforeRender;
+                    }
                     if (!cb.module.storelink[temp_store].find(function (el) {return el.ele == ele.id})) {
                     	cb.module.storelink[temp_store].push({ele: ele.id});
                     }
@@ -3574,20 +3668,22 @@ cb.create = function(opt, record) {
                     var val = val,
                         part1 = val.substr(0, val.lastIndexOf('.')),
                         part2 = val.substr(val.lastIndexOf('.') + 1);
-                    cb.watchObject.addWatch(val, '#' + opt.id);
                     if ($.isArray(cb.fetchFromObject(cb.module.controller, val))) {
                         cb.listenChangesinArray(cb.fetchFromObject(cb.module.controller, val), function () {
                             cb.watchObject.doWatch(val, this);
                         });
+                        cb.watchObject.addWatch(val, opt.id);
                     } else if ($.isArray(cb.fetchFromObject(cb.module.controller, part1))) {
                         cb.listenChangesinArray(cb.fetchFromObject(cb.module.controller, part1), function () {
-                            cb.watchObject.doWatch(val, this);
+                            cb.watchObject.doWatch(part1, this);
                         });
+                        cb.watchObject.addWatch(part1, opt.id);
                     } else if ($.isPlainObject(cb.fetchFromObject(cb.module.controller, part1))){
-                        cb.fetchFromObject(cb.module.controller, part1).watch(part2, function (id, vlast, vnew) {
-                            cb.watchObject.doWatch(val, vnew);
-                            return vnew;
+                        cb.fetchFromObject(cb.module.controller, part1).watch(part2, function () {
+                            cb.watchObject.doWatch(val, arguments[2]);
+                            return arguments[2];
                         });
+                        cb.watchObject.addWatch(val, opt.id);
                     } else {
                         console.error('Invalid variable: "' + val + '" in \nif condition: "' + opt.if + '"');
                     }
@@ -3610,7 +3706,7 @@ cb.create = function(opt, record) {
             }
             
             // Set opt and methods
-            ele.opt = {};
+            ele.opt = opt;
             opt_extended.element = $(ele);
             var methods = Object.getOwnPropertyNames(opt_extended);
             for (var i=0; i<methods.length; i++) {
@@ -3669,7 +3765,7 @@ cb.getVarsFromIfString = function (ifString) {
     var res = [];
     pIfString.forEach(function (part) {
         if (part.indexOf('.') > 0 && part.indexOf('"') < 0 && part.indexOf("'") < 0) {
-            res.push(part);
+            res.push(part.substr(part.search(/[a-z]/gi)));
         }
     });
     return res;
@@ -3677,13 +3773,18 @@ cb.getVarsFromIfString = function (ifString) {
 
 cb.setRecordValuesToOpt = function (opt, record) {
     if (typeof opt == 'string' && opt.indexOf('{') >= 0) {
-        for (ix in record) {
+        while (ix = opt.substr(opt.indexOf('{') + 1, opt.indexOf('}') - opt.indexOf('{') - 1)) {
             // Convert DOM element to HTML string
-            if (cb.isElement(record[ix])) {
-                record[ix] = $("<span></span>").append(record[ix]).html();
+            if (cb.isElement(cb.fetchFromObject(record, ix))) {
+                let dt = $("<span></span>").append(cb.fetchFromObject(record, ix)).html();
+                cb.putToObject(record, dt, ix);
             }
             // Replace {field} to record value
-            opt = opt.replace(new RegExp('{'+ix+'}',"g"), record[ix]);
+            var value = cb.fetchFromObject(record, ix);
+            if (!value && value !== 0) {
+                value = '';
+            }
+            opt = opt.replace(new RegExp('{'+ix+'}',"g"), value);
         }
         // Clear missing
         opt = opt.replace(/{.+}/, '');
@@ -4064,7 +4165,7 @@ cb.getZIndex = function () {
 }
 
 cb.isUrl = function (str) {
-    if (cb.strpos(str, '.') || str.substr(0, 1) == '#') {
+    if ((cb.strpos(str, '.') || str.substr(0, 1) == '#') && str.trim().indexOf(' ') < 0) {
         return true;
     }
     return false;
